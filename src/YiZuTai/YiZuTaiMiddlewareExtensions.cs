@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using YiZuTai;
 using YiZuTai.Core;
 using YiZuTai.Design;
@@ -12,20 +11,22 @@ namespace Microsoft.AspNetCore.Builder
 
         public static async Task GetResource(HttpContext httpContext,string id, string file)
         {
+            var rep = httpContext.Response;
             var ztFile = ZTFileManager.Instance.Get(id);
             if (ztFile == null)
+            {
+                rep.StatusCode = 404;
                 return;
-            //return NotFound($"未找到编号为[{id}]的组态文件！");
+            }
 
             var fullFile = Path.Combine(ztFile.Folder, ZTFile.ZTFILE_RESOURCE_FOLDER, file);
-            if (!System.IO.File.Exists(fullFile))
+            if (!File.Exists(fullFile))
+            if (ztFile == null)
+            {
+                rep.StatusCode = 404;
                 return;
-                //return new NotFoundResult();
-                //return NotFound($"在组态文件[{id}]目录未找到文件[{file}]！");
-                var contentType = MimeMapping.MimeUtility.GetMimeMapping(fullFile);
-
-            await httpContext.Response.SendFileAsync(fullFile);
-            //return new PhysicalFileResult(fullFile, contentType);
+            }
+            await rep.SendFileAsync(fullFile);
         }
 
         public static IApplicationBuilder UseYiZuTai(this WebApplication app)
@@ -48,13 +49,6 @@ namespace Microsoft.AspNetCore.Builder
             ControlManager.Instance.Init();
 
             app.MapGroup(options.Prefix).MapGet("/{id}/" + ZTFile.ZTFILE_RESOURCE_FOLDER + "/{*file}", GetResource);
-/*
-                                    app.UseRouting();
-                                    app.UseEndpoints(configure =>
-                                    {
-                                        configure.MapGet(options.Prefix + );
-                                    });
-                        */
             return app;
         }
     }
