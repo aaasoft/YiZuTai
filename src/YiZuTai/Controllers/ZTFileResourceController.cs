@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.IO;
 
 namespace YiZuTai.Controllers
 {
-    [Route("File")]
+    [Route(nameof(YiZuTai))]
     [ApiController()]
     public class ZTFileResourceController : ControllerBase
     {

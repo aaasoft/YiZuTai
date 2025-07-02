@@ -1,9 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using YiZuTai.Core.Utils;
 using YiZuTai.Design;
 
@@ -88,7 +83,7 @@ namespace YiZuTai.Core
         {
             if (resourceUrl == null || resourceUrl.StartsWith("/"))
                 return resourceUrl;
-            return $"{ZTFILE_FOLDER}/{ztFileId}/{ZTFILE_RESOURCE_FOLDER}/{resourceUrl}";
+            return $"{nameof(YiZuTai)}/{ztFileId}/{ZTFILE_RESOURCE_FOLDER}/{resourceUrl}";
         }
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-
-namespace YiZuTai.Core.Utils
+﻿namespace YiZuTai.Core.Utils
 {
     public static class FolderUtils
     {
