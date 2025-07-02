@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Builder;
+using Newtonsoft.Json;
 using YiZuTai.Core.Utils;
 using YiZuTai.Design;
 
@@ -73,7 +74,7 @@ namespace YiZuTai.Core
                 Directory.CreateDirectory(folder);
             File.WriteAllText(Path.Combine(folder, CONTENT_FILE), Quick.Xml.XmlConvert.Serialize(project));
         }
-        
+
         public string GetStaticResourceUrl(string resourceUrl)
         {
             return GetStaticResourceUrl(Id, resourceUrl);
@@ -83,7 +84,7 @@ namespace YiZuTai.Core
         {
             if (resourceUrl == null || resourceUrl.StartsWith("/"))
                 return resourceUrl;
-            return $"{nameof(YiZuTai)}/{ztFileId}/{ZTFILE_RESOURCE_FOLDER}/{resourceUrl}";
+            return YiZuTaiMiddlewareExtensions.GetUrlWithPrefix($"/{ztFileId}/{ZTFILE_RESOURCE_FOLDER}/{resourceUrl}");
         }
     }
 }

@@ -9,7 +9,9 @@ namespace Microsoft.AspNetCore.Builder
     {
         internal static YiZuTaiOptions Options { get; private set; }
 
-        public static async Task GetResource(HttpContext httpContext,string id, string file)
+        public static string GetUrlWithPrefix(string path) => $"{Options.Prefix}{path}";
+
+        public static async Task GetResource(HttpContext httpContext, string id, string file)
         {
             var rep = httpContext.Response;
             var ztFile = ZTFileManager.Instance.Get(id);
@@ -21,11 +23,11 @@ namespace Microsoft.AspNetCore.Builder
 
             var fullFile = Path.Combine(ztFile.Folder, ZTFile.ZTFILE_RESOURCE_FOLDER, file);
             if (!File.Exists(fullFile))
-            if (ztFile == null)
-            {
-                rep.StatusCode = 404;
-                return;
-            }
+                if (ztFile == null)
+                {
+                    rep.StatusCode = 404;
+                    return;
+                }
             await rep.SendFileAsync(fullFile);
         }
 
