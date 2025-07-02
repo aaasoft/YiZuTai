@@ -1,6 +1,7 @@
 ﻿<ModalAlert @ref="modalAlert" />
-<ModalWindow @ref="modalWindow" />
+<ModalWindow @ref="modalWindow" DialogSizeLarge />
 
+<PageTitle>组态文件</PageTitle>
 <div class="row">
     <div class="col-12">
         <nav class="navbar pr-1">
@@ -27,6 +28,11 @@
                                 }
                             }
                         </InputSelect>
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-primary" @onclick="ShowTagManager">
+                                <i class="fa fa-ellipsis-h"></i>
+                            </button>
+                        </div>
                     </div>
                 </EditForm>
                 <div class="input-group mb-1">

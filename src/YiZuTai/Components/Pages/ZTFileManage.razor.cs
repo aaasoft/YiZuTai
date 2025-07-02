@@ -13,6 +13,11 @@ namespace YiZuTai.Components.Pages
         private string searchTag;
         private string searchKeywords;
 
+        private void ShowTagManager()
+        {
+            modalWindow.Show<TagManage>("标签管理");
+        }
+
         private void CreateZTFile()
         {
             modalWindow.Show<CreateZTFileControl>("创建组态文件",
