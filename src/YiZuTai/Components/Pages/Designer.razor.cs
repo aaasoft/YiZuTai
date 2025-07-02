@@ -13,7 +13,8 @@ namespace YiZuTai.Components.Pages
         private ModalPrompt modalPrompt;
         private ModalAlert modalAlert;
         private ModalWindow modalWindow;
-        private Microsoft.AspNetCore.Components.Web.Extensions.Head.Title title;
+
+        private string title = "设计 - 易组态";
 
         private int _DesignScale = 100;
         /// <summary>
@@ -108,7 +109,8 @@ namespace YiZuTai.Components.Pages
             var titleStr = $"{Model.Name} - 设计 - 易组态";
             if (isWindowOnbeforeUnloadEventAdded)
                 titleStr = "*" + titleStr;
-            title.SetTitleAsync(titleStr);
+            title = titleStr;
+            JSRuntime.InvokeVoidAsync("YiZuTai.SetTitle", title);
         }
 
         private void Controls_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

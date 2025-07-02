@@ -4,6 +4,7 @@
 @using Microsoft.AspNetCore.Components.Web.Extensions.Head
 @layout DesignLayout
 
+<PageTitle>@title</PageTitle>
 <Script src="js/core.js"></Script>
 <Script src="js/designer.js"></Script>
 
@@ -15,7 +16,6 @@
 }
 else
 {
-    <Title @ref="title" Value="设计 - 易组态"></Title>
     <ModalLoading @ref="modalLoading" />
     <ToastStack @ref="toastStack" />
     <ModalPrompt @ref="modalPrompt" />
