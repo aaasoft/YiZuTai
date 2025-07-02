@@ -1,12 +1,13 @@
 ﻿@page "/File/{Id}/Design"
 @using Quick.Blazor.Bootstrap
 @using YiZuTai.Components.Layout
-@using Microsoft.AspNetCore.Components.Web.Extensions.Head
 @layout DesignLayout
 
 <PageTitle>@title</PageTitle>
-<Script src="js/core.js"></Script>
-<Script src="js/designer.js"></Script>
+<HeadContent>
+    <script src="js/core.js"></script>
+    <script src="js/designer.js"></script>
+</HeadContent>
 
 @if (Model == null)
 {

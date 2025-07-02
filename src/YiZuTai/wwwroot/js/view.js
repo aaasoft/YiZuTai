@@ -1,5 +1,4 @@
-﻿var YiZuTai = YiZuTai || {};
-YiZuTai.View = {
+﻿YiZuTai.View = {
     ChangeDivHeightFunc: function (windowHeight, div) {
         var divTop = div.getBoundingClientRect().top;
         var divHeight = windowHeight - divTop - 0;
