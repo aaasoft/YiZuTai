@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Quick.Blazor.Bootstrap;
-using Quick.Protocol.Utils;
+using Quick.Blazor.Bootstrap.Utils;
 using System.Text;
 using Tewr.Blazor.FileReader;
 

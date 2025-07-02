@@ -1,7 +1,7 @@
 ﻿using BlazorDownloadFile;
 using Microsoft.AspNetCore.Components;
 using Quick.Blazor.Bootstrap;
-using Quick.Protocol.Utils;
+using Quick.Blazor.Bootstrap.Utils;
 using System.Text;
 using Tewr.Blazor.FileReader;
 

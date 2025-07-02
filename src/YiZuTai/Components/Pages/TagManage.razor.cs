@@ -1,5 +1,5 @@
 ﻿using Quick.Blazor.Bootstrap;
-using Quick.Protocol.Utils;
+using Quick.Blazor.Bootstrap.Utils;
 using YiZuTai.Core;
 
 namespace YiZuTai.Components.Pages
