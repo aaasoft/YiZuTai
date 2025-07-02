@@ -1,0 +1,10 @@
+﻿@inherits EditorBase<bool>
+@code{
+    string id = "customSwitch_" + Guid.NewGuid().ToString("N");
+}
+<div class="form-control">
+    <div class="custom-control custom-switch">
+        <InputCheckbox class="custom-control-input" @bind-Value="Value" id="@id" />
+        <label class="custom-control-label" for="@id"></label>
+    </div>
+</div>

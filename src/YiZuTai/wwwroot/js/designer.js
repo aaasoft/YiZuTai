@@ -1,0 +1,86 @@
+﻿var YiZuTai = YiZuTai || {};
+YiZuTai.Designer = {
+    AddWindowOnBeforeUnloadEvent: function () {
+        window.onbeforeunload = function () {
+            return '有更改尚未保存，确认离开？';
+        };
+    },
+    RemoveWindowOnBeforeUnloadEvent: function () {
+        window.onbeforeunload = null;
+    },
+    ChangeDivHeightFunc: function (windowHeight, div) {
+        var divTop = div.getBoundingClientRect().top;
+        var divHeight = windowHeight - divTop - 10;
+        div.style.height = divHeight + 'px';
+    },
+    OnResizeFunc: function () {
+        var windowHeight = window.innerHeight;
+        YiZuTai.Designer.ChangeDivHeightFunc(windowHeight, document.getElementById('divToolbox'));
+        YiZuTai.Designer.ChangeDivHeightFunc(windowHeight, document.getElementById('divProperty'));
+
+        var divCanvas = document.getElementById('divCanvas');
+        YiZuTai.Designer.ChangeDivHeightFunc(windowHeight, divCanvas);
+        var svgCanvas = document.getElementById('svgCanvas');
+
+        var divCanvasHeight = divCanvas.clientHeight;
+        var svgCanvasHeight = svgCanvas.clientHeight;
+
+        var svgCanvasTop = 0;
+        if (divCanvasHeight > svgCanvasHeight)
+            svgCanvasTop = (divCanvasHeight - svgCanvasHeight) / 2;
+        var svgCanvasStyleMarginTop = svgCanvasTop + 'px';
+        //如果没有改变
+        if (svgCanvasStyleMarginTop == svgCanvas.style.marginTop)
+            return false;
+        svgCanvas.style.marginTop = svgCanvasStyleMarginTop;
+        return true;
+    },
+    LoopOnResizeFunc: function () {
+        if (!YiZuTai.Designer.OnResizeFunc())
+            return;
+        setTimeout(YiZuTai.Designer.LoopOnResizeFunc, 100);
+    }
+};
+
+window.onload = function (evt) {
+    setTimeout(function () {
+        var bindCaputure = function (el) {
+            var preMouseDownFunc = el.onpointerdown;
+            el.onpointerdown = function (e) {
+                el.setPointerCapture(e.pointerId);
+                if (preMouseDownFunc != null)
+                    preMouseDownFunc();
+            };
+            var preMouseUpFunc = el.onpointerup;
+            el.onpointerup = function (e) {
+                el.releasePointerCapture(e.pointerId);
+                if (preMouseUpFunc != null)
+                    preMouseUpFunc();
+            };
+        };
+        bindCaputure(document.getElementById('sizerMoveLocation'));
+        bindCaputure(document.getElementById('sizerRotate'));
+        bindCaputure(document.getElementById('sizerResizeLeftTop'));
+        bindCaputure(document.getElementById('sizerResizeTop'));
+        bindCaputure(document.getElementById('sizerResizeRightTop'));
+        bindCaputure(document.getElementById('sizerResizeRight'));
+        bindCaputure(document.getElementById('sizerResizeRightBottom'));
+        bindCaputure(document.getElementById('sizerResizeBottom'));
+        bindCaputure(document.getElementById('sizerResizeLeftBottom'));
+        bindCaputure(document.getElementById('sizerResizeLeft'));
+    }, 1000);
+    YiZuTai.Designer.LoopOnResizeFunc();
+
+    window.addEventListener("keydown", function (e) {
+        //让Ctrl + S组合键不触发浏览器的保存网页功能，能够传递到后台
+        //可以判断是不是mac，如果是mac,ctrl变为花键
+        //event.preventDefault() 方法阻止元素发生默认的行为。
+        if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+            e.preventDefault();
+        }
+    }, false);
+};
+
+window.onresize = function (evt) {
+    YiZuTai.Designer.LoopOnResizeFunc();
+};

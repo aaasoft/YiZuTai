@@ -1,0 +1,47 @@
+﻿@inherits EditorBase<string>
+@using YiZuTai.Utils
+@using YiZuTai.Components.Pages
+
+<ModalAlert @ref="modalAlert" />
+<ModalWindow DialogSizeExtraLarge @ref="modalWindow" />
+
+@if (string.IsNullOrEmpty(Value))
+{
+    <a class="form-control p-1" href="javascript:;" @onclick="onClick">
+    </a>
+    <div class="input-group-append">
+        <button type="button" class="btn btn-outline-secondary" @onclick="onClick">
+            ...
+        </button>
+    </div>
+}
+else
+{
+    <a class="form-control p-1" href="javascript:;" @onclick="onClick">
+        <img class="w-100 h-100" src="@Core.ZTFile.GetStaticResourceUrl(ZTFileId, Value)" alt="@Value">
+    </a>
+    <div class="input-group-append">
+        <button type="button" class="btn btn-danger" @onclick="@(e=>Value=null)">
+            <i class="fa fa-times"></i>
+        </button>
+    </div>
+}
+@code
+{
+    private ModalAlert modalAlert;
+    private ModalWindow modalWindow;
+
+    private void onClick()
+    {
+        modalWindow.Show<ImageSelectControl>("选择图片", new Dictionary<string, object>()
+            {
+                [nameof(ImageSelectControl.ZTFileId)] = ZTFileId,
+                [nameof(ImageSelectControl.SelectedItem)] = Value,
+                [nameof(ImageSelectControl.OkAction)] = new Action<string>(value =>
+                    {
+                        Value = value;
+                        modalWindow.Close();
+                    })
+            });
+    }
+}

@@ -1,0 +1,248 @@
+﻿@page "/File/{Id}/Design"
+@using Quick.Blazor.Bootstrap
+@using YiZuTai.Components.Layout
+@using Microsoft.AspNetCore.Components.Web.Extensions.Head
+@layout DesignLayout
+
+<Script src="js/core.js"></Script>
+<Script src="js/designer.js"></Script>
+
+@if (Model == null)
+{
+    <div class="alert alert-warning" role="alert">
+        未找到编号为[@(Id)]的组态文件!
+    </div>
+}
+else
+{
+    <Title @ref="title" Value="设计 - 易组态"></Title>
+    <ModalLoading @ref="modalLoading" />
+    <ToastStack @ref="toastStack" />
+    <ModalPrompt @ref="modalPrompt" />
+    <ModalAlert @ref="modalAlert" />
+    <ModalWindow DialogSizeExtraLarge @ref="modalWindow" />
+    <!--顶部菜单部分-->
+    <div class="row">
+        <div class="col-12 p-0 pt-1 pb-1">
+            <Tabs NavTabsExtraClass="mb-1">
+                <TabPane Key="1">
+                    <Tab>开始</Tab>
+                    <ChildContent>
+                        <div class="btn-toolbar">
+                            <div class="btn-group mr-1">
+                                <button type="button" class="btn btn-info" title="保存" @onclick="Save">
+                                    <i class="fa fa-save"></i>
+                                </button>
+                                <button type="button" class="btn btn-info" title="预览" @onclick="Preview">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                            <div class="btn-group mr-1">
+                                <button type="button" class="btn btn-info" title="图片管理" @onclick="ImageManage">
+                                    <i class="fa fa-picture-o"></i>
+                                </button>
+                                <button type="button" class="btn btn-info" title="文件管理" @onclick="FileManage">
+                                    <i class="fa fa-folder-o"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </ChildContent>
+                </TabPane>
+                <TabPane Key="2">
+                    <Tab>设计</Tab>
+                    <ChildContent>
+                        <div class="btn-toolbar">
+                            <div class="input-group mr-1">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">显示比例</div>
+                                    <button type="button" class="btn btn-outline-secondary" title="缩小" @onclick="@(e=>DesignScale-=10)">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                                <input type="number" class="form-control" style="width:5rem;" @bind-value="DesignScale">
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-outline-secondary" title="放大" @onclick="@(e=>DesignScale+=10)">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    <div class="input-group-text">%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </ChildContent>
+                </TabPane>
+            </Tabs>
+        </div>
+    </div>
+    <!--主要内容部分-->
+    <div class="row">
+        <!--左侧工具箱部分-->
+        <div class="col-lg-2 col-md-4 p-0">
+            <div class="card">
+                <div class="card-header">
+                    工具箱
+                </div>
+                <div id="divToolbox" class="card-body p-1">
+                    @foreach (var group in Design.ControlManager.Instance.GetItems().GroupBy(t => t.Category))
+                    {
+                        <div class="card-title m-0 ml-2 mt-1 font-weight-bold">@group.Key</div>
+                        @foreach (var controlAttr in group)
+                        {
+                            <button type="button" class="btn btn-light btn-block text-left p-1 m-0 mt-1" @onclick="@(e => addControl(controlAttr))">
+                                <img src="control/@(controlAttr.Type.Namespace).svg" style="width:1.5rem;height:1.5rem;" alt="@controlAttr.Name">
+                                <span>@controlAttr.Name</span>
+                            </button>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <!--中间设计部分-->
+        <div class="col-lg-8 col-md-4">
+            <div class="card" tabindex="0" @onkeydown="onKeyDown" @onmouseup="onMouseUp">
+                <div class="card-header">
+                    设计
+                </div>
+                <ContextMenu Id="designMenu">
+                    <Item OnClick="@removeControl" Visible="IsSelectedControl">删除</Item>
+                    <Item OnClick="@Preview" Visible="!IsSelectedControl">预览</Item>
+                </ContextMenu>
+                <ContextMenuTrigger MenuId="designMenu">
+                    <div id="divCanvas" class="card-body text-center p-0 overflow-auto" style="background-color: @Canvas.Background;">
+                        <!--====控件部分====-->
+                    <svg id="svgCanvas" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xhtml="http://www.w3.org/1999/xhtml"
+                            width="@(Canvas.Width*DesignScale/100)" height="@(Canvas.Height*DesignScale/100)"
+                            viewBox="00 00 @Canvas.Width @Canvas.Height"
+                            preserveAspectRatio="none"
+                            @onmousemove="onMouseMove">
+                            <!--====画布部分====-->
+                        <g @onmousedown="onCanvasMouseDown">
+                                <rect fill="@Canvas.Foreground" fill-opacity="@Canvas.ForegroundOpacity"
+                                    rx="@Canvas.CornerRadius" ry="@Canvas.CornerRadius"
+                                    stroke="@Canvas.Border" stroke-opacity="@Canvas.BorderOpacity" stroke-width="@Canvas.BorderThickness"
+                                    x="0" y="0" width="@Canvas.Width" height="@Canvas.Height"></rect>
+                                @if (!string.IsNullOrEmpty(Canvas.Image))
+                                {
+                                    <image href="@Core.ZTFile.GetStaticResourceUrl(Model.Id, Canvas.Image)" width="100%" height="100%" preserveAspectRatio="none"></image>
+                                }
+                            </g>
+                            @foreach (var Item in Project.Controls)
+                            {
+                                <g transform="rotate(@Item.Angle @Item.CenterPointLocation.X, @Item.CenterPointLocation.Y) translate(0, 0) scale(1)"
+                            @onmousedown="@(e => onControlMouseDown(e,Item))">
+                                    @Item.GetView(@Model.Id)
+                                </g>
+                            }
+                            <g transform="rotate(@SelectedItem.Angle @SelectedItem.CenterPointLocation.X, @SelectedItem.CenterPointLocation.Y) translate(0, 0) scale(1)"
+                            visibility="@(IsSelectedControl?"visible":"hidden")">
+                                <!--虚线框，用于移动控件位置-->
+                            <rect id="sizerMoveLocation" fill-opacity="0" stroke="#6495ed" stroke-dasharray="4" stroke-width="1"
+                                  x="@SelectedItem.Left" y="@SelectedItem.Top" width="@SelectedItem.Width" height="@SelectedItem.Height"
+                                  style="@(SelectedItem.IsLocked?"cursor:not-allowed;":"cursor:move;")"
+                                  @onmousedown="@(e => sizerMouseDown(e, () => isMoveLocation = true))" />
+                                @if (!SelectedItem.IsLocked)
+                                {
+                                    <!--旋转-->
+                                    <line x1="@(SelectedItem.Left + SelectedItem.Width / 2)" y1="@(SelectedItem.Top - resize_box_width * 3)"
+                                  x2="@(SelectedItem.Left + SelectedItem.Width / 2)" y2="@(SelectedItem.Top - resize_box_width * 3 + resize_box_width * 2)"
+                                  stroke="#6495ed" stroke-dasharray="4" stroke-width="1" />
+                                    <circle id="sizerRotate" fill="#6495ed" style="cursor: url(rotate.cur),auto; "
+                                    cx="@(SelectedItem.Left + SelectedItem.Width / 2)" cy="@(SelectedItem.Top - resize_box_width * 3 - resize_box_width / 2)" r="@(resize_box_width * 2 / 3)"
+                                    @onmousedown="@(e => sizerMouseDown(e, () => isRotate = true))" />
+
+                                    <!--左上角大小调整-->
+                                    <rect id="sizerResizeLeftTop" fill-opacity="0" stroke="#6495ed" stroke-width="1"
+                                  x="@(SelectedItem.Left - resize_box_width)" y="@(SelectedItem.Top - resize_box_width)" width="@resize_box_width" height="@resize_box_width"
+                                  style="cursor:@getSizerCursor(315);"
+                                  @onmousedown="@(e => sizerMouseDown(e, () => isResizeLeftTop = true))"></rect>
+                                    <!--上方大小调整-->
+                                    <rect id="sizerResizeTop" fill-opacity="0" stroke="#6495ed" stroke-width="1"
+                                  x="@(SelectedItem.Left + (SelectedItem.Width - resize_box_width) / 2)" y="@(SelectedItem.Top - resize_box_width)" width="@resize_box_width" height="@resize_box_width"
+                                  style="cursor:@getSizerCursor(0);"
+                                  @onmousedown="@(e => sizerMouseDown(e, () => isResizeTop = true))"></rect>
+                                    <!--右上角大小调整-->
+                                    <rect id="sizerResizeRightTop" fill-opacity="0" stroke="#6495ed" stroke-width="1"
+                                  x="@(SelectedItem.Left + SelectedItem.Width)" y="@(SelectedItem.Top - resize_box_width)" width="@resize_box_width" height="@resize_box_width"
+                                  style="cursor:@getSizerCursor(45);"
+                                  @onmousedown="@(e => sizerMouseDown(e, () => isResizeRightTop = true))"></rect>
+                                    <!--右侧大小调整-->
+                                    <rect id="sizerResizeRight" fill-opacity="0" stroke="#6495ed" stroke-width="1"
+                                  x="@(SelectedItem.Left + SelectedItem.Width)" y="@(SelectedItem.Top + (SelectedItem.Height - resize_box_width) / 2)" width="@resize_box_width" height="@resize_box_width"
+                                  style="cursor:@getSizerCursor(90);"
+                                  @onmousedown="@(e => sizerMouseDown(e, () => isResizeRight = true))"></rect>
+                                    <!--右下角大小调整-->
+                                    <rect id="sizerResizeRightBottom" fill-opacity="0" stroke="#6495ed" stroke-width="1"
+                                  x="@(SelectedItem.Left + SelectedItem.Width)" y="@(SelectedItem.Top + SelectedItem.Height)" width="@resize_box_width" height="@resize_box_width"
+                                  cursor="@getSizerCursor(135)"
+                                  @onmousedown="@(e => sizerMouseDown(e, () => isResizeRightBottom = true))"></rect>
+                                    <!--下方大小调整-->
+                                    <rect id="sizerResizeBottom" fill-opacity="0" stroke="#6495ed" stroke-width="1"
+                                  x="@(SelectedItem.Left + (SelectedItem.Width - resize_box_width) / 2)" y="@(SelectedItem.Top + SelectedItem.Height)" width="@resize_box_width" height="@resize_box_width"
+                                  style="cursor:@getSizerCursor(180);"
+                                  @onmousedown="@(e => sizerMouseDown(e, () => isResizeBottom = true))"></rect>
+                                    <!--左下角大小调整-->
+                                    <rect id="sizerResizeLeftBottom" fill-opacity="0" stroke="#6495ed" stroke-width="1"
+                                  x="@(SelectedItem.Left - resize_box_width)" y="@(SelectedItem.Top + SelectedItem.Height)" width="@resize_box_width" height="@resize_box_width"
+                                  style="cursor:@getSizerCursor(225);"
+                                  @onmousedown="@(e => sizerMouseDown(e, () => isResizeLeftBottom = true))"></rect>
+                                    <!--左侧大小调整-->
+                                    <rect id="sizerResizeLeft" fill-opacity="0" stroke="#6495ed" stroke-width="1"
+                                  x="@(SelectedItem.Left - resize_box_width)" y="@(SelectedItem.Top + (SelectedItem.Height - resize_box_width) / 2)" width="@resize_box_width" height="@resize_box_width"
+                                  style="cursor:@getSizerCursor(270);"
+                                  @onmousedown="@(e => sizerMouseDown(e, () => isResizeLeft = true))"></rect>
+                                }
+                            </g>
+                        </svg>
+                    </div>
+                </ContextMenuTrigger>
+            </div>
+        </div>
+        <!--右侧属性部分-->
+        <div class="col-lg-2 col-md-4 p-0">
+            <div class="card">
+                <div class="card-header">
+                    属性
+                </div>
+                <div id="divProperty" class="card-body p-0 overflow-auto">
+                    <EditForm Model="SelectedItem">
+                        <div class="form-group m-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">控件</div>
+                                </div>
+                                <InputSelect class="form-control" @bind-Value="SelectedItemName">
+                                    <option value="">画布</option>
+                                    @foreach (var item in Project.Controls)
+                                    {
+                                    <option value="@item.Name">@item.Name</option>
+                                    }
+                            </InputSelect>
+                        </div>
+                    </div>
+                    @foreach (var group in SelectedItemFields)
+                        {
+                            <div class="card-title m-0 ml-2 mt-1 font-weight-bold">@group.Name</div>
+                            @foreach (var field in group.FieldList)
+                            {
+                                <div class="form-group m-1" @onclick="@(e=>onFieldClicked(field))">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">@field.Name</div>
+                                        </div>
+                                        @field.GetEditorRenderFragment(Model.Id)
+                                    </div>
+                                    @if (field == SelectedField)
+                                    {
+                                        @foreach (var line in field.Description.Split('\r', '\n'))
+                                        {
+                                            <small class="form-text text-muted">@line</small>
+                                        }
+                                    }
+                                </div>
+                            }
+                        }
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}

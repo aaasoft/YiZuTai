@@ -1,0 +1,20 @@
+﻿@inherits EditorBase<string>
+
+@if (IsEnum)
+{
+<InputSelect class="form-control" @bind-Value="StringValue">
+    @foreach (var option in options)
+        {
+        <option value="@option.Key">@option.Value</option>
+        }
+</InputSelect>
+}
+else
+{
+<InputSelect class="form-control" @bind-Value="Value">
+    @foreach (var option in options)
+    {
+        <option value="@option.Key">@option.Value</option>
+    }
+</InputSelect>
+}

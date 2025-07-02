@@ -1,0 +1,14 @@
+﻿using Microsoft.AspNetCore.Components;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace YiZuTai.Control.Rectangle
+{
+    public partial class View
+    {
+        [Parameter]
+        public Model Model { get; set; }
+    }
+}

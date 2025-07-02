@@ -1,0 +1,94 @@
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using YiZuTai.Core.Utils;
+using YiZuTai.Design;
+
+namespace YiZuTai.Core
+{
+    /// <summary>
+    /// 组态文件类
+    /// </summary>
+    public class ZTFile
+    {
+        public const string ZTFILE_FOLDER = "File";
+        public const string ZTFILE_RESOURCE_FOLDER = "Resource";
+        public const string META_FILE = "meta.json";
+        public const string CONTENT_FILE = "content.xml";
+
+        /// <summary>
+        /// 编号
+        /// </summary>
+        public string Id { get; set; }
+        /// <summary>
+        /// 目录
+        /// </summary>
+        [JsonIgnore]
+        public string Folder => FolderUtils.GetPathUnderDataDir(ZTFILE_FOLDER, Id);
+        /// <summary>
+        /// 资源目录
+        /// </summary>
+        [JsonIgnore]
+        public string ResourceFolder => Path.Combine(Folder, ZTFILE_RESOURCE_FOLDER);
+
+        /// <summary>
+        /// 名称
+        /// </summary>
+        public string Name { get; set; }
+        /// <summary>
+        /// 描述
+        /// </summary>
+        public string Description { get; set; }
+
+        public Project OpenProject()
+        {
+            var projectFile = Path.Combine(Folder, CONTENT_FILE);
+            Project project = null;
+            //如果文件存在
+            if (File.Exists(projectFile))
+            {
+                var content = File.ReadAllText(projectFile);
+                project = Quick.Xml.XmlConvert.Deserialize<Project>(content);
+            }
+            if (project == null)
+                project = new Project();
+            return project;
+        }
+
+        /// <summary>
+        /// 标签
+        /// </summary>
+        public string[] Tags { get; set; }
+
+        public void Save()
+        {
+            var folder = Folder;
+            if (!Directory.Exists(folder))
+                Directory.CreateDirectory(folder);
+            File.WriteAllText(Path.Combine(folder, META_FILE), JsonConvert.SerializeObject(this));
+        }
+
+        public void SaveProject(Project project)
+        {
+            var folder = Folder;
+            if (!Directory.Exists(folder))
+                Directory.CreateDirectory(folder);
+            File.WriteAllText(Path.Combine(folder, CONTENT_FILE), Quick.Xml.XmlConvert.Serialize(project));
+        }
+        
+        public string GetStaticResourceUrl(string resourceUrl)
+        {
+            return GetStaticResourceUrl(Id, resourceUrl);
+        }
+
+        public static string GetStaticResourceUrl(string ztFileId, string resourceUrl)
+        {
+            if (resourceUrl == null || resourceUrl.StartsWith("/"))
+                return resourceUrl;
+            return $"{ZTFILE_FOLDER}/{ztFileId}/{ZTFILE_RESOURCE_FOLDER}/{resourceUrl}";
+        }
+    }
+}

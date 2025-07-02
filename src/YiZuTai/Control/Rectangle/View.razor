@@ -1,0 +1,9 @@
+﻿<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     x="@Model.Left" y="@Model.Top" width="@Model.Width" height="@Model.Height" opacity="@Model.Opacity"
+     visibility="@(Model.Visiable?"visible":"hidden")">
+    <rect fill="@Model.Background" fill-opacity="@Model.BackgroundOpacity"
+          rx="@Model.CornerRadius" ry="@Model.CornerRadius"
+          stroke="@Model.Border" stroke-opacity="@Model.BorderOpacity" stroke-width="@Model.BorderThickness"
+          x="@(Model.BorderThickness / 2)" y="@(Model.BorderThickness / 2)"
+          width="@(Model.Width - Model.BorderThickness)" height="@(Model.Height - Model.BorderThickness)"></rect>
+</svg>
