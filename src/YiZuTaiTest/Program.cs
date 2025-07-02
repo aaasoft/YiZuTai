@@ -1,18 +1,6 @@
 using BlazorDownloadFile;
 using Tewr.Blazor.FileReader;
-using YiZuTai.Components;
-using YiZuTai.Core;
-using YiZuTai.Core.Utils;
-using YiZuTai.Design;
-
-//如果数据目录不存在，则创建
-var dataDir = FolderUtils.GetDataDir();
-if (!Directory.Exists(dataDir))
-    Directory.CreateDirectory(dataDir);
-
-TagManager.Instance.Init();
-ZTFileManager.Instance.Init();
-ControlManager.Instance.Init();
+using YiZuTaiTest.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,9 +23,8 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseAntiforgery();
-
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
-app.MapControllers();
+app.UseYiZuTai();
 app.Run();

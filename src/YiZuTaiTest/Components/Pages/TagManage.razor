@@ -1,4 +1,5 @@
-﻿<ModalAlert @ref="modalAlert" />
+﻿@using YiZuTai.Core
+<ModalAlert @ref="modalAlert" />
 <ModalPrompt @ref="modalPrompt" />
 
 <div class="row">
@@ -18,7 +19,7 @@
 </div>
 
 <div class="row">
-    @if (Core.TagManager.Instance.IsEmpty())
+    @if (TagManager.Instance.IsEmpty())
     {
         <div class="col-12">
             <div class="alert alert-info mt-2" role="alert">
@@ -28,7 +29,7 @@
     }
     else
     {
-        @foreach (var t in Core.TagManager.Instance.GetTags())
+        @foreach (var t in TagManager.Instance.GetTags())
         {
             <div class="col-4 mt-2">
                 <div class="card">

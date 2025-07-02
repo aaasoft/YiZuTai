@@ -1,0 +1,18 @@
+﻿@page "/YiZuTai/{Id}/Design"
+@using YiZuTaiTest.Components.Layout
+@using YiZuTai.Components
+@layout ViewLayout
+
+<app>
+    <div class="main w-100">
+        <div class="content p-0">
+            <YiZuTai.Components.Designer Id="@Id"></YiZuTai.Components.Designer>
+        </div>
+    </div>
+</app>
+
+@code
+{
+    [Parameter]
+    public string Id{get;set;}
+}

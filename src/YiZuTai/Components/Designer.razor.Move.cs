@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using YiZuTai.Design;
 
-namespace YiZuTai.Components.Pages
+namespace YiZuTai.Components
 {
     public partial class Designer
     {

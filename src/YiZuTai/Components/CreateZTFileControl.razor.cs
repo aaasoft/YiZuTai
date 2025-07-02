@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System.ComponentModel.DataAnnotations;
 
-namespace YiZuTai.Components.Pages
+namespace YiZuTai.Components
 {
     public partial class CreateZTFileControl
     {

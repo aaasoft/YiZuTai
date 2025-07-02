@@ -1,12 +1,9 @@
-﻿@page "/YiZuTai/{Id}/Design"
-@using Quick.Blazor.Bootstrap
-@using YiZuTai.Components.Layout
-@layout DesignLayout
-
+﻿@using Microsoft.AspNetCore.Builder
+@using YiZuTai.Core.Utils
 <PageTitle>@title</PageTitle>
 <HeadContent>
-    <script src="js/core.js"></script>
-    <script src="js/designer.js"></script>
+    <script src="_content/YiZuTai/js/core.js"></script>
+    <script src="_content/YiZuTai/js/designer.js"></script>
 </HeadContent>
 
 @if (Model == null)
@@ -89,7 +86,7 @@ else
                         @foreach (var controlAttr in group)
                         {
                             <button type="button" class="btn btn-light btn-block text-left p-1 m-0 mt-1" @onclick="@(e => addControl(controlAttr))">
-                                <img src="control/@(controlAttr.Type.Namespace).svg" style="width:1.5rem;height:1.5rem;" alt="@controlAttr.Name">
+                                <img src="_content/YiZuTai/control/@(controlAttr.Type.Namespace).svg" style="width:1.5rem;height:1.5rem;" alt="@controlAttr.Name">
                                 <span>@controlAttr.Name</span>
                             </button>
                         }
@@ -146,7 +143,7 @@ else
                                     <line x1="@(SelectedItem.Left + SelectedItem.Width / 2)" y1="@(SelectedItem.Top - resize_box_width * 3)"
                                   x2="@(SelectedItem.Left + SelectedItem.Width / 2)" y2="@(SelectedItem.Top - resize_box_width * 3 + resize_box_width * 2)"
                                   stroke="#6495ed" stroke-dasharray="4" stroke-width="1" />
-                                    <circle id="sizerRotate" fill="#6495ed" style="cursor: url(rotate.cur),auto; "
+                                    <circle id="sizerRotate" fill="#6495ed" style="cursor: url(_content/YiZuTai/rotate.cur),auto; "
                                     cx="@(SelectedItem.Left + SelectedItem.Width / 2)" cy="@(SelectedItem.Top - resize_box_width * 3 - resize_box_width / 2)" r="@(resize_box_width * 2 / 3)"
                                     @onmousedown="@(e => sizerMouseDown(e, () => isRotate = true))" />
 

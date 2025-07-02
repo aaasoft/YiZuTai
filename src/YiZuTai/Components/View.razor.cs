@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using YiZuTai.Design;
 
-namespace YiZuTai.Components.Pages
+namespace YiZuTai.Components
 {
     public partial class View
     {

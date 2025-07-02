@@ -1,28 +1,32 @@
 ﻿using BlazorDownloadFile;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using Quick.Blazor.Bootstrap;
 using Quick.Blazor.Bootstrap.Utils;
 using System.Text;
 using Tewr.Blazor.FileReader;
 
-namespace YiZuTai.Components.Pages
+namespace YiZuTai.Components
 {
-    public partial class ImageSelectControl
+    public partial class FileManageControl
     {
-        private static HashSet<string> imageFileSuffixHashSet = new HashSet<string> { ".jpg", ".png", ".svg", ".gif", ".tif", ".bmp" };
-        private readonly YiZuTai.Utils.UnitStringConverting storageUSC = YiZuTai.Utils.UnitStringConverting.StorageUnitStringConverting;
-        private readonly YiZuTai.Utils.UnitStringConverting timeUSC = YiZuTai.Utils.UnitStringConverting.TimeUnitStringConverting;
+        private readonly Utils.UnitStringConverting storageUSC = Utils.UnitStringConverting.StorageUnitStringConverting;
+        private readonly Utils.UnitStringConverting timeUSC = Utils.UnitStringConverting.TimeUnitStringConverting;
         [Inject]
         private IBlazorDownloadFileService BlazorDownloadFileService { get; set; }
 
         [Parameter]
         public string ZTFileId { get; set; }
-        [Parameter]
-        public string SelectedItem { get; set; }
-        [Parameter]
-        public Action<string> OkAction { get; set; }
-        private string[] Images { get; set; }
-        private string CurrentPath { get; set; }
+        [Inject]
+        public IJSRuntime JSRuntime { get; set; }
+
+        private Core.ZTFile ZTFile { get; set; }
+        private string BasePath;
+        
+        private DirectoryInfo CurrentDir;
+        private DirectoryInfo[] Dirs;
+        private FileInfo[] Files;
+        private Object SelectedItem;
 
         private ModalLoading modalLoading;
         private ModalAlert modalAlert;
@@ -32,11 +36,63 @@ namespace YiZuTai.Components.Pages
 
         protected override void OnParametersSet()
         {
-            var ztFile = Core.ZTFileManager.Instance.Get(ZTFileId);
-            if (ztFile == null)
+            ZTFile = Core.ZTFileManager.Instance.Get(ZTFileId);
+            if (ZTFile == null)
                 return;
-            CurrentPath = ztFile.ResourceFolder;
+            BasePath = ZTFile.ResourceFolder;
+            CurrentDir = new DirectoryInfo(BasePath);
+            CurrentPath = "/";
             refresh();
+        }
+
+        private void gotoDir(DirectoryInfo dir)
+        {
+            var fullPath = dir.FullName;
+            if (!fullPath.StartsWith(BasePath))
+                fullPath = BasePath;
+
+            CurrentDir = new DirectoryInfo(fullPath);
+            CurrentPath = CurrentDir.FullName.Substring(BasePath.Length).Replace("\\", "/");
+            if (!CurrentPath.StartsWith("/"))
+                CurrentPath = "/" + CurrentPath;
+            refresh();
+        }
+
+        private string CurrentPath { get; set; }
+
+        private void btnGoto_Click()
+        {
+            if (string.IsNullOrEmpty(CurrentPath))
+                gotoDir(new DirectoryInfo(BasePath));
+            else
+                gotoDir(new DirectoryInfo(Path.Combine(BasePath, CurrentPath.Substring(1))));
+        }
+
+        private void btnGotoUpper_Click()
+        {
+            if (CurrentDir == null)
+                return;
+            var dir = CurrentDir.Parent;
+            gotoDir(dir);
+        }
+
+        private void btnCreateFolder_Click()
+        {
+            modalPrompt.Show("请输入新建文件夹的名称", "新建文件夹", dir_name =>
+            {
+                try
+                {
+                    var newDirPath = Path.Combine(CurrentDir.FullName, dir_name);
+                    Directory.CreateDirectory(newDirPath);
+                    toastStack.AddToast("成功", $"创建文件夹[{dir_name}]成功", BackgroundTheme.success);
+                    refresh();
+                    InvokeAsync(StateHasChanged);
+                }
+                catch (Exception ex)
+                {
+                    toastStack.AddToast("失败", $"创建文件夹[{dir_name}]失败，原因：{ex.Message}", BackgroundTheme.danger);
+                }
+            }, () => { });
         }
 
         private async Task onInputFileChanged()
@@ -52,9 +108,9 @@ namespace YiZuTai.Components.Pages
                 {
                     modalLoading.Show($"上传文件", "正在获取上传文件信息...", false, cts.Cancel);
                     fileInfo = await file.ReadFileInfoAsync();
-                    if (!Directory.Exists(CurrentPath))
-                        Directory.CreateDirectory(CurrentPath);
-                    var tmpFile = Path.Combine(CurrentPath, fileInfo.Name);
+                    if (!CurrentDir.Exists)
+                        CurrentDir.Create();
+                    var tmpFile = Path.Combine(CurrentDir.FullName, fileInfo.Name);
                     if (File.Exists(tmpFile))
                         throw new IOException($"文件[{fileInfo.Name}]已经存在！");
 
@@ -123,40 +179,35 @@ namespace YiZuTai.Components.Pages
             }
         }
 
-        private string getImageSize(string id)
-        {
-            var file = Path.Combine(CurrentPath, id);
-            var fileInfo = new FileInfo(file);
-            if (!fileInfo.Exists)
-                return "";
-            return storageUSC.GetString(fileInfo.Length, 0, true) + "B";
-        }
-
         private void refresh()
         {
-            List<string> list = new List<string>();
-            if (Directory.Exists(CurrentPath))
+            SelectedItem = null;
+            if (CurrentDir.Exists)
             {
-                foreach (var file in Directory.GetFiles(CurrentPath, "*", SearchOption.AllDirectories))
+                try
                 {
-                    var extension = Path.GetExtension(file);
-                    if (!imageFileSuffixHashSet.Contains(extension))
-                        continue;
-                    var id = file.Substring(CurrentPath.Length);
-                    id = id.Replace(@"\", "/");
-                    while (id.StartsWith("/"))
-                        id = id.Substring(1);
-                    list.Add(id);
+                    Dirs = CurrentDir.GetDirectories();
+                    Files = CurrentDir.GetFiles();
+                }
+                catch (Exception ex)
+                {
+                    toastStack.AddToast("错误", $"获取文件夹[{CurrentDir.Name}]的内容时出错，原因：{ex.Message}", BackgroundTheme.danger);
+                    Dirs = null;
+                    Files = null;
                 }
             }
-            Images = list.ToArray();
+            else
+            {
+                Dirs = null;
+                Files = null;
+                toastStack.AddToast("错误", $"文件夹[{CurrentDir.FullName}]不存在！", BackgroundTheme.danger);
+            }
         }
 
         private async void btnDownload_Click()
         {
-            var file = Path.Combine(CurrentPath, SelectedItem);
-            var fileInfo = new FileInfo(file);
-            if (!fileInfo.Exists)
+            var fileInfo = SelectedItem as FileInfo;
+            if (fileInfo == null || !fileInfo.Exists)
                 return;
 
             System.Threading.CancellationTokenSource cts = new System.Threading.CancellationTokenSource();
@@ -165,7 +216,7 @@ namespace YiZuTai.Components.Pages
             stopwatch.Start();
             DateTime lastDisplayTime = DateTime.MinValue;
             byte[] buffer = new byte[24 * 1024];
-            var fileSize = file.Length;
+            var fileSize = fileInfo.Length;
             long readTotalCount = 0;
 
             try
@@ -221,63 +272,103 @@ namespace YiZuTai.Components.Pages
             }
         }
 
+        private void btnPreview_Click()
+        {
+            var fileInfo = SelectedItem as FileInfo;
+            if (fileInfo == null)
+                return;
+            var url = ZTFile.GetStaticResourceUrl(fileInfo.FullName.Substring(BasePath.Length + 1));
+            JSRuntime.InvokeVoidAsync("window.open", url, "_blank");
+        }
+
         private void btnRename_Click()
         {
-            var file = Path.Combine(CurrentPath, SelectedItem);
-            var fileInfo = new FileInfo(file);
-            if (!fileInfo.Exists)
+            if (SelectedItem == null)
                 return;
-
-            modalPrompt.Show(string.Format("请输入文件[{0}]的新名称：", fileInfo.Name), fileInfo.Name, name =>
+            if (SelectedItem is DirectoryInfo)
             {
-                try
+                var dir = (DirectoryInfo)SelectedItem;
+                modalPrompt.Show($"请输入文件夹[{dir.Name}]的新名称", dir.Name, name =>
                 {
-                    var newPath = Path.Combine(CurrentPath, name);
-                    fileInfo.MoveTo(newPath);
-                    modalAlert.Show("重命名", "成功");
-                    refresh();
-                    InvokeAsync(StateHasChanged);
-                }
-                catch (Exception ex)
+                    try
+                    {
+                        var newPath = Path.Combine(CurrentDir.FullName, name);
+                        dir.MoveTo(newPath);
+                        toastStack.AddToast("成功", $"重命名文件夹[{name}]成功", BackgroundTheme.success);
+                        refresh();
+                        InvokeAsync(StateHasChanged);
+                    }
+                    catch (Exception ex)
+                    {
+                        toastStack.AddToast("失败", $"重命名文件夹[{name}]失败，原因：{ex.Message}", BackgroundTheme.danger);
+                    }
+                }, () => { });
+            }
+            else if (SelectedItem is FileInfo)
+            {
+                var file = (FileInfo)SelectedItem;
+                modalPrompt.Show($"请输入文件[{file.Name}]的新名称", file.Name, name =>
                 {
-                    modalAlert.Show("重命名", "失败" + Environment.NewLine + ExceptionUtils.GetExceptionMessage(ex));
-                }
-            }, () => { });
+                    try
+                    {
+                        var newPath = Path.Combine(CurrentDir.FullName, name);
+                        file.MoveTo(newPath);
+                        toastStack.AddToast("成功", $"重命名文件[{name}]成功", BackgroundTheme.success);
+                        refresh();
+                        InvokeAsync(StateHasChanged);
+                    }
+                    catch (Exception ex)
+                    {
+                        toastStack.AddToast("失败", $"重命名文件[{name}]失败，原因：{ex.Message}", BackgroundTheme.danger);
+                    }
+                }, () => { });
+            }
         }
 
         private void btnDelete_Click()
         {
             if (SelectedItem == null)
                 return;
-
-            var file = Path.Combine(CurrentPath, SelectedItem);
-            if (!File.Exists(file))
+            if (SelectedItem is FileInfo)
             {
-                modalAlert.Show("错误", $"文件[{SelectedItem}]不存在！");
-                return;
+                var file = (FileInfo)SelectedItem;
+                modalAlert.Show("确认删除", $"确定要删除文件[{file.Name}]", () =>
+                {
+                    modalLoading.Show("删除中", $"正在删除文件[{file.Name}]...", true, null);
+                    try
+                    {
+                        file.Delete();
+                        toastStack.AddToast("信息", $"删除文件[{file.Name}]成功", BackgroundTheme.success);
+                    }
+                    catch (Exception ex)
+                    {
+                        toastStack.AddToast("错误", $"删除文件[{file.Name}]时出错，原因：{ex.Message}", BackgroundTheme.danger);
+                    }
+                    refresh();
+                    modalLoading.Close();
+                    InvokeAsync(StateHasChanged);
+                }, () => { });
             }
-            modalAlert.Show("删除", $"确定要删除图片[{SelectedItem}]？", () =>
-             {
-                 modalLoading.Show("正在删除", SelectedItem, true, null);
-                 try
-                 {
-                     File.Delete(file);
-                     toastStack.AddToast("删除", $"删除图片[{SelectedItem}]成功");
-                     SelectedItem = null;
-                 }
-                 catch (Exception ex)
-                 {
-                     toastStack.AddToast("删除", $"删除图片[{SelectedItem}]失败" + Environment.NewLine + ExceptionUtils.GetExceptionMessage(ex));
-                 }
-                 refresh();
-                 modalLoading.Close();
-                 InvokeAsync(StateHasChanged);
-             }, () => { });
-        }
-
-        private void btnOk_Click()
-        {
-            OkAction?.Invoke(SelectedItem);
+            else if (SelectedItem is DirectoryInfo)
+            {
+                var dir = (DirectoryInfo)SelectedItem;
+                modalAlert.Show("确认删除", $"确定要删除文件夹[{dir.Name}]", () =>
+                {
+                    modalLoading.Show("删除中", $"正在删除文件夹[{dir.Name}]...", true, null);
+                    try
+                    {
+                        dir.Delete(true);
+                        toastStack.AddToast("信息", $"删除文件夹[{dir.Name}]成功", BackgroundTheme.success);
+                    }
+                    catch (Exception ex)
+                    {
+                        toastStack.AddToast("错误", $"删除文件夹[{dir.Name}]时出错，原因：{ex.Message}", BackgroundTheme.danger);
+                    }
+                    refresh();
+                    modalLoading.Close();
+                    InvokeAsync(StateHasChanged);
+                }, () => { });
+            }
         }
     }
 }

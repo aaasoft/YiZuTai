@@ -1,12 +1,10 @@
-﻿@page "/YiZuTai/{Id}/View"
-@using YiZuTai.Components.Layout
-@layout ViewLayout
-
+﻿@using Microsoft.AspNetCore.Builder
+@using YiZuTai.Core.Utils
 <PageTitle>@Model?.Name - 展示 - 易组态</PageTitle>
 <HeadContent>
-    <script src="js/core.js"></script>
-    <script src="js/view.js"></script>
-    <link href="css/view.css" rel="stylesheet" />
+    <script src="_content/YiZuTai/js/core.js"></script>
+    <script src="_content/YiZuTai/js/view.js"></script>
+    <link href="_content/YiZuTai/css/view.css" rel="stylesheet" />
 </HeadContent>
 
 @if (Model == null)

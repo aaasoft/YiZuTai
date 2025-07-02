@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Quick.Blazor.Bootstrap;
 using Quick.Blazor.Bootstrap.Utils;
+using YiZuTai.Components;
 using YiZuTai.Core;
 
-namespace YiZuTai.Components.Pages
+namespace YiZuTaiTest.Components.Pages
 {
     public partial class ZTFileManage : ComponentBase
     {
@@ -25,7 +26,7 @@ namespace YiZuTai.Components.Pages
                     null,
                     t =>
                     {
-                        var ztFile = new Core.ZTFile()
+                        var ztFile = new ZTFile()
                         {
                             Id = Guid.NewGuid().ToString("N"),
                             Name = t.Name,
@@ -39,7 +40,7 @@ namespace YiZuTai.Components.Pages
                 );
         }
 
-        private void EditZTFile(Core.ZTFile model)
+        private void EditZTFile(ZTFile model)
         {
             modalWindow.Show<CreateZTFileControl>("编辑组态文件",
                 CreateZTFileControl.PrepareParameter(
@@ -56,7 +57,7 @@ namespace YiZuTai.Components.Pages
                 );
         }
 
-        private void DeleteZTFile(Core.ZTFile model)
+        private void DeleteZTFile(ZTFile model)
         {
             modalAlert.Show("删除确认", $"确定要删除组态文件[{model.Name}]？", () =>
             {

@@ -1,0 +1,11 @@
+﻿@page "/YiZuTai/{Id}/View"
+@using YiZuTaiTest.Components.Layout
+@layout ViewLayout
+
+<YiZuTai.Components.View Id="@Id"></YiZuTai.Components.View>
+
+@code
+{
+    [Parameter]
+    public string Id{get;set;}
+}

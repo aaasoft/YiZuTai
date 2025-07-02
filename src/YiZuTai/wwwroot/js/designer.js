@@ -1,4 +1,5 @@
-﻿YiZuTai.Designer = {
+﻿var YiZuTai = YiZuTai || {};
+YiZuTai.Designer = {
     AddWindowOnBeforeUnloadEvent: function () {
         window.onbeforeunload = function () {
             return '有更改尚未保存，确认离开？';

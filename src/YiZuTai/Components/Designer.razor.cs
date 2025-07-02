@@ -4,7 +4,7 @@ using Microsoft.JSInterop;
 using Quick.Blazor.Bootstrap;
 using YiZuTai.Design;
 
-namespace YiZuTai.Components.Pages
+namespace YiZuTai.Components
 {
     public partial class Designer : ComponentBase, IDisposable
     {

@@ -2,7 +2,7 @@
 using Quick.Blazor.Bootstrap.Utils;
 using YiZuTai.Core;
 
-namespace YiZuTai.Components.Pages
+namespace YiZuTaiTest.Components.Pages
 {
     public partial class TagManage
     {

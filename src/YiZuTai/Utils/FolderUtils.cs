@@ -1,9 +1,9 @@
-﻿namespace YiZuTai.Core.Utils
+﻿using Microsoft.AspNetCore.Builder;
+
+namespace YiZuTai.Core.Utils
 {
     public static class FolderUtils
     {
-        public const string DATA_FOLDER = "Data";
-
         /// <summary>
         /// 获取程序目录
         /// </summary>
@@ -40,9 +40,9 @@
         public static string GetDataDir()
         {
 #if DEBUG
-            return GetPathUnderProgramDir(DATA_FOLDER);
+            return GetPathUnderProgramDir(YiZuTaiMiddlewareExtensions.Options.DataFolder);
 #else
-            return GetPathUnderWorkingDir(DATA_FOLDER);
+            return GetPathUnderWorkingDir(YiZuTaiMiddlewareExtensions.Options.DataFolder);
 #endif
         }
 
