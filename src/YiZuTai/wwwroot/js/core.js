@@ -1,4 +1,10 @@
-﻿/**
+﻿var YiZuTai = {
+    SetTitle: function (title) {
+        document.title = title;
+    }
+};
+
+/**
  * 开始动画
  * @param {any} parameter {
         value, //结束的值
