@@ -33,15 +33,16 @@ else
 
     private void onClick()
     {
-        modalWindow.Show<ImageSelectControl>("选择图片", new Dictionary<string, object>()
-            {
-                [nameof(ImageSelectControl.ZTFileId)] = ZTFileId,
-                [nameof(ImageSelectControl.SelectedItem)] = Value,
-                [nameof(ImageSelectControl.OkAction)] = new Action<string>(value =>
-                    {
-                        Value = value;
-                        modalWindow.Close();
-                    })
-            });
+        modalWindow.Show<ImageSelectControl>("选择图片", new DialogParameters<ImageSelectControl>
+        {
+            { x => x.ZTFileId, ZTFileId},
+            { x => x.SelectedItem, Value},
+            { x => x.OkAction, value =>
+                {
+                    Value = value;
+                    modalWindow.Close();
+                }
+            }
+        });
     }
 }

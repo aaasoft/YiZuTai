@@ -246,28 +246,28 @@ namespace YiZuTai.Components
         // 预览
         private void Preview()
         {
-            modalWindow.Show<View>("预览", new Dictionary<string, object>()
+            modalWindow.Show("预览", new DialogParameters<View>
             {
-                [nameof(View.Model)] = Model,
-                [nameof(View.Project)] = Project,
+                {x => x.Model, Model},
+                {x => x.Project, Project}
             });
         }
 
         // 图片管理
         private void ImageManage()
         {
-            modalWindow.Show<ImageSelectControl>("图片管理", new Dictionary<string, object>()
+            modalWindow.Show("图片管理", new DialogParameters<ImageSelectControl>
             {
-                [nameof(ImageSelectControl.ZTFileId)] = Model.Id
+                {x => x.ZTFileId, Model.Id}
             });
         }
 
         // 文件管理
         private void FileManage()
         {
-            modalWindow.Show<FileManageControl>("文件管理", new Dictionary<string, object>()
+            modalWindow.Show<FileManageControl>("文件管理", new DialogParameters<FileManageControl>
             {
-                [nameof(FileManageControl.ZTFileId)] = Model.Id
+                {x => x.ZTFileId, Model.Id}
             });
         }
 

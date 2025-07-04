@@ -21,10 +21,9 @@ namespace YiZuTaiTest.Components.Pages
 
         private void CreateZTFile()
         {
-            modalWindow.Show<CreateZTFileControl>("创建组态文件",
-                CreateZTFileControl.PrepareParameter(
-                    null,
-                    t =>
+            modalWindow.Show("创建组态文件", new DialogParameters<CreateZTFileControl>
+            {
+                { x=> x.OkAction, t =>
                     {
                         var ztFile = new ZTFile()
                         {
@@ -36,16 +35,16 @@ namespace YiZuTaiTest.Components.Pages
                         ZTFileManager.Instance.Add(ztFile);
                         InvokeAsync(StateHasChanged);
                         modalWindow.Close();
-                    })
-                );
+                    }}
+            });
         }
 
         private void EditZTFile(ZTFile model)
         {
-            modalWindow.Show<CreateZTFileControl>("编辑组态文件",
-                CreateZTFileControl.PrepareParameter(
-                    model,
-                    t =>
+            modalWindow.Show("编辑组态文件", new DialogParameters<CreateZTFileControl>
+            {
+                { x => x.ZTFileInfo, model },
+                { x => x.OkAction, t =>
                     {
                         model.Name = t.Name;
                         model.Description = t.Description;
@@ -53,8 +52,8 @@ namespace YiZuTaiTest.Components.Pages
                         model.Save();
                         InvokeAsync(StateHasChanged);
                         modalWindow.Close();
-                    })
-                );
+                    }}
+            });
         }
 
         private void DeleteZTFile(ZTFile model)

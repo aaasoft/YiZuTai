@@ -59,14 +59,5 @@ namespace YiZuTai.Components
                 }
             }
         }
-
-        public static Dictionary<string, object> PrepareParameter(Core.ZTFile containerInfo, Action<CreateZTFileControlModel> okAction)
-        {
-            return new Dictionary<string, object>()
-            {
-                [nameof(ZTFileInfo)] = containerInfo,
-                [nameof(OkAction)] = okAction
-            };
-        }
     }
 }
