@@ -23,7 +23,7 @@ else
     <div class="row">
         <div class="col-12 p-0 pt-1 pb-1">
             <Tabs IsNavPills NavTabsExtraClass="pb-1" TabContentExtraClass="p-2 border rounded">
-                <TabPane Key="1">
+                <TabPane Key="开始">
                     <Tab>开始</Tab>
                     <ChildContent>
                         <div class="btn-toolbar">
@@ -38,7 +38,7 @@ else
                         </div>
                     </ChildContent>
                 </TabPane>
-                <TabPane Key="2">
+                <TabPane Key="设计">
                     <Tab>设计</Tab>
                     <ChildContent>
                         <div class="btn-toolbar">
@@ -56,12 +56,29 @@ else
                         </div>
                     </ChildContent>
                 </TabPane>
+                <TabPane Key="视图">
+                    <Tab>视图</Tab>
+                    <ChildContent>
+                        <div class="btn-toolbar">
+                            <div class="custom-control custom-switch m-2">
+                                <input type="checkbox" @bind="ShowToolBox" class="custom-control-input" id="switchShowToolBox">
+                                <label class="custom-control-label" for="switchShowToolBox">工具箱</label>
+                            </div>
+                            <div class="custom-control custom-switch m-2">
+                                <input type="checkbox" @bind="ShowPropertyBox" class="custom-control-input" id="switchShowPropertyBox">
+                                <label class="custom-control-label" for="switchShowPropertyBox">属性</label>
+                            </div>
+                        </div>
+                    </ChildContent>
+                </TabPane>
             </Tabs>
         </div>
     </div>
     <!--主要内容部分-->
     <div class="row">
         <div class="card-group w-100">
+@if(ShowToolBox)
+{
             <!--左侧工具箱部分-->
             <div class="card col-xl-2 col-lg-3 col-md-4 p-0">
                 <div class="card-header">
@@ -81,6 +98,7 @@ else
                     }
                 </div>
             </div>
+}
             <!--中间设计部分-->
             <div class="card col p-0" tabindex="0" @onkeydown="onKeyDown" @onmouseup="onMouseUp">
                 <ContextMenu Id="designMenu">
@@ -176,6 +194,8 @@ else
                     </div>
                 </ContextMenuTrigger>
             </div>
+@if(ShowPropertyBox)
+{
             <!--右侧属性部分-->
             <div class="card col-xl-2 col-lg-3 col-md-4 p-0">
                 <div class="card-header">
@@ -222,6 +242,7 @@ else
                     </EditForm>
                 </div>
             </div>
+}
         </div>
     </div>
 }
