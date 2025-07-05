@@ -22,7 +22,7 @@ else
     <!--顶部菜单部分-->
     <div class="row">
         <div class="col-12 p-0 pt-1 pb-1">
-            <Tabs NavTabsExtraClass="mb-1">
+            <Tabs IsNavPills NavTabsExtraClass="pb-1" TabContentExtraClass="p-2 border rounded">
                 <TabPane Key="1">
                     <Tab>开始</Tab>
                     <ChildContent>
@@ -45,11 +45,11 @@ else
                             <div class="input-group mr-1">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">显示比例</div>
-                                    <button type="button" class="btn btn-outline-secondary" title="缩小" @onclick="@(e=>DesignScale-=10)">-</button>
+                                    <button type="button" class="btn btn-secondary" title="缩小" @onclick="@(e=>DesignScale-=10)">-</button>
                                 </div>
                                 <input type="number" class="form-control" style="width:5rem;" @bind-value="DesignScale">
                                 <div class="input-group-append">
-                                    <button type="button" class="btn btn-outline-secondary" title="放大" @onclick="@(e=>DesignScale+=10)">+</button>
+                                    <button type="button" class="btn btn-secondary" title="放大" @onclick="@(e=>DesignScale+=10)">+</button>
                                     <div class="input-group-text">%</div>
                                 </div>
                             </div>
@@ -63,7 +63,7 @@ else
     <div class="row">
         <div class="card-group w-100">
             <!--左侧工具箱部分-->
-            <div class="card col-lg-2 col-md-4 p-0">
+            <div class="card col-xl-2 col-lg-3 col-md-4 p-0">
                 <div class="card-header">
                     工具箱
                 </div>
@@ -177,7 +177,7 @@ else
                 </ContextMenuTrigger>
             </div>
             <!--右侧属性部分-->
-            <div class="card col-lg-2 col-md-4 p-0">
+            <div class="card col-xl-2 col-lg-3 col-md-4 p-0">
                 <div class="card-header">
                     属性
                 </div>
