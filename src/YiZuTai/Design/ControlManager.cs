@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers.Text;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -44,6 +45,18 @@ namespace YiZuTai.Design
                 attr.Type = type;
                 controlAttrList.Add(attr);
             }
+        }
+
+        public string GetControlIconBase64(ControlAttribute item)
+        {
+            byte[] buffer = null;
+            using (var ms = new MemoryStream())
+            using (var rs = item.Type.Assembly.GetManifestResourceStream(item.Type.Namespace + ".Icon.svg"))
+            {
+                rs.CopyTo(ms);
+                buffer = ms.ToArray();
+            }
+            return "data:image/svg+xml;base64," + Convert.ToBase64String(buffer);
         }
     }
 }

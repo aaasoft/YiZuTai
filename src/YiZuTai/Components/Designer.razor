@@ -83,7 +83,7 @@ else
                         @foreach (var controlAttr in group)
                         {
                             <button type="button" class="btn btn-light btn-block text-left p-1 m-0 mt-1" @onclick="@(e => addControl(controlAttr))">
-                                <img src="_content/YiZuTai/control/@(controlAttr.Type.Namespace).svg" style="width:1.5rem;height:1.5rem;" alt="@controlAttr.Name">
+                                <img src="@Design.ControlManager.Instance.GetControlIconBase64(controlAttr)" style="width:1.5rem;height:1.5rem;" alt="@controlAttr.Name">
                                 <span>@controlAttr.Name</span>
                             </button>
                         }
