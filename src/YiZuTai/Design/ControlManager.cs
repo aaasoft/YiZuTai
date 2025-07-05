@@ -24,27 +24,31 @@ namespace YiZuTai.Design
             return controlAttrList.ToArray();
         }
 
-        //初始化扫描
-        public void Init()
+        //使用示例控件
+        public void UseDefaultControls()
         {
-            var assembly = this.GetType().Assembly;
-            foreach (var type in assembly.GetTypes())
-            {
-                if (!type.IsPublic
-                    || !type.IsClass
-                    || type.IsAbstract
-                    || type.IsAssignableFrom(typeof(BaseControl)))
-                    continue;
-                var attr = type.GetCustomAttributes(typeof(ControlAttribute), false)
-                    .Cast<ControlAttribute>()
-                    .FirstOrDefault();
-                if (attr == null)
-                    continue;
-                if (string.IsNullOrEmpty(attr.Category))
-                    continue;
-                attr.Type = type;
-                controlAttrList.Add(attr);
-            }
+            RegisterControl<Control.Circle.Model>();
+            RegisterControl<Control.Rectangle.Model>();
+            RegisterControl<Control.Image.Model>();
+        }
+
+        public void RegisterControl(Type type)
+        {
+            var attr = type.GetCustomAttributes(typeof(ControlAttribute), false)
+                                .Cast<ControlAttribute>()
+                                .FirstOrDefault();
+            if (attr == null)
+                return;
+            if (string.IsNullOrEmpty(attr.Category))
+                return;
+            attr.Type = type;
+            controlAttrList.Add(attr);
+        }
+
+        public void RegisterControl<T>()
+            where T : BaseControl, new()
+        {
+            RegisterControl(typeof(T));
         }
 
         public string GetControlIconBase64(ControlAttribute item)

@@ -42,12 +42,13 @@ namespace Microsoft.AspNetCore.Builder
             Options = options;
             
             //如果数据目录不存在，则创建
-            var dataDir = Options.DataFolder;
+            var dataDir = options.DataFolder;
             if (!Directory.Exists(dataDir))
                 Directory.CreateDirectory(dataDir);
             TagManager.Instance.Init();
             ZTFileManager.Instance.Init();
-            ControlManager.Instance.Init();
+            if(options.UseDefaultControls)
+                ControlManager.Instance.UseDefaultControls();
 
             app.MapGroup(options.Prefix).MapGet("/{id}/" + ZTFile.ZTFILE_RESOURCE_FOLDER + "/{*file}", GetResource);
             return app;
