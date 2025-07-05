@@ -38,8 +38,8 @@ else
                         </div>
                     </ChildContent>
                 </TabPane>
-                <TabPane Key="设计">
-                    <Tab>设计</Tab>
+                <TabPane Key="视图">
+                    <Tab>视图</Tab>
                     <ChildContent>
                         <div class="btn-toolbar">
                             <div class="input-group mr-1">
@@ -50,23 +50,15 @@ else
                                 <input type="number" class="form-control" style="width:5rem;" @bind-value="DesignScale">
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-secondary" title="放大" @onclick="@(e=>DesignScale+=10)">+</button>
-                                    <div class="input-group-text">%</div>
                                 </div>
                             </div>
-                        </div>
-                    </ChildContent>
-                </TabPane>
-                <TabPane Key="视图">
-                    <Tab>视图</Tab>
-                    <ChildContent>
-                        <div class="btn-toolbar">
-                            <div class="custom-control custom-switch m-2">
+                            <div class="custom-control custom-switch m-1 mr-2">
                                 <input type="checkbox" @bind="ShowToolBox" class="custom-control-input" id="switchShowToolBox">
-                                <label class="custom-control-label" for="switchShowToolBox">工具箱</label>
+                                <label class="custom-control-label align-middle" for="switchShowToolBox">工具箱</label>
                             </div>
-                            <div class="custom-control custom-switch m-2">
+                            <div class="custom-control custom-switch m-1 mr-2">
                                 <input type="checkbox" @bind="ShowPropertyBox" class="custom-control-input" id="switchShowPropertyBox">
-                                <label class="custom-control-label" for="switchShowPropertyBox">属性</label>
+                                <label class="custom-control-label align-middle" for="switchShowPropertyBox">属性</label>
                             </div>
                         </div>
                     </ChildContent>
