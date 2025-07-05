@@ -23,11 +23,10 @@ namespace Microsoft.AspNetCore.Builder
 
             var fullFile = Path.Combine(ztFile.Folder, ZTFile.ZTFILE_RESOURCE_FOLDER, file);
             if (!File.Exists(fullFile))
-                if (ztFile == null)
-                {
-                    rep.StatusCode = 404;
-                    return;
-                }
+            {
+                rep.StatusCode = 404;
+                return;
+            }
             await rep.SendFileAsync(fullFile);
         }
 
