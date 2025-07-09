@@ -76,7 +76,7 @@ else
                 <div class="card-header">
                     工具箱
                 </div>
-                <div id="divToolbox" class="card-body p-1">
+                <div id="divToolbox" class="card-body p-1 overflow-auto">
                     @foreach (var group in Design.ControlManager.Instance.GetItems().GroupBy(t => t.Category))
                     {
                         <div class="card-title m-0 ml-2 mt-1 font-weight-bold">@group.Key</div>
