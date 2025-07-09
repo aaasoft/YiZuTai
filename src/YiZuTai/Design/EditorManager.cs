@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace YiZuTai.Design
+﻿namespace YiZuTai.Design
 {
     public class EditorManager
     {
@@ -12,13 +7,13 @@ namespace YiZuTai.Design
         public EditorManager()
         {
             editorDict[typeof(string)] = typeof(Editor.EditorInputText);
-            editorDict[typeof(int)] = typeof(Editor.EditorInputNumber);
-            editorDict[typeof(uint)] = typeof(Editor.EditorInputNumber);
-            editorDict[typeof(long)] = typeof(Editor.EditorInputNumber);
-            editorDict[typeof(ulong)] = typeof(Editor.EditorInputNumber);
-            editorDict[typeof(float)] = typeof(Editor.EditorInputNumber);
-            editorDict[typeof(double)] = typeof(Editor.EditorInputNumber);
-            editorDict[typeof(decimal)] = typeof(Editor.EditorInputNumber);
+            editorDict[typeof(int)] = typeof(Editor.EditorInputNumber_Int32);
+            editorDict[typeof(uint)] = typeof(Editor.EditorInputNumber_UInt32);
+            editorDict[typeof(long)] = typeof(Editor.EditorInputNumber_Int64);
+            editorDict[typeof(ulong)] = typeof(Editor.EditorInputNumber_UInt64);
+            editorDict[typeof(float)] = typeof(Editor.EditorInputNumber_Single);
+            editorDict[typeof(double)] = typeof(Editor.EditorInputNumber_Double);
+            editorDict[typeof(decimal)] = typeof(Editor.EditorInputNumber_Decimal);
             editorDict[typeof(bool)] = typeof(Editor.EditorInputSwitch);
         }
 

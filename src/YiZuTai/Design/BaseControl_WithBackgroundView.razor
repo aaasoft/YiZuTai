@@ -1,0 +1,18 @@
+﻿<BaseControlView Model="Model" @ref="baseControlView">
+    <rect fill="@Model.Background" fill-opacity="@Model.BackgroundOpacity"
+          rx="@Model.CornerRadius" ry="@Model.CornerRadius"
+          stroke="@Model.Border" stroke-opacity="@Model.BorderOpacity" stroke-width="@Model.BorderThickness"
+          x="@(Model.BorderThickness / 2)" y="@(Model.BorderThickness / 2)"
+          width="@(Model.Width - Model.BorderThickness)" height="@(Model.Height - Model.BorderThickness)"></rect>
+    @ChildContent
+</BaseControlView>
+
+@code {
+    [Parameter]
+    public BaseControl_WithBackground Model { get; set; }
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    private BaseControlView baseControlView;
+    public string Id=>baseControlView.Id;
+}

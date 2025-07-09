@@ -9,7 +9,9 @@ namespace YiZuTai.Control.Image
 {
     public partial class View
     {
-        private ElementReference svgElementReference;
+        private YiZuTai.Design.BaseControl_WithBackgroundView baseControlView;
+        private ElementReference dataElementReference;
+
         [Parameter]
         public string ZTFileId { get; set; }
         [Parameter]
@@ -21,23 +23,26 @@ namespace YiZuTai.Control.Image
         {
             if (firstRender)
             {
-                var svgElement = $"document.querySelector('[_bl_{svgElementReference.Id}]')";
+                var svgElement = $"document.querySelector('[_bl_{baseControlView.Id}]')";
+                var dataElement = $"document.querySelector('[_bl_{dataElementReference.Id}]')";
+
                 var jsCode = @$"
 //开始旋转动画
 beginAnimationForever({{
     svgElement: {svgElement},
     gElement: {svgElement}.parentElement,
+    dataElement: {dataElement},
     getBalanceCallback: function () {{
         if(this.gElement.parentElement==null)
             return null;
-        return parseFloat(this.svgElement.getAttribute('data-RotateSpeed'));
+        return parseFloat(this.dataElement.getAttribute('data-RotateSpeed'));
     }},
-    getInitValueCallback: function () {{ return parseFloat(this.svgElement.getAttribute('data-Angle')); }},
+    getInitValueCallback: function () {{ return parseFloat(this.dataElement.getAttribute('data-Angle')); }},
     getValueCallback: function () {{ return this.gElement.transform.baseVal.getItem(0).angle; }},
     setValueCallback: function (value) {{
         value = value % 360;
-        var cx = parseFloat(this.svgElement.getAttribute('data-CenterPointLocationX'));
-        var cy = parseFloat(this.svgElement.getAttribute('data-CenterPointLocationY'));
+        var cx = parseFloat(this.dataElement.getAttribute('data-CenterPointLocationX'));
+        var cy = parseFloat(this.dataElement.getAttribute('data-CenterPointLocationY'));
         this.gElement.transform.baseVal.getItem(0).setRotate(value,cx,cy);
     }}
 }});
@@ -46,11 +51,12 @@ beginAnimationForever({{
 beginValueArrayAnimationForever({{
     svgElement: {svgElement},
     gElement: {svgElement}.parentElement,
+    dataElement: {dataElement},
     valueArray: [1, 0],
     getIntervalCallback: function () {{
         if(this.gElement.parentElement==null)
             return null;
-        return parseFloat(this.svgElement.getAttribute('data-FlashInterval'));
+        return parseFloat(this.dataElement.getAttribute('data-FlashInterval'));
     }},
     setValueCallback: function (value) {{
         this.gElement.style.opacity = value;

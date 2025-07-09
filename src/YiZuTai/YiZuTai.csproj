@@ -6,16 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Control\Circle\Icon.svg" />
-    <None Remove="Control\Image\Icon.svg" />
-    <None Remove="Control\Rectangle\Icon.svg" />
-  </ItemGroup>
-
-  <ItemGroup>
     <EmbeddedResource Include="Control\Circle\Icon.svg" />
     <EmbeddedResource Include="Control\Image\Icon.svg" />
     <EmbeddedResource Include="Control\Rectangle\Icon.svg" />
+    <EmbeddedResource Include="Control\TextBlock\Icon.svg" />
   </ItemGroup>
+  
   <ItemGroup>
     <PackageReference Include="Blazor.ContextMenu" Version="2.1.0" />
     <PackageReference Include="BlazorDownloadFile" Version="2.4.0.2" />

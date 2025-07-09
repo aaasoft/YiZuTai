@@ -1,22 +1,13 @@
-﻿<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-     x="@Model.Left" y="@Model.Top" width="@Model.Width" height="@Model.Height" opacity="@Model.Opacity"
-     visibility="@(Model.Visiable?"visible":"hidden")"
-     @ref="svgElementReference"
-     data-Angle="@Model.Angle"
-     data-FlashInterval="@Model.FlashInterval"     
-     data-RotateSpeed="@Model.RotateSpeed"
-     data-CenterPointLocationX="@(Model.Left + Model.Width / 2)"
-     data-CenterPointLocationY="@(Model.Top + Model.Height / 2)"
->
-    <!--背景-->
-    <rect fill="@Model.Background" fill-opacity="@Model.BackgroundOpacity"
-          rx="@Model.CornerRadius" ry="@Model.CornerRadius"
-          stroke="@Model.Border" stroke-opacity="@Model.BorderOpacity" stroke-width="@Model.BorderThickness"
-          x="0" y="0" width="@Model.Width" height="@Model.Height"></rect>
-
+﻿<YiZuTai.Design.BaseControl_WithBackgroundView Model="@Model" @ref="baseControlView">
+    <!--数据部分-->
+    <g @ref="dataElementReference" data-Angle="@Model.Angle"
+        data-FlashInterval="@Model.FlashInterval"     
+        data-RotateSpeed="@Model.RotateSpeed"
+        data-CenterPointLocationX="@(Model.Left + Model.Width / 2)"
+        data-CenterPointLocationY="@(Model.Top + Model.Height / 2)" />
     <!--图片部分-->
-    <g>
+    <g data-Angle="@Model.Angle">
         <image href="@Core.ZTFile.GetStaticResourceUrl(ZTFileId, Model.Image)"
                width="@Model.Width" height="@Model.Height" preserveAspectRatio="none"></image>
     </g>
-</svg>
+</YiZuTai.Design.BaseControl_WithBackgroundView>

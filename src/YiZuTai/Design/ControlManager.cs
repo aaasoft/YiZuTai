@@ -30,6 +30,7 @@ namespace YiZuTai.Design
             RegisterControl<Control.Circle.Model>();
             RegisterControl<Control.Rectangle.Model>();
             RegisterControl<Control.Image.Model>();
+            RegisterControl<Control.TextBlock.Model>();
         }
 
         public void RegisterControl(Type type)
