@@ -116,6 +116,25 @@ namespace YiZuTai.Components
             JSRuntime.InvokeVoidAsync("YiZuTai.SetTitle", title);
         }
 
+        private ControlAttribute dragingControlAttr = null;
+        //ondragstart事件处理方法
+        private void HandleDragStart(DragEventArgs e, ControlAttribute controlAttr)
+        {
+            // 设置拖动效果为"move"
+            e.DataTransfer.DropEffect = "move";
+            e.DataTransfer.EffectAllowed = "move";
+            dragingControlAttr = controlAttr;
+        }
+
+        // ondrop事件处理方法
+        private void HandleDrop(DragEventArgs e)
+        {
+            if (dragingControlAttr == null)
+                return;
+            var newLocation = getMouseLocation_RelativeToCanvas(e);
+            addControl(dragingControlAttr,newLocation);
+        }
+
         private void Controls_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
@@ -275,11 +294,11 @@ namespace YiZuTai.Components
         }
 
         //添加控件
-        private void addControl(ControlAttribute controlAttr)
+        private void addControl(ControlAttribute controlAttr, Point location)
         {
             var newControl = controlAttr.CreateInstance();
-            newControl.Left = newControl.Width / 2;
-            newControl.Top = newControl.Height / 2;
+            newControl.Left = location.X - newControl.Width / 2;
+            newControl.Top = location.Y - newControl.Height / 2;
             var index = 0;
             do
             {

@@ -82,10 +82,11 @@ else
                         <div class="card-title m-0 ml-2 mt-1 font-weight-bold">@group.Key</div>
                         @foreach (var controlAttr in group)
                         {
-                            <button type="button" class="btn btn-light btn-block text-left p-1 m-0 mt-1" @onclick="@(e => addControl(controlAttr))">
+                            <div draggable="true" class="btn btn-light btn-block text-left p-1 m-0 mt-1"
+                                @ondragstart="@(e => HandleDragStart(e,controlAttr))">
                                 <img src="@Design.ControlManager.Instance.GetControlIconBase64(controlAttr)" style="width:1.5rem;height:1.5rem;" alt="@controlAttr.Name">
                                 <span>@controlAttr.Name</span>
-                            </button>
+                            </div>
                         }
                     }
                 </div>
@@ -104,7 +105,9 @@ else
                             width="@(Canvas.Width*DesignScale/100)" height="@(Canvas.Height*DesignScale/100)"
                             viewBox="00 00 @Canvas.Width @Canvas.Height"
                             preserveAspectRatio="none"
-                            @onmousemove="onMouseMove">
+                            @onmousemove="onMouseMove"
+                            ondragover="event.preventDefault();"
+                            @ondrop="HandleDrop">
                             <!--====画布部分====-->
                         <g @onmousedown="onCanvasMouseDown">
                                 <rect fill="@Canvas.Foreground" fill-opacity="@Canvas.ForegroundOpacity"

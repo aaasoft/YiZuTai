@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using Newtonsoft.Json;
 using YiZuTai.Design;
@@ -14,6 +13,12 @@ namespace YiZuTai.Control.TextBlock;
     )]
 public class Model : BaseControl_WithBackground
 {
+    public Model()
+    {
+        Border = "#000000";
+        BackgroundOpacity = 0;
+    }
+
     //默认为黑色
     private string _Foreground = "#000000";
     [Category("文本")]
