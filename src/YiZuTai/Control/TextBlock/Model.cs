@@ -17,6 +17,8 @@ public class Model : BaseControl_WithBackground
     {
         Border = "#000000";
         BackgroundOpacity = 0;
+        Width = 120;
+        Height = 40;
     }
 
     //默认为黑色
