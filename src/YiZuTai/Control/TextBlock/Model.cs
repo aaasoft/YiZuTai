@@ -154,7 +154,7 @@ value   =>  当前值")]
         [Category("文本")]
         [DisplayName("值")]
         [Description("文本块控件要显示的值")]
-        [Editor(typeof(App.Core.TypeEditors.SourceTypeEditor), typeof(App.Core.TypeEditors.SourceTypeEditor))]
+        [Editor(typeof(YiZuTai.TypeEditors.SourceTypeEditor), typeof(YiZuTai.TypeEditors.SourceTypeEditor))]
         public IDataSource Value
         {
             get { return _Value; }
