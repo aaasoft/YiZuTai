@@ -15,9 +15,12 @@
             </div>
             @if (field == SelectedField)
             {
-                @foreach (var line in field.Description.Split('\r', '\n'))
+                if(!string.IsNullOrEmpty(field.Description))
                 {
-                    <small class="form-text text-muted">@line</small>
+                    @foreach (var line in field.Description.Split('\r', '\n'))
+                    {
+                        <small class="form-text text-muted">@line</small>
+                    }
                 }
             }
         </div>

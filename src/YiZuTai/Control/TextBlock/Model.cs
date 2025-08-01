@@ -162,11 +162,20 @@ value   =>  当前值")]
         get { return _Value; }
         set
         {
+            if (Value != null)
+                Value.PropertyChanged -= OnValue_PropertyChanged;
             RaisePropertyChanging(nameof(Value));
             _Value = value;
             RaisePropertyChanged(nameof(Value));
             RaisePropertyChanged(nameof(Text));
+            if (Value != null)
+                Value.PropertyChanged += OnValue_PropertyChanged;
         }
+    }
+
+    private void OnValue_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        RaisePropertyChanged(nameof(Text));
     }
 
     [JsonIgnore]

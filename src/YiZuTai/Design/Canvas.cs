@@ -111,12 +111,10 @@ namespace YiZuTai.Design
                 RaisePropertyChanged();
             }
         }
-
         /// <summary>
-        /// 设计缩放比例
+        /// 设计网格大小
         /// </summary>
         [Browsable(false)]
-        public double DesignScale { get; set; } = 1;
         public int DesignGridSize { get; set; } = 1;
         [Browsable(false)]
         public bool DesignGridVisiable { get; set; } = false;
