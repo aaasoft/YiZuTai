@@ -2,6 +2,7 @@
 using YiZuTai;
 using YiZuTai.Core;
 using YiZuTai.Design;
+using YiZuTai.Source;
 
 namespace Microsoft.AspNetCore.Builder
 {
@@ -47,7 +48,9 @@ namespace Microsoft.AspNetCore.Builder
                 Directory.CreateDirectory(dataDir);
             TagManager.Instance.Init();
             ZTFileManager.Instance.Init();
-            if(options.UseDefaultControls)
+            SourceManager.Instance.Init();
+            
+            if (options.UseDefaultControls)
                 ControlManager.Instance.UseDefaultControls();
 
             app.MapGroup(options.Prefix).MapGet("/{id}/" + ZTFile.ZTFILE_RESOURCE_FOLDER + "/{*file}", GetResource);

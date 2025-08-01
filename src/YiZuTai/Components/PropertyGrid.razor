@@ -63,15 +63,17 @@
             var displayName = displayNameAttribute?.DisplayName ?? property.Name;
             var descriptionAttribute = property.GetCustomAttribute<DescriptionAttribute>();
 
-            //如果没有设置分类
+            string category;
             var categoryAttribute = property.GetCustomAttribute<CategoryAttribute>();
-            if (categoryAttribute == null)
-                continue;
+            category = categoryAttribute?.Category;
+            if (string.IsNullOrEmpty(category))
+                category = "未分组";
+
             ControlFieldGroup group;
-            if (dict.ContainsKey(categoryAttribute.Category))
-                group = dict[categoryAttribute.Category];
+            if (dict.ContainsKey(category))
+                group = dict[category];
             else
-                group = dict[categoryAttribute.Category] = new ControlFieldGroup() { Name = categoryAttribute.Category };
+                group = dict[category] = new ControlFieldGroup() { Name = category };
 
             ControlField field = new ControlField()
             {

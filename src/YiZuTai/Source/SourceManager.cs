@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace YiZuTai.Source
+﻿namespace YiZuTai.Source
 {
     public class SourceManager
     {
@@ -49,9 +42,9 @@ namespace YiZuTai.Source
         }
 
         //初始化扫描
-        public void Init(Assembly assembly)
+        public void Init()
         {
-            foreach (var type in assembly.GetTypes())
+            foreach (var type in this.GetType().Assembly.GetTypes())
             {
                 if (!type.IsPublic
                     || !type.IsClass

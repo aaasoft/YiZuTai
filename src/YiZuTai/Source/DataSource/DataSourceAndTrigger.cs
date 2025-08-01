@@ -20,7 +20,7 @@ namespace YiZuTai.Source.DataSource
     {
         private IDataSource _DataSource;
         [DisplayName("数据源")]
-        [Editor(typeof(YiZuTai.TypeEditors.SourceTypeEditor), typeof(YiZuTai.TypeEditors.SourceTypeEditor))]
+        [Editor(typeof(Design.Editor.SourceTypeEditor), typeof(IDataSource))]
         public IDataSource DataSource
         {
             get { return _DataSource; }
@@ -34,7 +34,7 @@ namespace YiZuTai.Source.DataSource
 
         private ObservableCollection<TControlDataTrigger> _Triggers = new ObservableCollection<TControlDataTrigger>();
         [DisplayName("触发器")]
-        [Editor(typeof(YiZuTai.TypeEditors.CollectionEditor), typeof(YiZuTai.TypeEditors.CollectionEditor))]
+        [Editor(typeof(Design.Editor.CollectionEditor), typeof(Design.Editor.CollectionEditor))]
         public ObservableCollection<TControlDataTrigger> Triggers
         {
             get { return _Triggers; }

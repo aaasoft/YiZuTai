@@ -1,8 +1,10 @@
 using System.ComponentModel;
 using Newtonsoft.Json;
+using Quick.Xml;
 using YiZuTai.Design;
 using YiZuTai.Design.Editor;
 using YiZuTai.Design.Enums;
+using YiZuTai.Source.DataSource;
 
 namespace YiZuTai.Control.TextBlock;
 
@@ -51,7 +53,7 @@ value   =>  当前值")]
         {
             _Format = value;
             RaisePropertyChanged(nameof(Format));
-            //RaisePropertyChanged(nameof(Text));
+            RaisePropertyChanged(nameof(Text));
         }
     }
 
@@ -149,28 +151,28 @@ value   =>  当前值")]
         }
     }
 
-    /*
-        private IDataSource _Value;
-        [Category("文本")]
-        [DisplayName("值")]
-        [Description("文本块控件要显示的值")]
-        [Editor(typeof(YiZuTai.TypeEditors.SourceTypeEditor), typeof(YiZuTai.TypeEditors.SourceTypeEditor))]
-        public IDataSource Value
-        {
-            get { return _Value; }
-            set
-            {
-                RaisePropertyChanging(nameof(Value));
-                _Value = value;
-                RaisePropertyChanged(nameof(Value));
-                RaisePropertyChanged(nameof(Text));
-            }
-        }
 
-        [JsonIgnore]
-        [Browsable(false)]
-        public string Text => XmlConvert.Escape(Format.Replace("{value}", Value?.Value ?? ""));
-    */
+    private IDataSource _Value;
+    [Category("文本")]
+    [DisplayName("值")]
+    [Description("文本块控件要显示的值")]
+    [Editor(typeof(Design.Editor.SourceTypeEditor), typeof(IDataSource))]
+    public IDataSource Value
+    {
+        get { return _Value; }
+        set
+        {
+            RaisePropertyChanging(nameof(Value));
+            _Value = value;
+            RaisePropertyChanged(nameof(Value));
+            RaisePropertyChanged(nameof(Text));
+        }
+    }
+
+    [JsonIgnore]
+    [Browsable(false)]
+    public string Text => XmlConvert.Escape(Format.Replace("{value}", Value?.Value ?? ""));
+
 
     private double _RotateSpeed = 0;
     [Category("动画")]

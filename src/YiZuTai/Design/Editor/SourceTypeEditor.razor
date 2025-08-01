@@ -1,0 +1,21 @@
+﻿@inherits EditorBase<ISource>
+@using Quick.Blazor.Bootstrap
+@using YiZuTai.Design.Editor
+@using YiZuTai.Source
+@using YiZuTai.Utils
+@using YiZuTai.Components
+
+<ModalAlert @ref="modalAlert" />
+<ModalWindow DialogSizeExtraLarge @ref="modalWindow" />
+
+<span class="form-control" @onclick="onClick">@Value?.Name</span>
+<div class="input-group-append">
+@if (Value==null)
+{    
+    <button type="button" class="btn btn-outline-secondary" @onclick="onClick">...</button>    
+}
+else
+{
+    <button type="button" class="btn btn-danger" @onclick="onClear">X</button>
+}
+</div>

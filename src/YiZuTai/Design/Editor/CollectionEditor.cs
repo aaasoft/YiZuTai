@@ -1,4 +1,4 @@
-﻿namespace YiZuTai.TypeEditors
+﻿namespace YiZuTai.Design.Editor
 {
     public class CollectionEditor { }
     /*

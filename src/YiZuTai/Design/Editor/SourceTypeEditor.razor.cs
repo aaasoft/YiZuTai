@@ -1,9 +1,39 @@
-﻿namespace YiZuTai.TypeEditors
+﻿using Newtonsoft.Json;
+using Quick.Blazor.Bootstrap;
+using Quick.Xml;
+using YiZuTai.Components;
+using YiZuTai.Source;
+
+namespace YiZuTai.Design.Editor
 {
-    /// <summary>
-    /// SourceTypeEditor.xaml 的交互逻辑
-    /// </summary>
-    public partial class SourceTypeEditor { }
+    public partial class SourceTypeEditor : EditorBase<ISource>
+    {
+        private ModalAlert modalAlert;
+        private ModalWindow modalWindow;
+
+        private void onClick()
+        {
+            ISource editValue = null;
+            if (Value != null)
+                editValue = (ISource)XmlConvert.Deserialize(XmlConvert.Serialize(Value));
+            modalWindow.Show("源选择编辑", new DialogParameters<SourceSelectWindow>
+            {
+                { x => x.Source, editValue},
+                { x => x.SourceType, Field.PropertyInfo.PropertyType},
+                { x=> x.OkAction, source=>
+                    {
+                        Value = source;
+                        modalWindow.Close();
+                    }
+                }
+            });
+        }
+
+        private void onClear()
+        {
+            Value = null;
+        }
+    }
     /*
      : UserControl, ITypeEditor
     {
