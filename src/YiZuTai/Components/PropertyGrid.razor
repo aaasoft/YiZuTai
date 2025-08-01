@@ -1,0 +1,87 @@
+﻿@using System.Reflection
+@using System.ComponentModel
+@using YiZuTai.Design
+@foreach (var group in SelectedItemFields)
+{
+    <div class="card-title m-0 ml-2 mt-1 font-weight-bold">@group.Name</div>
+    @foreach (var field in group.FieldList)
+    {
+        <div class="form-group m-1" @onclick="@(e => onFieldClicked(field))">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">@field.Name</div>
+                </div>
+                @field.GetEditorRenderFragment(ZTFileId)
+            </div>
+            @if (field == SelectedField)
+            {
+                @foreach (var line in field.Description.Split('\r', '\n'))
+                {
+                    <small class="form-text text-muted">@line</small>
+                }
+            }
+        </div>
+    }
+}
+
+@code
+{
+    // 选中控件的字段
+    private ControlFieldGroup[] SelectedItemFields { get; set; }
+    // 选中的字段
+    public ControlField SelectedField { get; private set; }
+    [Parameter]
+    public object SelectedObject { get; set; }
+    [Parameter]
+    public string ZTFileId { get; set; }
+
+    private void onFieldClicked(ControlField field)
+    {
+        SelectedField = field;
+    }
+
+    protected override void OnParametersSet()
+    {
+        SelectedItemFields = GetFields();
+    }
+
+    public ControlFieldGroup[] GetFields()
+    {
+        Dictionary<string, ControlFieldGroup> dict = new Dictionary<string, ControlFieldGroup>();
+        foreach (var property in SelectedObject.GetType().GetProperties())
+        {
+            //如果属性不能读或者不能写
+            if (!property.CanRead || !property.CanWrite)
+                continue;
+
+            //如果设置了不显示
+            var browsableAttribute = property.GetCustomAttribute<BrowsableAttribute>();
+            if (browsableAttribute != null && !browsableAttribute.Browsable)
+                continue;
+
+            var displayNameAttribute = property.GetCustomAttribute<DisplayNameAttribute>();
+            var displayName = displayNameAttribute?.DisplayName ?? property.Name;
+            var descriptionAttribute = property.GetCustomAttribute<DescriptionAttribute>();
+
+            //如果没有设置分类
+            var categoryAttribute = property.GetCustomAttribute<CategoryAttribute>();
+            if (categoryAttribute == null)
+                continue;
+            ControlFieldGroup group;
+            if (dict.ContainsKey(categoryAttribute.Category))
+                group = dict[categoryAttribute.Category];
+            else
+                group = dict[categoryAttribute.Category] = new ControlFieldGroup() { Name = categoryAttribute.Category };
+
+            ControlField field = new ControlField()
+            {
+                Name = displayName,
+                Description = descriptionAttribute?.Description,
+                PropertyHost = SelectedObject,
+                PropertyInfo = property
+            };
+            group.FieldList.Add(field);
+        }
+        return dict.Values.ToArray();
+    }
+}

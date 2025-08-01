@@ -57,8 +57,6 @@ namespace YiZuTai.Components
             set
             {
                 _SelectedItem = value;
-                SelectedItemFields = value.GetFields();
-                SelectedField = null;
             }
         }
 
@@ -84,10 +82,6 @@ namespace YiZuTai.Components
         }
         //是否选中了控件
         public bool IsSelectedControl => SelectedItem != null && SelectedItem != Canvas;
-        // 选中控件的字段
-        private ControlFieldGroup[] SelectedItemFields { get; set; }
-        // 选中的字段
-        public ControlField SelectedField { get; private set; }
 
         protected override void OnParametersSet()
         {
@@ -248,11 +242,6 @@ namespace YiZuTai.Components
                 Project.Controls.CollectionChanged -= Controls_CollectionChanged;
                 Project.Canvas.PropertyChanged -= Control_PropertyChanged;
             }
-        }
-
-        private void onFieldClicked(ControlField field)
-        {
-            SelectedField = field;
         }
 
         // 保存

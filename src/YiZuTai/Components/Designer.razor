@@ -212,28 +212,7 @@ else
                             </InputSelect>
                         </div>
                     </div>
-                    @foreach (var group in SelectedItemFields)
-                        {
-                            <div class="card-title m-0 ml-2 mt-1 font-weight-bold">@group.Name</div>
-                            @foreach (var field in group.FieldList)
-                            {
-                                <div class="form-group m-1" @onclick="@(e=>onFieldClicked(field))">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">@field.Name</div>
-                                        </div>
-                                        @field.GetEditorRenderFragment(Model.Id)
-                                    </div>
-                                    @if (field == SelectedField)
-                                    {
-                                        @foreach (var line in field.Description.Split('\r', '\n'))
-                                        {
-                                            <small class="form-text text-muted">@line</small>
-                                        }
-                                    }
-                                </div>
-                            }
-                        }
+                    <PropertyGrid ZTFileId="@Model.Id" SelectedObject="SelectedItem"></PropertyGrid>
                     </EditForm>
                 </div>
             </div>
