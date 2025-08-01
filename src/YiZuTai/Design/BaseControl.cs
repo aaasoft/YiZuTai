@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using Quick.Blazor.Bootstrap.Utils;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Reflection;
 
 namespace YiZuTai.Design
 {
@@ -307,46 +306,6 @@ y0= (x - rx0)*sin(a) + (y - ry0)*cos(a) + ry0 ;
         [JsonIgnore]
         [Browsable(false)]
         public virtual bool IsCanvasControl => false;
-
-        public ControlFieldGroup[] GetFields()
-        {
-            Dictionary<string, ControlFieldGroup> dict = new Dictionary<string, ControlFieldGroup>();
-            foreach (var property in this.GetType().GetProperties())
-            {
-                //如果属性不能读或者不能写
-                if (!property.CanRead || !property.CanWrite)
-                    continue;
-
-                //如果设置了不显示
-                var browsableAttribute = property.GetCustomAttribute<BrowsableAttribute>();
-                if (browsableAttribute != null && !browsableAttribute.Browsable)
-                    continue;
-
-                var displayNameAttribute = property.GetCustomAttribute<DisplayNameAttribute>();
-                var displayName = displayNameAttribute?.DisplayName ?? property.Name;
-                var descriptionAttribute = property.GetCustomAttribute<DescriptionAttribute>();
-
-                //如果没有设置分类
-                var categoryAttribute = property.GetCustomAttribute<CategoryAttribute>();
-                if (categoryAttribute == null)
-                    continue;
-                ControlFieldGroup group;
-                if (dict.ContainsKey(categoryAttribute.Category))
-                    group = dict[categoryAttribute.Category];
-                else
-                    group = dict[categoryAttribute.Category] = new ControlFieldGroup() { Name = categoryAttribute.Category };
-
-                ControlField field = new ControlField()
-                {
-                    Name = displayName,
-                    Description = descriptionAttribute?.Description,
-                    PropertyHost = this,
-                    PropertyInfo = property
-                };
-                group.FieldList.Add(field);
-            }
-            return dict.Values.ToArray();
-        }
 
         public virtual RenderFragment GetView(string ZTFileId)
         {
