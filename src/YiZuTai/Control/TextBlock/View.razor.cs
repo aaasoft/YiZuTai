@@ -1,53 +1,24 @@
-﻿using System.ComponentModel;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
+using YiZuTai.Design;
 
 namespace YiZuTai.Control.TextBlock
 {
-    public partial class View : IDisposable
+    public partial class View
     {
+        private BaseControl_WithBackgroundView baseControlView;
+
         [Parameter]
         public Model Model { get; set; }
 
-        protected override void OnParametersSet()
+        protected override void OnAfterRender(bool firstRender)
         {
-            if (Model.Value != null)
-                Model.Value.PropertyChanged += OnModelValue_PropertyChanged;
-            Model.PropertyChanging += OnModel_PropertyChanging;
-            Model.PropertyChanged += OnModel_PropertyChanged;
-        }
-
-        public void Dispose()
-        {
-            Model.PropertyChanging -= OnModel_PropertyChanging;
-            Model.PropertyChanged -= OnModel_PropertyChanged;
-        }
-
-        private void OnModel_PropertyChanging(object sender, PropertyChangingEventArgs e)
-        {
-            switch (e.PropertyName)
+            if (firstRender)
             {
-                case nameof(Model.Value):
-                    if (Model.Value != null)
-                        Model.Value.PropertyChanged -= OnModelValue_PropertyChanged;
-                    break;
+                baseControlView.RegisterDataSource(Model,
+                [
+                    new (nameof(Model.Value), () => Model.Value )
+                ]);
             }
-        }
-
-        private void OnModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case nameof(Model.Value):
-                    if (Model.Value != null)
-                        Model.Value.PropertyChanged += OnModelValue_PropertyChanged;
-                    break;
-            }
-            InvokeAsync(StateHasChanged);
-        }
-
-        private void OnModelValue_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            InvokeAsync(StateHasChanged);
         }
     }
 }

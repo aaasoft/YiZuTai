@@ -1,9 +1,10 @@
-﻿<BaseControlView Model="Model" @ref="baseControlView">
-    <rect fill="@Model.Background" fill-opacity="@Model.BackgroundOpacity"
-          rx="@Model.CornerRadius" ry="@Model.CornerRadius"
-          stroke="@Model.Border" stroke-opacity="@Model.BorderOpacity" stroke-width="@Model.BorderThickness"
-          x="@(Model.BorderThickness / 2)" y="@(Model.BorderThickness / 2)"
-          width="@(Model.Width - Model.BorderThickness)" height="@(Model.Height - Model.BorderThickness)"></rect>
+﻿@using System.ComponentModel
+@using static YiZuTai.Design.BaseControlView
+<BaseControlView Model="Model" @ref="baseControlView">
+    <rect fill="@Model.Background" fill-opacity="@Model.BackgroundOpacity" rx="@Model.CornerRadius"
+        ry="@Model.CornerRadius" stroke="@Model.Border" stroke-opacity="@Model.BorderOpacity"
+        stroke-width="@Model.BorderThickness" x="@(Model.BorderThickness / 2)" y="@(Model.BorderThickness / 2)"
+        width="@(Model.Width - Model.BorderThickness)" height="@(Model.Height - Model.BorderThickness)"></rect>
     @ChildContent
 </BaseControlView>
 
@@ -14,5 +15,11 @@
     public RenderFragment ChildContent { get; set; }
 
     private BaseControlView baseControlView;
-    public string Id=>baseControlView.Id;
+    public string Id => baseControlView.Id;
+
+    public void RegisterDataSource<T>(T model, params DataSourceInfo[] dataSourceInfos)
+    where T : INotifyPropertyChanging, INotifyPropertyChanged
+    {
+        baseControlView.RegisterDataSource(model, dataSourceInfos);
+    }
 }
