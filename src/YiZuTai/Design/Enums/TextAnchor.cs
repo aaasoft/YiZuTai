@@ -4,11 +4,11 @@ namespace YiZuTai.Design.Enums
 {
     public enum TextAnchor
     {
-        [DefaultValue("起始")]
+        [Description("起始")]
         start,
-        [DefaultValue("居中")]
+        [Description("居中")]
         middle,
-        [DefaultValue("结束")]
+        [Description("结束")]
         end
     }
 

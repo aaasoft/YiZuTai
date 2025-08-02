@@ -4,13 +4,13 @@ namespace YiZuTai.Design.Enums
 {
     public enum ContentTypeEnum
     {
-        [DefaultValue("application/json")]
+        [Description("application/json")]
         application_json,
-        [DefaultValue("text/json")]
+        [Description("text/json")]
         text_json,
-        [DefaultValue("application/x-www-form-urlencoded")]
+        [Description("application/x-www-form-urlencoded")]
         application_x_www_form_urlencoded,
-        [DefaultValue("text/xml")]
+        [Description("text/xml")]
         text_xml,
     }
 

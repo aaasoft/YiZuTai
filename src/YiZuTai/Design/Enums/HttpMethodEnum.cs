@@ -4,13 +4,13 @@ namespace YiZuTai.Design.Enums
 {
     public enum HttpMethodEnum
     {
-        [DefaultValue("Get")]
+        [Description("Get")]
         Get,
-        [DefaultValue("Post")]
+        [Description("Post")]
         Post,
-        [DefaultValue("Put")]
+        [Description("Put")]
         Put,
-        [DefaultValue("Delete")]
+        [Description("Delete")]
         Delete
     }
 

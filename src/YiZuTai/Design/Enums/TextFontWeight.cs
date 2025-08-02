@@ -4,13 +4,13 @@ namespace YiZuTai.Design.Enums
 {
     public enum TextFontWeight
     {
-        [DefaultValue("普通")]
+        [Description("普通")]
         normal,
-        [DefaultValue("加粗")]
+        [Description("加粗")]
         bold,
-        [DefaultValue("特粗")]
+        [Description("特粗")]
         bolder,
-        [DefaultValue("减细")]
+        [Description("减细")]
         lighter
     }
 
