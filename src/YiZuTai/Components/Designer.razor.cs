@@ -48,7 +48,7 @@ namespace YiZuTai.Components
         public Core.ZTFile Model { get; private set; }
         public Project Project { get; private set; }
         public Canvas Canvas => Project.Canvas;
-        
+
         private bool isWindowOnbeforeUnloadEventAdded = false;
         private BaseControl _SelectedItem;
         private BaseControl SelectedItem
@@ -126,7 +126,7 @@ namespace YiZuTai.Components
             if (dragingControlAttr == null)
                 return;
             var newLocation = getMouseLocation_RelativeToCanvas(e);
-            addControl(dragingControlAttr,newLocation);
+            addControl(dragingControlAttr, newLocation);
         }
 
         private void Controls_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -299,6 +299,7 @@ namespace YiZuTai.Components
                 break;
             }
             while (true);
+            newControl.OnDragDropCreate(location);
             Project.Controls.Add(newControl);
         }
 

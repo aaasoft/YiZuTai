@@ -47,5 +47,13 @@ namespace YiZuTai.Design
                 newHeight = canvas.DesignGridSize;
             Height = newHeight;
         }
+
+        /// <summary>
+        /// 当拖放创建时
+        /// </summary>
+        public virtual void OnDragDropCreate(Point location)
+        {
+
+        }
     }
 }

@@ -291,11 +291,10 @@ value   =>  当前值")]
     }
     */
 
-    /*
+
     public override void OnDragDropCreate(Point location)
     {
         base.OnDragDropCreate(location);
-        Value = new DataSource.Input() { Content = this.Name ?? Attribute.Name };
+        Value = new DataSource.Input() { Value = Name };
     }
-    */
 }
