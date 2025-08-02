@@ -50,6 +50,7 @@ YiZuTai.Designer = {
 };
 
 window.onload = function (evt) {
+    document.body.style.overflow = 'hidden';
     setTimeout(function () {
         var bindCaputure = function (el) {
             var preMouseDownFunc = el.onpointerdown;
