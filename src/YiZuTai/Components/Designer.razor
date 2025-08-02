@@ -215,7 +215,7 @@ else
                     <PropertyGrid ZTFileId="@Model.Id" SelectedObject="SelectedItem" @bind-SelectedField="PropertyGridSelectedField"></PropertyGrid>
                     </EditForm>
                 </div>
-                <div id="divPropertyDescription" class="card-footer">
+                <div id="divPropertyDescription" class="card-footer" style="@PropertyGridSelectedFieldDescriptionStyle">
                     @if (PropertyGridSelectedField!=null)
                     {
                         <div class="card-title m-0 ml-2 mt-1 font-weight-bold">@PropertyGridSelectedField.Name</div>                        

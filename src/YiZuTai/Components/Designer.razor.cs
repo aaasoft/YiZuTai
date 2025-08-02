@@ -15,7 +15,18 @@ namespace YiZuTai.Components
         private ModalWindow modalWindow;
 
         private string title = "设计 - 易组态";
-        public ControlField PropertyGridSelectedField { get; set; }
+        private ControlField _PropertyGridSelectedField;
+        public ControlField PropertyGridSelectedField
+
+        {
+            get { return _PropertyGridSelectedField; }
+            set
+            {
+                _PropertyGridSelectedField = value;
+                NotifyBrowserWindowResize();
+            }
+        }
+        private string PropertyGridSelectedFieldDescriptionStyle => (PropertyGridSelectedField == null || string.IsNullOrEmpty(PropertyGridSelectedField.Description)) ? "display: none" : "display: inline";
 
         private int _DesignScale = 100;
         /// <summary>
@@ -38,7 +49,7 @@ namespace YiZuTai.Components
 
         private void NotifyBrowserWindowResize()
         {
-            Task.Delay(10).ContinueWith(t => JSRuntime.InvokeVoidAsync("YiZuTai.Designer.LoopOnResizeFunc"));
+            Task.Delay(10).ContinueWith(t => JSRuntime.InvokeVoidAsync("YiZuTai.Designer.OnResizeFunc"));
         }
 
         [Inject]
@@ -59,6 +70,7 @@ namespace YiZuTai.Components
             {
                 _SelectedItem = value;
                 PropertyGridSelectedField = null;
+                NotifyBrowserWindowResize();
             }
         }
 

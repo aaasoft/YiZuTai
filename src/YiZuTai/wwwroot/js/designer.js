@@ -1,4 +1,5 @@
 ﻿var YiZuTai = YiZuTai || {};
+
 YiZuTai.Designer = {
     AddWindowOnBeforeUnloadEvent: function () {
         window.onbeforeunload = function () {
@@ -42,10 +43,9 @@ YiZuTai.Designer = {
         return true;
     },
     LoopOnResizeFunc: function () {
-        //if (!YiZuTai.Designer.OnResizeFunc())
-            //return;
-        YiZuTai.Designer.OnResizeFunc();
-        setTimeout(YiZuTai.Designer.LoopOnResizeFunc, 10);
+        if (!YiZuTai.Designer.OnResizeFunc())
+            return;
+        setTimeout(YiZuTai.Designer.LoopOnResizeFunc, 100);
     }
 };
 
@@ -87,8 +87,7 @@ window.onload = function (evt) {
         }
     }, false);
 };
-/*
+
 window.onresize = function (evt) {
     YiZuTai.Designer.LoopOnResizeFunc();
 };
-*/
