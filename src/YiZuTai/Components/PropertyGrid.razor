@@ -8,21 +8,20 @@
     {
         <div class="form-group m-1" @onclick="@(e => onFieldClicked(field))">
             <div class="input-group">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">@field.Name</div>
-                </div>
+                @if (SelectedField!=null && field.Name == SelectedField.Name)
+                {
+                    <div class="input-group-prepend">
+                        <div class="input-group-text bg-secondary text-white">@field.Name</div>
+                    </div>
+                }
+                else
+                {
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">@field.Name</div>
+                    </div>
+                }
                 @field.GetEditorRenderFragment(ZTFileId)
             </div>
-            @if (field == SelectedField)
-            {
-                if(!string.IsNullOrEmpty(field.Description))
-                {
-                    @foreach (var line in field.Description.Split('\r', '\n'))
-                    {
-                        <small class="form-text text-muted">@line</small>
-                    }
-                }
-            }
         </div>
     }
 }
@@ -32,7 +31,8 @@
     // 选中控件的字段
     private ControlFieldGroup[] SelectedItemFields { get; set; }
     // 选中的字段
-    public ControlField SelectedField { get; private set; }
+    [Parameter]
+    public ControlField SelectedField { get; set; }
     [Parameter]
     public object SelectedObject { get; set; }
     [Parameter]
@@ -41,12 +41,17 @@
     private void onFieldClicked(ControlField field)
     {
         SelectedField = field;
+        if (SelectedFieldChanged.HasDelegate)
+            SelectedFieldChanged.InvokeAsync(field);
     }
 
     protected override void OnParametersSet()
     {
         SelectedItemFields = GetFields();
     }
+
+    [Parameter]
+    public EventCallback<YiZuTai.Design.ControlField> SelectedFieldChanged { get; set; }
 
     public ControlFieldGroup[] GetFields()
     {

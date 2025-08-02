@@ -8,15 +8,21 @@ YiZuTai.Designer = {
     RemoveWindowOnBeforeUnloadEvent: function () {
         window.onbeforeunload = null;
     },
-    ChangeDivHeightFunc: function (windowHeight, div) {
+    ChangeDivHeightFunc: function (windowHeight, div, otherDivs) {
         var divTop = div.getBoundingClientRect().top;
         var divHeight = windowHeight - divTop - 10;
+        if(otherDivs!=null && otherDivs.length>0){
+            for(var i=0;i<otherDivs.length;i++){
+                var otherDiv = otherDivs[i];
+                divHeight -= otherDiv.clientHeight;
+            }
+        }
         div.style.height = divHeight + 'px';
     },
     OnResizeFunc: function () {
         var windowHeight = window.innerHeight;
         YiZuTai.Designer.ChangeDivHeightFunc(windowHeight, document.getElementById('divToolbox'));
-        YiZuTai.Designer.ChangeDivHeightFunc(windowHeight, document.getElementById('divProperty'));
+        YiZuTai.Designer.ChangeDivHeightFunc(windowHeight, document.getElementById('divProperty'), [ document.getElementById('divPropertyDescription') ]);
 
         var divCanvas = document.getElementById('divCanvas');
         YiZuTai.Designer.ChangeDivHeightFunc(windowHeight, divCanvas);
@@ -36,9 +42,10 @@ YiZuTai.Designer = {
         return true;
     },
     LoopOnResizeFunc: function () {
-        if (!YiZuTai.Designer.OnResizeFunc())
-            return;
-        setTimeout(YiZuTai.Designer.LoopOnResizeFunc, 100);
+        //if (!YiZuTai.Designer.OnResizeFunc())
+            //return;
+        YiZuTai.Designer.OnResizeFunc();
+        setTimeout(YiZuTai.Designer.LoopOnResizeFunc, 10);
     }
 };
 
@@ -80,7 +87,8 @@ window.onload = function (evt) {
         }
     }, false);
 };
-
+/*
 window.onresize = function (evt) {
     YiZuTai.Designer.LoopOnResizeFunc();
 };
+*/

@@ -15,6 +15,7 @@ namespace YiZuTai.Components
         private ModalWindow modalWindow;
 
         private string title = "设计 - 易组态";
+        public ControlField PropertyGridSelectedField { get; set; }
 
         private int _DesignScale = 100;
         /// <summary>
@@ -57,6 +58,7 @@ namespace YiZuTai.Components
             set
             {
                 _SelectedItem = value;
+                PropertyGridSelectedField = null;
             }
         }
 
