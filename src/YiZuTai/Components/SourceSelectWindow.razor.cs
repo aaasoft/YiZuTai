@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using Quick.Blazor.Bootstrap;
 using Quick.Blazor.Bootstrap.Utils;
+using YiZuTai.Design;
 using YiZuTai.Source;
 using YiZuTai.ViewModel;
 
@@ -51,6 +52,10 @@ public partial class SourceSelectWindow : ComponentBase
             Source = Sources?.FirstOrDefault(t => t.GetType().FullName == value);
         }
     }
+    
+    public ControlField PropertyGridSelectedField { get; set; }
+    private string PropertyGridSelectedFieldDescriptionStyle => (PropertyGridSelectedField == null || string.IsNullOrEmpty(PropertyGridSelectedField.Description)) ? "display: none" : "display: inline";
+
 
     [Parameter]
     public ISource Source { get; set; }
