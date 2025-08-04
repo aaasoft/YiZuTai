@@ -283,7 +283,7 @@ namespace YiZuTai.Components
         {
             modalWindow.Show("图片管理", new DialogParameters<ImageSelectControl>
             {
-                {x => x.ZTFileId, Model.Id}
+                {x => x.ZTFile, Model}
             });
         }
 

@@ -9,10 +9,10 @@ namespace YiZuTai.Design.Editor
     public abstract class EditorBase : ComponentBase
     {
         /// <summary>
-        /// 组态文件编号
+        /// 组态文件模型
         /// </summary>
         [Parameter]
-        public string ZTFileId { get; set; }
+        public Core.ZTFile ZTFile { get; set; }
         /// <summary>
         /// 控件字段
         /// </summary>

@@ -38,7 +38,7 @@ namespace YiZuTai.Design
             set { PropertyInfo.SetValue(PropertyHost, value); }
         }
 
-        public RenderFragment GetEditorRenderFragment(string ztFileId)
+        public RenderFragment GetEditorRenderFragment(Core.ZTFile ztFile)
         {
             var editorAttribute = PropertyInfo.GetCustomAttribute<EditorAttribute>();
             Type editorType = null;
@@ -49,7 +49,7 @@ namespace YiZuTai.Design
             return Quick.Blazor.Bootstrap.Utils.BlazorUtils.GetRenderFragment(editorType, new Dictionary<string, object>()
             {
                 [nameof(Editor.EditorBase.Field)] = this,
-                [nameof(Editor.EditorBase.ZTFileId)] = ztFileId
+                [nameof(Editor.EditorBase.ZTFile)] = ztFile
             });
         }
     }

@@ -18,7 +18,7 @@
 else
 {
     <a class="form-control p-1" href="javascript:;" @onclick="onClick">
-        <img class="w-100 h-100" src="@Core.ZTFile.GetStaticResourceUrl(ZTFileId, Value)" alt="@Value">
+        <img class="w-100 h-100" src="@Core.ZTFile.GetStaticResourceUrl(ZTFile.Id, Value)" alt="@Value">
     </a>
     <div class="input-group-append">
         <button type="button" class="btn btn-danger" @onclick="@(e=>Value=null)">
@@ -35,7 +35,7 @@ else
     {
         modalWindow.Show<ImageSelectControl>("选择图片", new DialogParameters<ImageSelectControl>
         {
-            { x => x.ZTFileId, ZTFileId},
+            { x => x.ZTFile, ZTFile},
             { x => x.SelectedItem, Value},
             { x => x.OkAction, value =>
                 {

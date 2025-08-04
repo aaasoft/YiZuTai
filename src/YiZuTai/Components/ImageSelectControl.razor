@@ -49,7 +49,7 @@
                                 <a href="javascript:;" title="大小：@getImageSize(id)"
                        class="text-center list-group-item list-group-item-action border-0 p-1 @(SelectedItem == id ? "active" : "")"
                        @onclick="@(e => SelectedItem = id)" @ondblclick="btnOk_Click">
-                                    <img class="w-100 h-100" src="@Core.ZTFile.GetStaticResourceUrl(ZTFileId, id)" alt="@id">
+                                    <img class="w-100 h-100" src="@Core.ZTFile.GetStaticResourceUrl(ZTFile.Id, id)" alt="@id">
                                     <span class="text-center">@id</span>
                                 </a>
                             </div>

@@ -16,7 +16,7 @@ namespace YiZuTai.Components
         private IBlazorDownloadFileService BlazorDownloadFileService { get; set; }
 
         [Parameter]
-        public string ZTFileId { get; set; }
+        public Core.ZTFile ZTFile { get; set; }
         [Parameter]
         public string SelectedItem { get; set; }
         [Parameter]
@@ -32,10 +32,7 @@ namespace YiZuTai.Components
 
         protected override void OnParametersSet()
         {
-            var ztFile = Core.ZTFileManager.Instance.Get(ZTFileId);
-            if (ztFile == null)
-                return;
-            CurrentPath = ztFile.ResourceFolder;
+            CurrentPath = ZTFile.ResourceFolder;
             refresh();
         }
 
