@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Buffers.Text;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -35,14 +36,14 @@ namespace YiZuTai.Design
 
         public void RegisterControl(Type type)
         {
-            var attr = type.GetCustomAttributes(typeof(ControlAttribute), false)
-                                .Cast<ControlAttribute>()
-                                .FirstOrDefault();
-            if (attr == null)
-                return;
-            if (string.IsNullOrEmpty(attr.Category))
-                return;
-            attr.Type = type;
+            var category = type.GetCustomAttribute<CategoryAttribute>()?.Category ?? "未分组";
+            var name = type.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName ?? type.Name;
+            var attr = new ControlAttribute()
+            {
+                Category = category,
+                Name = name,
+                Type = type
+            };
             controlAttrList.Add(attr);
         }
 

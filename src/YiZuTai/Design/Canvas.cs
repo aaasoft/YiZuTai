@@ -1,16 +1,11 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
-using System.Linq;
-using System.Threading.Tasks;
 using YiZuTai.Utils;
 
 namespace YiZuTai.Design
 {
-    [Control(Visiable = false)]
     public class Canvas : BaseControl_WithBackground
     {
         public override bool IsCanvasControl => true;

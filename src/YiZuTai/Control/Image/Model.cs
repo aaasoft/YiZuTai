@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using YiZuTai.Design;
 
 namespace YiZuTai.Control.Image
 {
-    [Control(
-        Category = "常用",
-        Name = "图片"
-        )]
+    [Category("常用")]
+    [DisplayName("图片")]
     public class Model : BaseControl_WithBackground
     {
         private string _Image;

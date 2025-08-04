@@ -1,15 +1,8 @@
-﻿using Microsoft.AspNetCore.Components;
-using Quick.Blazor.Bootstrap.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 
 namespace YiZuTai.Design
 {
-    [AttributeUsage(AttributeTargets.Class)]
-    public class ControlAttribute : Attribute
+    public class ControlAttribute
     {
         /// <summary>
         /// 是否可见
@@ -60,11 +53,6 @@ namespace YiZuTai.Design
         /// </summary>
         public string Clazz { get { return Type?.FullName; } }
         
-        /// <summary>
-        /// 设计时拉伸方式
-        /// </summary>
-        public Stretch Stretch { get; set; } = Stretch.Fill;
-
         /// <summary>
         /// 配置类型
         /// </summary>

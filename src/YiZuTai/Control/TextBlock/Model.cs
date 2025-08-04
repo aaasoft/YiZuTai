@@ -8,11 +8,8 @@ using YiZuTai.Source.DataSource;
 
 namespace YiZuTai.Control.TextBlock;
 
-[Control(
-    Category = "常用",
-    Name = "文本",
-    Stretch = Stretch.None
-    )]
+[Category("常用")]
+[DisplayName("文本")]
 public class Model : BaseControl_WithBackground
 {
     public Model()
@@ -76,7 +73,6 @@ value   =>  当前值")]
     [Category("文本")]
     [DisplayName("字体")]
     [Description("文字的字体")]
-    //[ItemsSource(typeof(FontFamilyItemsSource))]
     public virtual string FontFamily
     {
         get { return _FontFamily; }
@@ -91,7 +87,6 @@ value   =>  当前值")]
     [Category("文本")]
     [DisplayName("对齐")]
     [Description("文字的对齐方式")]
-    //[ItemsSource(typeof(TextAnchorItemSource))]
     public virtual TextAnchor TextAnchor
     {
         get { return _TextAnchor; }
@@ -106,7 +101,6 @@ value   =>  当前值")]
     [Category("文本")]
     [DisplayName("粗细")]
     [Description("文字的粗细")]
-    //[ItemsSource(typeof(TextFontWeightItemSource))]
     public virtual TextFontWeight FontWeight
     {
         get { return _FontWeight; }
