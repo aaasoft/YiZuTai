@@ -14,6 +14,7 @@
 }
 else
 {
+    <CascadingValue Value="Model">
     <ModalLoading @ref="modalLoading" />
     <ToastStack @ref="toastStack" />
     <ModalPrompt @ref="modalPrompt" />
@@ -212,7 +213,7 @@ else
                             </InputSelect>
                         </div>
                     </div>
-                    <PropertyGrid ZTFileId="@Model.Id" SelectedObject="SelectedItem" @bind-SelectedField="PropertyGridSelectedField"></PropertyGrid>
+                    <PropertyGrid SelectedObject="SelectedItem" @bind-SelectedField="PropertyGridSelectedField"></PropertyGrid>
                     </EditForm>
                 </div>
                 <div id="divPropertyDescription" class="card-footer" style="@PropertyGridSelectedFieldDescriptionStyle">
@@ -232,4 +233,5 @@ else
 }
         </div>
     </div>
+    </CascadingValue>
 }

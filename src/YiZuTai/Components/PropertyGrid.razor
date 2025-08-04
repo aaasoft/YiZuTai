@@ -20,7 +20,7 @@
                         <div class="input-group-text">@field.Name</div>
                     </div>
                 }
-                @field.GetEditorRenderFragment(ZTFileId)
+                @field.GetEditorRenderFragment(Model.Id)
             </div>
         </div>
     }
@@ -35,9 +35,9 @@
     public ControlField SelectedField { get; set; }
     [Parameter]
     public object SelectedObject { get; set; }
-    [Parameter]
-    public string ZTFileId { get; set; }
-
+    [CascadingParameter]
+    public Core.ZTFile Model { get; set; }
+    
     private void onFieldClicked(ControlField field)
     {
         SelectedField = field;
