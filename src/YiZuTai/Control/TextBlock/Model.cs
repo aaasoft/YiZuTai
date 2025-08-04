@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Newtonsoft.Json;
 using Quick.Xml;
@@ -290,5 +291,19 @@ value   =>  当前值")]
     {
         base.OnDragDropCreate(location);
         Value = new DataSource.Input() { Value = Name };
+    }
+
+    private ObservableCollection<Trigger> _ValueTriggers = new ObservableCollection<Trigger>();
+    [Category("数据源与触发器")]
+    [DisplayName("值触发器")]
+    [Editor(typeof(CollectionEditor), typeof(CollectionEditor))]
+    public ObservableCollection<Trigger> ValueTriggers
+    {
+        get { return _ValueTriggers; }
+        set
+        {
+            _ValueTriggers = value;
+            RaisePropertyChanged(nameof(ValueTriggers));
+        }
     }
 }
