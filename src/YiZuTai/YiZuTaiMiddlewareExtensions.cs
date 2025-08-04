@@ -50,8 +50,10 @@ namespace Microsoft.AspNetCore.Builder
             ZTFileManager.Instance.Init();
             SourceManager.Instance.Init();
             
-            if (options.UseDefaultControls)
-                ControlManager.Instance.UseDefaultControls();
+            if (options.UseBuiltInControls)
+                ControlManager.Instance.UseBuiltInControls();
+            if (options.UseBuiltInSources)
+                SourceManager.Instance.UseBuiltInSources();
 
             app.MapGroup(options.Prefix).MapGet("/{id}/" + ZTFile.ZTFILE_RESOURCE_FOLDER + "/{*file}", GetResource);
             return app;

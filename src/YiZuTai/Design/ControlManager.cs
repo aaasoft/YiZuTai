@@ -25,7 +25,7 @@ namespace YiZuTai.Design
         }
 
         //使用示例控件
-        public void UseDefaultControls()
+        internal void UseBuiltInControls()
         {
             RegisterControl<Control.Circle.Model>();
             RegisterControl<Control.Rectangle.Model>();

@@ -41,24 +41,28 @@
                 .ToArray();
         }
 
-        //初始化扫描
+        //初始化
         public void Init()
         {
-            foreach (var type in this.GetType().Assembly.GetTypes())
-            {
-                if (!type.IsPublic
-                    || !type.IsClass
-                    || type.IsAbstract
-                    || type.IsAssignableFrom(typeof(ISource)))
-                    continue;
-                var attr = type.GetCustomAttributes(typeof(SourceAttribute), false)
+        }
+
+        public void RegisterSource<T>()
+        {
+            var type = typeof(T);
+            var attr = type.GetCustomAttributes(typeof(SourceAttribute), false)
                     .Cast<SourceAttribute>()
                     .FirstOrDefault();
-                if (attr == null)
-                    continue;
-                attr.Type = type;
-                itemList.Add(attr);
-            }
+            if (attr == null)
+                throw new NullReferenceException($"类型[{type.FullName}]未定义特性[SourceAttribute]");
+            attr.Type = type;
+            itemList.Add(attr);
+        }
+
+        internal void UseBuiltInSources()
+        {
+            RegisterSource<YiZuTai.DataSource.Input>();
+            RegisterSource<YiZuTai.DataSource.Simulate>();
+            RegisterSource<YiZuTai.DataSource.DateTime>();
         }
     }
 }

@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace YiZuTai.Source
 {
     public interface ISource : INotifyPropertyChanged
     {
+        /// <summary>
+        /// 分类
+        /// </summary>
+        string Category { get; }
         /// <summary>
         /// 名称
         /// </summary>
