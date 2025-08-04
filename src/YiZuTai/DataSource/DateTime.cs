@@ -4,7 +4,8 @@ using YiZuTai.Source.DataSource;
 
 namespace YiZuTai.DataSource
 {
-    [Source("日期时间", "基础")]
+    [Category("基础")]
+    [DisplayName("日期时间")]
     public class DateTime : AbstractAutoRefreshOnTimerDataSource
     {
         private string _Format = "HH:mm:ss";

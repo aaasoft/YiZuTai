@@ -5,7 +5,8 @@ using YiZuTai.Source.DataSource;
 
 namespace YiZuTai.DataSource
 {
-    [Source("输入数据", "基础", IsShowPropertiesInWindow = false)]
+    [Category("基础")]
+    [DisplayName("输入数据")]
     public class Input : AbstractDataSource
     {
         [DisplayName("输入")]

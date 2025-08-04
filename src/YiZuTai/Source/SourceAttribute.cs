@@ -1,7 +1,6 @@
 ﻿namespace YiZuTai.Source
 {
-    [AttributeUsage(AttributeTargets.Class)]
-    public class SourceAttribute : Attribute
+    public class SourceAttribute
     {
         /// <summary>
         /// 名称
@@ -33,11 +32,5 @@
         /// 引用的JS文件
         /// </summary>
         public string[] RefrenceJsFiles { get; set; }
-
-        public SourceAttribute(string name, string category)
-        {
-            Name = name;
-            Category = category;
-        }
     }
 }

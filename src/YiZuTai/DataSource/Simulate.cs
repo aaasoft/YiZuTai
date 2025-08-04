@@ -4,7 +4,8 @@ using YiZuTai.Source.DataSource;
 
 namespace YiZuTai.DataSource
 {
-    [Source("模拟数据", "基础")]
+    [Category("基础")]
+    [DisplayName("模拟数据")]
     public class Simulate : AbstractAutoRefreshOnTimerDataSource
     {
         private double _MaxValue = 100;

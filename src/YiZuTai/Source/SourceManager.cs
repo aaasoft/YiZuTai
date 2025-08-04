@@ -1,4 +1,7 @@
-﻿namespace YiZuTai.Source
+﻿using System.ComponentModel;
+using System.Reflection;
+
+namespace YiZuTai.Source
 {
     public class SourceManager
     {
@@ -49,12 +52,14 @@
         public void RegisterSource<T>()
         {
             var type = typeof(T);
-            var attr = type.GetCustomAttributes(typeof(SourceAttribute), false)
-                    .Cast<SourceAttribute>()
-                    .FirstOrDefault();
-            if (attr == null)
-                throw new NullReferenceException($"类型[{type.FullName}]未定义特性[SourceAttribute]");
-            attr.Type = type;
+            var category = type.GetCustomAttribute<CategoryAttribute>()?.Category ?? "未分组";
+            var name = type.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName ?? type.Name;
+            var attr = new SourceAttribute()
+            {
+                Category = category,
+                Name = name,
+                Type = type
+            };
             itemList.Add(attr);
         }
 
