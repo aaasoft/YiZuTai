@@ -25,7 +25,7 @@ namespace YiZuTai.Control.Image
         private double _RotateSpeed = 0;
         [Category("动画")]
         [DisplayName("旋转速度")]
-        [Description("图片旋转的速度")]
+        [Description("控件旋转的速度")]
         public double RotateSpeed
         {
             get { return _RotateSpeed; }
@@ -39,7 +39,7 @@ namespace YiZuTai.Control.Image
         private double _FlashInterval = 0;
         [Category("动画")]
         [DisplayName("闪烁间隔")]
-        [Description("图片闪烁的间隔，单位：毫秒")]
+        [Description("控件闪烁的间隔，单位：毫秒")]
         public double FlashInterval
         {
             get { return _FlashInterval; }

@@ -2,7 +2,9 @@
 
 @inherits EditorBase<IList>
 
-<span class="form-control">(集合)</span>
+<span class="form-control" @onclick="onClick">(集合)</span>
 <div class="input-group-append">
-    <button type="button" class="btn btn-outline-secondary">...</button>
+    <button type="button" class="btn btn-outline-secondary" @onclick="onClick">...</button>
 </div>
+
+<ModalWindow DialogSizeExtraLarge DialogCentered="false" @ref="modalWindow" />

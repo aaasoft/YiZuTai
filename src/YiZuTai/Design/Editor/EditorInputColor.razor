@@ -3,15 +3,15 @@
 
 @if(Value==null)
 {
-    <span class="form-control">空</span>
+    <span class="form-control">(空)</span>
     <div class="input-group-append">
-        <button type="button" class="btn btn-secondary" @onclick="@(e => Value = "#000000")">+</button>
+        <button type="button" class="btn btn-outline-secondary" @onclick="@(e => Value = "#000000")">+</button>
     </div>
 }
 else
 {
     <input class="form-control p-1" type="color" @bind-value="Value">
     <div class="input-group-append">
-        <button type="button" class="btn btn-danger" @onclick="@(e => Value = null)">X</button>
+        <button type="button" class="btn btn-outline-danger" @onclick="@(e => Value = null)">X</button>
     </div>
 }

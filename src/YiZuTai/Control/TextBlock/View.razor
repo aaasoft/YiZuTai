@@ -1,4 +1,11 @@
 ﻿<YiZuTai.Design.BaseControl_WithBackgroundView @ref="baseControlView" Model="Model">
+      <!--数据部分-->
+      <g @ref="dataElementReference" data-Angle="@Model.Angle"
+            data-FlashInterval="@Model.FlashInterval"     
+            data-RotateSpeed="@Model.RotateSpeed"
+            data-CenterPointLocationX="@(Model.Left + Model.Width / 2)"
+            data-CenterPointLocationY="@(Model.Top + Model.Height / 2)" />
+      <!--文本部分-->
       <g>
             <text fill="@Model.Foreground" x="@Model.TextX" y="@Model.TextY" font-size="@Model.FontSize"
                   font-weight="@Model.FontWeight" font-family="@Model.FontFamily" text-anchor="@Model.TextAnchor"

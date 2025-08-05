@@ -8,7 +8,6 @@ namespace YiZuTai.Design.Editor
 {
     public partial class SourceTypeEditor : EditorBase<ISource>
     {
-        private ModalAlert modalAlert;
         private ModalWindow modalWindow;
 
         private void onClick()

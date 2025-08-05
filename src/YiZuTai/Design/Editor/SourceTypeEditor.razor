@@ -5,9 +5,6 @@
 @using YiZuTai.Utils
 @using YiZuTai.Components
 
-<ModalAlert @ref="modalAlert" />
-<ModalWindow DialogSizeExtraLarge @ref="modalWindow" />
-
 <span class="form-control" @onclick="onClick">@Value?.Name</span>
 <div class="input-group-append">
 @if (Value==null)
@@ -16,6 +13,8 @@
 }
 else
 {
-    <button type="button" class="btn btn-danger" @onclick="onClear">X</button>
+    <button type="button" class="btn btn-outline-danger" @onclick="onClear">X</button>
 }
 </div>
+
+<ModalWindow DialogSizeExtraLarge @ref="modalWindow" />
