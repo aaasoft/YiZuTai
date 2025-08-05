@@ -1,26 +1,10 @@
 ﻿<div class="row">
-    <div class="col-6">
+    <div class="col-5">
         <div class="card">
             <div class="card-header">
-                <div class="btn-toolbar" role="toolbar">
-                    <div class="btn-group mr-2" role="group">
-                        <button type="button" class="btn btn-secondary" @onclick="btnAdd_Click">添加</button>
-                    </div>
-                    @if (SelectedItem != null)
-                    {
-                        <div class="btn-group mr-2" role="group">
-                            <button type="button" class="btn btn-secondary" @onclick="btnMoveUp_Click">向上移动</button>
-                        </div>
-                        <div class="btn-group mr-2" role="group">
-                            <button type="button" class="btn btn-secondary" @onclick="btnMoveDown_Click">向下移动</button>
-                        </div>
-                        <div class="btn-group mr-2" role="group">
-                            <button type="button" class="btn btn-danger" @onclick="btnDelete_Click">删除</button>
-                        </div>
-                    }
-                </div>
+                项
             </div>
-             <ul class="list-group list-group-flush">                
+            <ul class="list-group list-group-flush">
                 @foreach (var item in ValueList)
                 {
                     @if (item == SelectedItem)
@@ -34,6 +18,33 @@
                 }
             </ul>
         </div>
+    </div>
+    <div class="col-auto">
+        <button type="button" class="btn btn-secondary btn-block" @onclick="btnAdd_Click">+</button>
+        @if (CanMoveUp)
+        {
+            <button type="button" class="btn btn-secondary btn-block" @onclick="btnMoveUp_Click">▲</button>
+        }
+        else
+        {
+            <button type="button" class="btn btn-secondary btn-block" disabled>▲</button>
+        }
+        @if (CanMoveDown)
+        {
+            <button type="button" class="btn btn-secondary btn-block" @onclick="btnMoveDown_Click">▼</button>
+        }
+        else
+        {
+            <button type="button" class="btn btn-secondary btn-block" disabled>▼</button>
+        }
+        @if (CanDelete)
+        {
+            <button type="button" class="btn btn-danger btn-block" @onclick="btnDelete_Click">X</button>
+        }
+        else
+        {
+            <button type="button" class="btn btn-danger btn-block" disabled>X</button>
+        }
     </div>
     <div class="col-6">
         <div class="card">

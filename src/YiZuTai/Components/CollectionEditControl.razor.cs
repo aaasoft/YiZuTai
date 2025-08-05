@@ -14,6 +14,10 @@ public partial class CollectionEditControl
     private object SelectedItem { get; set; }
     private ControlField PropertyGridSelectedField;
 
+    private bool CanDelete => SelectedItem != null;
+    private bool CanMoveUp => CanDelete && ValueList.IndexOf(SelectedItem) > 0;
+    private bool CanMoveDown => CanDelete && ValueList.IndexOf(SelectedItem) < ValueList.Count - 1;
+
     private void btnAdd_Click()
     {
         var newItem = Activator.CreateInstance(ValueType);
