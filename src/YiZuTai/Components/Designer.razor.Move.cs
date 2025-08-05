@@ -204,6 +204,17 @@ namespace YiZuTai.Components
                 while (newAngle < 0)
                     newAngle += 360;
                 newAngle = newAngle % 360;
+                //磁吸角度
+                var magnetAngle = 10;
+                var x = newAngle % 90;
+                if (Math.Abs(x) < magnetAngle)
+                {
+                    newAngle -= x;
+                }
+                else if(Math.Abs(x) > (90 - magnetAngle))
+                {
+                    newAngle -= x - 90;
+                }
                 model.MoveAngleOffset = newAngle - model.Angle;
                 model.Angle = newAngle;
             }
