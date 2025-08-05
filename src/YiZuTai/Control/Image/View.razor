@@ -1,13 +1,7 @@
-﻿<YiZuTai.Design.BaseControl_WithBackgroundView Model="@Model" @ref="baseControlView">
-    <!--数据部分-->
-    <g @ref="dataElementReference" data-Angle="@Model.Angle"
-        data-FlashInterval="@Model.FlashInterval"     
-        data-RotateSpeed="@Model.RotateSpeed"
-        data-CenterPointLocationX="@(Model.Left + Model.Width / 2)"
-        data-CenterPointLocationY="@(Model.Top + Model.Height / 2)" />
+﻿<YiZuTai.Design.BaseControl_WithBackgroundAndAnimateView Model="@Model" @ref="baseControlView">
     <!--图片部分-->
     <g data-Angle="@Model.Angle">
         <image href="@Core.ZTFile.GetStaticResourceUrl(ZTFileId, Model.Image)"
                width="@Model.Width" height="@Model.Height" preserveAspectRatio="none"></image>
     </g>
-</YiZuTai.Design.BaseControl_WithBackgroundView>
+</YiZuTai.Design.BaseControl_WithBackgroundAndAnimateView>

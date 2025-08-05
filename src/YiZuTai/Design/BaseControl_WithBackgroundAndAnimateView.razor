@@ -1,0 +1,13 @@
+﻿@using System.ComponentModel
+@using Microsoft.JSInterop
+@using static YiZuTai.Design.BaseControlView
+
+<BaseControl_WithBackgroundView Model="Model" @ref="baseControlView">
+    <!--数据部分-->
+    <g @ref="dataElementReference" data-Angle="@Model.Angle"
+        data-FlashInterval="@Model.FlashInterval"     
+        data-RotateSpeed="@Model.RotateSpeed"
+        data-CenterPointLocationX="@(Model.Left + Model.Width / 2)"
+        data-CenterPointLocationY="@(Model.Top + Model.Height / 2)" />
+    @ChildContent
+</BaseControl_WithBackgroundView>
