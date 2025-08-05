@@ -274,7 +274,7 @@ namespace YiZuTai.Components
             modalWindow.Show("预览", new DialogParameters<View>
             {
                 {x => x.Model, Model},
-                {x => x.Project, Project}
+                {x => x.Project, Quick.Xml.XmlConvert.Deserialize<Project>(Quick.Xml.XmlConvert.Serialize(Project))}
             });
         }
 
