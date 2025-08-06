@@ -1,6 +1,7 @@
 ﻿@using System.ComponentModel
-@using static YiZuTai.Design.BaseControlView
-<BaseControlView Model="Model" @ref="baseControlView">
+@typeparam T_BaseControl_WithBackground where T_BaseControl_WithBackground : BaseControl_WithBackground, new()
+
+<BaseControlView T_BaseControl="T_BaseControl_WithBackground" Model="Model" @ref="ParentView">
     <rect fill="@Model.Background" fill-opacity="@Model.BackgroundOpacity" rx="@Model.CornerRadius"
         ry="@Model.CornerRadius" stroke="@Model.Border" stroke-opacity="@Model.BorderOpacity"
         stroke-width="@Model.BorderThickness" x="@(Model.BorderThickness / 2)" y="@(Model.BorderThickness / 2)"
@@ -10,16 +11,10 @@
 
 @code {
     [Parameter]
-    public BaseControl_WithBackground Model { get; set; }
+    public T_BaseControl_WithBackground Model { get; set; }
     [Parameter]
     public RenderFragment ChildContent { get; set; }
 
-    private BaseControlView baseControlView;
-    public string Id => baseControlView.Id;
-
-    public void RegisterDataSource<T>(T model, params DataSourceInfo[] dataSourceInfos)
-    where T : INotifyPropertyChanging, INotifyPropertyChanged
-    {
-        baseControlView.RegisterDataSource(model, dataSourceInfos);
-    }
+    private BaseControlView<T_BaseControl_WithBackground> ParentView;
+    public string Id => ParentView.Id;
 }

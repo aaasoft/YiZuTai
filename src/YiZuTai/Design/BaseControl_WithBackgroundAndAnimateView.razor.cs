@@ -1,34 +1,25 @@
-using System;
-using System.ComponentModel;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using static YiZuTai.Design.BaseControlView;
 
 namespace YiZuTai.Design;
 
-public partial class BaseControl_WithBackgroundAndAnimateView
+public partial class BaseControl_WithBackgroundAndAnimateView<T_BaseControl_WithBackgroundAndAnimate>
 {
     [Parameter]
-    public BaseControl_WithBackgroundAndAnimate Model { get; set; }
+    public T_BaseControl_WithBackgroundAndAnimate Model { get; set; }
     [Parameter]
     public RenderFragment ChildContent { get; set; }
     [Inject]
     public IJSRuntime JSRuntime { get; set; }
     private ElementReference dataElementReference;
-    private BaseControl_WithBackgroundView baseControlView;
-    public string Id => baseControlView.Id;
-
-    public void RegisterDataSource<T>(T model, params DataSourceInfo[] dataSourceInfos)
-    where T : INotifyPropertyChanging, INotifyPropertyChanged
-    {
-        baseControlView.RegisterDataSource(model, dataSourceInfos);
-    }
+    private BaseControl_WithBackgroundView<T_BaseControl_WithBackgroundAndAnimate> ParentView;
+    public string Id => ParentView.Id;
 
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
         {
-            var svgElement = $"document.querySelector('[_bl_{baseControlView.Id}]')";
+            var svgElement = $"document.querySelector('[_bl_{ParentView.Id}]')";
             var dataElement = $"document.querySelector('[_bl_{dataElementReference.Id}]')";
 
             var jsCode = @$"

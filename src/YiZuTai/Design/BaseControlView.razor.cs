@@ -4,7 +4,7 @@ using YiZuTai.Source.DataSource;
 
 namespace YiZuTai.Design;
 
-public partial class BaseControlView : IDisposable
+public partial class BaseControlView<T_BaseControl> : IDisposable
 {
     private INotifyPropertyChanging notifyPropertyChangingModel;
     private INotifyPropertyChanged notifyPropertyChangedModel;
