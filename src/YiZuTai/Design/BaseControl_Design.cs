@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YiZuTai.Components;
 
 namespace YiZuTai.Design
 {
@@ -46,6 +47,20 @@ namespace YiZuTai.Design
             if (newHeight <= 0)
                 newHeight = canvas.DesignGridSize;
             Height = newHeight;
+        }
+
+        /// <summary>
+        /// 与Display属性有关系的属性列表
+        /// </summary>
+        /// <returns></returns>
+        public virtual string[] GetHasBussinesToDispayProperties() => [nameof(Opacity)];
+
+        /// <summary>
+        /// 当数据源的值改变时
+        /// </summary>
+        public virtual void OnDataSourceValueChanged(Source.DataSource.AbstractAutoRefreshDataSource t, string propertyName)
+        {
+            RaisePropertyChanged(nameof(View));
         }
 
         /// <summary>

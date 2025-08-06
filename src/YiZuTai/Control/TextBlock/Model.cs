@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using Newtonsoft.Json;
 using Quick.Xml;
@@ -205,66 +206,20 @@ value   =>  当前值")]
     }
 
     /*
-        public override object GetExtraObject()
-        {
-            var cx = Width / 2;
-            var cy = Height / 2;
-            double textY = 0;
-            if (TextVerticalOffset > 1)
-                textY = TextVerticalOffset;
-            else
-                textY = (Height - FontSize) * TextVerticalOffset + FontSize * 7 / 8;
-            double textX = 0;
-            switch (TextAnchor)
-            {
-                case TextAnchor.start:
-                    textX = 0;
-                    break;
-                case TextAnchor.middle:
-                    textX = cx;
-                    break;
-                case TextAnchor.end:
-                    textX = Width;
-                    break;
-            }
-            return new
-            {
-                cx,
-                cy,
-                textX,
-                textY,
-                text = Text
-            };
-        }
-        */
-
-    /*
-    public override void OnDataSourceValueChanged(AbstractAutoRefreshDataSource t, string propertyName)
-    {
-        if (CachedDisplay == null)
-        {
-            base.OnDataSourceValueChanged(t, propertyName);
-            return;
-        }
-        RaisePropertyChanged(nameof(Text));
-    }
-    */
-
-    /*
     public override void OnDoubleClick()
     {
         showDataSourceWindow(Value, t => Value = t);
     }
     */
 
-
     public override void OnDragDropCreate(Point location)
     {
         base.OnDragDropCreate(location);
         Value = new DataSource.Input() { Value = Name };
+        ValueTriggers = new ObservableCollection<Trigger>();
     }
 
-    private ObservableCollection<Trigger> _ValueTriggers = new ObservableCollection<Trigger>();
+    private ObservableCollection<Trigger> _ValueTriggers;
     [Category("数据源与触发器")]
     [DisplayName("值触发器")]
     [Editor(typeof(CollectionEditor), typeof(CollectionEditor))]
@@ -276,5 +231,21 @@ value   =>  当前值")]
             _ValueTriggers = value;
             RaisePropertyChanged(nameof(ValueTriggers));
         }
+    }
+
+    public override string[] GetHasBussinesToDispayProperties()
+    {
+        return base.GetHasBussinesToDispayProperties().Concat(new string[]
+            {
+                nameof(Width),
+                nameof(Height),
+                nameof(Foreground),
+                nameof(Value),
+                nameof(Format),
+                nameof(FontSize),
+                nameof(FontFamily),
+                nameof(TextVerticalOffset),
+                nameof(Image)
+            }).ToArray();
     }
 }

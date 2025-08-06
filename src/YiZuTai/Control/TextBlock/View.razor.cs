@@ -9,18 +9,30 @@ namespace YiZuTai.Control.TextBlock
 
         [Parameter]
         public Model Model { get; set; }
+        
+/*
+                protected override void OnParametersSet()
+                {
+                    Model.PropertyChanged += Model_OnPropertyChanged;
+                }
 
-        protected override void OnAfterRender(bool firstRender)
-        {
-            base.OnAfterRender(firstRender);
+                private void Model_OnPropertyChanged(object sender, object e)
+                {
+                    InvokeAsync(StateHasChanged);
+                }
 
-            if (firstRender)
-            {
-                baseControlView.RegisterDataSource(Model,
-                [
-                    new (nameof(Model.Value), () => Model.Value )
-                ]);
-            }
-        }
+                protected override void OnAfterRender(bool firstRender)
+                {
+                    base.OnAfterRender(firstRender);
+
+                    if (firstRender)
+                    {
+                        baseControlView.RegisterDataSource(Model,
+                        [
+                            new (nameof(Model.Value), () => Model.Value )
+                        ]);
+                    }
+                }
+                */
     }
 }

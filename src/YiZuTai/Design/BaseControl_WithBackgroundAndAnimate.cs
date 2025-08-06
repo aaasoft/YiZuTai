@@ -3,7 +3,7 @@
 namespace YiZuTai.Design
 {
     public abstract class BaseControl_WithBackgroundAndAnimate : BaseControl_WithBackground
-    {        
+    {
         private double _RotateSpeed = 0;
         [Category("动画")]
         [DisplayName("旋转速度")]
@@ -30,6 +30,15 @@ namespace YiZuTai.Design
                 _FlashInterval = value;
                 RaisePropertyChanged(nameof(FlashInterval));
             }
+        }
+
+        public override string[] GetHasBussinesToDispayProperties()
+        {
+            return base.GetHasBussinesToDispayProperties().Concat(
+                [
+                    nameof(RotateSpeed),
+                    nameof(FlashInterval)
+                ]).ToArray();
         }
     }
 }

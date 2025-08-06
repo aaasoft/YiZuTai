@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
+using YiZuTai.ViewModel;
 
 namespace YiZuTai.Design
 {
@@ -20,19 +17,7 @@ namespace YiZuTai.Design
         public Project()
         {
             Canvas = new Canvas();
-            Canvas.PropertyChanged += Canvas_PropertyChanged;
             Controls = new ObservableCollection<BaseControl>();
-            Controls.CollectionChanged += Controls_CollectionChanged;
-        }
-
-        private void Canvas_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            RaisePropertyChanged(nameof(Canvas));
-        }
-
-        private void Controls_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            RaisePropertyChanged(nameof(Controls));
         }
     }
 }

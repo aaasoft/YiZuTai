@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Quick.Blazor.Bootstrap.Utils;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using YiZuTai.ViewModel;
 
 namespace YiZuTai.Design
 {

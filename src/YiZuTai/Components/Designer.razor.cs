@@ -102,11 +102,15 @@ namespace YiZuTai.Components
         {
             Model = Core.ZTFileManager.Instance.Get(Id);
             Project = Model.OpenProject();
+            ObjectConnection.ObjectConnectionManager.Instance.AddObject(Project);
+
             Project.PropertyChanged += Project_PropertyChanged;
+            /*
             Project.Canvas.PropertyChanged += Control_PropertyChanged;
             foreach (var control in Project.Controls)
                 control.PropertyChanged += Control_PropertyChanged;
             Project.Controls.CollectionChanged += Controls_CollectionChanged;
+            */
             SelectedItem = Canvas;
         }
 
@@ -251,11 +255,15 @@ namespace YiZuTai.Components
         {
             if (Project != null)
             {
+                ObjectConnection.ObjectConnectionManager.Instance.RemoveObject(Project);
+
                 Project.PropertyChanged -= Project_PropertyChanged;
+                /*
                 foreach (var control in Project.Controls)
                     control.PropertyChanged -= Project_PropertyChanged;
                 Project.Controls.CollectionChanged -= Controls_CollectionChanged;
                 Project.Canvas.PropertyChanged -= Control_PropertyChanged;
+                */
             }
         }
 

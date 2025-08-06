@@ -3,7 +3,7 @@ using YiZuTai.Design;
 
 namespace YiZuTai.Components
 {
-    public partial class View
+    public partial class View : IDisposable
     {
         [Parameter]
         public string Id { get; set; }
@@ -20,7 +20,7 @@ namespace YiZuTai.Components
         {
             get
             {
-                switch(Project.Canvas.Stretch)
+                switch (Project.Canvas.Stretch)
                 {
                     case Stretch.Uniform:
                         return "xMidYMin";
@@ -40,7 +40,15 @@ namespace YiZuTai.Components
             if (Model == null)
                 Model = Core.ZTFileManager.Instance.Get(Id);
             if (Project == null)
+            {
                 Project = Model.OpenProject();
+                ObjectConnection.ObjectConnectionManager.Instance.AddObject(Project);
+            }
+        }
+        
+        public void Dispose()
+        {
+            ObjectConnection.ObjectConnectionManager.Instance.RemoveObject(Project);
         }
     }
 }

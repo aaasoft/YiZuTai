@@ -103,5 +103,16 @@ namespace YiZuTai.Design
                 RaisePropertyChanged();
             }
         }
+
+        public override string[] GetHasBussinesToDispayProperties()
+        {
+            return base.GetHasBussinesToDispayProperties().Concat(
+                    [
+                        nameof(Background),
+                        nameof(Border),
+                        nameof(BorderThickness),
+                        nameof(CornerRadius)
+                    ]).ToArray();
+        }
     }
 }
