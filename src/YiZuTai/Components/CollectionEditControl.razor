@@ -20,30 +20,44 @@
         </div>
     </div>
     <div class="col-auto">
-        <button type="button" class="btn btn-secondary btn-block" @onclick="btnAdd_Click">+</button>
+        <button type="button" class="btn btn-secondary btn-block" @onclick="btnAdd_Click">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
         @if (CanMoveUp)
         {
-            <button type="button" class="btn btn-secondary btn-block" @onclick="btnMoveUp_Click">▲</button>
+            <button type="button" class="btn btn-secondary btn-block" @onclick="btnMoveUp_Click">
+                <i class="fa fa-arrow-up" aria-hidden="true"></i>
+            </button>
         }
         else
         {
-            <button type="button" class="btn btn-secondary btn-block" disabled>▲</button>
+            <button type="button" class="btn btn-secondary btn-block" disabled>
+                <i class="fa fa-arrow-up" aria-hidden="true"></i>
+            </button>
         }
         @if (CanMoveDown)
         {
-            <button type="button" class="btn btn-secondary btn-block" @onclick="btnMoveDown_Click">▼</button>
+            <button type="button" class="btn btn-secondary btn-block" @onclick="btnMoveDown_Click">
+                <i class="fa fa-arrow-down" aria-hidden="true"></i>
+            </button>
         }
         else
         {
-            <button type="button" class="btn btn-secondary btn-block" disabled>▼</button>
+            <button type="button" class="btn btn-secondary btn-block" disabled>
+                <i class="fa fa-arrow-down" aria-hidden="true"></i>
+            </button>
         }
         @if (CanDelete)
         {
-            <button type="button" class="btn btn-danger btn-block" @onclick="btnDelete_Click">X</button>
+            <button type="button" class="btn btn-danger btn-block" @onclick="btnDelete_Click">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+            </button>
         }
         else
         {
-            <button type="button" class="btn btn-danger btn-block" disabled>X</button>
+            <button type="button" class="btn btn-danger btn-block" disabled>
+                <i class="fa fa-trash" aria-hidden="true"></i>
+            </button>
         }
     </div>
     <div class="col-6">
