@@ -186,15 +186,8 @@ namespace YiZuTai.Components
                         return;
                     }
                     break;
-                default:
-                    var control = (BaseControl)sender;
-                    if (control.GetHasBussinesToDispayProperties().Contains(e.PropertyName))
-                    {
-                        Project_PropertyChanged(sender, e);
-                        onDesignChanged();
-                    }
-                    break;
             }
+            onDesignChanged();
         }
 
         private void onKeyDown(KeyboardEventArgs e)

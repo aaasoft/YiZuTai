@@ -10,6 +10,8 @@ public partial class CollectionEditControl
     public IList ValueList { get; set; }
     [Parameter]
     public Type ValueType { get; set; }
+    [Parameter]
+    public Action<IList> OkAction { get; set; }
 
     private object SelectedItem { get; set; }
     private ControlField PropertyGridSelectedField;
@@ -61,5 +63,10 @@ public partial class CollectionEditControl
             return;
         ValueList.Remove(SelectedItem);
         ValueList.Insert(index, SelectedItem);
+    }
+
+    private void btnOk_Click()
+    {
+        OkAction?.Invoke(ValueList);
     }
 }
