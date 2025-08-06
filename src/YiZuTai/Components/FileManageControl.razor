@@ -9,6 +9,8 @@
     </ToolbarAddonButtons>
 </Quick.Blazor.Bootstrap.Admin.FileManageControl>
 
+<ModalAlert @ref="modalAlert"></ModalAlert>
+
 @code
 {
     private Quick.Blazor.Bootstrap.Admin.FileManageControl fileManageControl;
@@ -16,12 +18,30 @@
     public Core.ZTFile ZTFile { get; set; }
     [Inject]
     private IJSRuntime JSRuntime { get; set; }
+    private ModalAlert modalAlert;
 
     private string baseDir;
 
     protected override void OnParametersSet()
     {
         baseDir = ZTFile.ResourceFolder;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            fileManageControl.SelectedPathChanged += fileManageControl_OnSelectedPathChanged;
+        }
+    }
+
+    private void fileManageControl_OnSelectedPathChanged(object sender,EventArgs e)
+    {
+        if(!fileManageControl.Dir.StartsWith(baseDir))
+        {
+            modalAlert.Show("路径错误",$"无法访问资源目录以外的路径！");
+            InvokeAsync(StateHasChanged);
+        }
     }
 
     private void btnPreview_Click()

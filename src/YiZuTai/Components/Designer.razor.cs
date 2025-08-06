@@ -282,7 +282,7 @@ namespace YiZuTai.Components
         // 文件管理
         private void FileManage()
         {
-            modalWindow.Show("文件管理", new DialogParameters<FileManageControl>
+            modalWindow.Show("资源文件", new DialogParameters<FileManageControl>
             {
                 { x => x.ZTFile, Model}
             });
