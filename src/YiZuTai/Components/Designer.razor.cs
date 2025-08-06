@@ -105,12 +105,10 @@ namespace YiZuTai.Components
             ObjectConnection.ObjectConnectionManager.Instance.AddObject(Project);
 
             Project.PropertyChanged += Project_PropertyChanged;
-            /*
             Project.Canvas.PropertyChanged += Control_PropertyChanged;
             foreach (var control in Project.Controls)
                 control.PropertyChanged += Control_PropertyChanged;
             Project.Controls.CollectionChanged += Controls_CollectionChanged;
-            */
             SelectedItem = Canvas;
         }
 
@@ -188,15 +186,15 @@ namespace YiZuTai.Components
                         return;
                     }
                     break;
-                case nameof(BaseControl.Width):
-                case nameof(BaseControl.Height):
-                    //如果是画面的宽度或者高度有变化
-                    if (currentControl == Canvas)
-                        NotifyBrowserWindowResize();
+                default:
+                    var control = (BaseControl)sender;
+                    if (control.GetHasBussinesToDispayProperties().Contains(e.PropertyName))
+                    {
+                        Project_PropertyChanged(sender, e);
+                        onDesignChanged();
+                    }
                     break;
             }
-            Project_PropertyChanged(sender, e);
-            onDesignChanged();
         }
 
         private void onKeyDown(KeyboardEventArgs e)
@@ -256,14 +254,12 @@ namespace YiZuTai.Components
             if (Project != null)
             {
                 ObjectConnection.ObjectConnectionManager.Instance.RemoveObject(Project);
-
+                
                 Project.PropertyChanged -= Project_PropertyChanged;
-                /*
                 foreach (var control in Project.Controls)
                     control.PropertyChanged -= Project_PropertyChanged;
                 Project.Controls.CollectionChanged -= Controls_CollectionChanged;
                 Project.Canvas.PropertyChanged -= Control_PropertyChanged;
-                */
             }
         }
 
