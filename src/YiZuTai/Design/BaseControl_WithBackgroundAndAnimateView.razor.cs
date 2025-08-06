@@ -3,7 +3,7 @@ using Microsoft.JSInterop;
 
 namespace YiZuTai.Design;
 
-public partial class BaseControl_WithBackgroundAndAnimateView<T_BaseControl_WithBackgroundAndAnimate>
+public partial class BaseControl_WithBackgroundAndAnimateView<T_BaseControl_WithBackgroundAndAnimate> : IControlView
 {
     [Parameter]
     public T_BaseControl_WithBackgroundAndAnimate Model { get; set; }
@@ -61,5 +61,15 @@ setValueCallback: function (value) {{
 ";
             JSRuntime.InvokeVoidAsync("eval", jsCode);
         }
+    }
+
+    protected override void OnParametersSet()
+    {
+        Model.View = this;
+    }
+    
+    public void Refresh()
+    {
+        InvokeAsync(StateHasChanged);
     }
 }

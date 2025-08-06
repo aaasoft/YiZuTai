@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components;
+using Newtonsoft.Json;
 using YiZuTai.Components;
 
 namespace YiZuTai.Design
@@ -55,12 +58,16 @@ namespace YiZuTai.Design
         /// <returns></returns>
         public virtual string[] GetHasBussinesToDispayProperties() => [nameof(Opacity)];
 
+        [Browsable(false)]
+        [JsonIgnore]
+        public IControlView View { get; set; }
+
         /// <summary>
         /// 当数据源的值改变时
         /// </summary>
         public virtual void OnDataSourceValueChanged(Source.DataSource.AbstractAutoRefreshDataSource t, string propertyName)
         {
-            RaisePropertyChanged(nameof(View));
+            View?.Refresh();
         }
 
         /// <summary>

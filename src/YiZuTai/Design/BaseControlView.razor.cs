@@ -1,11 +1,25 @@
 using System;
 using System.ComponentModel;
+using Microsoft.AspNetCore.Components;
 using YiZuTai.Source.DataSource;
 
 namespace YiZuTai.Design;
 
-public partial class BaseControlView<T_BaseControl> : IDisposable
+public partial class BaseControlView<T_BaseControl> : IControlView, IDisposable
 {
+    [Parameter]
+    public T_BaseControl Model { get; set; }
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    private ElementReference svgElementReference;
+    public string Id => svgElementReference.Id;
+
+    protected override void OnParametersSet()
+    {
+        Model.View = this;
+    }
+
     private INotifyPropertyChanging notifyPropertyChangingModel;
     private INotifyPropertyChanged notifyPropertyChangedModel;
     private Dictionary<string, DataSourceInfo> dataSourceInfoDict;
@@ -78,5 +92,10 @@ public partial class BaseControlView<T_BaseControl> : IDisposable
                     dataSource.PropertyChanged -= OnDataSource_PropertyChanged;
             }
         }
+    }
+
+    public void Refresh()
+    {
+        InvokeAsync(StateHasChanged);
     }
 }
