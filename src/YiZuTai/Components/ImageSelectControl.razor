@@ -1,44 +1,24 @@
-﻿@using Tewr.Blazor.FileReader
-@inject IFileReaderService fileReaderService;
-
-<ToastStack @ref="toastStack" />
-
-<div class="row">
+﻿<div class="row">
+    @if (OkAction != null)
+    {
+        <div class="btn-group">
+            @if (SelectedItem == null)
+            {
+                <button title="选择" type="button" class="btn btn-secondary" disabled>
+                    选择
+                </button>
+            }
+            else
+            {
+                <button title="选择" type="button" class="btn btn-secondary" @onclick="btnOk_Click">
+                    选择
+                </button>
+            }
+        </div>
+    }
     @if (Images != null)
     {
         <div class="card col-12 p-0 mt-2">
-            <div class="card-header p-0">
-                <div class="btn-toolbar justify-content-between">
-                    <div class="btn-group">
-                        <div class="btn btn-secondary">
-                            上传
-                            <input @ref="inputFile" id="inputFile" type="file" accept="@string.Join(',',imageFileSuffixHashSet)" style="width: 0px; visibility: collapse;" @onchange="onInputFileChanged">
-                            <label title="上传" style="position: absolute;top: 0;left: 0;right:0;margin:0;height:100%;cursor:pointer" for="inputFile">
-                            </label>
-                        </div>
-                        @if (SelectedItem != null)
-                        {
-                            <button title="下载" type="button" class="btn btn-secondary" @onclick="btnDownload_Click">
-                                下载
-                            </button>
-                            <button title="重命名" type="button" class="btn btn-secondary" @onclick="btnRename_Click">
-                                重命名
-                            </button>
-                            <button title="删除" type="button" class="btn btn-secondary" @onclick="btnDelete_Click">
-                                删除
-                            </button>
-                        }
-                    </div>
-                    @if (OkAction != null)
-                    {
-                        <div class="btn-group">
-                            <button title="选择" type="button" class="btn btn-primary @(SelectedItem == null?"disabled":null)" @onclick="btnOk_Click">
-                                选择
-                            </button>
-                        </div>
-                    }
-                </div>
-            </div>
             <div class="card-body">
                 <div class="row">
                     @if (Images != null)
@@ -47,8 +27,8 @@
                         {
                             <div class="col-4 col-sm-3 col-md-2 col-xl-1 m-1 p-0 align-self-end">
                                 <a href="javascript:;" title="大小：@getImageSize(id)"
-                       class="text-center list-group-item list-group-item-action border-0 p-1 @(SelectedItem == id ? "active" : "")"
-                       @onclick="@(e => SelectedItem = id)" @ondblclick="btnOk_Click">
+                                    class="text-center list-group-item list-group-item-action border-0 p-1 @(SelectedItem == id ? "active" : "")"
+                                    @onclick="@(e => SelectedItem = id)" @ondblclick="btnOk_Click">
                                     <img class="w-100 h-100" src="@Core.ZTFile.GetStaticResourceUrl(ZTFile.Id, id)" alt="@id">
                                     <span class="text-center">@id</span>
                                 </a>
@@ -60,7 +40,3 @@
         </div>
     }
 </div>
-
-<ModalLoading @ref="modalLoading" />
-<ModalAlert @ref="modalAlert" />
-<ModalPrompt @ref="modalPrompt" />

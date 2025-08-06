@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using Quick.Blazor.Bootstrap;
+using YiZuTai.Core;
 using YiZuTai.Design;
 
 namespace YiZuTai.Components
@@ -278,21 +279,12 @@ namespace YiZuTai.Components
             });
         }
 
-        // 图片管理
-        private void ImageManage()
-        {
-            modalWindow.Show("图片管理", new DialogParameters<ImageSelectControl>
-            {
-                {x => x.ZTFile, Model}
-            });
-        }
-
         // 文件管理
         private void FileManage()
         {
-            modalWindow.Show<FileManageControl>("文件管理", new DialogParameters<FileManageControl>
+            modalWindow.Show("文件管理", new DialogParameters<FileManageControl>
             {
-                {x => x.ZTFileId, Model.Id}
+                { x => x.ZTFile, Model}
             });
         }
 
