@@ -92,10 +92,11 @@ namespace YiZuTai.Design
         /// <summary>
         /// 当双击时
         /// </summary>
-        public virtual void OnDoubleClick()
+        public void OnDoubleClick()
         {
+            View.OnDoubleClick();
         }
-        
+
         /// <summary>
         /// 当拖放创建时
         /// </summary>

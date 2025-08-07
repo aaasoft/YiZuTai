@@ -31,18 +31,23 @@ else
     private ModalAlert modalAlert;
     private ModalWindow modalWindow;
 
-    private void onClick()
+    public static void Select(ModalWindow modalWindow,Core.ZTFile ztFile,string value,Action<string> setValueAction)
     {
         modalWindow.Show<ImageSelectControl>("选择图片", new DialogParameters<ImageSelectControl>
         {
-            { x => x.ZTFile, ZTFile},
-            { x => x.SelectedItem, Value},
+            { x => x.ZTFile, ztFile},
+            { x => x.SelectedItem, value},
             { x => x.OkAction, value =>
                 {
-                    Value = value;
+                    setValueAction( value);
                     modalWindow.Close();
                 }
             }
         });
+    }
+
+    private void onClick()
+    {
+        Select(modalWindow,ZTFile, Value,t=>Value=t);
     }
 }

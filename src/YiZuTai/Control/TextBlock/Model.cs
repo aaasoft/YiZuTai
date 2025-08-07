@@ -207,13 +207,6 @@ value   =>  当前值")]
         }
     }
 
-    /*
-    public override void OnDoubleClick()
-    {
-        showDataSourceWindow(Value, t => Value = t);
-    }
-    */
-
     public override void OnDragDropCreate(Point location)
     {
         base.OnDragDropCreate(location);
@@ -263,11 +256,6 @@ value   =>  当前值")]
                 nameof(TextVerticalOffset),
                 nameof(Image)
             }).ToArray();
-    }
-
-    public override void OnDoubleClick()
-    {
-        View.OnDoubleClick();
     }
 
     private Dictionary<IDataSource, ControlDataTrigger[]> cachedDataSourceTriggerDict = null;
