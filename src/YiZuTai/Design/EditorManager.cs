@@ -34,8 +34,16 @@
         {
             if (fieldType.IsEnum)
                 return typeof(Editor.EditorInputSelect);
+
+            if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
+                var genericArgument1 = fieldType.GetGenericArguments().FirstOrDefault();
+                if (genericArgument1.IsEnum)
+                    return typeof(Editor.EditorInputSelect_Nullable);
+            }
+                
             if (editorDict.ContainsKey(fieldType))
-                return editorDict[fieldType];
+                    return editorDict[fieldType];
             return typeof(Editor.EditorInputDisplay);
         }
     }

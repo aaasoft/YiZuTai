@@ -1,0 +1,37 @@
+﻿@inherits EditorBase<string>
+
+@if (StringValue == null)
+{
+    <span class="form-control">(未设置)</span>
+    <div class="input-group-append">
+        <button type="button" class="btn btn-outline-secondary" @onclick="@(e => StringValue = options.FirstOrDefault().Key)">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
+    </div>
+}
+else
+{
+    @if (IsEnum)
+    {
+        <InputSelect class="form-control" @bind-Value="StringValue">
+            @foreach (var option in options)
+            {
+                <option value="@option.Key">@option.Value</option>
+            }
+        </InputSelect>
+    }
+    else
+    {
+        <InputSelect class="form-control" @bind-Value="Value">
+            @foreach (var option in options)
+            {
+                <option value="@option.Key">@option.Value</option>
+            }
+        </InputSelect>
+    }
+    <div class="input-group-append">
+        <button type="button" class="btn btn-outline-danger" @onclick="@(e => Value = null)">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+        </button>
+    </div>
+}

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace YiZuTai.Design.Editor
 {
@@ -16,7 +12,13 @@ namespace YiZuTai.Design.Editor
         public string StringValue
         {
             get { return Field.Value.ToString(); }
-            set { Field.Value = Enum.Parse(Field.PropertyInfo.PropertyType, value); }
+            set
+            {
+                if (IsEnum)
+                    Field.Value = Enum.Parse(Field.PropertyInfo.PropertyType, value);
+                else
+                    Field.Value = value;
+            }
         }
 
         protected override void OnParametersSet()
