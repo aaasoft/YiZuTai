@@ -46,16 +46,15 @@ namespace YiZuTai.Components
             if (Model == null)
                 Model = Core.ZTFileManager.Instance.Get(Id);
             if (Project == null)
-            {
                 Project = Model.OpenProject();
-                ObjectConnection.ObjectConnectionManager.Instance.AddObject(Project);
-                ZTContext = new ZTContext()
-                {
-                    ZTFile = Model,
-                    Project = Project,
-                    DesignMode = false
-                };
-            }
+                
+            ObjectConnection.ObjectConnectionManager.Instance.AddObject(Project);
+            ZTContext = new ZTContext()
+            {
+                ZTFile = Model,
+                Project = Project,
+                DesignMode = false
+            };
         }
 
         protected override void OnAfterRender(bool firstRender)
