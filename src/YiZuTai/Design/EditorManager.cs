@@ -15,6 +15,7 @@
             editorDict[typeof(double)] = typeof(Editor.EditorInputNumber_Double);
             editorDict[typeof(decimal)] = typeof(Editor.EditorInputNumber_Decimal);
             editorDict[typeof(bool)] = typeof(Editor.EditorInputSwitch);
+            editorDict[typeof(bool?)] = typeof(Editor.EditorInputSwitch_Nullable);
         }
 
         /// <summary>

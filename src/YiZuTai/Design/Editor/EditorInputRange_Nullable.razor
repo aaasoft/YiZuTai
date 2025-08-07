@@ -4,15 +4,19 @@
 {
     <span class="form-control">(未设置)</span>
     <div class="input-group-append">
-        <button type="button" class="btn btn-outline-secondary" @onclick="@(e => Value = 1)"><i class="fa fa-plus" aria-hidden="true"></i></button>
+        <button type="button" class="btn btn-outline-secondary" @onclick="@(e => Value = 1)">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
     </div>
 }
 else
 {
-    <div class="form-control p-0 m-0">
+    <div class="form-control p-0 pl-1 pr-1 m-0">
         <input type="range" class="form-control p-0 m-0" min="@MinValue" max="@MaxValue" step="@Step" @bind-value="Value">
     </div>
     <div class="input-group-append">
-        <button type="button" class="btn btn-outline-danger" @onclick="@(e => Value = null)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+        <button type="button" class="btn btn-outline-danger" @onclick="@(e => Value = null)">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+        </button>
     </div>
 }
