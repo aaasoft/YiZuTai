@@ -36,7 +36,7 @@ else
             @foreach (var Item in Project.Controls)
             {
                 <g filter="#" transform="rotate(@Item.Angle @Item.CenterPointLocation.X, @Item.CenterPointLocation.Y) translate(0, 0) scale(1)">
-                    @Item.GetView(@Model.Id)
+                    @Item.GetView(@Model)
                 </g>
             }
         </svg>

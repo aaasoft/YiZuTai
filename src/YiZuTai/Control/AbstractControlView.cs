@@ -7,7 +7,9 @@ public abstract class AbstractControlView<TControl> : ComponentBase
     where TControl : BaseControl, new()
 {
     [Parameter]
-    public string ZTFileId { get; set; }
+    public bool DesignMode { get; set; } = false;
+    [Parameter]
+    public Core.ZTFile ZTFile { get; set; }
     [Parameter]
     public TControl ControlModel { get; set; }
 }

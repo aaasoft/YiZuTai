@@ -9,6 +9,9 @@ public partial class BaseControl_WithBackgroundAndAnimateView<T_BaseControl_With
     public T_BaseControl_WithBackgroundAndAnimate Model { get; set; }
     [Parameter]
     public RenderFragment ChildContent { get; set; }
+    [Parameter]
+    public bool DesignMode { get; set; } = false;
+
     [Inject]
     public IJSRuntime JSRuntime { get; set; }
     private ElementReference dataElementReference;
@@ -17,6 +20,8 @@ public partial class BaseControl_WithBackgroundAndAnimateView<T_BaseControl_With
 
     protected override void OnAfterRender(bool firstRender)
     {
+        if (DesignMode)
+            return;
         if (firstRender)
         {
             var svgElement = $"document.querySelector('[_bl_{ParentView.Id}]')";
@@ -67,7 +72,7 @@ setValueCallback: function (value) {{
     {
         Model.View = this;
     }
-    
+
     public void Refresh()
     {
         InvokeAsync(StateHasChanged);

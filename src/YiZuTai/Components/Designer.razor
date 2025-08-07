@@ -125,7 +125,7 @@ else
                             {
                                 <g transform="rotate(@Item.Angle @Item.CenterPointLocation.X, @Item.CenterPointLocation.Y) translate(0, 0) scale(1)"
                             @onmousedown="@(e => onControlMouseDown(e,Item))">
-                                    @Item.GetView(@Model.Id)
+                                    @Item.GetView(@Model,true)
                                 </g>
                             }
                             <g transform="rotate(@SelectedItem.Angle @SelectedItem.CenterPointLocation.X, @SelectedItem.CenterPointLocation.Y) translate(0, 0) scale(1)"

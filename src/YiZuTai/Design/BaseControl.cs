@@ -307,13 +307,14 @@ y0= (x - rx0)*sin(a) + (y - ry0)*cos(a) + ry0 ;
 
         protected abstract Type GetViewType();
 
-        public virtual RenderFragment GetView(string ZTFileId)
+        public virtual RenderFragment GetView(Core.ZTFile ZTFile, bool designMode = false)
         {
             var viewType = GetViewType();
             return BlazorUtils.GetRenderFragment(viewType, new Dictionary<string, object>()
             {
                 ["ControlModel"] = this,
-                ["ZTFileId"] = ZTFileId
+                ["ZTFile"] = ZTFile,
+                ["DesignMode"] = designMode
             });
         }
 
