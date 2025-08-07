@@ -17,8 +17,7 @@ namespace YiZuTai.Source.DataSource
             if (controlConnectionInfo == null)
                 return;
 
-            if (control.GetHasBussinesToDispayProperties().Contains(controlConnectionInfo.NotifyPropertyName))
-                control.OnDataSourceValueChanged(t, propertyName);
+            control.OnDataSourceValueChanged(t, propertyName);
         }
 
         public override void NewValueHandle(AbstractAutoRefreshDataSource t)
