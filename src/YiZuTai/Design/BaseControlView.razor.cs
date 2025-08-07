@@ -7,6 +7,8 @@ public partial class BaseControlView<T_BaseControl> : IControlView
     [Parameter]
     public T_BaseControl Model { get; set; }
     [Parameter]
+    public bool DesignMode { get; set; } = false;
+    [Parameter]
     public RenderFragment ChildContent { get; set; }
 
     private ElementReference svgElementReference;

@@ -1,11 +1,11 @@
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using Newtonsoft.Json;
 using Quick.Xml;
 using YiZuTai.Design;
 using YiZuTai.Design.Editor;
 using YiZuTai.Design.Enums;
+using YiZuTai.Design.Trigger;
 using YiZuTai.Source.DataSource;
 
 namespace YiZuTai.Control.TextBlock;
@@ -15,7 +15,7 @@ namespace YiZuTai.Control.TextBlock;
 public class Model : BaseControl_WithBackgroundAndAnimate
 {
     protected override Type GetViewType() => typeof(View);
-    
+
     public Model()
     {
         Border = "#000000";
@@ -235,6 +235,20 @@ value   =>  当前值")]
         }
     }
 
+    private ObservableCollection<DataSourceAndTrigger<Trigger>> _DataSourceAndTriggers = new ObservableCollection<DataSourceAndTrigger<Trigger>>();
+    [Category("数据源与触发器")]
+    [DisplayName("更多")]
+    [Editor(typeof(CollectionEditor), typeof(CollectionEditor))]
+    public ObservableCollection<DataSourceAndTrigger<Trigger>> DataSourceAndTriggers
+    {
+        get { return _DataSourceAndTriggers; }
+        set
+        {
+            _DataSourceAndTriggers = value;
+            RaisePropertyChanged(nameof(DataSourceAndTriggers));
+        }
+    }
+
     public override string[] GetHasBussinesToDispayProperties()
     {
         return base.GetHasBussinesToDispayProperties().Concat(new string[]
@@ -249,5 +263,23 @@ value   =>  当前值")]
                 nameof(TextVerticalOffset),
                 nameof(Image)
             }).ToArray();
+    }
+
+    private Dictionary<IDataSource, ControlDataTrigger[]> cachedDataSourceTriggerDict = null;
+    protected override Dictionary<IDataSource, ControlDataTrigger[]> GetDataSourceTriggerDict()
+    {
+        if (cachedDataSourceTriggerDict == null)
+        {
+            cachedDataSourceTriggerDict = new();
+            if (Value != null && ValueTriggers.Count > 0)
+                cachedDataSourceTriggerDict[Value] = ValueTriggers.ToArray();
+            foreach (var item in DataSourceAndTriggers)
+            {
+                if (item.DataSource == null || item.Triggers.Count == 0)
+                    continue;
+                cachedDataSourceTriggerDict[item.DataSource] = item.Triggers.ToArray();
+            }
+        }
+        return cachedDataSourceTriggerDict;
     }
 }

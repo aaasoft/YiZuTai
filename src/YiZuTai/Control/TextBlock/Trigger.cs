@@ -1,5 +1,5 @@
-using System;
 using System.ComponentModel;
+using YiZuTai.Design;
 using YiZuTai.Design.Editor;
 using YiZuTai.Design.Trigger;
 
@@ -81,5 +81,20 @@ value   =>  当前值")]
             _FlashInterval = value;
             RaisePropertyChanged(nameof(FlashInterval));
         }
+    }
+
+    public override void Execute(BaseControl controlModel)
+    {
+        var model = (Model)controlModel;
+        if (!string.IsNullOrEmpty(Format))
+            model.Format = Format;
+        if (!string.IsNullOrEmpty(Foreground))
+            model.Foreground = Foreground;
+        if (!string.IsNullOrEmpty(Background))
+            model.Background = Background;
+        if (RotateSpeed != null)
+            model.RotateSpeed = RotateSpeed.Value;
+        if (FlashInterval != null)
+            model.FlashInterval = FlashInterval.Value;
     }
 }

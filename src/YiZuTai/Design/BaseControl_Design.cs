@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using YiZuTai.Components;
+using YiZuTai.Design.Trigger;
+using YiZuTai.Source.DataSource;
 
 namespace YiZuTai.Design
 {
@@ -67,8 +69,24 @@ namespace YiZuTai.Design
         /// </summary>
         public virtual void OnDataSourceValueChanged(Source.DataSource.AbstractAutoRefreshDataSource t, string propertyName)
         {
+            if (View == null)
+                return;
             View?.Refresh();
+            if (View.DesignMode)
+                return;
+            var dict = GetDataSourceTriggerDict();
+            if (dict == null || dict.Count == 0)
+                return;
+            if (!dict.TryGetValue(t, out var triggers))
+                return;
+            foreach (var trigger in triggers)
+            {
+                if (trigger.IsMatchValue(t.Value))
+                    trigger.Execute(this);
+            }
         }
+
+        protected virtual Dictionary<IDataSource, ControlDataTrigger[]> GetDataSourceTriggerDict() => null;
 
         /// <summary>
         /// 当拖放创建时

@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using YiZuTai.ViewModel;
 
 namespace YiZuTai.Design.Trigger
@@ -7,7 +6,7 @@ namespace YiZuTai.Design.Trigger
     /// <summary>
     /// 值触发器
     /// </summary>
-    public class ControlDataTrigger : PropertyNotifyModel
+    public abstract class ControlDataTrigger : PropertyNotifyModel
     {
         private string _Operater = "==";
         [Category("触发条件")]
@@ -36,31 +35,6 @@ namespace YiZuTai.Design.Trigger
                 _Value = value;
                 RaisePropertyChanged(nameof(Value));
             }
-        }
-
-        /// <summary>
-        /// 根据当前值获取值
-        /// </summary>
-        /// <typeparam name="TTrigger"></typeparam>
-        /// <typeparam name="TValue"></typeparam>
-        /// <param name="triggers"></param>
-        /// <param name="value"></param>
-        /// <param name="func"></param>
-        /// <param name="defaultValue"></param>
-        /// <returns></returns>
-        public static TValue GetCurrentValue<TTrigger, TValue>(
-            ICollection<TTrigger> triggers,
-            string value,
-            Func<TTrigger, TValue> func,
-            TValue defaultValue)
-            where TTrigger : ControlDataTrigger
-        {
-            if (value == null || triggers.Count == 0)
-                return defaultValue;
-            foreach (var trigger in triggers)
-                if (trigger.IsMatchValue(value))
-                    return func.Invoke(trigger);
-            return defaultValue;
         }
 
         public bool IsMatchValue(string value)
@@ -95,7 +69,9 @@ namespace YiZuTai.Design.Trigger
             catch { }
             return false;
         }
-        public string ToJson() => JsonConvert.SerializeObject(this);
+
+        public abstract void Execute(BaseControl controlModel);
+
         //public override string ToString() => $"{OperaterItemsSource.Instance.GetDisplayName(Operater)} {Value}";
         public override string ToString() => $"{Operater} {Value}";
     }

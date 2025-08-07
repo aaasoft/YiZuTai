@@ -3,7 +3,7 @@
 
 @typeparam T_BaseControl_WithBackgroundAndAnimate where T_BaseControl_WithBackgroundAndAnimate : BaseControl_WithBackgroundAndAnimate, new()
 
-<BaseControl_WithBackgroundView T_BaseControl_WithBackground="T_BaseControl_WithBackgroundAndAnimate" Model="Model" @ref="ParentView">
+<BaseControl_WithBackgroundView T_BaseControl_WithBackground="T_BaseControl_WithBackgroundAndAnimate" Model="Model" DesignMode="DesignMode" @ref="ParentView">
     <!--数据部分-->
     <g @ref="dataElementReference" data-Angle="@Model.Angle"
         data-FlashInterval="@Model.FlashInterval"     

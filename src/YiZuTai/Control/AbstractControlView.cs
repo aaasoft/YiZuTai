@@ -12,4 +12,6 @@ public abstract class AbstractControlView<TControl> : ComponentBase
     public Core.ZTFile ZTFile { get; set; }
     [Parameter]
     public TControl ControlModel { get; set; }
+
+    
 }

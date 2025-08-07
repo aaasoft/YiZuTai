@@ -4,6 +4,8 @@ using Quick.Blazor.Bootstrap.Utils;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using YiZuTai.Control;
+using YiZuTai.Design.Trigger;
+using YiZuTai.Source.DataSource;
 using YiZuTai.ViewModel;
 
 namespace YiZuTai.Design
