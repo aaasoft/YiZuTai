@@ -1,16 +1,18 @@
 ﻿@inherits EditorBase<double?>
 
-@if(Value==null)
+@if (Value == null)
 {
-    <span class="form-control">(空)</span>
+    <span class="form-control">(未设置)</span>
     <div class="input-group-append">
-        <button type="button" class="btn btn-outline-secondary" @onclick="@(e => Value = 1)">+</button>
+        <button type="button" class="btn btn-outline-secondary" @onclick="@(e => Value = 1)"><i class="fa fa-plus" aria-hidden="true"></i></button>
     </div>
 }
 else
 {
-    <input type="range" class="form-control p-0 m-0" min="@MinValue" max="@MaxValue" step="@Step" @bind-value="Value">
+    <div class="form-control p-0 m-0">
+        <input type="range" class="form-control p-0 m-0" min="@MinValue" max="@MaxValue" step="@Step" @bind-value="Value">
+    </div>
     <div class="input-group-append">
-        <button type="button" class="btn btn-outline-danger" @onclick="@(e => Value = null)">X</button>
+        <button type="button" class="btn btn-outline-danger" @onclick="@(e => Value = null)"><i class="fa fa-trash" aria-hidden="true"></i></button>
     </div>
 }

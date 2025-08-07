@@ -73,7 +73,7 @@ value   =>  当前值")]
     }
 
     //默认为宋体
-    private string _FontFamily = "Microsoft YaHei";
+    private string _FontFamily;
     [Category("文本")]
     [DisplayName("字体")]
     [Description("文字的字体")]
@@ -167,7 +167,7 @@ value   =>  当前值")]
 
     [JsonIgnore]
     [Browsable(false)]
-    public string Text => XmlConvert.Escape(Format.Replace("{value}", Value?.Value ?? ""));
+    public string Text => string.IsNullOrEmpty(Format) ? null : XmlConvert.Escape(Format.Replace("{value}", Value?.Value ?? ""));
 
     [JsonIgnore]
     public double TextX
