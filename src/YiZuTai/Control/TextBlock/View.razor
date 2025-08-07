@@ -6,11 +6,11 @@
 @inherits AbstractControlView<Model>
 
 <YiZuTai.Design.BaseControl_WithBackgroundAndAnimateView T_BaseControl_WithBackgroundAndAnimate="Model"
-      Model="ControlModel" DesignMode="@DesignMode">
+      Model="ControlModel" DesignMode="@ZTContext.DesignMode">
       <!--图片部分-->
       <g data-Angle="@ControlModel.Angle">
-            <image href="@Core.ZTFile.GetStaticResourceUrl(ZTFile.Id, ControlModel.Image)" width="@ControlModel.Width"
-                  height="@ControlModel.Height" preserveAspectRatio="none"></image>
+            <image href="@Core.ZTFile.GetStaticResourceUrl(ZTContext.ZTFile.Id, ControlModel.Image)"
+                  width="@ControlModel.Width" height="@ControlModel.Height" preserveAspectRatio="none"></image>
       </g>
       <!--文本部分-->
       <g>
@@ -21,12 +21,11 @@
       </g>
 </YiZuTai.Design.BaseControl_WithBackgroundAndAnimateView>
 
-<ModalWindow @ref="modalWindow" />
 @code
 {
-    private ModalWindow modalWindow;
-    public override void OnDoubleClick()
-    {
-        SourceTypeEditor.Select(modalWindow, ControlModel.Value, typeof(IDataSource), t => ControlModel.Value = (IDataSource)t);
-    }
+      public override void OnDoubleClick()
+      {
+            SourceTypeEditor.Select(ZTContext.ModalWindow, ControlModel.Value, typeof(IDataSource), t => ControlModel.Value =
+            (IDataSource)t);
+      }
 }

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using YiZuTai.Core;
 using YiZuTai.Design;
 
 namespace YiZuTai.Control;
@@ -7,9 +8,7 @@ public abstract class AbstractControlView<TControl> : ComponentBase, IControlVie
     where TControl : BaseControl, new()
 {
     [Parameter]
-    public bool DesignMode { get; set; } = false;
-    [Parameter]
-    public Core.ZTFile ZTFile { get; set; }
+    public ZTContext ZTContext { get; set; }
     [Parameter]
     public TControl ControlModel { get; set; }
 

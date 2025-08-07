@@ -15,11 +15,7 @@
 else
 {
     <CascadingValue Value="Model">
-    <ModalLoading @ref="modalLoading" />
-    <ToastStack @ref="toastStack" />
-    <ModalPrompt @ref="modalPrompt" />
-    <ModalAlert @ref="modalAlert" />
-    <ModalWindow DialogSizeExtraLarge @ref="modalWindow" />
+    
     <!--顶部菜单部分-->
     <div class="row">
         <div class="col-12 p-0 pt-1 pb-1">
@@ -126,7 +122,7 @@ else
                                 <g transform="rotate(@Item.Angle @Item.CenterPointLocation.X, @Item.CenterPointLocation.Y) translate(0, 0) scale(1)"
                             @onmousedown="@(e => onControlMouseDown(e,Item))"
                             @ondblclick="@(e=>Item.OnDoubleClick())">
-                                    @Item.GetView(@Model,true)
+                                    @Item.GetView(@ZTContext)
                                 </g>
                             }
                             <g transform="rotate(@SelectedItem.Angle @SelectedItem.CenterPointLocation.X, @SelectedItem.CenterPointLocation.Y) translate(0, 0) scale(1)"
@@ -237,4 +233,10 @@ else
         </div>
     </div>
     </CascadingValue>
+
+    <ModalLoading @ref="modalLoading" />
+    <ToastStack @ref="toastStack" />
+    <ModalPrompt @ref="modalPrompt" />
+    <ModalAlert @ref="modalAlert" />
+    <ModalWindow DialogSizeExtraLarge @ref="modalWindow" />
 }

@@ -72,7 +72,7 @@ namespace YiZuTai.Design
             if (View == null)
                 return;
             View?.Refresh();
-            if (View.DesignMode)
+            if (View.ZTContext.DesignMode)
                 return;
             var dict = GetDataSourceTriggerDict();
             if (dict == null || dict.Count == 0)

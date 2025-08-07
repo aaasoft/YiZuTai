@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using Quick.Blazor.Bootstrap;
+using YiZuTai.Core;
 using YiZuTai.Design;
 
 namespace YiZuTai.Components
@@ -61,6 +62,8 @@ namespace YiZuTai.Components
         public Project Project { get; private set; }
         public Canvas Canvas => Project.Canvas;
 
+        private ZTContext ZTContext;
+
         private bool isWindowOnbeforeUnloadEventAdded = false;
         private BaseControl _SelectedItem;
         private BaseControl SelectedItem
@@ -109,12 +112,21 @@ namespace YiZuTai.Components
                 control.PropertyChanged += Control_PropertyChanged;
             Project.Controls.CollectionChanged += Controls_CollectionChanged;
             SelectedItem = Canvas;
+            ZTContext = new ZTContext()
+            {
+                ZTFile = Model,
+                Project = Project,
+                DesignMode = true
+            };
         }
 
         protected override void OnAfterRender(bool firstRender)
         {
             if (firstRender)
+            {
                 Task.Delay(100).ContinueWith(t => refreshTitle());
+                ZTContext.ModalWindow = modalWindow;
+            }
         }
 
         private void refreshTitle()

@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Quick.Blazor.Bootstrap;
+using YiZuTai.Core;
 using YiZuTai.Design;
 
 namespace YiZuTai.Components
@@ -15,6 +17,10 @@ namespace YiZuTai.Components
         public Project Project { get; set; }
 
         public Canvas Canvas => Project.Canvas;
+
+        private ModalWindow modalWindow;
+
+        private ZTContext ZTContext;
 
         private string preserveAspectRatio
         {
@@ -43,9 +49,23 @@ namespace YiZuTai.Components
             {
                 Project = Model.OpenProject();
                 ObjectConnection.ObjectConnectionManager.Instance.AddObject(Project);
+                ZTContext = new ZTContext()
+                {
+                    ZTFile = Model,
+                    Project = Project,
+                    DesignMode = false
+                };
             }
         }
-        
+
+        protected override void OnAfterRender(bool firstRender)
+        {
+            if (firstRender)
+            {
+                ZTContext.ModalWindow = modalWindow;
+            }
+        }
+
         public void Dispose()
         {
             ObjectConnection.ObjectConnectionManager.Instance.RemoveObject(Project);

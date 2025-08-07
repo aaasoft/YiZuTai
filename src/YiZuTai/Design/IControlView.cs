@@ -1,10 +1,11 @@
 using System;
+using YiZuTai.Core;
 
 namespace YiZuTai.Design;
 
 public interface IControlView
 {
-    bool DesignMode { get; }
+    ZTContext ZTContext { get; }
 
     /// <summary>
     /// 双击控件时

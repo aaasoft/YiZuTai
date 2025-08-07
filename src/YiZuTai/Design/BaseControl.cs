@@ -4,6 +4,7 @@ using Quick.Blazor.Bootstrap.Utils;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using YiZuTai.Control;
+using YiZuTai.Core;
 using YiZuTai.Design.Trigger;
 using YiZuTai.Source.DataSource;
 using YiZuTai.ViewModel;
@@ -309,14 +310,13 @@ y0= (x - rx0)*sin(a) + (y - ry0)*cos(a) + ry0 ;
 
         protected abstract Type GetViewType();
 
-        public virtual RenderFragment GetView(Core.ZTFile ZTFile, bool designMode = false)
+        public virtual RenderFragment GetView(ZTContext context)
         {
             var viewType = GetViewType();
             return BlazorUtils.GetRenderFragment(viewType, new Dictionary<string, object>()
             {
                 ["ControlModel"] = this,
-                ["ZTFile"] = ZTFile,
-                ["DesignMode"] = designMode
+                [nameof(ZTContext)] = context
             });
         }
 

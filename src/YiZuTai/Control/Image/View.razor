@@ -1,10 +1,10 @@
 ﻿@inherits AbstractControlView<Model>
 
 <YiZuTai.Design.BaseControl_WithBackgroundAndAnimateView T_BaseControl_WithBackgroundAndAnimate="Model"
-    Model="@ControlModel" DesignMode="@DesignMode">
+    Model="@ControlModel" DesignMode="@ZTContext.DesignMode">
     <!--图片部分-->
     <g data-Angle="@ControlModel.Angle">
-        <image href="@Core.ZTFile.GetStaticResourceUrl(ZTFile.Id, ControlModel.Image)" width="@ControlModel.Width"
+        <image href="@Core.ZTFile.GetStaticResourceUrl(ZTContext.ZTFile.Id, ControlModel.Image)" width="@ControlModel.Width"
             height="@ControlModel.Height" preserveAspectRatio="none"></image>
     </g>
 </YiZuTai.Design.BaseControl_WithBackgroundAndAnimateView>
