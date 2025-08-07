@@ -8,7 +8,7 @@ namespace YiZuTai.Control.Image
     public class Model : BaseControl_WithBackgroundAndAnimate
     {
         protected override Type GetViewType() => typeof(View);
-        
+
         private string _Image;
         [Category("数据")]
         [DisplayName("图片")]
@@ -24,10 +24,13 @@ namespace YiZuTai.Control.Image
             }
         }
 
-        public Model()
+        public override void OnDragDropCreate(Point location)
         {
-            Width = Height = 60;
+            base.OnDragDropCreate(location);
+            Width = 160;
+            Height = 120;
             BackgroundOpacity = 0;
+            Image = $"../../../_content/{nameof(YiZuTai)}/default_image.svg";
         }
     }
 }
