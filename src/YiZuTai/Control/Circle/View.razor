@@ -1,5 +1,27 @@
-﻿<YiZuTai.Design.BaseControlView T_BaseControl="Model" Model="Model">
-        <circle fill="@Model.Background" fill-opacity="@Model.BackgroundOpacity"
-                stroke="@Model.Border" stroke-opacity="@Model.BorderOpacity" stroke-width="@Model.BorderThickness"
-                cx="@cx" cy="@cy" r="@r" />
+﻿@inherits AbstractControlView<Model>
+
+<YiZuTai.Design.BaseControlView T_BaseControl="Model" Model="ControlModel">
+        <circle fill="@ControlModel.Background" fill-opacity="@ControlModel.BackgroundOpacity"
+                stroke="@ControlModel.Border" stroke-opacity="@ControlModel.BorderOpacity"
+                stroke-width="@ControlModel.BorderThickness" cx="@cx" cy="@cy" r="@r" />
 </YiZuTai.Design.BaseControlView>
+
+@code
+{
+        public double cx => ControlModel.Width / 2;
+        public double cy => ControlModel.Height / 2;
+        public double r
+        {
+                get
+                {
+                        double tmpR = 0;
+                        var rx = ControlModel.Width / 2 - ControlModel.BorderThickness;
+                        var ry = ControlModel.Height / 2 - ControlModel.BorderThickness;
+                        if (rx > ry)
+                                tmpR = ry;
+                        else
+                                tmpR = rx;
+                        return tmpR;
+                }
+        }
+}

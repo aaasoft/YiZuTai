@@ -1,8 +1,12 @@
-﻿<YiZuTai.Design.BaseControl_WithBackgroundAndAnimateView T_BaseControl_WithBackgroundAndAnimate="Model" Model="Model">
+﻿@inherits AbstractControlView<Model>
+
+<YiZuTai.Design.BaseControl_WithBackgroundAndAnimateView T_BaseControl_WithBackgroundAndAnimate="Model"
+      Model="ControlModel">
       <!--文本部分-->
       <g>
-            <text fill="@Model.Foreground" x="@Model.TextX" y="@Model.TextY" font-size="@Model.FontSize"
-                  font-weight="@Model.FontWeight" font-family="@Model.FontFamily" text-anchor="@Model.TextAnchor"
-                  xml:space="preserve">@Model.Text</text>
+            <text fill="@ControlModel.Foreground" x="@ControlModel.TextX" y="@ControlModel.TextY"
+                  font-size="@ControlModel.FontSize" font-weight="@ControlModel.FontWeight"
+                  font-family="@ControlModel.FontFamily" text-anchor="@ControlModel.TextAnchor"
+                  xml:space="preserve">@ControlModel.Text</text>
       </g>
 </YiZuTai.Design.BaseControl_WithBackgroundAndAnimateView>

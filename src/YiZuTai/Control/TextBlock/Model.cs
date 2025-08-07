@@ -14,6 +14,8 @@ namespace YiZuTai.Control.TextBlock;
 [DisplayName("文本")]
 public class Model : BaseControl_WithBackgroundAndAnimate
 {
+    protected override Type GetViewType() => typeof(View);
+    
     public Model()
     {
         Border = "#000000";

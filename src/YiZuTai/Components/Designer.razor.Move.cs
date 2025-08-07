@@ -22,6 +22,11 @@ namespace YiZuTai.Components
                 Angle = model.Angle;
                 MouseLocation = mouseLocation;
             }
+
+            protected override Type GetViewType()
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private double resize_box_width = 7;

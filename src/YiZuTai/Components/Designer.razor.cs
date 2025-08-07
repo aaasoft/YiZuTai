@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using Quick.Blazor.Bootstrap;
-using YiZuTai.Core;
 using YiZuTai.Design;
 
 namespace YiZuTai.Components

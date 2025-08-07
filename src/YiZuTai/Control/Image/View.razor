@@ -1,7 +1,9 @@
-﻿<YiZuTai.Design.BaseControl_WithBackgroundAndAnimateView T_BaseControl_WithBackgroundAndAnimate="Model" Model="@Model">
+﻿@inherits AbstractControlView<Model>
+
+<YiZuTai.Design.BaseControl_WithBackgroundAndAnimateView T_BaseControl_WithBackgroundAndAnimate="Model" Model="@ControlModel">
     <!--图片部分-->
-    <g data-Angle="@Model.Angle">
-        <image href="@Core.ZTFile.GetStaticResourceUrl(ZTFileId, Model.Image)"
-               width="@Model.Width" height="@Model.Height" preserveAspectRatio="none"></image>
+    <g data-Angle="@ControlModel.Angle">
+        <image href="@Core.ZTFile.GetStaticResourceUrl(ZTFileId, ControlModel.Image)"
+               width="@ControlModel.Width" height="@ControlModel.Height" preserveAspectRatio="none"></image>
     </g>
 </YiZuTai.Design.BaseControl_WithBackgroundAndAnimateView>

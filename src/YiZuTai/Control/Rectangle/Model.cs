@@ -7,6 +7,8 @@ namespace YiZuTai.Control.Rectangle
     [DisplayName("矩形")]
     public class Model : BaseControl_WithBackground
     {
+        protected override Type GetViewType() => typeof(View);
+        
         public Model()
         {
             Border = "#000000";

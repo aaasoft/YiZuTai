@@ -8,8 +8,6 @@ namespace YiZuTai.Design
 {
     public class Canvas : BaseControl_WithBackground
     {
-        public override bool IsCanvasControl => true;
-
         [JsonIgnore]
         [Browsable(false)]
         public override string Name => "画布";
@@ -141,6 +139,11 @@ namespace YiZuTai.Design
             Width = 800;
             Height = 600;
             Background = "#a9a9a9";
+        }
+
+        protected override Type GetViewType()
+        {
+            throw new NotImplementedException();
         }
     }
 }

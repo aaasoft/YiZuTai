@@ -7,6 +7,8 @@ namespace YiZuTai.Control.Image
     [DisplayName("图片")]
     public class Model : BaseControl_WithBackgroundAndAnimate
     {
+        protected override Type GetViewType() => typeof(View);
+        
         private string _Image;
         [Category("数据")]
         [DisplayName("图片")]

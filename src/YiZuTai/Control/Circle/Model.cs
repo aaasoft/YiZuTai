@@ -7,6 +7,8 @@ namespace YiZuTai.Control.Circle
     [DisplayName("圆形")]
     public class Model : BaseControl_WithBackground
     {
+        protected override Type GetViewType() => typeof(View);
+        
         public Model()
         {
             Border = "#000000";

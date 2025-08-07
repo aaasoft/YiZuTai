@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Quick.Blazor.Bootstrap.Utils;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using YiZuTai.Control;
 using YiZuTai.ViewModel;
 
 namespace YiZuTai.Design
@@ -304,22 +305,15 @@ y0= (x - rx0)*sin(a) + (y - ry0)*cos(a) + ry0 ;
         [Browsable(false)]
         public virtual Point MoveLocationOffset { get; set; }
 
-        [JsonIgnore]
-        [Browsable(false)]
-        public virtual bool IsCanvasControl => false;
+        protected abstract Type GetViewType();
 
         public virtual RenderFragment GetView(string ZTFileId)
         {
-            var modelType = this.GetType();
-            var assembly = modelType.Assembly;
-            var viewTypeName = modelType.FullName.Substring(0, modelType.FullName.Length - modelType.Name.Length) + "View";
-            var viewType = assembly.GetType(viewTypeName);
-            if (viewType == null)
-                return null;
+            var viewType = GetViewType();
             return BlazorUtils.GetRenderFragment(viewType, new Dictionary<string, object>()
             {
-                [modelType.Name] = this,
-                [nameof(ZTFileId)] = ZTFileId
+                ["ControlModel"] = this,
+                ["ZTFileId"] = ZTFileId
             });
         }
 
