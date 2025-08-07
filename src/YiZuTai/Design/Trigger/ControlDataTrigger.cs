@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel;
+using System.Reflection;
+using YiZuTai.Design.Enums;
 using YiZuTai.ViewModel;
 
 namespace YiZuTai.Design.Trigger
@@ -8,13 +10,12 @@ namespace YiZuTai.Design.Trigger
     /// </summary>
     public abstract class ControlDataTrigger : PropertyNotifyModel
     {
-        private string _Operater = "==";
+        private Operators _Operater = Operators.EqualTo;
         [Category("触发条件")]
         [DisplayName("运算符")]
         [Description(@"运算符，实时值在运算符左侧，设定值在运算符右侧。
 其中大于、大于等于、小于、小于等于是数字判断，其他操作符是字符串判断。")]
-        //[ItemsSource(typeof(OperaterItemsSource))]
-        public string Operater
+        public Operators Operater
         {
             get { return _Operater; }
             set
@@ -41,13 +42,13 @@ namespace YiZuTai.Design.Trigger
         {
             switch (Operater)
             {
-                case "==":
+                case Operators.EqualTo:
                     return Value == value;
-                case "!=":
+                case Operators.NotEqualTo:
                     return Value != value;
-                case "contains":
+                case Operators.Contains:
                     return value != null && value.Contains(Value);
-                case "not contains":
+                case Operators.NotContains:
                     return value != null && !value.Contains(Value);
             }
             try
@@ -56,13 +57,13 @@ namespace YiZuTai.Design.Trigger
                 double setValue = double.Parse(Value);
                 switch (Operater)
                 {
-                    case ">":
+                    case Operators.GreaterThan:
                         return currentValue > setValue;
-                    case ">=":
+                    case Operators.GreaterThanOrEqualTo:
                         return currentValue >= setValue;
-                    case "<":
+                    case Operators.LessThan:
                         return currentValue < setValue;
-                    case "<=":
+                    case Operators.LessThanOrEqualTo:
                         return currentValue <= setValue;
                 }
             }
@@ -72,7 +73,10 @@ namespace YiZuTai.Design.Trigger
 
         public abstract void Execute(BaseControl controlModel);
 
-        //public override string ToString() => $"{OperaterItemsSource.Instance.GetDisplayName(Operater)} {Value}";
-        public override string ToString() => $"{Operater} {Value}";
+        public override string ToString()
+        {
+            var displayName = typeof(Operators).GetMember(Operater.ToString())[0].GetCustomAttribute<DescriptionAttribute>();
+            return $"{displayName.Description} {Value}";
+        }
     }
 }
