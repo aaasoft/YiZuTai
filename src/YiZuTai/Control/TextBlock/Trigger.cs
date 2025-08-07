@@ -6,7 +6,7 @@ using YiZuTai.Source.DataSource;
 
 namespace YiZuTai.Control.TextBlock;
 
-public class Trigger : ControlDataTrigger
+public class Trigger : BaseControl_WithBackgroundAndAnimateTrigger
 {
     private string _Format;
     [Category("文本")]
@@ -40,63 +40,15 @@ value   =>  当前值")]
         }
     }
 
-    private string _Background;
-    [Category("背景")]
-    [DisplayName("背景颜色")]
-    [Description("控件的背景颜色")]
-    [Editor(typeof(EditorInputColor), typeof(string))]
-    public virtual string Background
-    {
-        get { return _Background; }
-        set
-        {
-            _Background = value;
-            RaisePropertyChanged(nameof(Background));
-        }
-    }
-
-
-    private double? _RotateSpeed;
-    [Category("动画")]
-    [DisplayName("旋转速度")]
-    [Description("控件旋转的速度")]
-    public double? RotateSpeed
-    {
-        get { return _RotateSpeed; }
-        set
-        {
-            _RotateSpeed = value;
-            RaisePropertyChanged(nameof(RotateSpeed));
-        }
-    }
-
-    private int? _FlashInterval;
-    [Category("动画")]
-    [DisplayName("闪烁间隔")]
-    [Description("控件闪烁的间隔，单位：毫秒")]
-    public int? FlashInterval
-    {
-        get { return _FlashInterval; }
-        set
-        {
-            _FlashInterval = value;
-            RaisePropertyChanged(nameof(FlashInterval));
-        }
-    }
-
     public override void Execute(BaseControl controlModel)
     {
+        base.Execute(controlModel);
+
         var model = (Model)controlModel;
         if (!string.IsNullOrEmpty(Format))
             model.Format = Format;
         if (!string.IsNullOrEmpty(Foreground))
             model.Foreground = Foreground;
-        if (!string.IsNullOrEmpty(Background))
-            model.Background = Background;
-        if (RotateSpeed != null)
-            model.RotateSpeed = RotateSpeed.Value;
-        if (FlashInterval != null)
-            model.FlashInterval = FlashInterval.Value;
     }
 }
 

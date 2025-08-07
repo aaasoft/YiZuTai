@@ -24,7 +24,10 @@ public partial class CollectionEditor
             { x => x.ValueType, valueType},
             { x => x.OkAction, value=>
                 {
-                    Field.Value = value;
+                    var newList = (IList)Activator.CreateInstance(Field.PropertyInfo.PropertyType);
+                    foreach(var item in value)
+                        newList.Add(item);
+                    Field.Value = newList;
                     modalWindow.Close();
                 }
             }

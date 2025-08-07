@@ -1,0 +1,16 @@
+﻿@inherits EditorBase<double?>
+
+@if(Value==null)
+{
+    <span class="form-control">(空)</span>
+    <div class="input-group-append">
+        <button type="button" class="btn btn-outline-secondary" @onclick="@(e => Value = 1)">+</button>
+    </div>
+}
+else
+{
+    <input type="range" class="form-control p-0 m-0" min="@MinValue" max="@MaxValue" step="@Step" @bind-value="Value">
+    <div class="input-group-append">
+        <button type="button" class="btn btn-outline-danger" @onclick="@(e => Value = null)">X</button>
+    </div>
+}
