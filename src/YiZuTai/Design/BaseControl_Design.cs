@@ -88,6 +88,14 @@ namespace YiZuTai.Design
 
         protected virtual Dictionary<IDataSource, ControlDataTrigger[]> GetDataSourceTriggerDict() => null;
 
+
+        /// <summary>
+        /// 当双击时
+        /// </summary>
+        public virtual void OnDoubleClick()
+        {
+        }
+        
         /// <summary>
         /// 当拖放创建时
         /// </summary>

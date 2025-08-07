@@ -3,7 +3,7 @@ using YiZuTai.Design;
 
 namespace YiZuTai.Control;
 
-public abstract class AbstractControlView<TControl> : ComponentBase
+public abstract class AbstractControlView<TControl> : ComponentBase, IControlView
     where TControl : BaseControl, new()
 {
     [Parameter]
@@ -13,5 +13,15 @@ public abstract class AbstractControlView<TControl> : ComponentBase
     [Parameter]
     public TControl ControlModel { get; set; }
 
-    
+    protected override void OnParametersSet()
+    {
+        ControlModel.View = this;
+    }
+
+    public void Refresh()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public virtual void OnDoubleClick() { }
 }

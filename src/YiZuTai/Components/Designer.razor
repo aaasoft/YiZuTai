@@ -124,12 +124,14 @@ else
                             @foreach (var Item in Project.Controls)
                             {
                                 <g transform="rotate(@Item.Angle @Item.CenterPointLocation.X, @Item.CenterPointLocation.Y) translate(0, 0) scale(1)"
-                            @onmousedown="@(e => onControlMouseDown(e,Item))">
+                            @onmousedown="@(e => onControlMouseDown(e,Item))"
+                            @ondblclick="@(e=>Item.OnDoubleClick())">
                                     @Item.GetView(@Model,true)
                                 </g>
                             }
                             <g transform="rotate(@SelectedItem.Angle @SelectedItem.CenterPointLocation.X, @SelectedItem.CenterPointLocation.Y) translate(0, 0) scale(1)"
-                            visibility="@(IsSelectedControl?"visible":"hidden")">
+                            visibility="@(IsSelectedControl?"visible":"hidden")"
+                                @ondblclick="@(e=>SelectedItem.OnDoubleClick())">
                                 <!--虚线框，用于移动控件位置-->
                             <rect id="sizerMoveLocation" fill-opacity="0" stroke="#6495ed" stroke-dasharray="4" stroke-width="1"
                                   x="@SelectedItem.Left" y="@SelectedItem.Top" width="@SelectedItem.Width" height="@SelectedItem.Height"

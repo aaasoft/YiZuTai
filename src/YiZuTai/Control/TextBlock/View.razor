@@ -1,4 +1,9 @@
-﻿@inherits AbstractControlView<Model>
+﻿@using Quick.Blazor.Bootstrap
+@using YiZuTai.Components
+@using YiZuTai.Design
+@using YiZuTai.Design.Editor
+@using YiZuTai.Source.DataSource
+@inherits AbstractControlView<Model>
 
 <YiZuTai.Design.BaseControl_WithBackgroundAndAnimateView T_BaseControl_WithBackgroundAndAnimate="Model"
       Model="ControlModel" DesignMode="@DesignMode">
@@ -15,3 +20,13 @@
                   xml:space="preserve">@ControlModel.Text</text>
       </g>
 </YiZuTai.Design.BaseControl_WithBackgroundAndAnimateView>
+
+<ModalWindow @ref="modalWindow" />
+@code
+{
+    private ModalWindow modalWindow;
+    public override void OnDoubleClick()
+    {
+        SourceTypeEditor.Select(modalWindow, ControlModel.Value, typeof(IDataSource), t => ControlModel.Value = (IDataSource)t);
+    }
+}

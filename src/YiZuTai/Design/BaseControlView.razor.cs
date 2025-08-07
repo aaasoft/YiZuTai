@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace YiZuTai.Design;
 
-public partial class BaseControlView<T_BaseControl> : IControlView
+public partial class BaseControlView<T_BaseControl>
 {
     [Parameter]
     public T_BaseControl Model { get; set; }
@@ -13,14 +13,4 @@ public partial class BaseControlView<T_BaseControl> : IControlView
 
     private ElementReference svgElementReference;
     public string Id => svgElementReference.Id;
-
-    protected override void OnParametersSet()
-    {
-        Model.View = this;
-    }
-
-    public void Refresh()
-    {
-        InvokeAsync(StateHasChanged);
-    }
 }

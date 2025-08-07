@@ -265,6 +265,11 @@ value   =>  当前值")]
             }).ToArray();
     }
 
+    public override void OnDoubleClick()
+    {
+        View.OnDoubleClick();
+    }
+
     private Dictionary<IDataSource, ControlDataTrigger[]> cachedDataSourceTriggerDict = null;
     protected override Dictionary<IDataSource, ControlDataTrigger[]> GetDataSourceTriggerDict()
     {
