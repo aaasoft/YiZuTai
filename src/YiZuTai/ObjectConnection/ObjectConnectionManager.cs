@@ -24,10 +24,13 @@ namespace YiZuTai.ObjectConnection
         /// <returns></returns>
         public ObjectConnectionInfo GetParent(object obj)
         {
-            if (!dict.ContainsKey(obj))
-                return null;
-            var objectConnectionInfo = dict[obj];
-            return objectConnectionInfo;
+            lock (dict)
+            {
+                if (!dict.ContainsKey(obj))
+                    return null;
+                var objectConnectionInfo = dict[obj];
+                return objectConnectionInfo;
+            }
         }
 
         public ObjectConnectionInfo[] FindAll<T>(object obj)
@@ -84,69 +87,75 @@ namespace YiZuTai.ObjectConnection
 
         public void AddObject(object obj, PropertyNotifyModel notifyObj = null, string notifyPropertyName = null)
         {
-            if (obj == null)
-                return;
-            if (dict.ContainsKey(obj))
-                return;
-
-            var ObjectConnectionInfo = new ObjectConnectionInfo()
+            lock (dict)
             {
-                Manager = this,
-                Object = obj,
-                NotifyObject = notifyObj,
-                NotifyPropertyName = notifyPropertyName
-            };
-            dict[obj] = ObjectConnectionInfo;
+                if (obj == null)
+                    return;
+                if (dict.ContainsKey(obj))
+                    return;
 
-            //如果是对象关系树首次添加对象关系
-            foreach (var handler in GetHandler(obj.GetType()))
-                handler.NewValueHandle(obj);
+                var ObjectConnectionInfo = new ObjectConnectionInfo()
+                {
+                    Manager = this,
+                    Object = obj,
+                    NotifyObject = notifyObj,
+                    NotifyPropertyName = notifyPropertyName
+                };
+                dict[obj] = ObjectConnectionInfo;
 
-            if (obj is INotifyCollectionChanged)
-            {
-                var item = (INotifyCollectionChanged)obj;
-                item.CollectionChanged += ObjectConnectionInfo.NotifyCollectionChangedEventHandler;
+                //如果是对象关系树首次添加对象关系
+                foreach (var handler in GetHandler(obj.GetType()))
+                    handler.NewValueHandle(obj);
 
-                foreach (var t in (System.Collections.ICollection)item)
-                    AddObject(t, notifyObj, notifyPropertyName);
-            }
-            if (obj is PropertyNotifyModel)
-            {
-                var item = (PropertyNotifyModel)obj;
-                item.PropertyChanging += ObjectConnectionInfo.PropertyChangingEventHandler;
-                item.PropertyChanged += ObjectConnectionInfo.PropertyChangedEventHandler;
+                if (obj is INotifyCollectionChanged)
+                {
+                    var item = (INotifyCollectionChanged)obj;
+                    item.CollectionChanged += ObjectConnectionInfo.NotifyCollectionChangedEventHandler;
 
-                foreach (var propertyInfo in ObjectConnectionUtils.GetObjectProperties(item))
-                    AddObject(propertyInfo.GetValue(item), item, propertyInfo.Name);
+                    foreach (var t in (System.Collections.ICollection)item)
+                        AddObject(t, notifyObj, notifyPropertyName);
+                }
+                if (obj is PropertyNotifyModel)
+                {
+                    var item = (PropertyNotifyModel)obj;
+                    item.PropertyChanging += ObjectConnectionInfo.PropertyChangingEventHandler;
+                    item.PropertyChanged += ObjectConnectionInfo.PropertyChangedEventHandler;
+
+                    foreach (var propertyInfo in ObjectConnectionUtils.GetObjectProperties(item))
+                        AddObject(propertyInfo.GetValue(item), item, propertyInfo.Name);
+                }
             }
         }
 
         public void RemoveObject(object obj)
         {
-            if (obj == null)
-                return;
-            if (!dict.ContainsKey(obj))
-                return;
-
-            var objectEventHandler = dict[obj];
-            dict.Remove(obj);
-
-            if (obj is INotifyCollectionChanged)
+            lock (dict)
             {
-                var item = (INotifyCollectionChanged)obj;
-                item.CollectionChanged -= objectEventHandler.NotifyCollectionChangedEventHandler;
+                if (obj == null)
+                    return;
+                if (!dict.ContainsKey(obj))
+                    return;
 
-                foreach (var t in (System.Collections.ICollection)item)
-                    RemoveObject(t);
-            }
-            if (obj is PropertyNotifyModel)
-            {
-                var item = (PropertyNotifyModel)obj;
-                item.PropertyChanging -= objectEventHandler.PropertyChangingEventHandler;
-                item.PropertyChanged -= objectEventHandler.PropertyChangedEventHandler;
+                var objectEventHandler = dict[obj];
+                dict.Remove(obj);
 
-                foreach (var propertyInfo in ObjectConnectionUtils.GetObjectProperties(item))
-                    RemoveObject(propertyInfo.GetValue(item));
+                if (obj is INotifyCollectionChanged)
+                {
+                    var item = (INotifyCollectionChanged)obj;
+                    item.CollectionChanged -= objectEventHandler.NotifyCollectionChangedEventHandler;
+
+                    foreach (var t in (System.Collections.ICollection)item)
+                        RemoveObject(t);
+                }
+                if (obj is PropertyNotifyModel)
+                {
+                    var item = (PropertyNotifyModel)obj;
+                    item.PropertyChanging -= objectEventHandler.PropertyChangingEventHandler;
+                    item.PropertyChanged -= objectEventHandler.PropertyChangedEventHandler;
+
+                    foreach (var propertyInfo in ObjectConnectionUtils.GetObjectProperties(item))
+                        RemoveObject(propertyInfo.GetValue(item));
+                }
             }
         }
     }

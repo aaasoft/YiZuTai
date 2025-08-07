@@ -2,6 +2,7 @@ using System.ComponentModel;
 using YiZuTai.Design;
 using YiZuTai.Design.Editor;
 using YiZuTai.Design.Trigger;
+using YiZuTai.Source.DataSource;
 
 namespace YiZuTai.Control.TextBlock;
 
@@ -98,3 +99,5 @@ value   =>  当前值")]
             model.FlashInterval = FlashInterval.Value;
     }
 }
+
+public class DataSourceAndTrigger : DataSourceAndTrigger<Trigger> { }

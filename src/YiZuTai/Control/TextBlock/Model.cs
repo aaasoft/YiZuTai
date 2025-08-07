@@ -235,11 +235,11 @@ value   =>  当前值")]
         }
     }
 
-    private ObservableCollection<DataSourceAndTrigger<Trigger>> _DataSourceAndTriggers = new ObservableCollection<DataSourceAndTrigger<Trigger>>();
+    private ObservableCollection<DataSourceAndTrigger> _DataSourceAndTriggers = new ObservableCollection<DataSourceAndTrigger>();
     [Category("数据源与触发器")]
     [DisplayName("更多")]
     [Editor(typeof(CollectionEditor), typeof(CollectionEditor))]
-    public ObservableCollection<DataSourceAndTrigger<Trigger>> DataSourceAndTriggers
+    public ObservableCollection<DataSourceAndTrigger> DataSourceAndTriggers
     {
         get { return _DataSourceAndTriggers; }
         set
