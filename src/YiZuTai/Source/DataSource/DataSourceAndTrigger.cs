@@ -42,7 +42,7 @@ namespace YiZuTai.Source.DataSource
 
         public override string ToString()
         {
-            return $"[{DataSource?.Name ?? "无"}]->{Triggers?.Count ?? 0}";
+            return $"数据源[{DataSource?.Name ?? "无"}]-触发器[{Triggers?.Count ?? 0}]";
         }
 
         public string ToJson()

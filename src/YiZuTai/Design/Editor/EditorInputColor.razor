@@ -10,7 +10,7 @@
 }
 else
 {
-    <input class="form-control p-1" type="color" @bind-value="Value">
+    <input class="form-control p-1" type="color" style="cursor: pointer;" @bind-value="Value">
     <div class="input-group-append">
         <button type="button" class="btn btn-outline-danger" @onclick="@(e => Value = null)"><i class="fa fa-trash" aria-hidden="true"></i></button>
     </div>

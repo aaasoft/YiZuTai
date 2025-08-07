@@ -5,7 +5,7 @@
 @using YiZuTai.Utils
 @using YiZuTai.Components
 
-<span class="form-control" style="cursor: pointer;" @onclick="onClick">@Value?.Name</span>
+<span class="form-control" style="cursor: pointer;" @onclick="onClick">(@Value?.Name)</span>
 <div class="input-group-append">
 @if (Value==null)
 {    

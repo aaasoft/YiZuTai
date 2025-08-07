@@ -76,7 +76,7 @@ namespace YiZuTai.Design.Trigger
         public override string ToString()
         {
             var displayName = typeof(Operators).GetMember(Operater.ToString())[0].GetCustomAttribute<DescriptionAttribute>();
-            return $"{displayName.Description} {Value}";
+            return $"触发器: {displayName.Description} {Value}";
         }
     }
 }
