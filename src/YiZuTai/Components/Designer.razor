@@ -140,7 +140,7 @@ else
                                     <line x1="@(SelectedItem.Left + SelectedItem.Width / 2)" y1="@(SelectedItem.Top - resize_box_width * 3)"
                                   x2="@(SelectedItem.Left + SelectedItem.Width / 2)" y2="@(SelectedItem.Top - resize_box_width * 3 + resize_box_width * 2)"
                                   stroke="#6495ed" stroke-dasharray="4" stroke-width="1" />
-                                    <circle id="sizerRotate" fill="#6495ed" style="cursor: url(_content/YiZuTai/rotate.cur),auto; "
+                                    <circle id="sizerRotate" fill="#6495ed" style="cursor: crosshair;"
                                     cx="@(SelectedItem.Left + SelectedItem.Width / 2)" cy="@(SelectedItem.Top - resize_box_width * 3 - resize_box_width / 2)" r="@(resize_box_width * 2 / 3)"
                                     @onmousedown="@(e => sizerMouseDown(e, () => isRotate = true))" />
 
