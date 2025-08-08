@@ -41,6 +41,10 @@ namespace YiZuTai.Design
             }
         }
         /// <summary>
+        /// 图标
+        /// </summary>
+        public string Icon { get; set; }
+        /// <summary>
         /// 分组
         /// </summary>
         public string Category { get; set; }

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using YiZuTai.Design;
 
-namespace YiZuTai.Control.Rectangle
+namespace YiZuTai.Sample.Controls.Rectangle
 {
     [Category("图形")]
     [DisplayName("矩形")]

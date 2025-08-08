@@ -8,7 +8,7 @@ using YiZuTai.Design.Enums;
 using YiZuTai.Design.Trigger;
 using YiZuTai.Source.DataSource;
 
-namespace YiZuTai.Control.TextBlock;
+namespace YiZuTai.Sample.Controls.TextBlock;
 
 [Category("常用")]
 [DisplayName("文本")]
@@ -210,7 +210,7 @@ value   =>  当前值")]
     public override void OnDragDropCreate(Point location)
     {
         base.OnDragDropCreate(location);
-        Value = new DataSource.Input() { Value = Name };
+        Value = new DataSources.Input() { Value = Name };
         ValueTriggers = new ObservableCollection<Trigger>();
     }
 

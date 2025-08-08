@@ -3,10 +3,7 @@ using Newtonsoft.Json;
 using Quick.Blazor.Bootstrap.Utils;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using YiZuTai.Control;
 using YiZuTai.Core;
-using YiZuTai.Design.Trigger;
-using YiZuTai.Source.DataSource;
 using YiZuTai.ViewModel;
 
 namespace YiZuTai.Design
@@ -307,7 +304,7 @@ y0= (x - rx0)*sin(a) + (y - ry0)*cos(a) + ry0 ;
         [JsonIgnore]
         [Browsable(false)]
         public virtual Point MoveLocationOffset { get; set; }
-
+        
         protected abstract Type GetViewType();
 
         public virtual RenderFragment GetView(ZTContext context)

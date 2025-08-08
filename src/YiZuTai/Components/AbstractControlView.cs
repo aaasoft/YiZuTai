@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 using YiZuTai.Core;
 using YiZuTai.Design;
 
-namespace YiZuTai.Control;
+namespace YiZuTai.Components;
 
 public abstract class AbstractControlView<TControl> : ComponentBase, IControlView
     where TControl : BaseControl, new()

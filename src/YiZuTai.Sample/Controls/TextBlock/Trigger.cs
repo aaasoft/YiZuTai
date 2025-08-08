@@ -5,7 +5,7 @@ using YiZuTai.Design.Enums;
 using YiZuTai.Design.Trigger;
 using YiZuTai.Source.DataSource;
 
-namespace YiZuTai.Control.TextBlock;
+namespace YiZuTai.Sample.Controls.TextBlock;
 
 public class Trigger : BaseControl_WithBackgroundAndAnimateTrigger
 {

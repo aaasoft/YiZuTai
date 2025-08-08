@@ -25,15 +25,6 @@ namespace YiZuTai.Design
             return controlAttrList.ToArray();
         }
 
-        //使用示例控件
-        internal void UseBuiltInControls()
-        {
-            RegisterControl<Control.Circle.Model>();
-            RegisterControl<Control.Rectangle.Model>();
-            RegisterControl<Control.Image.Model>();
-            RegisterControl<Control.TextBlock.Model>();
-        }
-
         public void RegisterControl(Type type)
         {
             var category = type.GetCustomAttribute<CategoryAttribute>()?.Category ?? "未分组";
@@ -44,6 +35,8 @@ namespace YiZuTai.Design
                 Name = name,
                 Type = type
             };
+            var instance = attr.CreateInstance();
+            attr.Icon = instance.GetIcon();
             controlAttrList.Add(attr);
         }
 
@@ -51,18 +44,6 @@ namespace YiZuTai.Design
             where T : BaseControl, new()
         {
             RegisterControl(typeof(T));
-        }
-
-        public string GetControlIconBase64(ControlAttribute item)
-        {
-            byte[] buffer = null;
-            using (var ms = new MemoryStream())
-            using (var rs = item.Type.Assembly.GetManifestResourceStream(item.Type.Namespace + ".Icon.svg"))
-            {
-                rs.CopyTo(ms);
-                buffer = ms.ToArray();
-            }
-            return "data:image/svg+xml;base64," + Convert.ToBase64String(buffer);
         }
     }
 }

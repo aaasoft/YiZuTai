@@ -62,12 +62,5 @@ namespace YiZuTai.Source
             };
             itemList.Add(attr);
         }
-
-        internal void UseBuiltInSources()
-        {
-            RegisterSource<YiZuTai.DataSource.Input>();
-            RegisterSource<YiZuTai.DataSource.Simulate>();
-            RegisterSource<YiZuTai.DataSource.DateTime>();
-        }
     }
 }

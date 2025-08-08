@@ -104,5 +104,12 @@ namespace YiZuTai.Design
         {
 
         }
+
+        public virtual string GetIcon()
+        {
+            var type = this.GetType();
+            var assembly = type.Assembly;
+            return $"../../../_content/{assembly.GetName().Name}/images/{type.Namespace}.svg";
+        }
     }
 }

@@ -2,7 +2,7 @@
 using YiZuTai.Source;
 using YiZuTai.Source.DataSource;
 
-namespace YiZuTai.DataSource
+namespace YiZuTai.Sample.DataSources
 {
     [Category("基础")]
     [DisplayName("模拟数据")]

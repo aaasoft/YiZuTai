@@ -84,18 +84,6 @@ public partial class SourceSelectWindow : ComponentBase
             {
                 SourceInfoList = new List<SourceInfo>();
                 AddSourceInfoToList(info.NotifyObject, SourceInfoList);
-                /*
-                if (info.NotifyObject is Theme.IControlTheme)
-                {
-                    var theme = (Theme.IControlTheme)info.NotifyObject;
-                    AddSourceInfoToList(theme.Control, SourceList);
-                }
-                else if (info.NotifyObject is Design.BaseControl)
-                {
-                    var control = (Design.BaseControl)info.NotifyObject;
-                    AddSourceInfoToList(control.Theme, SourceList);
-                }
-                */
                 if (SourceInfoList.Count == 0)
                     SourceInfoList = null;
             }

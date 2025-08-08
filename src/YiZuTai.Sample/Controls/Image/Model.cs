@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using YiZuTai.Design;
 
-namespace YiZuTai.Control.Image
+namespace YiZuTai.Sample.Controls.Image
 {
     [Category("常用")]
     [DisplayName("图片")]
@@ -30,7 +30,7 @@ namespace YiZuTai.Control.Image
             Width = 160;
             Height = 120;
             BackgroundOpacity = 0;
-            Image = $"../../../_content/{nameof(YiZuTai)}/default_image.svg";
+            Image = $"../../../_content/{nameof(YiZuTai)}.{nameof(Sample)}/images/default_image.svg";
         }
     }
 }

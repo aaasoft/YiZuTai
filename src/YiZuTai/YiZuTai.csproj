@@ -4,13 +4,6 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Control\Circle\Icon.svg" />
-    <EmbeddedResource Include="Control\Image\Icon.svg" />
-    <EmbeddedResource Include="Control\Rectangle\Icon.svg" />
-    <EmbeddedResource Include="Control\TextBlock\Icon.svg" />
-  </ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="Blazor.ContextMenu" Version="2.1.0" />

@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel;
 using YiZuTai.Design;
 
-namespace YiZuTai.Control.Circle
+namespace YiZuTai.Sample.Controls.Circle
 {
     [Category("图形")]
     [DisplayName("圆形")]
     public class Model : BaseControl_WithBackground
     {
         protected override Type GetViewType() => typeof(View);
-        
+
         public Model()
         {
             Border = "#000000";

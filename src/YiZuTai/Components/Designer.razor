@@ -82,7 +82,7 @@ else
                         {
                             <div draggable="true" class="btn btn-light btn-block text-left p-1 m-0 mt-1"
                                 @ondragstart="@(e => HandleDragStart(e,controlAttr))">
-                                <img src="@Design.ControlManager.Instance.GetControlIconBase64(controlAttr)" style="width:1.5rem;height:1.5rem;" alt="@controlAttr.Name">
+                                <img src="@controlAttr.Icon" style="width:1.5rem;height:1.5rem;" alt="@controlAttr.Name">
                                 <span>@controlAttr.Name</span>
                             </div>
                         }

@@ -2,6 +2,8 @@ using BlazorDownloadFile;
 using Tewr.Blazor.FileReader;
 using YiZuTaiTest.Components;
 
+YiZuTai.Sample.Provider.Register();
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddBlazorDownloadFile();

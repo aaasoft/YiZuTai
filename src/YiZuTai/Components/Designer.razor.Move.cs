@@ -27,6 +27,11 @@ namespace YiZuTai.Components
             {
                 throw new NotImplementedException();
             }
+
+            public override string GetIcon()
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private double resize_box_width = 7;
