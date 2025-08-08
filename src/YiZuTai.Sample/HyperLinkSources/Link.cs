@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Text;
 using Microsoft.JSInterop;
 using YiZuTai.HyperLinkSource;
 using YiZuTai.Sample.Enums;
@@ -90,14 +91,18 @@ namespace YiZuTai.Sample.HyperLinkSources
                     context.JSRuntime.InvokeVoidAsync("eval", $"top.location.href = '{Url}'");
                     break;
                 case HyperLinkTarget._window:
-                    context.JSRuntime.InvokeVoidAsync("eval", @$"new YiZuTai.Window({{
-    width: {WindowWidth},
-    height: {WindowHeight},
-    pages: [{{
+                    var sb = new StringBuilder();
+                    sb.AppendLine("new YiZuTai.Window({");
+                    if (WindowWidth.HasValue)
+                        sb.AppendLine($"width: {WindowWidth},");
+                    if (WindowHeight.HasValue)
+                        sb.AppendLine($"height: {WindowHeight},");
+                    sb.AppendLine(@$"pages: [{{
         title: '{WindowTitle}',
         url: '{Url}'
     }}]
 }}).show();");
+                    context.JSRuntime.InvokeVoidAsync("eval", sb.ToString());
                     break;
             }
         }
