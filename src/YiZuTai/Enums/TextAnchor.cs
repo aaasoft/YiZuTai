@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace YiZuTai.Design.Enums
+namespace YiZuTai.Enumss
 {
     public enum TextAnchor
     {
@@ -11,7 +11,4 @@ namespace YiZuTai.Design.Enums
         [Description("结束")]
         end
     }
-
-
-    public class TextAnchorItemSource : AbstractEnumItemSource<TextAnchor> { }
 }

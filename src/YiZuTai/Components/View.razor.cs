@@ -2,6 +2,7 @@
 using Quick.Blazor.Bootstrap;
 using YiZuTai.Core;
 using YiZuTai.Design;
+using YiZuTai.Enums;
 
 namespace YiZuTai.Components
 {
@@ -47,7 +48,7 @@ namespace YiZuTai.Components
                 Model = Core.ZTFileManager.Instance.Get(Id);
             if (Project == null)
                 Project = Model.OpenProject();
-                
+
             ObjectConnection.ObjectConnectionManager.Instance.AddObject(Project);
             ZTContext = new ZTContext()
             {

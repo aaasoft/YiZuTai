@@ -1,8 +1,11 @@
 ﻿using System.ComponentModel;
 
-namespace YiZuTai.Design.Enums
+namespace YiZuTai.Enums
 {
-    public enum InnerStretch
+    /// <summary>
+    /// 填充方式
+    /// </summary>
+    public enum Stretch
     {
         [Description("居中")]
         None = 0,
@@ -13,6 +16,4 @@ namespace YiZuTai.Design.Enums
         [Description("填充")]
         UniformToFill = 3
     }
-
-    public class StretchItemSource : AbstractEnumItemSource<InnerStretch> { }
 }

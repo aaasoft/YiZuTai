@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace YiZuTai.Design.Enums
+namespace YiZuTai.Enumss
 {
     public enum TextFontWeight
     {
@@ -13,6 +13,4 @@ namespace YiZuTai.Design.Enums
         [Description("减细")]
         lighter
     }
-
-    public class TextFontWeightItemSource : AbstractEnumItemSource<TextFontWeight> { }
 }

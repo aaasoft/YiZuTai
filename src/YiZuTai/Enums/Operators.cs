@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace YiZuTai.Design.Enums;
+namespace YiZuTai.Enumss;
 
 public enum Operators
 {

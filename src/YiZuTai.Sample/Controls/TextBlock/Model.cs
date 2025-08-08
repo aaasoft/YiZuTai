@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using Quick.Xml;
 using YiZuTai.Design;
 using YiZuTai.Design.Editor;
-using YiZuTai.Design.Enums;
+using YiZuTai.Enumss;
 using YiZuTai.Design.Trigger;
 using YiZuTai.Source.DataSource;
 

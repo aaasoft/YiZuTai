@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Builder
 @using YiZuTai.Core.Utils
+@using YiZuTai.Enums
 <PageTitle>@Model?.Name - 展示 - 易组态</PageTitle>
 <HeadContent>
     <script src="_content/YiZuTai/js/core.js"></script>
@@ -18,7 +19,7 @@ else
     <CascadingValue Value="Model">
     <div id="divCanvas" class="text-center p-0 overflow-auto" data-stretch="@Project.Canvas.Stretch" style="background-color: @Canvas.Background;">
         <svg id="svgCanvas" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xhtml="http://www.w3.org/1999/xhtml"    
-             width="@(Project.Canvas.Stretch== Design.Stretch.None?Canvas.Width+"px":"100%")" height="@(Project.Canvas.Stretch== Design.Stretch.None?Canvas.Height+"px":"100%")"
+             width="@(Project.Canvas.Stretch== Stretch.None?Canvas.Width+"px":"100%")" height="@(Project.Canvas.Stretch== Stretch.None?Canvas.Height+"px":"100%")"
              viewBox="00 00 @Canvas.Width @Canvas.Height"
              preserveAspectRatio="@preserveAspectRatio">
             <!--====画布部分====-->

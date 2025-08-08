@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace YiZuTai.Design.Enums
+namespace YiZuTai.Sample.Enums
 {
     /// <summary>
     /// A标签目标
@@ -18,5 +18,4 @@ namespace YiZuTai.Design.Enums
         [Description("弹出窗口")]
         _window = 4
     }
-    public class HyperLinkTargetItemSource : AbstractEnumItemSource<HyperLinkTarget> { }
 }

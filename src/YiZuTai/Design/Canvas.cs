@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
+using YiZuTai.Enums;
 using YiZuTai.Utils;
 
 namespace YiZuTai.Design
