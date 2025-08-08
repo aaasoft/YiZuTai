@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Newtonsoft.Json;
 using Quick.Xml;
-using YiZuTai.Design;
+using YiZuTai.Control;
 using YiZuTai.Components.Editors;
 using YiZuTai.Enums;
 using YiZuTai.Trigger;

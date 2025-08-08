@@ -9,7 +9,7 @@ using YiZuTai.Components;
 using YiZuTai.Trigger;
 using YiZuTai.DataSource;
 
-namespace YiZuTai.Design
+namespace YiZuTai.Control
 {
     public partial class BaseControl
     {

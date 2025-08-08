@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using YiZuTai.Components.Editors;
-using YiZuTai.Design;
-using static YiZuTai.Design.BaseControl;
+using YiZuTai.Control;
+using static YiZuTai.Control.BaseControl;
 
 namespace YiZuTai.Trigger
 {

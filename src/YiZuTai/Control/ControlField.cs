@@ -4,7 +4,7 @@ using System.Reflection;
 using YiZuTai.Components.Editors;
 using YiZuTai.Core;
 
-namespace YiZuTai.Design
+namespace YiZuTai.Control
 {
     /// <summary>
     /// 控件字段

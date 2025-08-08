@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace YiZuTai.Design
+namespace YiZuTai.Control
 {
     public abstract class BaseControl_WithBackgroundAndAnimate : BaseControl_WithBackground
     {

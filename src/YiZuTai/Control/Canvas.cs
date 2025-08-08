@@ -6,7 +6,7 @@ using YiZuTai.Components.Editors;
 using YiZuTai.Enums;
 using YiZuTai.Utils;
 
-namespace YiZuTai.Design
+namespace YiZuTai.Control
 {
     public class Canvas : BaseControl_WithBackground
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Newtonsoft.Json;
 using YiZuTai.Core.Utils;
-using YiZuTai.Design;
+using YiZuTai.Control;
 
 namespace YiZuTai.Core
 {

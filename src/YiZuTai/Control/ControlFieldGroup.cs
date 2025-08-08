@@ -1,4 +1,4 @@
-﻿namespace YiZuTai.Design
+﻿namespace YiZuTai.Control
 {
     public class ControlFieldGroup
     {

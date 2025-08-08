@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace YiZuTai.Design
+namespace YiZuTai.Control
 {
     public class ControlAttribute
     {

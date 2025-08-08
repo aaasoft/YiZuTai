@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 using Quick.Blazor.Bootstrap;
 using YiZuTai.Core;
 using YiZuTai.Core.ObjectConnection;
-using YiZuTai.Design;
+using YiZuTai.Control;
 using YiZuTai.Core.Source;
 
 namespace YiZuTai.Components;

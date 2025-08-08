@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using YiZuTai.Components.Editors;
-using YiZuTai.Design;
+using YiZuTai.Control;
 
 namespace YiZuTai.Sample.Controls.Image
 {

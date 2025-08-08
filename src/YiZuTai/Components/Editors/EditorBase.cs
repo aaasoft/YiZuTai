@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
-using YiZuTai.Design;
+using YiZuTai.Control;
 
 namespace YiZuTai.Components.Editors
 {

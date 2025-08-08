@@ -1,11 +1,10 @@
-﻿@using YiZuTai.Components
-@inherits AbstractControlView<Model>
+﻿@inherits AbstractControlView<Model>
 
-<YiZuTai.Design.BaseControlView T_BaseControl="Model" Model="ControlModel" DesignMode="ZTContext.DesignMode">
+<BaseControlView T_BaseControl="Model" Model="ControlModel" DesignMode="ZTContext.DesignMode">
         <circle fill="@ControlModel.Background" fill-opacity="@ControlModel.BackgroundOpacity"
                 stroke="@ControlModel.Border" stroke-opacity="@ControlModel.BorderOpacity"
                 stroke-width="@ControlModel.BorderThickness" cx="@cx" cy="@cy" r="@r" />
-</YiZuTai.Design.BaseControlView>
+</BaseControlView>
 
 @code
 {

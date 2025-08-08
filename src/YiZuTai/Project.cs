@@ -1,7 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using Quick.Blazor.Bootstrap;
+using YiZuTai.Control;
 
-namespace YiZuTai.Design
+namespace YiZuTai
 {
     public class Project : PropertyNotifyModel
     {

@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using YiZuTai.Components.Editors;
 using YiZuTai.Core;
 
-namespace YiZuTai.Design
+namespace YiZuTai.Control
 {
     public abstract partial class BaseControl : PropertyNotifyModel
     {

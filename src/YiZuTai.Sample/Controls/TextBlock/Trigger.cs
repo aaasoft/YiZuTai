@@ -1,5 +1,5 @@
 using System.ComponentModel;
-using YiZuTai.Design;
+using YiZuTai.Control;
 using YiZuTai.Components.Editors;
 using YiZuTai.Enums;
 using YiZuTai.Trigger;

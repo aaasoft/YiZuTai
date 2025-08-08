@@ -1,17 +1,15 @@
-﻿@using Quick.Blazor.Bootstrap
-@using YiZuTai.Components
-@using YiZuTai.Design
-@using YiZuTai.Components.Editors
-@using YiZuTai.DataSource
-@inherits AbstractControlView<Model>
+﻿@inherits AbstractControlView<Model>
 
-<YiZuTai.Design.BaseControl_WithBackgroundAndAnimateView T_BaseControl_WithBackgroundAndAnimate="Model"
-      Model="ControlModel" DesignMode="@ZTContext.DesignMode">
+<BaseControl_WithBackgroundAndAnimateView T_BaseControl_WithBackgroundAndAnimate="Model" Model="ControlModel"
+      DesignMode="@ZTContext.DesignMode">
       <!--图片部分-->
-      <g data-Angle="@ControlModel.Angle">
-            <image href="@Core.ZTFile.GetStaticResourceUrl(ZTContext.ZTFile.Id, ControlModel.Image)"
-                  width="@ControlModel.Width" height="@ControlModel.Height" preserveAspectRatio="none"></image>
-      </g>
+      @if (ControlModel.Image != null)
+      {
+            <g data-Angle="@ControlModel.Angle">
+                  <image href="@Core.ZTFile.GetStaticResourceUrl(ZTContext.ZTFile.Id, ControlModel.Image)"
+                        width="@ControlModel.Width" height="@ControlModel.Height" preserveAspectRatio="none"></image>
+            </g>
+      }
       <!--文本部分-->
       <g>
             <text fill="@ControlModel.Foreground" x="@ControlModel.TextX" y="@ControlModel.TextY"
@@ -19,7 +17,7 @@
                   font-family="@ControlModel.FontFamily" text-anchor="@ControlModel.TextAnchor"
                   xml:space="preserve">@ControlModel.Text</text>
       </g>
-</YiZuTai.Design.BaseControl_WithBackgroundAndAnimateView>
+</BaseControl_WithBackgroundAndAnimateView>
 
 @code
 {

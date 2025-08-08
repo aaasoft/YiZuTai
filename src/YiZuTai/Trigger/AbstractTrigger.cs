@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 using Quick.Blazor.Bootstrap;
-using YiZuTai.Design;
+using YiZuTai.Control;
 using YiZuTai.Enums;
 
 namespace YiZuTai.Trigger

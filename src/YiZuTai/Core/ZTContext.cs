@@ -1,5 +1,5 @@
 using Quick.Blazor.Bootstrap;
-using YiZuTai.Design;
+using YiZuTai.Control;
 
 namespace YiZuTai.Core;
 

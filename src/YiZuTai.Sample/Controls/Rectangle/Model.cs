@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using YiZuTai.Design;
+using YiZuTai.Control;
 
 namespace YiZuTai.Sample.Controls.Rectangle
 {

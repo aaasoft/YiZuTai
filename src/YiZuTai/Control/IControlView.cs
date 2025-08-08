@@ -1,7 +1,7 @@
 using System;
 using YiZuTai.Core;
 
-namespace YiZuTai.Design;
+namespace YiZuTai.Control;
 
 public interface IControlView
 {

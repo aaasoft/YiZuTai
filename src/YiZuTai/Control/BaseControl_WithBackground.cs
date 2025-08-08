@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using YiZuTai.Components.Editors;
 
-namespace YiZuTai.Design
+namespace YiZuTai.Control
 {
     public abstract class BaseControl_WithBackground : BaseControl
     {

@@ -1,6 +1,6 @@
 ﻿var YiZuTai = YiZuTai || {};
 
-YiZuTai.Designer = {
+YiZuTai.Controler = {
     AddWindowOnBeforeUnloadEvent: function () {
         window.onbeforeunload = function () {
             return '有更改尚未保存，确认离开？';
@@ -22,11 +22,11 @@ YiZuTai.Designer = {
     },
     OnResizeFunc: function () {
         var windowHeight = window.innerHeight;
-        YiZuTai.Designer.ChangeDivHeightFunc(windowHeight, document.getElementById('divToolbox'));
-        YiZuTai.Designer.ChangeDivHeightFunc(windowHeight, document.getElementById('divProperty'), [ document.getElementById('divPropertyDescription') ]);
+        YiZuTai.Controler.ChangeDivHeightFunc(windowHeight, document.getElementById('divToolbox'));
+        YiZuTai.Controler.ChangeDivHeightFunc(windowHeight, document.getElementById('divProperty'), [ document.getElementById('divPropertyDescription') ]);
 
         var divCanvas = document.getElementById('divCanvas');
-        YiZuTai.Designer.ChangeDivHeightFunc(windowHeight, divCanvas);
+        YiZuTai.Controler.ChangeDivHeightFunc(windowHeight, divCanvas);
         var svgCanvas = document.getElementById('svgCanvas');
 
         var divCanvasHeight = divCanvas.clientHeight;
@@ -43,9 +43,9 @@ YiZuTai.Designer = {
         return true;
     },
     LoopOnResizeFunc: function () {
-        if (!YiZuTai.Designer.OnResizeFunc())
+        if (!YiZuTai.Controler.OnResizeFunc())
             return;
-        setTimeout(YiZuTai.Designer.LoopOnResizeFunc, 100);
+        setTimeout(YiZuTai.Controler.LoopOnResizeFunc, 100);
     }
 };
 
@@ -77,7 +77,7 @@ window.onload = function (evt) {
         bindCaputure(document.getElementById('sizerResizeLeftBottom'));
         bindCaputure(document.getElementById('sizerResizeLeft'));
     }, 1000);
-    YiZuTai.Designer.LoopOnResizeFunc();
+    YiZuTai.Controler.LoopOnResizeFunc();
 
     window.addEventListener("keydown", function (e) {
         //让Ctrl + S组合键不触发浏览器的保存网页功能，能够传递到后台
@@ -90,5 +90,5 @@ window.onload = function (evt) {
 };
 
 window.onresize = function (evt) {
-    YiZuTai.Designer.LoopOnResizeFunc();
+    YiZuTai.Controler.LoopOnResizeFunc();
 };

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
-namespace YiZuTai.Design;
+namespace YiZuTai.Components.Control;
 
 public partial class BaseControl_WithBackgroundAndAnimateView<T_BaseControl_WithBackgroundAndAnimate>
 {

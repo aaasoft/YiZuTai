@@ -1,6 +1,6 @@
 ﻿@using System.Reflection
 @using System.ComponentModel
-@using YiZuTai.Design
+@using YiZuTai.Control
 @foreach (var group in SelectedItemFields)
 {
     <div class="card-title m-0 ml-2 mt-1 font-weight-bold">@group.Name</div>
@@ -51,7 +51,7 @@
     }
 
     [Parameter]
-    public EventCallback<YiZuTai.Design.ControlField> SelectedFieldChanged { get; set; }
+    public EventCallback<YiZuTai.Control.ControlField> SelectedFieldChanged { get; set; }
 
     public ControlFieldGroup[] GetFields()
     {

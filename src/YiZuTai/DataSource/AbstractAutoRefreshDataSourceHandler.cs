@@ -1,4 +1,4 @@
-﻿using YiZuTai.Design;
+﻿using YiZuTai.Control;
 using YiZuTai.Core.ObjectConnection;
 
 namespace YiZuTai.DataSource

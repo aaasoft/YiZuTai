@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using Quick.Blazor.Bootstrap;
 using YiZuTai.Core;
-using YiZuTai.Design;
+using YiZuTai.Control;
 using YiZuTai.Core.ObjectConnection;
 
 namespace YiZuTai.Components
@@ -51,7 +51,7 @@ namespace YiZuTai.Components
 
         private void NotifyBrowserWindowResize()
         {
-            Task.Delay(10).ContinueWith(t => JSRuntime.InvokeVoidAsync("YiZuTai.Designer.OnResizeFunc"));
+            Task.Delay(10).ContinueWith(t => JSRuntime.InvokeVoidAsync("YiZuTai.Controler.OnResizeFunc"));
         }
 
         [Inject]
@@ -249,7 +249,7 @@ namespace YiZuTai.Components
         {
             if (isWindowOnbeforeUnloadEventAdded)
                 return;
-            JSRuntime.InvokeVoidAsync("YiZuTai.Designer.AddWindowOnBeforeUnloadEvent");
+            JSRuntime.InvokeVoidAsync("YiZuTai.Controler.AddWindowOnBeforeUnloadEvent");
             isWindowOnbeforeUnloadEventAdded = true;
             refreshTitle();
         }
@@ -273,7 +273,7 @@ namespace YiZuTai.Components
         {
             Model.SaveProject(Project);
             toastStack.AddToast("保存", "保存成功!", BackgroundTheme.success);
-            JSRuntime.InvokeVoidAsync("YiZuTai.Designer.RemoveWindowOnBeforeUnloadEvent");
+            JSRuntime.InvokeVoidAsync("YiZuTai.Controler.RemoveWindowOnBeforeUnloadEvent");
             isWindowOnbeforeUnloadEventAdded = false;
             refreshTitle();
         }
