@@ -30,7 +30,7 @@ namespace YiZuTai.Sample.Controls.Image
             Width = 160;
             Height = 120;
             BackgroundOpacity = 0;
-            Image = $"../../../_content/{nameof(YiZuTai)}.{nameof(Sample)}/images/default_image.svg";
+            Image = GetIcon();
         }
     }
 }
