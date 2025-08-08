@@ -1,7 +1,7 @@
 ﻿using YiZuTai.Design;
 using YiZuTai.Core.ObjectConnection;
 
-namespace YiZuTai.Source.DataSource
+namespace YiZuTai.DataSource
 {
     public class AbstractAutoRefreshDataSourceHandler : AbstractObjectConnectionHandler<AbstractAutoRefreshDataSource>
     {

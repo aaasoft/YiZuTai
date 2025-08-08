@@ -1,9 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System.ComponentModel;
+using YiZuTai.Source;
 
-namespace YiZuTai.Source.HyperLinkSource
+namespace YiZuTai.DataSource
 {
-    public abstract class AbstractHyperLinkSource : AbstractSource, IHyperLinkSource
+    public abstract class AbstractDataSource : AbstractSource, IDataSource
     {
         [Browsable(false)]
         [JsonIgnore]
@@ -16,13 +17,22 @@ namespace YiZuTai.Source.HyperLinkSource
         public override string Name { get { return Attribute.Name; } }
 
         [Browsable(false)]
-        public string Clazz { get { return Attribute.Clazz; } }
+        public string DataSource { get { return Attribute.Clazz; } }
 
+        private string _Value;
         [Browsable(false)]
         [JsonIgnore]
-        public virtual string Parameter { get => JsonConvert.SerializeObject(this); }
+        public virtual string Value
+        {
+            get { return _Value; }
+            set
+            {
+                _Value = value;
+                RaisePropertyChanged(nameof(Value));
+            }
+        }
 
-        public AbstractHyperLinkSource()
+        public AbstractDataSource()
         {
             Attribute = SourceManager.Instance.GetItem(this.GetType().FullName);
         }

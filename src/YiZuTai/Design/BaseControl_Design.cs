@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using YiZuTai.Components;
 using YiZuTai.Design.Trigger;
-using YiZuTai.Source.DataSource;
+using YiZuTai.DataSource;
 
 namespace YiZuTai.Design
 {
@@ -67,7 +67,7 @@ namespace YiZuTai.Design
         /// <summary>
         /// 当数据源的值改变时
         /// </summary>
-        public virtual void OnDataSourceValueChanged(Source.DataSource.AbstractAutoRefreshDataSource t, string propertyName)
+        public virtual void OnDataSourceValueChanged(AbstractAutoRefreshDataSource t, string propertyName)
         {
             if (View == null)
                 return;

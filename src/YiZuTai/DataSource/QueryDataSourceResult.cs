@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace YiZuTai.Source.DataSource
+namespace YiZuTai.DataSource
 {
     public class QueryDataSourceResult
     {

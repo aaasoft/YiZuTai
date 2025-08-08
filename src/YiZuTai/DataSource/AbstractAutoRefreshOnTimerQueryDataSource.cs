@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
 
-namespace YiZuTai.Source.DataSource
+namespace YiZuTai.DataSource
 {
-    public abstract class AbstractAutoRefreshOnTimerDataSource : AbstractAutoRefreshDataSource
+    public abstract class AbstractAutoRefreshOnTimerQueryDataSource : AbstractAutoRefreshQueryDataSource
     {
         private int _Period = 10;
         [DisplayName("刷新间隔")]
-        [Description("单位：秒，等于0时：对于支持实时推送的数据代表实时推送；对于不支持实时推送的数据代表只刷新一次，不再定时刷新")]
+        [Description("单位：秒")]
         public int Period
         {
             get { return _Period; }
@@ -20,9 +20,9 @@ namespace YiZuTai.Source.DataSource
             }
         }
 
-        public AbstractAutoRefreshOnTimerDataSource()
+        public AbstractAutoRefreshOnTimerQueryDataSource()
         {
-            this.PropertyChanged += AbstractAutoRefreshDataSource_PropertyChanged;
+            this.PropertyChanged += AbstractAutoRefreshQueryDataSource_PropertyChanged;
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace YiZuTai.Source.DataSource
             timer = null;
         }
 
-        private void AbstractAutoRefreshDataSource_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void AbstractAutoRefreshQueryDataSource_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {

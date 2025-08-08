@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using YiZuTai.Design.Editor;
 using YiZuTai.Source;
-using YiZuTai.Source.DataSource;
+using YiZuTai.DataSource;
 
 namespace YiZuTai.Sample.DataSources
 {

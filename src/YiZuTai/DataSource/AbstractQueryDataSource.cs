@@ -5,8 +5,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using YiZuTai.Source;
 
-namespace YiZuTai.Source.DataSource
+namespace YiZuTai.DataSource
 {
     public abstract class AbstractQueryDataSource : AbstractSource, IQueryDataSource
     {

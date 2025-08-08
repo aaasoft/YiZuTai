@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Quick.Blazor.Bootstrap;
 
-namespace YiZuTai.Source.DataSource
+namespace YiZuTai.DataSource
 {
     /// <summary>
     /// 数据源与触发器类

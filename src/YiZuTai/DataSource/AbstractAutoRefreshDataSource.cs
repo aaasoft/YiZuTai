@@ -1,6 +1,6 @@
 ﻿using YiZuTai.Core.ObjectConnection;
 
-namespace YiZuTai.Source.DataSource
+namespace YiZuTai.DataSource
 {
     /// <summary>
     /// 自动刷新数据来源抽象类

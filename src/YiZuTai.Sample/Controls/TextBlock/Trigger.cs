@@ -3,7 +3,7 @@ using YiZuTai.Design;
 using YiZuTai.Design.Editor;
 using YiZuTai.Enumss;
 using YiZuTai.Design.Trigger;
-using YiZuTai.Source.DataSource;
+using YiZuTai.DataSource;
 
 namespace YiZuTai.Sample.Controls.TextBlock;
 

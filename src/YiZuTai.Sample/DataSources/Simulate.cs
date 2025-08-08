@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using YiZuTai.Source;
-using YiZuTai.Source.DataSource;
+using YiZuTai.DataSource;
 
 namespace YiZuTai.Sample.DataSources
 {
