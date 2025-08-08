@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using YiZuTai.Components.Editors;
 using YiZuTai.Core;
+using YiZuTai.HyperLinkSource;
 
 namespace YiZuTai.Control
 {
@@ -160,6 +161,22 @@ namespace YiZuTai.Control
             {
                 _IsLocked = value;
                 RaisePropertyChanged();
+            }
+        }
+
+        
+        private IHyperLinkSource _HyperLinkSource;
+        [Category("超链接")]
+        [DisplayName("源")]
+        [Editor(typeof(SourceTypeEditor), typeof(SourceTypeEditor))]
+        public virtual IHyperLinkSource HyperLinkSource
+        {
+            get { return _HyperLinkSource; }
+            set
+            {
+                RaisePropertyChanging(nameof(HyperLinkSource));
+                _HyperLinkSource = value;
+                RaisePropertyChanged(nameof(HyperLinkSource));
             }
         }
 

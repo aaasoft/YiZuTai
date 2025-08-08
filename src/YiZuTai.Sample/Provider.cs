@@ -15,5 +15,7 @@ public class Provider
         SourceManager.Instance.RegisterSource<DataSources.Input>();
         SourceManager.Instance.RegisterSource<DataSources.Simulate>();
         SourceManager.Instance.RegisterSource<DataSources.DateTime>();
+
+        SourceManager.Instance.RegisterSource<HyperLinkSources.Link>();
     }
 }

@@ -3,6 +3,8 @@
 @using YiZuTai.Enums
 <PageTitle>@Model?.Name - 展示 - 易组态</PageTitle>
 <HeadContent>
+    <script src="_content/YiZuTai/jquery-1.12.4/jquery.min.js"></script>
+    <script src="_content/YiZuTai/layer-3.1.1/layer.js"></script>
     <script src="_content/YiZuTai/js/core.js"></script>
     <script src="_content/YiZuTai/js/view.js"></script>
     <link href="_content/YiZuTai/css/view.css" rel="stylesheet" />
@@ -36,9 +38,11 @@ else
             <!--====控件部分====-->
             @foreach (var Item in Project.Controls)
             {
-                <g filter="#" transform="rotate(@Item.Angle @Item.CenterPointLocation.X, @Item.CenterPointLocation.Y) translate(0, 0) scale(1)">
-                    @Item.GetView(ZTContext)
-                </g>
+                <a style="@GetControlALinkStyle(Item)" @onclick="@(e=>OnControlClick(Item))">
+                    <g filter="#" transform="rotate(@Item.Angle @Item.CenterPointLocation.X, @Item.CenterPointLocation.Y) translate(0, 0) scale(1)">
+                        @Item.GetView(ZTContext)
+                    </g>
+                </a>
             }
         </svg>
     </div>

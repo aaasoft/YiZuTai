@@ -28,5 +28,7 @@ namespace YiZuTai.HyperLinkSource
         {
             Attribute = SourceManager.Instance.GetItem(this.GetType().FullName);
         }
+
+        public abstract void Execute(ZTContext context);
     }
 }

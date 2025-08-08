@@ -9,9 +9,4 @@
     <ProjectReference Include="..\YiZuTai\YiZuTai.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controls\" />
-    <Folder Include="DataSources\" />
-  </ItemGroup>
-
 </Project>

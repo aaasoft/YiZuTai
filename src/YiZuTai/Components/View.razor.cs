@@ -4,6 +4,7 @@ using YiZuTai.Core;
 using YiZuTai.Core.ObjectConnection;
 using YiZuTai.Control;
 using YiZuTai.Enums;
+using Microsoft.JSInterop;
 
 namespace YiZuTai.Components
 {
@@ -23,6 +24,8 @@ namespace YiZuTai.Components
         private ModalWindow modalWindow;
 
         private ZTContext ZTContext;
+        [Inject]
+        private IJSRuntime JSRuntime{ get; set; }
 
         private string preserveAspectRatio
         {
@@ -43,6 +46,12 @@ namespace YiZuTai.Components
             }
         }
 
+        private string GetControlALinkStyle(BaseControl baseControl) => baseControl.HyperLinkSource == null ? "" : "cursor: pointer;";
+        private void OnControlClick(BaseControl baseControl)
+        {
+            baseControl.HyperLinkSource?.Execute(ZTContext);
+        }
+
         protected override void OnParametersSet()
         {
             if (Model == null)
@@ -55,7 +64,8 @@ namespace YiZuTai.Components
             {
                 ZTFile = Model,
                 Project = Project,
-                DesignMode = false
+                DesignMode = false,
+                JSRuntime = JSRuntime
             };
         }
 
