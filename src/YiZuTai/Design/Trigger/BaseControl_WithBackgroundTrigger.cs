@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using YiZuTai.Components.Editors;
 
 namespace YiZuTai.Design.Trigger
 {
@@ -15,7 +16,7 @@ namespace YiZuTai.Design.Trigger
         [Category("背景")]
         [DisplayName("背景颜色")]
         [Description("控件的背景颜色")]
-        [Editor(typeof(Editor.EditorInputColor), typeof(string))]
+        [Editor(typeof(EditorInputColor), typeof(EditorInputColor))]
         public virtual string Background
         {
             get { return _Background; }
@@ -30,7 +31,7 @@ namespace YiZuTai.Design.Trigger
         [Category("背景")]
         [DisplayName("背景透明")]
         [Description("控件的背景透明度")]
-        [Editor(typeof(Editor.EditorInputRange_Nullable), typeof(Editor.EditorInputRange_Nullable))]
+        [Editor(typeof(EditorInputRange_Nullable), typeof(EditorInputRange_Nullable))]
         [Range(0, 1)]
         [StringLength(100)]
         public virtual double? BackgroundOpacity
@@ -47,7 +48,7 @@ namespace YiZuTai.Design.Trigger
         [Category("背景")]
         [DisplayName("边框颜色")]
         [Description("控件的边框颜色")]
-        [Editor(typeof(Editor.EditorInputColor), typeof(string))]
+        [Editor(typeof(EditorInputColor), typeof(EditorInputColor))]
         public virtual string Border
         {
             get { return _Border; }
@@ -62,7 +63,7 @@ namespace YiZuTai.Design.Trigger
         [Category("背景")]
         [DisplayName("边框透明")]
         [Description("控件的边框透明度")]
-        [Editor(typeof(Editor.EditorInputRange_Nullable), typeof(Editor.EditorInputRange_Nullable))]
+        [Editor(typeof(EditorInputRange_Nullable), typeof(EditorInputRange_Nullable))]
         [Range(0, 1)]
         [StringLength(100)]
         public virtual double? BorderOpacity

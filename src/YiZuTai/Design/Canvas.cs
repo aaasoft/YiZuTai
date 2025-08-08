@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
+using YiZuTai.Components.Editors;
 using YiZuTai.Enums;
 using YiZuTai.Utils;
 
@@ -45,7 +46,7 @@ namespace YiZuTai.Design
         [Category("前景")]
         [DisplayName("前景颜色")]
         [Description("控件的前景颜色")]
-        [Editor(typeof(Editor.EditorInputColor), typeof(string))]
+        [Editor(typeof(EditorInputColor), typeof(EditorInputColor))]
         public virtual string Foreground
         {
             get { return _Foreground; }
@@ -60,7 +61,7 @@ namespace YiZuTai.Design
         [Category("前景")]
         [DisplayName("前景透明")]
         [Description("控件的前景透明度")]
-        [Editor(typeof(Editor.EditorInputRange), typeof(double))]
+        [Editor(typeof(EditorInputRange), typeof(EditorInputRange))]
         [Range(0, 1)]
         [StringLength(100)]
         public double ForegroundOpacity
@@ -77,7 +78,7 @@ namespace YiZuTai.Design
         [Category("前景")]
         [DisplayName("前景图片")]
         [Description("画布上要显示的图片")]
-        [Editor(typeof(Design.Editor.EditorInputImage), typeof(string))]
+        [Editor(typeof(EditorInputImage), typeof(EditorInputImage))]
         public string Image
         {
             get { return _Image; }

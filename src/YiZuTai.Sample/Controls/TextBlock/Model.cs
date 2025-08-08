@@ -3,7 +3,7 @@ using System.ComponentModel;
 using Newtonsoft.Json;
 using Quick.Xml;
 using YiZuTai.Design;
-using YiZuTai.Design.Editor;
+using YiZuTai.Components.Editors;
 using YiZuTai.Enumss;
 using YiZuTai.Design.Trigger;
 using YiZuTai.DataSource;
@@ -136,7 +136,7 @@ value   =>  当前值")]
     [Category("背景")]
     [DisplayName("背景图片")]
     [Description("背景上要显示的图片")]
-    [Editor(typeof(Design.Editor.EditorInputImage), typeof(string))]
+    [Editor(typeof(EditorInputImage), typeof(EditorInputImage))]
     [DefaultValue(null)]
     public string Image
     {
@@ -153,7 +153,7 @@ value   =>  当前值")]
     [Category("文本")]
     [DisplayName("值")]
     [Description("文本块控件要显示的值")]
-    [Editor(typeof(Design.Editor.SourceTypeEditor), typeof(IDataSource))]
+    [Editor(typeof(SourceTypeEditor), typeof(SourceTypeEditor))]
     public IDataSource Value
     {
         get { return _Value; }

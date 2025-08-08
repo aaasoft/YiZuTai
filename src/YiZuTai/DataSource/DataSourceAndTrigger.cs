@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Quick.Blazor.Bootstrap;
+using YiZuTai.Components.Editors;
 
 namespace YiZuTai.DataSource
 {
@@ -15,7 +16,7 @@ namespace YiZuTai.DataSource
     {
         private IDataSource _DataSource;
         [DisplayName("数据源")]
-        [Editor(typeof(Design.Editor.SourceTypeEditor), typeof(IDataSource))]
+        [Editor(typeof(SourceTypeEditor), typeof(SourceTypeEditor))]
         public IDataSource DataSource
         {
             get { return _DataSource; }
@@ -29,7 +30,7 @@ namespace YiZuTai.DataSource
 
         private ObservableCollection<TControlDataTrigger> _Triggers = new ObservableCollection<TControlDataTrigger>();
         [DisplayName("触发器")]
-        [Editor(typeof(Design.Editor.CollectionEditor), typeof(Design.Editor.CollectionEditor))]
+        [Editor(typeof(CollectionEditor), typeof(CollectionEditor))]
         public ObservableCollection<TControlDataTrigger> Triggers
         {
             get { return _Triggers; }

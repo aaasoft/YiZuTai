@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
-namespace YiZuTai.Design.Editor
+namespace YiZuTai.Components.Editors
 {
     public partial class EditorInputSelect
     {

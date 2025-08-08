@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
+using YiZuTai.Design;
 
-namespace YiZuTai.Design.Editor
+namespace YiZuTai.Components.Editors
 {
     public abstract class EditorBase : ComponentBase
     {

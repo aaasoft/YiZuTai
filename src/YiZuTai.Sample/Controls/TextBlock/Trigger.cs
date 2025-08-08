@@ -1,6 +1,6 @@
 using System.ComponentModel;
 using YiZuTai.Design;
-using YiZuTai.Design.Editor;
+using YiZuTai.Components.Editors;
 using YiZuTai.Enumss;
 using YiZuTai.Design.Trigger;
 using YiZuTai.DataSource;
@@ -120,7 +120,7 @@ value   =>  当前值")]
     [Category("背景")]
     [DisplayName("背景图片")]
     [Description("背景上要显示的图片")]
-    [Editor(typeof(Design.Editor.EditorInputImage), typeof(string))]
+    [Editor(typeof(EditorInputImage), typeof(EditorInputImage))]
     [DefaultValue(null)]
     public string Image
     {

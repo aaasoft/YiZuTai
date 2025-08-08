@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using YiZuTai.Components.Editors;
 using static YiZuTai.Design.BaseControl;
 
 namespace YiZuTai.Design.Trigger
@@ -10,7 +11,7 @@ namespace YiZuTai.Design.Trigger
         [Category(nameof(CategoryOrder.外观))]
         [DisplayName("透明度")]
         [Description("控件的透明度(范围：0~1)")]
-        [Editor(typeof(Editor.EditorInputRange_Nullable), typeof(Editor.EditorInputRange_Nullable))]
+        [Editor(typeof(EditorInputRange_Nullable), typeof(EditorInputRange_Nullable))]
         [Range(0, 1)]
         [StringLength(100)]
         public virtual double? Opacity

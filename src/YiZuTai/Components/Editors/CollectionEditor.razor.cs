@@ -3,7 +3,7 @@ using Quick.Xml;
 using System.Collections;
 using YiZuTai.Components;
 
-namespace YiZuTai.Design.Editor;
+namespace YiZuTai.Components.Editors;
 
 public class ClassForClone
 {

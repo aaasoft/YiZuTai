@@ -1,11 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using YiZuTai.Utils;
+using YiZuTai.Components.Editors;
 
 namespace YiZuTai.Design
 {
@@ -16,7 +11,7 @@ namespace YiZuTai.Design
         [Category("背景")]
         [DisplayName("背景颜色")]
         [Description("控件的背景颜色")]
-        [Editor(typeof(Editor.EditorInputColor), typeof(string))]
+        [Editor(typeof(EditorInputColor), typeof(EditorInputColor))]
         public virtual string Background
         {
             get { return _Background; }
@@ -31,7 +26,7 @@ namespace YiZuTai.Design
         [Category("背景")]
         [DisplayName("背景透明")]
         [Description("控件的背景透明度")]
-        [Editor(typeof(Editor.EditorInputRange), typeof(double))]
+        [Editor(typeof(EditorInputRange), typeof(EditorInputRange))]
         [Range(0, 1)]
         [StringLength(100)]
         public virtual double BackgroundOpacity
@@ -48,7 +43,7 @@ namespace YiZuTai.Design
         [Category("背景")]
         [DisplayName("边框颜色")]
         [Description("控件的边框颜色")]
-        [Editor(typeof(Editor.EditorInputColor), typeof(string))]
+        [Editor(typeof(EditorInputColor), typeof(EditorInputColor))]
         public virtual string Border
         {
             get { return _Border; }
@@ -63,7 +58,7 @@ namespace YiZuTai.Design
         [Category("背景")]
         [DisplayName("边框透明")]
         [Description("控件的边框透明度")]
-        [Editor(typeof(Editor.EditorInputRange), typeof(double))]
+        [Editor(typeof(EditorInputRange), typeof(EditorInputRange))]
         [Range(0, 1)]
         [StringLength(100)]
         public virtual double BorderOpacity

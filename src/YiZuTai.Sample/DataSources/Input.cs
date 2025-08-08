@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using YiZuTai.Design.Editor;
+using YiZuTai.Components.Editors;
 using YiZuTai.Source;
 using YiZuTai.DataSource;
 

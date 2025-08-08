@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace YiZuTai.Design.Editor
+namespace YiZuTai.Components.Editors
 {
     public partial class EditorInputRange
     {

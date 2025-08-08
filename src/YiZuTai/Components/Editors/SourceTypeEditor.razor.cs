@@ -4,7 +4,7 @@ using Quick.Xml;
 using YiZuTai.Components;
 using YiZuTai.Source;
 
-namespace YiZuTai.Design.Editor
+namespace YiZuTai.Components.Editors
 {
     public partial class SourceTypeEditor : EditorBase<ISource>
     {

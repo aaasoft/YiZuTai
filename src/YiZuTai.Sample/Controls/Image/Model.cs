@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using YiZuTai.Components.Editors;
 using YiZuTai.Design;
 
 namespace YiZuTai.Sample.Controls.Image
@@ -13,7 +14,7 @@ namespace YiZuTai.Sample.Controls.Image
         [Category("数据")]
         [DisplayName("图片")]
         [Description("图片控件要显示的图片")]
-        [Editor(typeof(Design.Editor.EditorInputImage), typeof(string))]
+        [Editor(typeof(EditorInputImage), typeof(EditorInputImage))]
         public string Image
         {
             get { return _Image; }

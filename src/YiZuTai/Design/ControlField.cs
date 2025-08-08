@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using YiZuTai.Components.Editors;
 
 namespace YiZuTai.Design
 {
@@ -48,8 +49,8 @@ namespace YiZuTai.Design
                 editorType = EditorManager.Instance.GetEditorType(PropertyInfo.PropertyType);
             return Quick.Blazor.Bootstrap.Utils.BlazorUtils.GetRenderFragment(editorType, new Dictionary<string, object>()
             {
-                [nameof(Editor.EditorBase.Field)] = this,
-                [nameof(Editor.EditorBase.ZTFile)] = ztFile
+                [nameof(EditorBase.Field)] = this,
+                [nameof(EditorBase.ZTFile)] = ztFile
             });
         }
     }
