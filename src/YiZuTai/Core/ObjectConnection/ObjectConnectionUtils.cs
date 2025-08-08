@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace YiZuTai.ObjectConnection
+namespace YiZuTai.Core.ObjectConnection
 {
     public class ObjectConnectionUtils
     {

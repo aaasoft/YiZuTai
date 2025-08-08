@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using Quick.Blazor.Bootstrap;
 
-namespace YiZuTai.ObjectConnection
+namespace YiZuTai.Core.ObjectConnection
 {
     public class ObjectConnectionInfo
     {

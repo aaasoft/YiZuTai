@@ -1,7 +1,7 @@
 ﻿using System.Collections.Specialized;
 using Quick.Blazor.Bootstrap;
 
-namespace YiZuTai.ObjectConnection
+namespace YiZuTai.Core.ObjectConnection
 {
     public class ObjectConnectionManager
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace YiZuTai.ObjectConnection
+namespace YiZuTai.Core.ObjectConnection
 {
     public abstract class AbstractObjectConnectionHandler<T> : IObjectConnectionHandler
     {

@@ -4,6 +4,7 @@ using Microsoft.JSInterop;
 using Quick.Blazor.Bootstrap;
 using YiZuTai.Core;
 using YiZuTai.Design;
+using YiZuTai.Core.ObjectConnection;
 
 namespace YiZuTai.Components
 {
@@ -104,7 +105,7 @@ namespace YiZuTai.Components
         {
             Model = Core.ZTFileManager.Instance.Get(Id);
             Project = Model.OpenProject();
-            ObjectConnection.ObjectConnectionManager.Instance.AddObject(Project);
+            ObjectConnectionManager.Instance.AddObject(Project);
 
             Project.PropertyChanged += Project_PropertyChanged;
             Project.Canvas.PropertyChanged += Control_PropertyChanged;
@@ -257,7 +258,7 @@ namespace YiZuTai.Components
         {
             if (Project != null)
             {
-                ObjectConnection.ObjectConnectionManager.Instance.RemoveObject(Project);
+                ObjectConnectionManager.Instance.RemoveObject(Project);
                 
                 Project.PropertyChanged -= Project_PropertyChanged;
                 foreach (var control in Project.Controls)

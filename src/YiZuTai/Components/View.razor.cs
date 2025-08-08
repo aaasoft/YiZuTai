@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Quick.Blazor.Bootstrap;
 using YiZuTai.Core;
+using YiZuTai.Core.ObjectConnection;
 using YiZuTai.Design;
 using YiZuTai.Enums;
 
@@ -49,7 +50,7 @@ namespace YiZuTai.Components
             if (Project == null)
                 Project = Model.OpenProject();
 
-            ObjectConnection.ObjectConnectionManager.Instance.AddObject(Project);
+            ObjectConnectionManager.Instance.AddObject(Project);
             ZTContext = new ZTContext()
             {
                 ZTFile = Model,
@@ -68,7 +69,7 @@ namespace YiZuTai.Components
 
         public void Dispose()
         {
-            ObjectConnection.ObjectConnectionManager.Instance.RemoveObject(Project);
+            ObjectConnectionManager.Instance.RemoveObject(Project);
         }
     }
 }

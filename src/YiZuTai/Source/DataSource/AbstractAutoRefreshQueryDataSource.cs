@@ -1,4 +1,4 @@
-﻿using YiZuTai.ObjectConnection;
+﻿using YiZuTai.Core.ObjectConnection;
 using System;
 using System.Collections.Generic;
 using System.Linq;

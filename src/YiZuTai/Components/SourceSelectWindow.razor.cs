@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using Quick.Blazor.Bootstrap;
 using Quick.Blazor.Bootstrap.Utils;
+using YiZuTai.Core.ObjectConnection;
 using YiZuTai.Design;
 using YiZuTai.Source;
 
@@ -76,7 +77,7 @@ public partial class SourceSelectWindow : ComponentBase
         if (Source != null)
         {
 
-            var info = ObjectConnection.ObjectConnectionManager.Instance.GetParent(Source);
+            var info = ObjectConnectionManager.Instance.GetParent(Source);
             if (info?.NotifyObject != null)
             {
                 SourceInfoList = new List<SourceInfo>();
