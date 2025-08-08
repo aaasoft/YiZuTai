@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace YiZuTai.Source
+namespace YiZuTai.Core.Source
 {
     public interface ISource : INotifyPropertyChanged
     {

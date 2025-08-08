@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace YiZuTai.Enumss
+namespace YiZuTai.Enums
 {
     public enum TextAnchor
     {

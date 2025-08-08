@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.ComponentModel;
 using YiZuTai.Core;
-using YiZuTai.Source;
+using YiZuTai.Core.Source;
 
 namespace YiZuTai.HyperLinkSource
 {

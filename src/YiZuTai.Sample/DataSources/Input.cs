@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using YiZuTai.Components.Editors;
-using YiZuTai.Source;
+using YiZuTai.Core.Source;
 using YiZuTai.DataSource;
 
 namespace YiZuTai.Sample.DataSources

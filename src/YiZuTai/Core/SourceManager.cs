@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
-using YiZuTai.Source;
+using YiZuTai.Core.Source;
 
 namespace YiZuTai.Core
 {

@@ -4,8 +4,8 @@ using Newtonsoft.Json;
 using Quick.Xml;
 using YiZuTai.Design;
 using YiZuTai.Components.Editors;
-using YiZuTai.Enumss;
-using YiZuTai.Design.Trigger;
+using YiZuTai.Enums;
+using YiZuTai.Trigger;
 using YiZuTai.DataSource;
 
 namespace YiZuTai.Sample.Controls.TextBlock;
@@ -258,8 +258,8 @@ value   =>  当前值")]
             }).ToArray();
     }
 
-    private Dictionary<IDataSource, ControlDataTrigger[]> cachedDataSourceTriggerDict = null;
-    protected override Dictionary<IDataSource, ControlDataTrigger[]> GetDataSourceTriggerDict()
+    private Dictionary<IDataSource, AbstractTrigger[]> cachedDataSourceTriggerDict = null;
+    protected override Dictionary<IDataSource, AbstractTrigger[]> GetDataSourceTriggerDict()
     {
         if (cachedDataSourceTriggerDict == null)
         {

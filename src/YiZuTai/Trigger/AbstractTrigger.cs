@@ -1,14 +1,15 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 using Quick.Blazor.Bootstrap;
-using YiZuTai.Enumss;
+using YiZuTai.Design;
+using YiZuTai.Enums;
 
-namespace YiZuTai.Design.Trigger
+namespace YiZuTai.Trigger
 {
     /// <summary>
     /// 值触发器
     /// </summary>
-    public abstract class ControlDataTrigger : PropertyNotifyModel
+    public abstract class AbstractTrigger : PropertyNotifyModel
     {
         private Operators _Operater = Operators.EqualTo;
         [Category("触发条件")]

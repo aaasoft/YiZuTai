@@ -1,4 +1,4 @@
-﻿namespace YiZuTai.Source
+﻿namespace YiZuTai.Core.Source
 {
     public class SourceAttribute
     {

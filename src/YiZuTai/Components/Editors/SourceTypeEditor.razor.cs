@@ -2,7 +2,7 @@
 using Quick.Blazor.Bootstrap;
 using Quick.Xml;
 using YiZuTai.Components;
-using YiZuTai.Source;
+using YiZuTai.Core.Source;
 
 namespace YiZuTai.Components.Editors
 {

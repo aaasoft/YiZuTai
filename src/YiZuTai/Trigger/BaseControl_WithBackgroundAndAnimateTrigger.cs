@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
+using YiZuTai.Design;
 
-namespace YiZuTai.Design.Trigger
+namespace YiZuTai.Trigger
 {
     public abstract class BaseControl_WithBackgroundAndAnimateTrigger : BaseControl_WithBackgroundTrigger
     {

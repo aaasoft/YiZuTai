@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using YiZuTai.Components.Editors;
+using YiZuTai.Design;
 using static YiZuTai.Design.BaseControl;
 
-namespace YiZuTai.Design.Trigger
+namespace YiZuTai.Trigger
 {
-    public abstract class BaseControlTrigger : ControlDataTrigger
+    public abstract class BaseControlTrigger : AbstractTrigger
     {
         private double? _Opacity;
         [Category(nameof(CategoryOrder.外观))]

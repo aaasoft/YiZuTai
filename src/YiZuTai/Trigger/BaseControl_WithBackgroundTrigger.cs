@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using YiZuTai.Components.Editors;
+using YiZuTai.Design;
 
-namespace YiZuTai.Design.Trigger
+namespace YiZuTai.Trigger
 {
     public abstract class BaseControl_WithBackgroundTrigger : BaseControlTrigger
     {

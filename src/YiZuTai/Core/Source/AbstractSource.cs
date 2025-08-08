@@ -1,6 +1,6 @@
 ﻿using Quick.Blazor.Bootstrap;
 
-namespace YiZuTai.Source
+namespace YiZuTai.Core.Source
 {
     public abstract class AbstractSource : PropertyNotifyModel, ISource
     {

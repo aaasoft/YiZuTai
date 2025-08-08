@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using YiZuTai.Components;
-using YiZuTai.Design.Trigger;
+using YiZuTai.Trigger;
 using YiZuTai.DataSource;
 
 namespace YiZuTai.Design
@@ -86,7 +86,7 @@ namespace YiZuTai.Design
             }
         }
 
-        protected virtual Dictionary<IDataSource, ControlDataTrigger[]> GetDataSourceTriggerDict() => null;
+        protected virtual Dictionary<IDataSource, AbstractTrigger[]> GetDataSourceTriggerDict() => null;
 
 
         /// <summary>

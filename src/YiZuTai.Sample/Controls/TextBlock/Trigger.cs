@@ -1,8 +1,8 @@
 using System.ComponentModel;
 using YiZuTai.Design;
 using YiZuTai.Components.Editors;
-using YiZuTai.Enumss;
-using YiZuTai.Design.Trigger;
+using YiZuTai.Enums;
+using YiZuTai.Trigger;
 using YiZuTai.DataSource;
 
 namespace YiZuTai.Sample.Controls.TextBlock;

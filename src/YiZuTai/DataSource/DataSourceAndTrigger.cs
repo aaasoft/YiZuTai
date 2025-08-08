@@ -1,4 +1,4 @@
-﻿using YiZuTai.Design.Trigger;
+﻿using YiZuTai.Trigger;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -12,7 +12,7 @@ namespace YiZuTai.DataSource
     /// </summary>
     [DisplayName("数据源与触发器")]
     public class DataSourceAndTrigger<TControlDataTrigger> : PropertyNotifyModel
-        where TControlDataTrigger : ControlDataTrigger
+        where TControlDataTrigger : AbstractTrigger
     {
         private IDataSource _DataSource;
         [DisplayName("数据源")]
