@@ -1,5 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using YiZuTai.ViewModel;
+using Quick.Blazor.Bootstrap;
 
 namespace YiZuTai.Design
 {

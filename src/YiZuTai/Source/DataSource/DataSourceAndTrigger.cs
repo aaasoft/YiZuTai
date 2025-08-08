@@ -1,8 +1,8 @@
 ﻿using YiZuTai.Design.Trigger;
-using YiZuTai.ViewModel;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using Quick.Blazor.Bootstrap;
 
 namespace YiZuTai.Source.DataSource
 {

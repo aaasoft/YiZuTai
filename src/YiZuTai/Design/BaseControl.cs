@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
+using Quick.Blazor.Bootstrap;
 using Quick.Blazor.Bootstrap.Utils;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using YiZuTai.Core;
-using YiZuTai.ViewModel;
 
 namespace YiZuTai.Design
 {

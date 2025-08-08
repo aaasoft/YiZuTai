@@ -1,13 +1,11 @@
 using System.ComponentModel;
 using System.Reflection;
-using System.Windows.Input;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using Quick.Blazor.Bootstrap;
 using Quick.Blazor.Bootstrap.Utils;
 using YiZuTai.Design;
 using YiZuTai.Source;
-using YiZuTai.ViewModel;
 
 namespace YiZuTai.Components;
 
@@ -17,7 +15,6 @@ public partial class SourceSelectWindow : ComponentBase
     {
         public string Name { get; set; }
         public ISource Source { get; set; }
-        public ICommand Command { get; set; }
     }
     private ModalAlert modalAlert;
 
@@ -117,22 +114,7 @@ public partial class SourceSelectWindow : ComponentBase
             list.Add(new SourceInfo()
             {
                 Name = string.Join(" - ", nameList),
-                Source = otherSource,
-                Command = new DelegateCommand()
-                {
-                    ExecuteCommand = _ =>
-                    {
-                        try
-                        {
-                            var json = JsonConvert.SerializeObject(otherSource);
-                            JsonConvert.PopulateObject(json, Source);
-                        }
-                        catch (Exception ex)
-                        {
-                            modalAlert.Show(Source.ToString(), $"导入配置时出错，原因：{ExceptionUtils.GetExceptionMessage(ex)}");
-                        }
-                    }
-                }
+                Source = otherSource
             });
         }
     }
