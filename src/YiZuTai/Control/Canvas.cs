@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using YiZuTai.Components.Editors;
 using YiZuTai.Enums;
+using YiZuTai.HyperLinkSource;
 using YiZuTai.Utils;
 
 namespace YiZuTai.Control
@@ -40,6 +41,10 @@ namespace YiZuTai.Control
         [JsonIgnore]
         [Browsable(false)]
         public override double BackgroundOpacity { get; set; }
+        
+        [JsonIgnore]
+        [Browsable(false)]
+        public override IHyperLinkSource HyperLinkSource { get; set; }
 
         //前景
         private string _Foreground = "#ffffff";
