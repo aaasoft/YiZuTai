@@ -1,6 +1,6 @@
 ﻿using YiZuTai.Components.Editors;
 
-namespace YiZuTai.Design
+namespace YiZuTai.Core
 {
     public class EditorManager
     {

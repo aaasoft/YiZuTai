@@ -1,13 +1,8 @@
-﻿using System;
-using System.Buffers.Text;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Reflection;
-using System.Text;
+using YiZuTai.Design;
 
-namespace YiZuTai.Design
+namespace YiZuTai.Core
 {
     public class ControlManager
     {

@@ -1,5 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Builder
+@using YiZuTai.Core
 @using YiZuTai.Core.Utils
+
 <PageTitle>@title</PageTitle>
 <HeadContent>
     <script src="_content/YiZuTai/js/core.js"></script>
@@ -76,7 +78,7 @@ else
                     工具箱
                 </div>
                 <div id="divToolbox" class="card-body p-1 overflow-auto">
-                    @foreach (var group in Design.ControlManager.Instance.GetItems().GroupBy(t => t.Category))
+                    @foreach (var group in ControlManager.Instance.GetItems().GroupBy(t => t.Category))
                     {
                         <div class="card-title m-0 ml-2 mt-1 font-weight-bold">@group.Key</div>
                         @foreach (var controlAttr in group)

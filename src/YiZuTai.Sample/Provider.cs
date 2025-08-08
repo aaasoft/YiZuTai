@@ -1,5 +1,4 @@
-using YiZuTai.Design;
-using YiZuTai.Source;
+using YiZuTai.Core;
 
 namespace YiZuTai.Sample;
 

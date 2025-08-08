@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using YiZuTai;
 using YiZuTai.Core;
-using YiZuTai.Design;
 using YiZuTai.Source;
 
 namespace Microsoft.AspNetCore.Builder
@@ -41,7 +40,7 @@ namespace Microsoft.AspNetCore.Builder
             if (options == null)
                 throw new ArgumentNullException(nameof(options));
             Options = options;
-            
+
             //如果数据目录不存在，则创建
             var dataDir = options.DataFolder;
             if (!Directory.Exists(dataDir))

@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
+using YiZuTai.Source;
 
-namespace YiZuTai.Source
+namespace YiZuTai.Core
 {
     public class SourceManager
     {
