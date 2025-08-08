@@ -15,6 +15,7 @@
 else
 {
     <CascadingValue Value="Model">
+    <ToastStack @ref="toastStack" />
     
     <!--顶部菜单部分-->
     <div class="row">
@@ -235,7 +236,6 @@ else
     </CascadingValue>
 
     <ModalLoading @ref="modalLoading" />
-    <ToastStack @ref="toastStack" />
     <ModalPrompt @ref="modalPrompt" />
     <ModalAlert @ref="modalAlert" />
     <ModalWindow DialogSizeExtraLarge @ref="modalWindow" />

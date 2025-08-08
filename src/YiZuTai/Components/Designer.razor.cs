@@ -290,6 +290,8 @@ namespace YiZuTai.Components
         // 文件管理
         private void FileManage()
         {
+            if (!Directory.Exists(Model.ResourceFolder))
+                Directory.CreateDirectory(Model.ResourceFolder);
             modalWindow.Show("资源文件", new DialogParameters<FileManageControl>
             {
                 { x => x.ZTFile, Model}
