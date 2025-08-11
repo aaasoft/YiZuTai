@@ -12,6 +12,8 @@
 
 @code {
     [Parameter]
+    public bool DesignMode { get; set; } = false;
+    [Parameter]
     public T_BaseControl_WithBackground Model { get; set; }
     [Parameter]
     public RenderFragment ChildContent { get; set; }

@@ -5,31 +5,31 @@ namespace YiZuTai.Trigger
 {
     public abstract class BaseControl_WithBackgroundAndAnimateTrigger : BaseControl_WithBackgroundTrigger
     {
-        private double? _RotateSpeed;
+        private string _RotateRotateDur;
         [Category("动画")]
-        [DisplayName("旋转速度")]
-        [Description("控件旋转的速度")]
-        public double? RotateSpeed
+        [DisplayName("旋转时长")]
+        [Description("指定简单持续时间的时长。值必须大于 0。可以用小时（h）、分钟（m）、秒（s）、毫秒（ms）表达这个值。可以组合这些时间表达式以提供一个复合的持续时间，比如这样：hh:mm:ss.iii 或者这样：mm:ss.iii。")]
+        public string RotateDur
         {
-            get { return _RotateSpeed; }
+            get { return _RotateRotateDur; }
             set
             {
-                _RotateSpeed = value;
-                RaisePropertyChanged(nameof(RotateSpeed));
+                _RotateRotateDur = value;
+                RaisePropertyChanged();
             }
         }
 
-        private double? _FlashInterval;
+        private string _FlashDur;
         [Category("动画")]
-        [DisplayName("闪烁间隔")]
-        [Description("控件闪烁的间隔，单位：毫秒")]
-        public double? FlashInterval
+        [DisplayName("闪烁时长")]
+        [Description("指定简单持续时间的时长。值必须大于 0。可以用小时（h）、分钟（m）、秒（s）、毫秒（ms）表达这个值。可以组合这些时间表达式以提供一个复合的持续时间，比如这样：hh:mm:ss.iii 或者这样：mm:ss.iii。")]
+        public string FlashDur
         {
-            get { return _FlashInterval; }
+            get { return _FlashDur; }
             set
             {
-                _FlashInterval = value;
-                RaisePropertyChanged(nameof(FlashInterval));
+                _FlashDur = value;
+                RaisePropertyChanged();
             }
         }
 
@@ -39,10 +39,10 @@ namespace YiZuTai.Trigger
             base.Execute(controlModel);
 
             var model = (BaseControl_WithBackgroundAndAnimate)controlModel;
-            if (RotateSpeed != null)
-                model.RotateSpeed = RotateSpeed.Value;
-            if (FlashInterval != null)
-                model.FlashInterval = FlashInterval.Value;
+            if (RotateDur != null)
+                model.RotateDur = RotateDur;
+            if (FlashDur != null)
+                model.FlashDur = FlashDur;
         }
     }
 }

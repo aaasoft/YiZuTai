@@ -6,3 +6,16 @@
     visibility="@(Model.Visiable ? "visible" : "hidden")" @ref="svgElementReference">
     @ChildContent
 </svg>
+
+@code
+{
+    [Parameter]
+    public T_BaseControl Model { get; set; }
+    [Parameter]
+    public bool DesignMode { get; set; } = false;
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    private ElementReference svgElementReference;
+    public string Id => svgElementReference.Id;
+}

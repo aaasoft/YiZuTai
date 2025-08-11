@@ -4,12 +4,30 @@
 
 @typeparam T_BaseControl_WithBackgroundAndAnimate where T_BaseControl_WithBackgroundAndAnimate : BaseControl_WithBackgroundAndAnimate, new()
 
-<BaseControl_WithBackgroundView T_BaseControl_WithBackground="T_BaseControl_WithBackgroundAndAnimate" Model="Model" DesignMode="DesignMode" @ref="ParentView">
-    <!--数据部分-->
-    <g @ref="dataElementReference" data-Angle="@Model.Angle"
-        data-FlashInterval="@Model.FlashInterval"     
-        data-RotateSpeed="@Model.RotateSpeed"
-        data-CenterPointLocationX="@(Model.Left + Model.Width / 2)"
-        data-CenterPointLocationY="@(Model.Top + Model.Height / 2)" />
+<BaseControl_WithBackgroundView T_BaseControl_WithBackground="T_BaseControl_WithBackgroundAndAnimate" Model="Model"
+    DesignMode="DesignMode">
     @ChildContent
+    <!--旋转动画-->
+    @if (Model.RotateDur != null)
+    {
+        <animateTransform attributeName="transform" attributeType="XML" type="rotate"
+            from="0 @(Model.Left + Model.Width / 2) @(Model.Top + Model.Height / 2)"
+            to="360 @(Model.Left + Model.Width / 2) @(Model.Top + Model.Height / 2)" dur="@Model.RotateDur"
+            repeatCount="indefinite" />
+    }
+    <!--闪烁动画-->
+    @if (Model.FlashDur != null)
+    {
+        <animate attributeName="opacity" values="1;0;1" dur="@Model.FlashDur" repeatCount="indefinite" />
+    }
 </BaseControl_WithBackgroundView>
+
+@code
+{
+    [Parameter]
+    public T_BaseControl_WithBackgroundAndAnimate Model { get; set; }
+    [Parameter]
+    public bool DesignMode { get; set; } = false;
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+}
