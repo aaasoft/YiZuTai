@@ -54,12 +54,6 @@ namespace YiZuTai.Control
             Height = newHeight;
         }
 
-        /// <summary>
-        /// 与Display属性有关系的属性列表
-        /// </summary>
-        /// <returns></returns>
-        public virtual string[] GetHasBussinesToDispayProperties() => [nameof(Opacity)];
-
         [Browsable(false)]
         [JsonIgnore]
         public IControlView View { get; set; }

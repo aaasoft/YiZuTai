@@ -242,22 +242,6 @@ value   =>  当前值")]
         }
     }
 
-    public override string[] GetHasBussinesToDispayProperties()
-    {
-        return base.GetHasBussinesToDispayProperties().Concat(new string[]
-            {
-                nameof(Width),
-                nameof(Height),
-                nameof(Foreground),
-                nameof(Value),
-                nameof(Format),
-                nameof(FontSize),
-                nameof(FontFamily),
-                nameof(TextVerticalOffset),
-                nameof(Image)
-            }).ToArray();
-    }
-
     private Dictionary<IDataSource, AbstractTrigger[]> cachedDataSourceTriggerDict = null;
     protected override Dictionary<IDataSource, AbstractTrigger[]> GetDataSourceTriggerDict()
     {

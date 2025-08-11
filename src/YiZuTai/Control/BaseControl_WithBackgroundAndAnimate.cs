@@ -31,14 +31,5 @@ namespace YiZuTai.Control
                 RaisePropertyChanged(nameof(FlashInterval));
             }
         }
-
-        public override string[] GetHasBussinesToDispayProperties()
-        {
-            return base.GetHasBussinesToDispayProperties().Concat(
-                [
-                    nameof(RotateSpeed),
-                    nameof(FlashInterval)
-                ]).ToArray();
-        }
     }
 }
