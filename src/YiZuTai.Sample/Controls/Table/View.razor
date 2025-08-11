@@ -8,13 +8,14 @@
         @for (var rowIndex = 0; rowIndex <= ControlModel.RowCount; rowIndex++)
         {
             @if ((rowIndex > 0 || ControlModel.FirstRowVisiable) && (rowIndex < ControlModel.RowCount ||
-            ControlModel.LastRowVisiable))
+                ControlModel.LastRowVisiable))
             {
                 <line x1="0"
                     y1="@(rowIndex * (ControlModel.Height - ControlModel.RowWidth) / ControlModel.RowCount + ControlModel.RowWidth / 2)"
                     x2="@ControlModel.Width"
                     y2="@(rowIndex * (ControlModel.Height - ControlModel.RowWidth) / ControlModel.RowCount + ControlModel.RowWidth / 2)"
-                    stroke-width="@ControlModel.RowWidth" stroke="@ControlModel.RowLineColor" />
+                    stroke-width="@ControlModel.RowWidth" stroke="@ControlModel.RowLineColor"
+                    stroke-opacity="@ControlModel.RowLineOpacity" />
             }
         }
     }
@@ -25,13 +26,14 @@
         @for (var columnIndex = 0; columnIndex <= ControlModel.ColumnCount; columnIndex++)
         {
             @if ((columnIndex > 0 || ControlModel.FirstColumnVisiable) && (columnIndex < ControlModel.RowCount ||
-            ControlModel.LastColumnVisiable))
+                ControlModel.LastColumnVisiable))
             {
                 <line
                     x1="@(columnIndex * (ControlModel.Width - ControlModel.ColumnWidth) / ControlModel.ColumnCount + ControlModel.ColumnWidth / 2)"
                     y1="0"
                     x2="@(columnIndex * (ControlModel.Width - ControlModel.ColumnWidth) / ControlModel.ColumnCount + ControlModel.ColumnWidth / 2)"
-                    y2="@ControlModel.Height" stroke-width="@ControlModel.ColumnWidth" stroke="@ControlModel.ColumnLineColor" />
+                    y2="@ControlModel.Height" stroke-width="@ControlModel.ColumnWidth" stroke="@ControlModel.ColumnLineColor"
+                    stroke-opacity="@ControlModel.ColumnLineOpacity" />
             }
         }
     }

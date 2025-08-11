@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using YiZuTai.Components.Editors;
 using YiZuTai.Control;
 
@@ -102,6 +103,22 @@ public class Model : BaseControl_WithBackground
         }
     }
 
+    private double _ColumnLineOpacity = 1;
+    [Category("列")]
+    [DisplayName("线条透明")]
+    [Editor(typeof(EditorInputRange), typeof(EditorInputRange))]
+    [Range(0, 1)]
+    [StringLength(100)]
+    public double ColumnLineOpacity
+    {
+        get { return _ColumnLineOpacity; }
+        set
+        {
+            _ColumnLineOpacity = value;
+            RaisePropertyChanged();
+        }
+    }
+
 
     private bool _RowVisiable = true;
     [Category("行")]
@@ -167,6 +184,22 @@ public class Model : BaseControl_WithBackground
         {
             _RowLineColor = value;
             RaisePropertyChanged(nameof(RowLineColor));
+        }
+    }
+
+    private double _RowLineOpacity = 1;
+    [Category("行")]
+    [DisplayName("线条透明")]
+    [Editor(typeof(EditorInputRange), typeof(EditorInputRange))]
+    [Range(0, 1)]
+    [StringLength(100)]
+    public double RowLineOpacity
+    {
+        get { return _RowLineOpacity; }
+        set
+        {
+            _RowLineOpacity = value;
+            RaisePropertyChanged();
         }
     }
 }
