@@ -52,20 +52,11 @@ namespace YiZuTai.Sample.Controls.Image
             }
         }
 
-
-        private Dictionary<IDataSource, AbstractTrigger[]> cachedDataSourceTriggerDict = null;
-        protected override Dictionary<IDataSource, AbstractTrigger[]> GetDataSourceTriggerDict()
+        protected override IEnumerable<Tuple<IDataSource, AbstractTrigger[]>> GetDataSourceAndTriggers()
         {
-            if (cachedDataSourceTriggerDict == null)
-            {
+            if (DataSourceAndTriggers != null)
                 foreach (var item in DataSourceAndTriggers)
-                {
-                    if (item.DataSource == null || item.Triggers.Count == 0)
-                        continue;
-                    cachedDataSourceTriggerDict[item.DataSource] = item.Triggers.ToArray();
-                }
-            }
-            return cachedDataSourceTriggerDict;
+                    yield return new(item.DataSource, item.Triggers.ToArray());
         }
     }
 }

@@ -242,21 +242,12 @@ value   =>  当前值")]
         }
     }
 
-    private Dictionary<IDataSource, AbstractTrigger[]> cachedDataSourceTriggerDict = null;
-    protected override Dictionary<IDataSource, AbstractTrigger[]> GetDataSourceTriggerDict()
+    protected override IEnumerable<Tuple<IDataSource, AbstractTrigger[]>> GetDataSourceAndTriggers()
     {
-        if (cachedDataSourceTriggerDict == null)
-        {
-            cachedDataSourceTriggerDict = new();
-            if (Value != null && ValueTriggers.Count > 0)
-                cachedDataSourceTriggerDict[Value] = ValueTriggers.ToArray();
+        if (Value != null && ValueTriggers.Count > 0)
+            yield return new(Value, ValueTriggers.ToArray());
+        if (DataSourceAndTriggers != null)
             foreach (var item in DataSourceAndTriggers)
-            {
-                if (item.DataSource == null || item.Triggers.Count == 0)
-                    continue;
-                cachedDataSourceTriggerDict[item.DataSource] = item.Triggers.ToArray();
-            }
-        }
-        return cachedDataSourceTriggerDict;
+                yield return new(item.DataSource, item.Triggers.ToArray());
     }
 }

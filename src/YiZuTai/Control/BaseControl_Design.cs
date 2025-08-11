@@ -80,7 +80,25 @@ namespace YiZuTai.Control
             }
         }
 
-        protected virtual Dictionary<IDataSource, AbstractTrigger[]> GetDataSourceTriggerDict() => null;
+        protected virtual IEnumerable<Tuple<IDataSource, AbstractTrigger[]>> GetDataSourceAndTriggers() => null;
+
+        private Dictionary<IDataSource, AbstractTrigger[]> cachedDataSourceTriggerDict = null;
+        private Dictionary<IDataSource, AbstractTrigger[]> GetDataSourceTriggerDict()
+        {
+            if (cachedDataSourceTriggerDict == null)
+            {
+                cachedDataSourceTriggerDict = new();
+                var items = GetDataSourceAndTriggers();
+                if (items != null)
+                    foreach (var item in items)
+                    {
+                        if (item.Item1 == null || item.Item2.Length == 0)
+                            continue;
+                        cachedDataSourceTriggerDict[item.Item1] = item.Item2;
+                    }
+            }
+            return cachedDataSourceTriggerDict;
+        }
 
 
         /// <summary>
