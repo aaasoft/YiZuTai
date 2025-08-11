@@ -1,6 +1,9 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using YiZuTai.Components.Editors;
 using YiZuTai.Control;
+using YiZuTai.DataSource;
+using YiZuTai.Trigger;
 
 namespace YiZuTai.Sample.Controls.Image
 {
@@ -32,6 +35,37 @@ namespace YiZuTai.Sample.Controls.Image
             Height = 120;
             BackgroundOpacity = 0;
             Image = GetIcon();
+        }
+
+
+        private ObservableCollection<DataSourceAndTrigger> _DataSourceAndTriggers = new ObservableCollection<DataSourceAndTrigger>();
+        [Category("数据源与触发器")]
+        [DisplayName("更多")]
+        [Editor(typeof(CollectionEditor), typeof(CollectionEditor))]
+        public ObservableCollection<DataSourceAndTrigger> DataSourceAndTriggers
+        {
+            get { return _DataSourceAndTriggers; }
+            set
+            {
+                _DataSourceAndTriggers = value;
+                RaisePropertyChanged(nameof(DataSourceAndTriggers));
+            }
+        }
+
+
+        private Dictionary<IDataSource, AbstractTrigger[]> cachedDataSourceTriggerDict = null;
+        protected override Dictionary<IDataSource, AbstractTrigger[]> GetDataSourceTriggerDict()
+        {
+            if (cachedDataSourceTriggerDict == null)
+            {
+                foreach (var item in DataSourceAndTriggers)
+                {
+                    if (item.DataSource == null || item.Triggers.Count == 0)
+                        continue;
+                    cachedDataSourceTriggerDict[item.DataSource] = item.Triggers.ToArray();
+                }
+            }
+            return cachedDataSourceTriggerDict;
         }
     }
 }
