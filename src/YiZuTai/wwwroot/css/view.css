@@ -1,4 +1,8 @@
-.main > div {
+.main>div {
     padding-left: 0rem !important;
     padding-right: 0rem !important;
+}
+
+text {
+    user-select: none;
 }
