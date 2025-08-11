@@ -1,7 +1,10 @@
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using YiZuTai.Components.Editors;
 using YiZuTai.Control;
+using YiZuTai.DataSource;
+using YiZuTai.Trigger;
 
 namespace YiZuTai.Sample.Controls.Path;
 
@@ -29,6 +32,7 @@ public class Model : BaseControl_WithBackground
     private string _Stroke = "#B0E0E6";
     [Category("笔画")]
     [DisplayName("颜色")]
+    [Editor(typeof(EditorInputColor), typeof(EditorInputColor))]
     public virtual string Stroke
     {
         get { return _Stroke; }
@@ -74,6 +78,7 @@ public class Model : BaseControl_WithBackground
     private string _Fill = "#000000";
     [Category("填充")]
     [DisplayName("颜色")]
+    [Editor(typeof(EditorInputColor), typeof(EditorInputColor))]
     public virtual string Fill
     {
         get { return _Fill; }
@@ -179,5 +184,35 @@ public class Model : BaseControl_WithBackground
     {
         Width = 200;
         Height = 200;
+    }
+
+    private ObservableCollection<DataSourceAndTrigger> _DataSourceAndTriggers = new ObservableCollection<DataSourceAndTrigger>();
+    [Category("数据源与触发器")]
+    [DisplayName("更多")]
+    [Editor(typeof(CollectionEditor), typeof(CollectionEditor))]
+    public ObservableCollection<DataSourceAndTrigger> DataSourceAndTriggers
+    {
+        get { return _DataSourceAndTriggers; }
+        set
+        {
+            _DataSourceAndTriggers = value;
+            RaisePropertyChanged(nameof(DataSourceAndTriggers));
+        }
+    }
+
+
+    private Dictionary<IDataSource, AbstractTrigger[]> cachedDataSourceTriggerDict = null;
+    protected override Dictionary<IDataSource, AbstractTrigger[]> GetDataSourceTriggerDict()
+    {
+        if (cachedDataSourceTriggerDict == null)
+        {
+            foreach (var item in DataSourceAndTriggers)
+            {
+                if (item.DataSource == null || item.Triggers.Count == 0)
+                    continue;
+                cachedDataSourceTriggerDict[item.DataSource] = item.Triggers.ToArray();
+            }
+        }
+        return cachedDataSourceTriggerDict;
     }
 }
