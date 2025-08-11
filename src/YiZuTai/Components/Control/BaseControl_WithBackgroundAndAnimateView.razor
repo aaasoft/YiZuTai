@@ -8,7 +8,7 @@
     DesignMode="DesignMode">
     @ChildContent
     <!--旋转动画-->
-    @if (Model.RotateDur != null)
+    @if (!string.IsNullOrEmpty(Model.RotateDur))
     {
         <animateTransform attributeName="transform" attributeType="XML" type="rotate"
             from="0 @(Model.Left + Model.Width / 2) @(Model.Top + Model.Height / 2)"
@@ -16,7 +16,7 @@
             repeatCount="indefinite" />
     }
     <!--闪烁动画-->
-    @if (Model.FlashDur != null)
+    @if (!string.IsNullOrEmpty(Model.FlashDur))
     {
         <animate attributeName="opacity" values="1;0;1" dur="@Model.FlashDur" repeatCount="indefinite" />
     }
