@@ -1,0 +1,57 @@
+﻿@inherits AbstractControlView<Model>
+
+<BaseControl_WithBackgroundView T_BaseControl_WithBackground="Model" Model="@ControlModel"
+    DesignMode="@ZTContext.DesignMode">
+
+    @if (ControlModel.AnimationReverse)
+    {
+        @if (ControlModel.AnimationToAndBack)
+        {
+            <path id="path_@ControlModel.Name"
+                d="M @ControlModel.Width @ControlModel.Height Q @halfWidth -@halfHeight,0 @ControlModel.Height Q @halfWidth -@halfHeight,@ControlModel.Width @ControlModel.Height"
+                stroke="@ControlModel.Stroke" stroke-opacity="@ControlModel.StrokeOpacity"
+                stroke-width="@ControlModel.StrokeWidth" fill="@ControlModel.Fill" fill-opacity="@ControlModel.FillOpacity" />
+        }
+        else
+        {
+            <path id="path_@ControlModel.Name"
+                d="M @ControlModel.Width @ControlModel.Height Q @halfWidth -@halfHeight,0 @ControlModel.Height"
+                stroke="@ControlModel.Stroke" stroke-opacity="@ControlModel.StrokeOpacity"
+                stroke-width="@ControlModel.StrokeWidth" fill="@ControlModel.Fill" fill-opacity="@ControlModel.FillOpacity" />
+        }
+    }
+    else
+    {
+        @if (ControlModel.AnimationToAndBack)
+        {
+            <path id="path_@ControlModel.Name"
+                d="M 0 @ControlModel.Height Q @halfWidth -@halfHeight,@ControlModel.Width @ControlModel.Height Q @halfWidth -@halfHeight,0 @ControlModel.Height"
+                stroke="@ControlModel.Stroke" stroke-opacity="@ControlModel.StrokeOpacity"
+                stroke-width="@ControlModel.StrokeWidth" fill="@ControlModel.Fill" fill-opacity="@ControlModel.FillOpacity" />
+        }
+        else
+        {
+            <path id="path_@ControlModel.Name"
+                d="M 0 @ControlModel.Height Q @halfWidth -@halfHeight,@ControlModel.Width @ControlModel.Height"
+                stroke="@ControlModel.Stroke" stroke-opacity="@ControlModel.StrokeOpacity"
+                stroke-width="@ControlModel.StrokeWidth" fill="@ControlModel.Fill" fill-opacity="@ControlModel.FillOpacity" />
+        }
+    }
+
+    @if (ControlModel.EnableAnimation)
+    {
+        <image href="@Core.ZTFile.GetStaticResourceUrl(ZTContext.ZTFile.Id, ControlModel.Image)"
+            transform="translate(-@(ControlModel.ImageWidth / 2),-@(ControlModel.ImageHeight / 2))"
+            width="@ControlModel.ImageWidth" height="@ControlModel.ImageHeight" preserveAspectRatio="none">
+            <animateMotion dur="@ControlModel.Dur" repeatCount="indefinite" rotate="auto">
+                <mpath href="#path_@ControlModel.Name" />
+            </animateMotion>
+        </image>
+    }
+</BaseControl_WithBackgroundView>
+
+@code
+{
+    private double halfWidth => ControlModel.Width / 2;
+    private double halfHeight => ControlModel.Height / 2;
+}
