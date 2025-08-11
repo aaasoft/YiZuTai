@@ -3,7 +3,7 @@
 @using YiZuTai.Control
 @foreach (var group in SelectedItemFields)
 {
-    <div class="card-title m-0 ml-2 mt-1 font-weight-bold">@group.Name</div>
+    <div class="card-title m-0 ml-2 mt-1 font-weight-bold" style="user-select: none;">@group.Name</div>
     @foreach (var field in group.FieldList)
     {
         <div class="form-group m-1" @onclick="@(e => onFieldClicked(field))">
@@ -11,13 +11,13 @@
                 @if (SelectedField!=null && field.Name == SelectedField.Name)
                 {
                     <div class="input-group-prepend">
-                        <div class="input-group-text bg-secondary text-white">@field.Name</div>
+                        <div class="input-group-text bg-secondary text-white" style="user-select: none;">@field.Name</div>
                     </div>
                 }
                 else
                 {
                     <div class="input-group-prepend">
-                        <div class="input-group-text">@field.Name</div>
+                        <div class="input-group-text" style="user-select: none;">@field.Name</div>
                     </div>
                 }
                 @field.GetEditorRenderFragment(Model)

@@ -81,13 +81,13 @@ else
 {
             <!--左侧工具箱部分-->
             <div class="card col-xl-2 col-lg-3 col-md-4 p-0">
-                <div class="card-header">
+                <div class="card-header" style="user-select: none;">
                     工具箱
                 </div>
                 <div id="divToolbox" class="card-body p-1 overflow-auto">
                     @foreach (var group in ControlManager.Instance.GetItems().GroupBy(t => t.Category))
                     {
-                        <div class="card-title m-0 ml-2 mt-1 font-weight-bold">@group.Key</div>
+                        <div class="card-title m-0 ml-2 mt-1 font-weight-bold" style="user-select: none;">@group.Key</div>
                         @foreach (var controlAttr in group)
                         {
                             <div draggable="true" class="btn btn-light btn-block text-left p-1 m-0 mt-1"
@@ -203,7 +203,7 @@ else
 {
             <!--右侧属性部分-->
             <div class="card col-xl-2 col-lg-3 col-md-4 p-0">
-                <div class="card-header">
+                <div class="card-header" style="user-select: none;">
                     属性
                 </div>
                 <div id="divProperty" class="card-body p-0 overflow-auto">
@@ -211,7 +211,7 @@ else
                         <div class="form-group m-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <div class="input-group-text">控件</div>
+                                    <div class="input-group-text" style="user-select: none;">控件</div>
                                 </div>
                                 <InputSelect class="form-control" @bind-Value="SelectedItemName">
                                     <option value="">画布</option>
