@@ -13,7 +13,6 @@ namespace YiZuTai.Sample.Controls.Rectangle
         {
             Border = "#000000";
             BorderThickness = 2;
-            BackgroundOpacity = 0;
         }
     }
 }

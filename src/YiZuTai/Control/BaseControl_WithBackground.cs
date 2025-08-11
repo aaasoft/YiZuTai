@@ -6,7 +6,7 @@ namespace YiZuTai.Control
 {
     public abstract class BaseControl_WithBackground : BaseControl
     {
-        private string _Background { get; set; } = "#ffffff";
+        private string _Background { get; set; } = "#FFFFFF";
         //默认为透明
         [Category("背景")]
         [DisplayName("背景颜色")]
@@ -22,7 +22,7 @@ namespace YiZuTai.Control
             }
         }
 
-        private double _BackgroundOpacity = 1;
+        private double _BackgroundOpacity = 0;
         [Category("背景")]
         [DisplayName("背景透明")]
         [Description("控件的背景透明度")]
