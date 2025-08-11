@@ -11,6 +11,7 @@ public class Provider
         ControlManager.Instance.RegisterControl<Controls.Rectangle.Model>();
         ControlManager.Instance.RegisterControl<Controls.Image.Model>();
         ControlManager.Instance.RegisterControl<Controls.TextBlock.Model>();
+        ControlManager.Instance.RegisterControl<Controls.Table.Model>();
 
         SourceManager.Instance.RegisterSource<DataSources.Input>();
         SourceManager.Instance.RegisterSource<DataSources.Simulate>();

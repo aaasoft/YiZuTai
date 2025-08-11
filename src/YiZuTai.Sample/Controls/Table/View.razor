@@ -1,0 +1,38 @@
+﻿@inherits AbstractControlView<Model>
+
+<BaseControl_WithBackgroundView T_BaseControl_WithBackground="Model" Model="@ControlModel"
+    DesignMode="@ZTContext.DesignMode">
+    <!--行线条部分-->
+    @if (ControlModel.RowVisiable)
+    {
+        @for (var rowIndex = 0; rowIndex <= ControlModel.RowCount; rowIndex++)
+        {
+            @if ((rowIndex > 0 || ControlModel.FirstRowVisiable) && (rowIndex < ControlModel.RowCount ||
+            ControlModel.LastRowVisiable))
+            {
+                <line x1="0"
+                    y1="@(rowIndex * (ControlModel.Height - ControlModel.RowWidth) / ControlModel.RowCount + ControlModel.RowWidth / 2)"
+                    x2="@ControlModel.Width"
+                    y2="@(rowIndex * (ControlModel.Height - ControlModel.RowWidth) / ControlModel.RowCount + ControlModel.RowWidth / 2)"
+                    stroke-width="@ControlModel.RowWidth" stroke="@ControlModel.RowLineColor" />
+            }
+        }
+    }
+
+    <!--列线条部分-->
+    @if (ControlModel.ColumnVisiable)
+    {
+        @for (var columnIndex = 0; columnIndex <= ControlModel.ColumnCount; columnIndex++)
+        {
+            @if ((columnIndex > 0 || ControlModel.FirstColumnVisiable) && (columnIndex < ControlModel.RowCount ||
+            ControlModel.LastColumnVisiable))
+            {
+                <line
+                    x1="@(columnIndex * (ControlModel.Width - ControlModel.ColumnWidth) / ControlModel.ColumnCount + ControlModel.ColumnWidth / 2)"
+                    y1="0"
+                    x2="@(columnIndex * (ControlModel.Width - ControlModel.ColumnWidth) / ControlModel.ColumnCount + ControlModel.ColumnWidth / 2)"
+                    y2="@ControlModel.Height" stroke-width="@ControlModel.ColumnWidth" stroke="@ControlModel.ColumnLineColor" />
+            }
+        }
+    }
+</BaseControl_WithBackgroundView>
