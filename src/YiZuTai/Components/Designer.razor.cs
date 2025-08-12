@@ -5,6 +5,9 @@ using Quick.Blazor.Bootstrap;
 using YiZuTai.Core;
 using YiZuTai.Control;
 using YiZuTai.Core.ObjectConnection;
+using Quick.Blazor.Bootstrap.Admin;
+using Quick.Xml;
+using Quick.Blazor.Bootstrap.Utils;
 
 namespace YiZuTai.Components
 {
@@ -296,6 +299,31 @@ namespace YiZuTai.Components
             modalWindow.Show("资源文件", new DialogParameters<FileManageControl>
             {
                 { x => x.ZTFile, Model}
+            });
+        }
+
+        //显示源码
+        private void ShowSourceCode()
+        {
+            modalWindow.Show("源码", new DialogParameters<TextEditControl>
+            {
+                { x => x.GetTextFunc, ()=> XmlConvert.Serialize(Project)},
+                { x => x.SetTextAction, t=>
+                    {
+                        try
+                        {
+                            Project = (Project)XmlConvert.Deserialize(t);
+                            SelectedItem = Project.Canvas;
+                            onDesignChanged();
+                            InvokeAsync(StateHasChanged);                            
+                            modalWindow.Close();
+                        }
+                        catch(Exception ex)
+                        {
+                            modalAlert.Show("错误",ExceptionUtils.GetExceptionMessage(ex));
+                        }
+                    }
+                }
             });
         }
 
