@@ -1,4 +1,4 @@
-﻿<Quick.Blazor.Bootstrap.Admin.FileManageControl Dir="@baseDir" @ref="fileManageControl">
+﻿<Quick.Blazor.Bootstrap.Admin.FileManageControl BaseDir="@baseDir" @ref="fileManageControl">
     <ToolbarAddonButtons>
         @if (fileManageControl.SelectedPath != null && File.Exists(fileManageControl.SelectedPath))
         {
@@ -25,23 +25,6 @@
     protected override void OnParametersSet()
     {
         baseDir = ZTFile.ResourceFolder;
-    }
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        if (firstRender)
-        {
-            fileManageControl.SelectedPathChanged += fileManageControl_OnSelectedPathChanged;
-        }
-    }
-
-    private void fileManageControl_OnSelectedPathChanged(object sender,EventArgs e)
-    {
-        if(!fileManageControl.Dir.StartsWith(baseDir))
-        {
-            modalAlert.Show("路径错误",$"无法访问资源目录以外的路径！");
-            InvokeAsync(StateHasChanged);
-        }
     }
 
     private void btnPreview_Click()
