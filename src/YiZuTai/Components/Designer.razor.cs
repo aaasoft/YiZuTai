@@ -54,7 +54,7 @@ namespace YiZuTai.Components
 
         private void NotifyBrowserWindowResize()
         {
-            Task.Delay(10).ContinueWith(t => JSRuntime.InvokeVoidAsync("YiZuTai.Controler.OnResizeFunc"));
+            Task.Delay(10).ContinueWith(t => JSRuntime.InvokeVoidAsync("YiZuTai.Designer.OnResizeFunc"));
         }
 
         [Inject]
@@ -252,7 +252,7 @@ namespace YiZuTai.Components
         {
             if (isWindowOnbeforeUnloadEventAdded)
                 return;
-            JSRuntime.InvokeVoidAsync("YiZuTai.Controler.AddWindowOnBeforeUnloadEvent");
+            JSRuntime.InvokeVoidAsync("YiZuTai.Designer.AddWindowOnBeforeUnloadEvent");
             isWindowOnbeforeUnloadEventAdded = true;
             refreshTitle();
         }
@@ -276,7 +276,7 @@ namespace YiZuTai.Components
         {
             Model.SaveProject(Project);
             toastStack.AddToast("保存", "保存成功!", BackgroundTheme.success);
-            JSRuntime.InvokeVoidAsync("YiZuTai.Controler.RemoveWindowOnBeforeUnloadEvent");
+            JSRuntime.InvokeVoidAsync("YiZuTai.Designer.RemoveWindowOnBeforeUnloadEvent");
             isWindowOnbeforeUnloadEventAdded = false;
             refreshTitle();
         }

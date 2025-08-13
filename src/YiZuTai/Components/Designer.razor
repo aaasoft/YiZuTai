@@ -14,11 +14,6 @@
             user-select: none;
         }
     </style>
-    <script>
-        var test = function(e){
-            e.srcElement.setPointerCapture(e.pointerId);
-        }
-    </script>
 </HeadContent>
 
 @if (Model == null)
@@ -130,6 +125,8 @@ else
                             width="@(Canvas.Width*DesignScale/100)" height="@(Canvas.Height*DesignScale/100)"
                             viewBox="00 00 @Canvas.Width @Canvas.Height"
                             preserveAspectRatio="none"
+                            onpointerdown="YiZuTai.Designer.SetPointerCapture(event)"
+                            onpointerup="YiZuTai.Designer.ReleasePointerCapture(event)"
                             @onmousemove="onMouseMove"
                             ondragover="event.preventDefault();"
                             @ondrop="HandleDrop">
@@ -138,7 +135,7 @@ else
                                 <rect fill="@Canvas.Foreground" fill-opacity="@Canvas.ForegroundOpacity"
                                     rx="@Canvas.CornerRadius" ry="@Canvas.CornerRadius"
                                     stroke="@Canvas.Border" stroke-opacity="@Canvas.BorderOpacity" stroke-width="@Canvas.BorderThickness"
-                                    x="0" y="0" width="@Canvas.Width" height="@Canvas.Height" onpointerdown="test(event)"></rect>
+                                    x="0" y="0" width="@Canvas.Width" height="@Canvas.Height"></rect>
                                 @if (!string.IsNullOrEmpty(Canvas.Image))
                                 {
                                     <image href="@Core.ZTFile.GetStaticResourceUrl(Model.Id, Canvas.Image)" width="100%" height="100%" preserveAspectRatio="none"></image>
@@ -152,8 +149,9 @@ else
                                     @Item.GetView(@ZTContext)
                                 </g>
                             }
+                            @if(IsSelectedControl)
+                            {
                             <g transform="rotate(@SelectedItem.Angle @SelectedItem.CenterPointLocation.X, @SelectedItem.CenterPointLocation.Y) translate(0, 0) scale(1)"
-                            visibility="@(IsSelectedControl?"visible":"hidden")"
                                 @ondblclick="@(e=>SelectedItem.OnDoubleClick())">
                                 <!--虚线框，用于移动控件位置-->
                             <rect id="sizerMoveLocation" fill-opacity="0" stroke="#6495ed" stroke-dasharray="4" stroke-width="1"
@@ -163,14 +161,17 @@ else
                                 @if (!SelectedItem.IsLocked)
                                 {
                                     <!--旋转-->
-                                    <g visibility="@(SelectedItem is not MultiControl?"visible":"hidden")">
-                                        <line x1="@(SelectedItem.Left + SelectedItem.Width / 2)" y1="@(SelectedItem.Top - resize_box_width * 3)"
-                                    x2="@(SelectedItem.Left + SelectedItem.Width / 2)" y2="@(SelectedItem.Top - resize_box_width * 3 + resize_box_width * 2)"
-                                    stroke="#6495ed" stroke-dasharray="4" stroke-width="1" />
-                                        <circle id="sizerRotate" fill="#6495ed" style="cursor: crosshair;"
-                                        cx="@(SelectedItem.Left + SelectedItem.Width / 2)" cy="@(SelectedItem.Top - resize_box_width * 3 - resize_box_width / 2)" r="@(resize_box_width * 2 / 3)"
-                                        @onmousedown="@(e => sizerMouseDown(e, () => isRotate = true))" />
-                                    </g>
+                                    @if(SelectedItem is not MultiControl)
+                                    {
+                                        <g>
+                                            <line x1="@(SelectedItem.Left + SelectedItem.Width / 2)" y1="@(SelectedItem.Top - resize_box_width * 3)"
+                                        x2="@(SelectedItem.Left + SelectedItem.Width / 2)" y2="@(SelectedItem.Top - resize_box_width * 3 + resize_box_width * 2)"
+                                        stroke="#6495ed" stroke-dasharray="4" stroke-width="1" />
+                                            <circle id="sizerRotate" fill="#6495ed" style="cursor: crosshair;"
+                                            cx="@(SelectedItem.Left + SelectedItem.Width / 2)" cy="@(SelectedItem.Top - resize_box_width * 3 - resize_box_width / 2)" r="@(resize_box_width * 2 / 3)"
+                                            @onmousedown="@(e => sizerMouseDown(e, () => isRotate = true))" />
+                                        </g>
+                                    }
                                     <!--左上角大小调整-->
                                     <rect id="sizerResizeLeftTop" fill-opacity="0" stroke="#6495ed" stroke-width="1"
                                   x="@(SelectedItem.Left - resize_box_width)" y="@(SelectedItem.Top - resize_box_width)" width="@resize_box_width" height="@resize_box_width"
@@ -213,6 +214,7 @@ else
                                   @onmousedown="@(e => sizerMouseDown(e, () => isResizeLeft = true))"></rect>
                                 }
                             </g>
+                            }
                             @if(IsMouseSelecting)
                             {
                             <g>

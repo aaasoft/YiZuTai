@@ -1,6 +1,6 @@
 ﻿var YiZuTai = YiZuTai || {};
 
-YiZuTai.Controler = {
+YiZuTai.Designer = {
     AddWindowOnBeforeUnloadEvent: function () {
         window.onbeforeunload = function () {
             return '有更改尚未保存，确认离开？';
@@ -22,11 +22,11 @@ YiZuTai.Controler = {
     },
     OnResizeFunc: function () {
         var windowHeight = window.innerHeight;
-        YiZuTai.Controler.ChangeDivHeightFunc(windowHeight, document.getElementById('divToolbox'));
-        YiZuTai.Controler.ChangeDivHeightFunc(windowHeight, document.getElementById('divProperty'), [ document.getElementById('divPropertyDescription') ]);
+        YiZuTai.Designer.ChangeDivHeightFunc(windowHeight, document.getElementById('divToolbox'));
+        YiZuTai.Designer.ChangeDivHeightFunc(windowHeight, document.getElementById('divProperty'), [ document.getElementById('divPropertyDescription') ]);
 
         var divCanvas = document.getElementById('divCanvas');
-        YiZuTai.Controler.ChangeDivHeightFunc(windowHeight, divCanvas);
+        YiZuTai.Designer.ChangeDivHeightFunc(windowHeight, divCanvas);
         var svgCanvas = document.getElementById('svgCanvas');
 
         var divCanvasHeight = divCanvas.clientHeight;
@@ -43,9 +43,15 @@ YiZuTai.Controler = {
         return true;
     },
     LoopOnResizeFunc: function () {
-        if (!YiZuTai.Controler.OnResizeFunc())
+        if (!YiZuTai.Designer.OnResizeFunc())
             return;
-        setTimeout(YiZuTai.Controler.LoopOnResizeFunc, 100);
+        setTimeout(YiZuTai.Designer.LoopOnResizeFunc, 100);
+    },
+    SetPointerCapture : function(e){
+        e.srcElement.setPointerCapture(e.pointerId);
+    },
+    ReleasePointerCapture : function(e){
+        e.srcElement.releasePointerCapture(e.pointerId);
     }
 };
 
@@ -77,7 +83,7 @@ window.onload = function (evt) {
         bindCaputure(document.getElementById('sizerResizeLeftBottom'));
         bindCaputure(document.getElementById('sizerResizeLeft'));
     }, 1000);
-    YiZuTai.Controler.LoopOnResizeFunc();
+    YiZuTai.Designer.LoopOnResizeFunc();
 
     window.addEventListener("keydown", function (e) {
         //让Ctrl + S组合键不触发浏览器的保存网页功能，能够传递到后台
@@ -90,5 +96,5 @@ window.onload = function (evt) {
 };
 
 window.onresize = function (evt) {
-    YiZuTai.Controler.LoopOnResizeFunc();
+    YiZuTai.Designer.LoopOnResizeFunc();
 };
