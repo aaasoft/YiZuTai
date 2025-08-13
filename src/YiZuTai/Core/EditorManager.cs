@@ -1,4 +1,6 @@
 ﻿using YiZuTai.Components.Editors;
+using YiZuTai.DataSource;
+using YiZuTai.HyperLinkSource;
 
 namespace YiZuTai.Core
 {
@@ -25,6 +27,9 @@ namespace YiZuTai.Core
             editorDict[typeof(decimal?)] = typeof(EditorInputNumber_Decimal_Nullable);
             editorDict[typeof(bool)] = typeof(EditorInputSwitch);
             editorDict[typeof(bool?)] = typeof(EditorInputSwitch_Nullable);
+            editorDict[typeof(IDataSource)] = typeof(SourceTypeEditor);
+            editorDict[typeof(IHyperLinkSource)] = typeof(SourceTypeEditor);
+            editorDict[typeof(IQueryDataSource)] = typeof(SourceTypeEditor);
         }
 
         /// <summary>

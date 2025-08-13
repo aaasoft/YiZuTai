@@ -168,7 +168,6 @@ namespace YiZuTai.Control
         private IHyperLinkSource _HyperLinkSource;
         [Category("超链接")]
         [DisplayName("源")]
-        [Editor(typeof(SourceTypeEditor), typeof(SourceTypeEditor))]
         public virtual IHyperLinkSource HyperLinkSource
         {
             get { return _HyperLinkSource; }

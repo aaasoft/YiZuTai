@@ -16,7 +16,6 @@ namespace YiZuTai.DataSource
     {
         private IDataSource _DataSource;
         [DisplayName("数据源")]
-        [Editor(typeof(SourceTypeEditor), typeof(SourceTypeEditor))]
         public IDataSource DataSource
         {
             get { return _DataSource; }
