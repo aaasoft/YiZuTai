@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using YiZuTai.Core.Source;
 using YiZuTai.DataSource;
 
 namespace YiZuTai.Sample.DataSources
