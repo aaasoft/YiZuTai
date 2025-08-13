@@ -1,0 +1,30 @@
+﻿@inherits AbstractControlView<Model>
+
+<BaseControlView T_BaseControl="Model" Model="ControlModel" DesignMode="@ZTContext.DesignMode">
+    <defs>
+        <linearGradient y2="1" x2="0" spreadMethod="pad" id="background_@ControlModel.Name">
+            <stop offset="0" stop-color="#000000" />
+            <stop offset="0.3" stop-color="#888888" />
+            <stop offset="1" stop-color="#000000" />
+        </linearGradient>
+    </defs>
+    <g>
+        <rect width="@ControlModel.Width" height="@ControlModel.Height" fill="url(#background_@ControlModel.Name)" />
+        <line x1="@ControlModel.LineX1" y1="@ControlModel.LineY" x2="@ControlModel.LineX2" y2="@ControlModel.LineY"
+            stroke="@ControlModel.Stroke" stroke-opacity="@ControlModel.StrokeOpacity"
+            stroke-width="@ControlModel.LineStrokeWidh" stroke-dashoffset="0"
+            stroke-dasharray="@ControlModel.LineStrokeDasharray" stroke-linecap="round">
+            @if(!ZTContext.DesignMode)
+            {
+                <animate
+                    attributeName="stroke-dashoffset"
+                    values="@ControlModel.LineStrokeDasharrayWidth;0"
+                    dur="@ControlModel.Dur"
+                    repeatCount="indefinite" />
+            }
+        </line>
+
+        <rect x="@ControlModel.AlarmRectX" y="0" width="@ControlModel.LineStrokeDasharrayWidth"
+            height="@ControlModel.Height" fill="#FF0000" fill-opacity="@(ControlModel.IsAlarming ? 1 : 0)" />
+    </g>
+</BaseControlView>

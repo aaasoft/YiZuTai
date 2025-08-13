@@ -213,7 +213,7 @@ value   =>  当前值")]
         ValueTriggers = new ObservableCollection<Trigger>();
     }
 
-    private ObservableCollection<Trigger> _ValueTriggers;
+    private ObservableCollection<Trigger> _ValueTriggers = new ObservableCollection<Trigger>();
     [Category("数据源与触发器")]
     [DisplayName("值触发器")]
     [Editor(typeof(CollectionEditor), typeof(CollectionEditor))]

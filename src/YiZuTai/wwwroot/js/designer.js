@@ -57,32 +57,6 @@ YiZuTai.Designer = {
 
 window.onload = function (evt) {
     document.body.style.overflow = 'hidden';
-    setTimeout(function () {
-        var bindCaputure = function (el) {
-            var preMouseDownFunc = el.onpointerdown;
-            el.onpointerdown = function (e) {
-                el.setPointerCapture(e.pointerId);
-                if (preMouseDownFunc != null)
-                    preMouseDownFunc();
-            };
-            var preMouseUpFunc = el.onpointerup;
-            el.onpointerup = function (e) {
-                el.releasePointerCapture(e.pointerId);
-                if (preMouseUpFunc != null)
-                    preMouseUpFunc();
-            };
-        };
-        bindCaputure(document.getElementById('sizerMoveLocation'));
-        bindCaputure(document.getElementById('sizerRotate'));
-        bindCaputure(document.getElementById('sizerResizeLeftTop'));
-        bindCaputure(document.getElementById('sizerResizeTop'));
-        bindCaputure(document.getElementById('sizerResizeRightTop'));
-        bindCaputure(document.getElementById('sizerResizeRight'));
-        bindCaputure(document.getElementById('sizerResizeRightBottom'));
-        bindCaputure(document.getElementById('sizerResizeBottom'));
-        bindCaputure(document.getElementById('sizerResizeLeftBottom'));
-        bindCaputure(document.getElementById('sizerResizeLeft'));
-    }, 1000);
     YiZuTai.Designer.LoopOnResizeFunc();
 
     window.addEventListener("keydown", function (e) {
