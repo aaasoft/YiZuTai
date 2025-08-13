@@ -262,7 +262,7 @@ namespace YiZuTai.Components
             if (Project != null)
             {
                 ObjectConnectionManager.Instance.RemoveObject(Project);
-                
+
                 Project.PropertyChanged -= Project_PropertyChanged;
                 foreach (var control in Project.Controls)
                     control.PropertyChanged -= Project_PropertyChanged;
@@ -315,7 +315,7 @@ namespace YiZuTai.Components
                             Project = (Project)XmlConvert.Deserialize(t);
                             SelectedItem = Project.Canvas;
                             onDesignChanged();
-                            InvokeAsync(StateHasChanged);                            
+                            InvokeAsync(StateHasChanged);
                             modalWindow.Close();
                         }
                         catch(Exception ex)
@@ -354,7 +354,15 @@ namespace YiZuTai.Components
             //如果不是选中了控件
             if (!IsSelectedControl)
                 return;
-            Project.Controls.Remove(SelectedItem);
+            if (SelectedItem is MultiControl multiControl)
+            {
+                foreach (var item in multiControl.Items)
+                    Project.Controls.Remove(item);
+            }
+            else
+            {
+                Project.Controls.Remove(SelectedItem);
+            }
         }
     }
 }

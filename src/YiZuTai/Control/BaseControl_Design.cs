@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
+﻿using System.ComponentModel;
 using Newtonsoft.Json;
-using YiZuTai.Components;
 using YiZuTai.Trigger;
 using YiZuTai.DataSource;
 
@@ -13,6 +7,11 @@ namespace YiZuTai.Control
 {
     public partial class BaseControl
     {
+        public virtual bool IsMultiControl => false;
+        public virtual bool IsGroupControl => false;
+        [Browsable(false)]
+        public virtual string GroupName { get; set; }
+
         //让控件左边距对齐到网格
         public void SetLeftToGrid(Canvas canvas, double newLeft)
         {

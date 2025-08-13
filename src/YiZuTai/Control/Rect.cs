@@ -15,6 +15,11 @@ namespace YiZuTai.Control
         public double Left => X;
         public double Top => Y;
 
+        public bool Contains(Point point)
+        {
+            return point.X > X && point.X < X + Width && point.Y > Y && point.Y < Y + Height;
+        }
+
         public Rect(double x, double y, double width, double height)
         {
             X = x;

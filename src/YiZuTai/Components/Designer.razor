@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Builder
+@using YiZuTai.Control
 @using YiZuTai.Core
 @using YiZuTai.Core.Utils
 
@@ -129,15 +130,15 @@ else
                             @ondrop="HandleDrop">
                             <!--====画布部分====-->
                         <g @onmousedown="onCanvasMouseDown">
-                                <rect fill="@Canvas.Foreground" fill-opacity="@Canvas.ForegroundOpacity"
-                                    rx="@Canvas.CornerRadius" ry="@Canvas.CornerRadius"
-                                    stroke="@Canvas.Border" stroke-opacity="@Canvas.BorderOpacity" stroke-width="@Canvas.BorderThickness"
-                                    x="0" y="0" width="@Canvas.Width" height="@Canvas.Height"></rect>
-                                @if (!string.IsNullOrEmpty(Canvas.Image))
-                                {
-                                    <image href="@Core.ZTFile.GetStaticResourceUrl(Model.Id, Canvas.Image)" width="100%" height="100%" preserveAspectRatio="none"></image>
-                                }
-                            </g>
+                            <rect fill="@Canvas.Foreground" fill-opacity="@Canvas.ForegroundOpacity"
+                                rx="@Canvas.CornerRadius" ry="@Canvas.CornerRadius"
+                                stroke="@Canvas.Border" stroke-opacity="@Canvas.BorderOpacity" stroke-width="@Canvas.BorderThickness"
+                                x="0" y="0" width="@Canvas.Width" height="@Canvas.Height"></rect>
+                            @if (!string.IsNullOrEmpty(Canvas.Image))
+                            {
+                                <image href="@Core.ZTFile.GetStaticResourceUrl(Model.Id, Canvas.Image)" width="100%" height="100%" preserveAspectRatio="none"></image>
+                            }
+                        </g>
                             @foreach (var Item in Project.Controls)
                             {
                                 <g transform="rotate(@Item.Angle @Item.CenterPointLocation.X, @Item.CenterPointLocation.Y) translate(0, 0) scale(1)"
@@ -156,14 +157,16 @@ else
                                   @onmousedown="@(e => sizerMouseDown(e, () => isMoveLocation = true))" />
                                 @if (!SelectedItem.IsLocked)
                                 {
-                                    <!--旋转-->
-                                    <line x1="@(SelectedItem.Left + SelectedItem.Width / 2)" y1="@(SelectedItem.Top - resize_box_width * 3)"
-                                  x2="@(SelectedItem.Left + SelectedItem.Width / 2)" y2="@(SelectedItem.Top - resize_box_width * 3 + resize_box_width * 2)"
-                                  stroke="#6495ed" stroke-dasharray="4" stroke-width="1" />
-                                    <circle id="sizerRotate" fill="#6495ed" style="cursor: crosshair;"
-                                    cx="@(SelectedItem.Left + SelectedItem.Width / 2)" cy="@(SelectedItem.Top - resize_box_width * 3 - resize_box_width / 2)" r="@(resize_box_width * 2 / 3)"
-                                    @onmousedown="@(e => sizerMouseDown(e, () => isRotate = true))" />
-
+                                    @if(SelectedItem is not MultiControl)
+                                    {
+                                        <!--旋转-->
+                                        <line x1="@(SelectedItem.Left + SelectedItem.Width / 2)" y1="@(SelectedItem.Top - resize_box_width * 3)"
+                                    x2="@(SelectedItem.Left + SelectedItem.Width / 2)" y2="@(SelectedItem.Top - resize_box_width * 3 + resize_box_width * 2)"
+                                    stroke="#6495ed" stroke-dasharray="4" stroke-width="1" />
+                                        <circle id="sizerRotate" fill="#6495ed" style="cursor: crosshair;"
+                                        cx="@(SelectedItem.Left + SelectedItem.Width / 2)" cy="@(SelectedItem.Top - resize_box_width * 3 - resize_box_width / 2)" r="@(resize_box_width * 2 / 3)"
+                                        @onmousedown="@(e => sizerMouseDown(e, () => isRotate = true))" />
+                                    }
                                     <!--左上角大小调整-->
                                     <rect id="sizerResizeLeftTop" fill-opacity="0" stroke="#6495ed" stroke-width="1"
                                   x="@(SelectedItem.Left - resize_box_width)" y="@(SelectedItem.Top - resize_box_width)" width="@resize_box_width" height="@resize_box_width"
@@ -206,6 +209,14 @@ else
                                   @onmousedown="@(e => sizerMouseDown(e, () => isResizeLeft = true))"></rect>
                                 }
                             </g>
+                            @if(IsMouseSelecting)
+                            {
+                                <g>
+                                    <rect x="@MouseSelectingRectLeft" y="@MouseSelectingRectTop"
+                                        width="@MouseSelectingRectWidth" height="@MouseSelectingRectHeight" fill="#6495ed"
+                                        fill-opacity="0.2" stroke="#6495ed" stroke-width="1"></rect>
+                                </g>
+                            }
                         </svg>
                     </div>
                 </ContextMenuTrigger>
@@ -226,6 +237,10 @@ else
                                 </div>
                                 <InputSelect class="form-control" @bind-Value="SelectedItemName">
                                     <option value="">画布</option>
+                                    @if(SelectedItem!=null && SelectedItem is MultiControl)
+                                    {
+                                        <option value="@SelectedItem.Name">@SelectedItem.Name</option>
+                                    }
                                     @foreach (var item in Project.Controls)
                                     {
                                     <option value="@item.Name">@item.Name</option>

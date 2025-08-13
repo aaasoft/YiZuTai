@@ -141,6 +141,100 @@ namespace YiZuTai.Components
         private void onCanvasMouseDown(MouseEventArgs e)
         {
             SelectedItem = Canvas;
+
+            IsMouseSelecting = true;
+            var newLocation = getMouseLocation_RelativeToCanvas(e);
+            MouseSelectingStartPoint = newLocation;
+            MouseSelectingEndPoint = newLocation;
+        }
+
+        private void onCanvasMouseMove(MouseEventArgs e)
+        {
+            if (!IsMouseSelecting)
+                return;
+            var newLocation = getMouseLocation_RelativeToCanvas(e);
+            MouseSelectingEndPoint = newLocation;
+        }
+
+        private void onCanvasMouseUp(MouseEventArgs e)
+        {
+            if (!IsMouseSelecting)
+                return;
+            IsMouseSelecting = false;
+
+            var rect = MouseSelectingRect;
+            //获取框选的控件
+            var selectedItems = Project.Controls
+                .Where(t => !t.IsLocked && t.Visiable
+                    && rect.Contains(t.LeftTopPointLocation)
+                    && rect.Contains(t.RightTopPointLocation)
+                    && rect.Contains(t.RightBottomPointLocation)
+                    && rect.Contains(t.LeftBottomPointLocation))
+                    .ToList();
+
+
+            if (e.CtrlKey)
+            {
+                if (selectedItems.Count == 0)
+                    return;
+                //如果当前没有选中
+                if (SelectedItem == null
+                    || SelectedItem == Project.Canvas)
+                {
+                    if (selectedItems.Count == 1)
+                        SelectedItem = selectedItems[0];
+                    else
+                        SelectedItem = new MultiControl(Canvas, selectedItems);
+                    return;
+                }
+                //如果当前选中了多个控件
+                if (SelectedItem is MultiControl)
+                {
+                    var container = (MultiControl)SelectedItem;
+                    foreach (var model in selectedItems)
+                    {
+                        if (container.Items.Contains(model))
+                            container.RemoveControl(model);
+                        else
+                            container.AddControl(model);
+                    }
+                    if (container.Items.Count == 0)
+                    {
+                        SelectedItem = Canvas;
+                    }
+                    else if (container.Items.Count == 1)
+                    {
+                        SelectedItem = container.Items.FirstOrDefault();
+                    }
+                    else
+                    {
+                        SelectedItem = container;
+                    }
+                    return;
+                }
+                //当前选中的是普通控件
+                if (selectedItems.Contains(SelectedItem))
+                    selectedItems.Remove(SelectedItem);
+                else
+                    selectedItems.Add(SelectedItem);
+                if (selectedItems.Count == 0)
+                    return;
+                else if (selectedItems.Count == 1)
+                    SelectedItem = selectedItems.FirstOrDefault();
+                else
+                    SelectedItem = new MultiControl(Canvas, selectedItems);
+            }
+            else
+            {
+                if (selectedItems.Count == 0)
+                    SelectedItem = Project.Canvas;
+                else if (selectedItems.Count == 1)
+                    SelectedItem = selectedItems[0];
+                else
+                {
+                    SelectedItem = new MultiControl(Canvas, selectedItems);
+                }
+            }
         }
 
         private void onControlMouseDown(MouseEventArgs e, BaseControl control)
@@ -165,15 +259,26 @@ namespace YiZuTai.Components
             isResizeLeft = false;
             isRotate = false;
             mouseDownControlMeta = null;
+
+            onCanvasMouseUp(e);
         }
 
         private Point getMouseLocation_RelativeToCanvas(MouseEventArgs e)
         {
-            return new Point(e.OffsetX, e.OffsetY);
+            var x = e.OffsetX;
+            var y = e.OffsetY;
+            if (DesignScale != 100)
+            {
+                x /= DesignScale * 1D / 100;
+                y /= DesignScale * 1D / 100;
+            }
+            return new Point(x, y);
         }
 
         private void onMouseMove(MouseEventArgs e)
         {
+            onCanvasMouseMove(e);
+
             //如果没有按下鼠标
             if (mouseDownControlMeta == null)
                 return;
@@ -182,11 +287,6 @@ namespace YiZuTai.Components
                 return;
 
             var newLocation = getMouseLocation_RelativeToCanvas(e);
-            if (DesignScale != 100)
-            {
-                newLocation.X /= DesignScale * 1D / 100;
-                newLocation.Y /= DesignScale * 1D / 100;
-            }
             var offsetX = newLocation.X - mouseDownControlMeta.MouseLocation.X;
             var offsetY = newLocation.Y - mouseDownControlMeta.MouseLocation.Y;
             if (offsetX == 0 && offsetY == 0)
@@ -221,7 +321,7 @@ namespace YiZuTai.Components
                 {
                     newAngle -= x;
                 }
-                else if(Math.Abs(x) > (90 - magnetAngle))
+                else if (Math.Abs(x) > (90 - magnetAngle))
                 {
                     newAngle -= x - 90;
                 }
@@ -372,13 +472,88 @@ namespace YiZuTai.Components
             if (SelectedItem.IsLocked)
                 return;
             var mouseLocation = getMouseLocation_RelativeToCanvas(e);
-            if (DesignScale != 100)
-            {
-                mouseLocation.X /= DesignScale * 1D / 100;
-                mouseLocation.Y /= DesignScale * 1D / 100;
-            }
             mouseDownControlMeta = new ControlMeta(SelectedItem, mouseLocation);
             action?.Invoke();
+        }
+
+
+        private bool _IsMouseSelecting = false;
+        /// <summary>
+        /// 是否正在用鼠标框选s
+        /// </summary>
+        public bool IsMouseSelecting
+        {
+            get { return _IsMouseSelecting; }
+            set
+            {
+                _IsMouseSelecting = value;
+            }
+        }
+
+        private Point _MouseSelectingStartPoint;
+        /// <summary>
+        /// 框选起点
+        /// </summary>
+        public Point MouseSelectingStartPoint
+        {
+            get { return _MouseSelectingStartPoint; }
+            set
+            {
+                _MouseSelectingStartPoint = value;
+            }
+        }
+
+        private Point _MouseSelectingEndPoint;
+        /// <summary>
+        /// 框选终点
+        /// </summary>
+        public Point MouseSelectingEndPoint
+        {
+            get { return _MouseSelectingEndPoint; }
+            set
+            {
+                _MouseSelectingEndPoint = value;
+            }
+        }
+
+        /// <summary>
+        /// 框选矩形左边距
+        /// </summary>
+        public double MouseSelectingRectLeft
+        {
+            get { return Math.Min(MouseSelectingStartPoint.X, MouseSelectingEndPoint.X); }
+        }
+
+        /// <summary>
+        /// 框选矩形上边距
+        /// </summary>
+        public double MouseSelectingRectTop
+        {
+            get { return Math.Min(MouseSelectingStartPoint.Y, MouseSelectingEndPoint.Y); }
+        }
+
+        /// <summary>
+        /// 框选矩形宽度
+        /// </summary>
+        public double MouseSelectingRectWidth
+        {
+            get { return Math.Abs(MouseSelectingStartPoint.X - MouseSelectingEndPoint.X); }
+        }
+
+        /// <summary>
+        /// 框选矩形高度
+        /// </summary>
+        public double MouseSelectingRectHeight
+        {
+            get { return Math.Abs(MouseSelectingStartPoint.Y - MouseSelectingEndPoint.Y); }
+        }
+
+        /// <summary>
+        /// 框选矩形
+        /// </summary>
+        public Rect MouseSelectingRect
+        {
+            get { return new Rect(MouseSelectingRectLeft, MouseSelectingRectTop, MouseSelectingRectWidth, MouseSelectingRectHeight); }
         }
     }
 }
