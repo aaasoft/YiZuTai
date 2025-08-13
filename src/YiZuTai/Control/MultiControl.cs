@@ -10,16 +10,14 @@ public class MultiControl : BaseControl
     private Canvas canvas;
     [Browsable(false)]
     public List<BaseControl> Items { get; set; } = new List<BaseControl>();
-    private bool isFromXml;
     private bool isGroup = false;
 
     public override bool IsMultiControl => true;
     public override bool IsGroupControl => isGroup;
 
-    public MultiControl() { isFromXml = true; }
+    public MultiControl() { }
     public MultiControl(Canvas canvas, IEnumerable<BaseControl> items)
     {
-        isFromXml = false;
         this.canvas = canvas;
         foreach (var item in items)
             AddControl(item);
@@ -74,34 +72,55 @@ public class MultiControl : BaseControl
     [Browsable(false)]
     public override IHyperLinkSource HyperLinkSource { get => base.HyperLinkSource; set => base.HyperLinkSource = value; }
 
-/*
+    protected override Type GetViewType() { throw new NotImplementedException(); }
+
+    private void travelItems(Action<BaseControl> handler)
+    {
+        foreach (var item in Items)
+            handler(item);
+    }
+    
     public override double Angle
     {
-        get => (double)getValue(nameof(Angle), 0D);
-        set => setValue(nameof(Angle), value);
-    }
-
-    public override bool Visiable
-    {
-        get => (bool)getValue(nameof(Visiable), true);
-        set => setValue(nameof(Visiable), value);
+        get => base.Angle;
+        set
+        {
+            base.Angle = value;
+            travelItems(item => item.Angle = value);
+        }
     }
 
     public override double Opacity
     {
-        get => (double)getValue(nameof(Opacity), 1D);
-        set => setValue(nameof(Opacity), value);
+        get => base.Opacity;
+        set
+        {
+            base.Opacity = value;
+            travelItems(item => item.Opacity = value);
+        }
+    }
+
+    public override bool Visiable
+    {
+        get => base.Visiable;
+        set
+        {
+            base.Visiable = value;
+            travelItems(item => item.Visiable = value);
+        }
     }
 
     public override bool IsLocked
     {
-        get => (bool)getValue(nameof(IsLocked), false);
-        set => setValue(nameof(IsLocked), value);
+        get => base.IsLocked;
+        set
+        {
+            base.IsLocked = value;
+            travelItems(item => item.IsLocked = value);
+        }
     }
-    */
 
-    protected override Type GetViewType() { throw new NotImplementedException(); }
-        [JsonIgnore]
+    [JsonIgnore]
     [Browsable(false)]
     public override double Left
     {
@@ -110,8 +129,7 @@ public class MultiControl : BaseControl
         {
             var offset = value - base.Left;
             base.Left = value;
-            foreach (var item in Items)
-                item.SetLeftToGrid(canvas,item.Left + offset);
+            travelItems(item => item.SetLeftToGrid(canvas, item.Left + offset));
         }
     }
 
@@ -124,8 +142,7 @@ public class MultiControl : BaseControl
         {
             var offset = value - base.Top;
             base.Top = value;
-            foreach (var item in Items)
-                item.SetTopToGrid(canvas,item.Top + offset);
+            travelItems(item => item.SetTopToGrid(canvas, item.Top + offset));
         }
     }
     [JsonIgnore]
@@ -137,8 +154,7 @@ public class MultiControl : BaseControl
         {
             var offset = value - base.Width;
             base.Width = value;
-            foreach (var item in Items)
-                item.SetWidthToGrid(canvas,item.Width + offset);
+            travelItems(item => item.SetWidthToGrid(canvas, item.Width + offset));
         }
     }
     [JsonIgnore]
@@ -150,8 +166,7 @@ public class MultiControl : BaseControl
         {
             var offset = value - base.Height;
             base.Height = value;
-            foreach (var item in Items)
-                item.SetHeightToGrid(canvas,item.Height + offset);
+            travelItems(item => item.SetHeightToGrid(canvas, item.Height + offset));
         }
     }
 }
