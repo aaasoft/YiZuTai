@@ -96,11 +96,9 @@ value   =>  当前值")]
         }
     }
 
-    //默认为宋体
     private string _TitleFontFamily;
     [Category("标题")]
     [DisplayName("字体")]
-    [Description("标题的字体")]
     public virtual string TitleFontFamily
     {
         get { return _TitleFontFamily; }
@@ -127,7 +125,6 @@ value   =>  当前值")]
     private IDataSource _TempValue;
     [Category("温度")]
     [DisplayName("值")]
-    [Description("文本块控件要显示的值")]
     public IDataSource TempValue
     {
         get { return _TempValue; }
@@ -139,18 +136,16 @@ value   =>  当前值")]
         }
     }
 
-    private IDataSource _HumValue;
-    [Category("湿度")]
-    [DisplayName("值")]
-    [Description("文本块控件要显示的值")]
-    public IDataSource HumValue
+    private string _TempFontFamily;
+    [Category("温度")]
+    [DisplayName("字体")]
+    public virtual string TempFontFamily
     {
-        get { return _HumValue; }
+        get { return _TempFontFamily; }
         set
         {
-            RaisePropertyChanging(nameof(HumValue));
-            _HumValue = value;
-            RaisePropertyChanged(nameof(HumValue));
+            _TempFontFamily = value;
+            RaisePropertyChanged();
         }
     }
 
@@ -225,6 +220,35 @@ value   =>  当前值")]
         {
             _TempTriggers = value;
             RaisePropertyChanged(nameof(TempTriggers));
+        }
+    }
+
+
+    private IDataSource _HumValue;
+    [Category("湿度")]
+    [DisplayName("值")]
+    [Description("文本块控件要显示的值")]
+    public IDataSource HumValue
+    {
+        get { return _HumValue; }
+        set
+        {
+            RaisePropertyChanging(nameof(HumValue));
+            _HumValue = value;
+            RaisePropertyChanged(nameof(HumValue));
+        }
+    }
+    
+    private string _HumFontFamily;
+    [Category("湿度")]
+    [DisplayName("字体")]
+    public virtual string HumFontFamily
+    {
+        get { return _HumFontFamily; }
+        set
+        {
+            _HumFontFamily = value;
+            RaisePropertyChanged();
         }
     }
 

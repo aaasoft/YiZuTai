@@ -88,6 +88,19 @@ value   =>  当前值")]
         }
     }
 
+    private string _TempFontFamily;
+    [Category("温度")]
+    [DisplayName("字体")]
+    public virtual string TempFontFamily
+    {
+        get { return _TempFontFamily; }
+        set
+        {
+            _TempFontFamily = value;
+            RaisePropertyChanged();
+        }
+    }
+
     private string _TempForeground;
     [Category("温度")]
     [DisplayName("颜色")]
@@ -145,6 +158,19 @@ value   =>  当前值")]
         set
         {
             _TempFormat = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    private string _HumFontFamily;
+    [Category("湿度")]
+    [DisplayName("字体")]
+    public virtual string HumFontFamily
+    {
+        get { return _HumFontFamily; }
+        set
+        {
+            _HumFontFamily = value;
             RaisePropertyChanged();
         }
     }
@@ -224,6 +250,8 @@ value   =>  当前值")]
         if (!string.IsNullOrEmpty(TitleFontFamily))
             model.TitleFontFamily = TitleFontFamily;
 
+        if (!string.IsNullOrEmpty(TempFontFamily))
+            model.TempFontFamily = TempFontFamily;
         if (!string.IsNullOrEmpty(TempForeground))
             model.TempForeground = TempForeground;
         if (TempForegroundOpacity != null)
@@ -233,6 +261,8 @@ value   =>  当前值")]
         if (!string.IsNullOrEmpty(TempFormat))
             model.TempFormat = TempFormat;
 
+        if (!string.IsNullOrEmpty(HumFontFamily))
+            model.HumFontFamily = HumFontFamily;
         if (!string.IsNullOrEmpty(HumForeground))
             model.HumForeground = HumForeground;
         if (HumForegroundOpacity != null)
