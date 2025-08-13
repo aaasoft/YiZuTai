@@ -41,7 +41,6 @@ namespace YiZuTai.Sample.Controls.Image
         private ObservableCollection<DataSourceAndTrigger> _DataSourceAndTriggers = new ObservableCollection<DataSourceAndTrigger>();
         [Category("数据源与触发器")]
         [DisplayName("更多")]
-        [Editor(typeof(CollectionEditor), typeof(CollectionEditor))]
         public ObservableCollection<DataSourceAndTrigger> DataSourceAndTriggers
         {
             get { return _DataSourceAndTriggers; }

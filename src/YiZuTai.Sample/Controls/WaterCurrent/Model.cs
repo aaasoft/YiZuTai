@@ -177,7 +177,6 @@ public class Model : BaseControl
     private ObservableCollection<Trigger> _ValueTriggers = new ObservableCollection<Trigger>();
     [Category("数据源与触发器")]
     [DisplayName("值触发器")]
-    [Editor(typeof(CollectionEditor), typeof(CollectionEditor))]
     public ObservableCollection<Trigger> ValueTriggers
     {
         get { return _ValueTriggers; }
@@ -191,7 +190,6 @@ public class Model : BaseControl
     private ObservableCollection<DataSourceAndTrigger> _DataSourceAndTriggers = new ObservableCollection<DataSourceAndTrigger>();
     [Category("数据源与触发器")]
     [DisplayName("更多")]
-    [Editor(typeof(CollectionEditor), typeof(CollectionEditor))]
     public ObservableCollection<DataSourceAndTrigger> DataSourceAndTriggers
     {
         get { return _DataSourceAndTriggers; }

@@ -1,0 +1,45 @@
+﻿@using YiZuTai.Core.Source
+@inherits AbstractControlView<Model>
+
+<BaseControl_WithBackgroundView T_BaseControl_WithBackground="Model" Model="ControlModel"
+      DesignMode="@ZTContext.DesignMode">
+      <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+       width="@ControlModel.Width" height="@ControlModel.Height" viewBox="0 0 60 60" preserveAspectRatio="none">
+
+    <!--标题-->
+    <text
+      fill="@ControlModel.TitleForeground" fill-opacity="@ControlModel.TitleForegroundOpacity"
+      x="@ControlModel.TitleTextX" y="16"
+      font-size="14"
+      font-family="@ControlModel.TitleFontFamily"
+      text-anchor="@ControlModel.TitleTextAnchor"
+      xml:space="preserve">@ControlModel.TitleText</text>
+    
+    <!--温度值-->
+    <a style="@GetALinkStyle(ControlModel.TempHyperLinkSource)" @onclick="@(e=>ControlModel.TempHyperLinkSource?.Execute(ZTContext))">
+        <text
+            fill="@ControlModel.TempForeground" fill-opacity="@ControlModel.TempForegroundOpacity"
+            x="@ControlModel.TempTextX" y="34"
+            font-size="14"
+            font-family="SimSun"
+            text-anchor="@ControlModel.TempTextAnchor"
+            xml:space="preserve">@ControlModel.TempText</text>
+    </a>
+
+    <!--湿度值-->
+    <a style="@GetALinkStyle(ControlModel.HumHyperLinkSource)" @onclick="@(e=>ControlModel.HumHyperLinkSource?.Execute(ZTContext))">
+        <text
+                fill="@ControlModel.HumForeground" fill-opacity="@ControlModel.HumForegroundOpacity"
+                x="@ControlModel.HumTextX" y="50"
+                font-size="14"
+                font-family="SimSun"
+                text-anchor="@ControlModel.HumTextAnchor"
+                xml:space="preserve">@ControlModel.HumText</text>
+    </a>
+  </svg>
+</BaseControl_WithBackgroundView>
+
+@code
+{
+    private string GetALinkStyle(ISource source) => source == null ? "" : "cursor: pointer;";
+}

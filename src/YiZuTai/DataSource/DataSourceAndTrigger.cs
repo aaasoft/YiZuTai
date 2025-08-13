@@ -29,7 +29,6 @@ namespace YiZuTai.DataSource
 
         private ObservableCollection<TControlDataTrigger> _Triggers = new ObservableCollection<TControlDataTrigger>();
         [DisplayName("触发器")]
-        [Editor(typeof(CollectionEditor), typeof(CollectionEditor))]
         public ObservableCollection<TControlDataTrigger> Triggers
         {
             get { return _Triggers; }

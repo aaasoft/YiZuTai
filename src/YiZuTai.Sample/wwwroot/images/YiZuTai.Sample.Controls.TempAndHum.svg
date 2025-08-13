@@ -1,0 +1,14 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="60" height="60" opacity="1">
+  <!--背景-->
+  <rect fill="#4282C2" fill-opacity="0.99609375" rx="8" ry="8" stroke="#000000" stroke-opacity="0.99609375" stroke-width="0" x="0" y="0" width="60" height="60"></rect>
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60" preserveAspectRatio="none">
+    <!--标题-->
+    <text fill="#FFFFFF" fill-opacity="0.99609375" x="30" y="16" font-size="14" font-family="SimHei" text-anchor="middle" xml:space="preserve">标题</text>
+
+    <!--温度值-->
+    <text fill="#FFFFFF" fill-opacity="0.99609375" x="30" y="34" font-size="14" font-family="SimSun" text-anchor="middle" xml:space="preserve">20.6 ℃</text>
+
+    <!--湿度值-->
+    <text fill="#FFFFFF" fill-opacity="0.99609375" x="30" y="50" font-size="14" font-family="SimSun" text-anchor="middle" xml:space="preserve">50.7 ％</text>
+  </svg>
+</svg>

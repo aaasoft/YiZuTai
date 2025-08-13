@@ -1,4 +1,5 @@
-﻿using YiZuTai.Components.Editors;
+﻿using System.Collections;
+using YiZuTai.Components.Editors;
 using YiZuTai.DataSource;
 using YiZuTai.HyperLinkSource;
 
@@ -41,13 +42,15 @@ namespace YiZuTai.Core
         {
             if (fieldType.IsEnum)
                 return typeof(EditorInputSelect);
+            if (typeof(IList).IsAssignableFrom(fieldType))
+                return typeof(CollectionEditor);
 
             if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(Nullable<>))
-            {
-                var genericArgument1 = fieldType.GetGenericArguments().FirstOrDefault();
-                if (genericArgument1.IsEnum)
-                    return typeof(EditorInputSelect_Nullable);
-            }
+                {
+                    var genericArgument1 = fieldType.GetGenericArguments().FirstOrDefault();
+                    if (genericArgument1.IsEnum)
+                        return typeof(EditorInputSelect_Nullable);
+                }
 
             if (editorDict.ContainsKey(fieldType))
                 return editorDict[fieldType];
