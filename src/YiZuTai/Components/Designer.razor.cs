@@ -60,6 +60,16 @@ namespace YiZuTai.Components
         [Inject]
         public IJSRuntime JSRuntime { get; set; }
 
+        public ValueTask<string> ReadTextFromClipboardAsync()
+        {
+            return JSRuntime.InvokeAsync<string>("navigator.clipboard.readText");
+        }
+
+        public ValueTask WriteTextToClipboardAsync(string text)
+        {
+            return JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", text);
+        }
+
         [Parameter]
         public string Id { get; set; }
         public Core.ZTFile Model { get; private set; }
@@ -330,22 +340,75 @@ namespace YiZuTai.Components
         //添加控件
         private void addControl(ControlAttribute controlAttr, Point location)
         {
-            var newControl = controlAttr.CreateInstance();
-            newControl.Left = location.X - newControl.Width / 2;
-            newControl.Top = location.Y - newControl.Height / 2;
+            var control = controlAttr.CreateInstance();
+            control.Left = location.X - control.Width / 2;
+            control.Top = location.Y - control.Height / 2;
+            control.OnDragDropCreate(location);
+        }
+
+        private void addControl(BaseControl control)
+        {
+            checkAndModifyControlName(control, Project.Controls);
+            Project.Controls.Add(control);
+        }
+
+        private void checkAndModifyControlName(BaseControl control, IEnumerable<BaseControl> controlContainer)
+        {
+            var controlAttr = ControlManager.Instance.GetItem(control.GetType().FullName);
             var index = 0;
             do
             {
                 index++;
                 var name = controlAttr.Name + index;
-                if (Project.Controls.Any(t => t.Name == name))
+                if (controlContainer.Any(t => t.Name == name))
                     continue;
-                newControl.Name = name;
+                control.Name = name;
                 break;
             }
             while (true);
-            newControl.OnDragDropCreate(location);
-            Project.Controls.Add(newControl);
+        }
+
+        private async Task copyControl()
+        {
+            //如果不是选中了控件
+            if (!IsSelectedControl)
+                return;
+            try
+            {
+                var content = XmlConvert.Serialize(SelectedItem);
+                await WriteTextToClipboardAsync(content);
+            }
+            catch (Exception ex)
+            {
+                modalAlert.Show("错误", ExceptionUtils.GetExceptionMessage(ex));
+            }
+        }
+
+        private async Task pasteControl()
+        {
+            try
+            {
+                var content = await ReadTextFromClipboardAsync();
+                if (string.IsNullOrEmpty(content))
+                    throw new IOException("剪贴板为空");
+                var obj = XmlConvert.Deserialize(content);
+                if (obj is not BaseControl control)
+                    throw new IOException("剪贴板中不是控件");
+                if (obj is MultiControl multiControl)
+                {
+                    foreach (var item in multiControl.Items)
+                        addControl(item);
+                    SelectedItem = new MultiControl(Canvas, multiControl.Items);
+                }
+                else
+                {
+                    addControl(control);
+                }
+            }
+            catch (Exception ex)
+            {
+                modalAlert.Show("错误", ExceptionUtils.GetExceptionMessage(ex));
+            }
         }
 
         //移除控件
