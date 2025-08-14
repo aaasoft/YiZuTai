@@ -13,6 +13,11 @@
         text {
             user-select: none;
         }
+        #divCanvas:focus{
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25);
+        }
     </style>
 </HeadContent>
 
@@ -113,7 +118,7 @@ else
             </div>
 }
             <!--中间设计部分-->
-            <div class="card col p-0" tabindex="0" @onkeydown="onKeyDown" @onmouseup="onMouseUp">
+            <div class="card col p-0" @onkeydown="onKeyDown" @onmouseup="onMouseUp">
                 <ContextMenu Id="designMenu">
                     <Item OnClick="@copyControl" Visible="IsSelectedControl">复制</Item>
                     <Item OnClick="@pasteControl">粘贴</Item>
@@ -121,7 +126,7 @@ else
                     <Item OnClick="@Preview" Visible="!IsSelectedControl">预览</Item>
                 </ContextMenu>
                 <ContextMenuTrigger MenuId="designMenu">
-                    <div id="divCanvas" class="card-body text-center p-0 overflow-auto" style="background-color: @Canvas.Background;">
+                    <div id="divCanvas" tabindex="0" class="card-body text-center p-0 overflow-auto" style="background-color: @Canvas.Background;">
                         <!--====控件部分====-->
                     <svg id="svgCanvas" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xhtml="http://www.w3.org/1999/xhtml"
                             width="@(Canvas.Width*DesignScale/100)" height="@(Canvas.Height*DesignScale/100)"
