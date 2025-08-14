@@ -217,10 +217,20 @@ namespace YiZuTai.Components
 
         private void onKeyDown(KeyboardEventArgs e)
         {
-            if ("KeyS" == e.Code && (e.CtrlKey || e.MetaKey))
+            if (e.CtrlKey || e.MetaKey)
             {
-                Save();
-                return;
+                switch (e.Code)
+                {
+                    case "KeyS":
+                        Save();
+                        return;
+                    case "KeyC":
+                        _ = copyControl();
+                        return;
+                    case "KeyV":
+                        _ = pasteControl();
+                        return;
+                }
             }
 
             //如果选中了控件，且控件不是画布
