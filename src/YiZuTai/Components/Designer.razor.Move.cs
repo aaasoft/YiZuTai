@@ -8,21 +8,44 @@ namespace YiZuTai.Components
         //控制元信息
         public class ControlMeta : BaseControl
         {
-            public MoveAction MoveAction{ get; set; }
+            public MoveAction MoveAction { get; }
             /// <summary>
-            /// 鼠标位置
+            /// 起始位置
             /// </summary>
-            public Point MouseLocation { get; set; }
+            public Point StartLocation { get; private set; }
+            /// <summary>
+            /// 结束位置
+            /// </summary>
+            public Point EndLocation { get; private set; }
 
-            public ControlMeta(BaseControl model,MoveAction moveAction, Point mouseLocation)
+            public Rect MoveRect { get; private set; }
+
+            public void SetEndLocation(Point endLocation)
             {
-                Left = model.Left;
-                Top = model.Top;
-                Width = model.Width;
-                Height = model.Height;
-                Angle = model.Angle;
+                EndLocation = endLocation;
+                MoveRect = new Rect()
+                {
+                    X = Math.Min(StartLocation.X, EndLocation.X),
+                    Y = Math.Min(StartLocation.Y, EndLocation.Y),
+                    Width = Math.Abs(StartLocation.X - EndLocation.X),
+                    Height = Math.Abs(StartLocation.Y - EndLocation.Y)
+                };
+            }
+
+            public ControlMeta(MoveAction moveAction, Point startLocation, BaseControl model = null)
+            {
                 MoveAction = moveAction;
-                MouseLocation = mouseLocation;
+                StartLocation = startLocation;
+                EndLocation = startLocation;
+                
+                if (model != null)
+                {
+                    Left = model.Left;
+                    Top = model.Top;
+                    Width = model.Width;
+                    Height = model.Height;
+                    Angle = model.Angle;
+                }
             }
             protected override Type GetViewType() { throw new NotImplementedException(); }
         }
@@ -45,7 +68,8 @@ namespace YiZuTai.Components
             ResizeBottom,
             ResizeLeftBottom,
             ResizeLeft,
-            Rotate
+            Rotate,
+            Selecting
         }
 
         private Dictionary<Func<double, bool>, string> cursorDict = new Dictionary<Func<double, bool>, string>()
@@ -140,102 +164,9 @@ namespace YiZuTai.Components
         private void onCanvasMouseDown(MouseEventArgs e)
         {
             SelectedItem = Canvas;
-
-            IsMouseSelecting = true;
-            var newLocation = getMouseLocation_RelativeToCanvas(e);
-            MouseSelectingStartPoint = newLocation;
-            MouseSelectingEndPoint = newLocation;
+            sizerMouseDown(e, MoveAction.Selecting);
         }
-
-        private void onCanvasMouseMove(MouseEventArgs e)
-        {
-            if (!IsMouseSelecting)
-                return;
-            var newLocation = getMouseLocation_RelativeToCanvas(e);
-            MouseSelectingEndPoint = newLocation;
-        }
-
-        private void onCanvasMouseUp(MouseEventArgs e)
-        {
-            if (!IsMouseSelecting)
-                return;
-            IsMouseSelecting = false;
-
-            var rect = MouseSelectingRect;
-            //获取框选的控件
-            var selectedItems = Project.Controls
-                .Where(t => !t.IsLocked && t.Visiable
-                    && rect.Contains(t.LeftTopPointLocation)
-                    && rect.Contains(t.RightTopPointLocation)
-                    && rect.Contains(t.RightBottomPointLocation)
-                    && rect.Contains(t.LeftBottomPointLocation))
-                    .ToList();
-
-
-            if (e.CtrlKey)
-            {
-                if (selectedItems.Count == 0)
-                    return;
-                //如果当前没有选中
-                if (SelectedItem == null
-                    || SelectedItem == Project.Canvas)
-                {
-                    if (selectedItems.Count == 1)
-                        SelectedItem = selectedItems[0];
-                    else
-                        SelectedItem = new MultiControl(Canvas, selectedItems);
-                    return;
-                }
-                //如果当前选中了多个控件
-                if (SelectedItem is MultiControl)
-                {
-                    var container = (MultiControl)SelectedItem;
-                    foreach (var model in selectedItems)
-                    {
-                        if (container.Items.Contains(model))
-                            container.RemoveControl(model);
-                        else
-                            container.AddControl(model);
-                    }
-                    if (container.Items.Count == 0)
-                    {
-                        SelectedItem = Canvas;
-                    }
-                    else if (container.Items.Count == 1)
-                    {
-                        SelectedItem = container.Items.FirstOrDefault();
-                    }
-                    else
-                    {
-                        SelectedItem = container;
-                    }
-                    return;
-                }
-                //当前选中的是普通控件
-                if (selectedItems.Contains(SelectedItem))
-                    selectedItems.Remove(SelectedItem);
-                else
-                    selectedItems.Add(SelectedItem);
-                if (selectedItems.Count == 0)
-                    return;
-                else if (selectedItems.Count == 1)
-                    SelectedItem = selectedItems.FirstOrDefault();
-                else
-                    SelectedItem = new MultiControl(Canvas, selectedItems);
-            }
-            else
-            {
-                if (selectedItems.Count == 0)
-                    SelectedItem = Project.Canvas;
-                else if (selectedItems.Count == 1)
-                    SelectedItem = selectedItems[0];
-                else
-                {
-                    SelectedItem = new MultiControl(Canvas, selectedItems);
-                }
-            }
-        }
-
+        
         private void onControlMouseDown(MouseEventArgs e, BaseControl control)
         {
             if (mouseDownControlMeta != null)
@@ -247,8 +178,85 @@ namespace YiZuTai.Components
 
         private void onMouseUp(MouseEventArgs e)
         {
+            if (mouseDownControlMeta == null)
+                return;
+            if (mouseDownControlMeta.MoveAction == MoveAction.Selecting)
+            {
+                var rect = mouseDownControlMeta.MoveRect;
+
+                //获取框选的控件
+                var selectedItems = Project.Controls
+                .Where(t => !t.IsLocked && t.Visiable
+                    && rect.Contains(t.LeftTopPointLocation)
+                    && rect.Contains(t.RightTopPointLocation)
+                    && rect.Contains(t.RightBottomPointLocation)
+                    && rect.Contains(t.LeftBottomPointLocation))
+                    .ToList();
+
+                if (e.CtrlKey)
+                {
+                    if (selectedItems.Count == 0)
+                        return;
+                    //如果当前没有选中
+                    if (SelectedItem == null
+                        || SelectedItem == Project.Canvas)
+                    {
+                        if (selectedItems.Count == 1)
+                            SelectedItem = selectedItems[0];
+                        else
+                            SelectedItem = new MultiControl(Canvas, selectedItems);
+                        return;
+                    }
+                    //如果当前选中了多个控件
+                    if (SelectedItem is MultiControl)
+                    {
+                        var container = (MultiControl)SelectedItem;
+                        foreach (var model in selectedItems)
+                        {
+                            if (container.Items.Contains(model))
+                                container.RemoveControl(model);
+                            else
+                                container.AddControl(model);
+                        }
+                        if (container.Items.Count == 0)
+                        {
+                            SelectedItem = Canvas;
+                        }
+                        else if (container.Items.Count == 1)
+                        {
+                            SelectedItem = container.Items.FirstOrDefault();
+                        }
+                        else
+                        {
+                            SelectedItem = container;
+                        }
+                        return;
+                    }
+                    //当前选中的是普通控件
+                    if (selectedItems.Contains(SelectedItem))
+                        selectedItems.Remove(SelectedItem);
+                    else
+                        selectedItems.Add(SelectedItem);
+                    if (selectedItems.Count == 0)
+                        return;
+                    else if (selectedItems.Count == 1)
+                        SelectedItem = selectedItems.FirstOrDefault();
+                    else
+                        SelectedItem = new MultiControl(Canvas, selectedItems);
+                }
+                else
+                {
+                    if (selectedItems.Count == 0)
+                        SelectedItem = Project.Canvas;
+                    else if (selectedItems.Count == 1)
+                        SelectedItem = selectedItems[0];
+                    else
+                    {
+                        SelectedItem = new MultiControl(Canvas, selectedItems);
+                    }
+                }
+            }
             mouseDownControlMeta = null;
-            onCanvasMouseUp(e);
         }
 
         private Point getMouseLocation_RelativeToCanvas(MouseEventArgs e)
@@ -265,18 +273,22 @@ namespace YiZuTai.Components
 
         private void onMouseMove(MouseEventArgs e)
         {
-            onCanvasMouseMove(e);
-
             //如果没有按下鼠标
             if (mouseDownControlMeta == null)
                 return;
+
+            var newLocation = getMouseLocation_RelativeToCanvas(e);
+            if (mouseDownControlMeta.MoveAction == MoveAction.Selecting)
+            {
+                mouseDownControlMeta.SetEndLocation(newLocation);
+                return;
+            }
             //如果没有选中控件
             if (!IsSelectedControl)
                 return;
 
-            var newLocation = getMouseLocation_RelativeToCanvas(e);
-            var offsetX = newLocation.X - mouseDownControlMeta.MouseLocation.X;
-            var offsetY = newLocation.Y - mouseDownControlMeta.MouseLocation.Y;
+            var offsetX = newLocation.X - mouseDownControlMeta.StartLocation.X;
+            var offsetY = newLocation.Y - mouseDownControlMeta.StartLocation.Y;
             if (offsetX == 0 && offsetY == 0)
                 return;
 
@@ -330,8 +342,8 @@ namespace YiZuTai.Components
                                 var newWidth = model.Width;
                                 var newHeight = model.Height;
                                 //调整大小
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.MouseLocation, newLocation, 0, 180, false, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
-                                resizeModel(preBaseLine2, model, mouseDownControlMeta.MouseLocation, newLocation, 90, 270, true, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, false, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
+                                resizeModel(preBaseLine2, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, true, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
                                 //设置默认参考点为右下角参考点
                                 getBasePointFunc = resizeModel_FormCorner(model, newWidth, newHeight, t => t.RightBottomPointLocation, e);
                                 break;
@@ -341,7 +353,7 @@ namespace YiZuTai.Components
                                 //设置下边线为参考线1
                                 var preBaseLine1 = new Line(mouseDownControlMeta.LeftBottomPointLocation, mouseDownControlMeta.RightBottomPointLocation);
                                 //调整大小
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.MouseLocation, newLocation, 90, 270, true, t => mouseDownControlMeta.Height, (t, v) => t.SetHeightToGrid(Canvas, v));
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, true, t => mouseDownControlMeta.Height, (t, v) => t.SetHeightToGrid(Canvas, v));
                                 //设置参考点为左下角参考点
                                 getBasePointFunc = t => t.LeftBottomPointLocation;
                                 break;
@@ -356,8 +368,8 @@ namespace YiZuTai.Components
                                 var newWidth = model.Width;
                                 var newHeight = model.Height;
                                 //调整大小
-                                resizeModel(preBaseLine2, model, mouseDownControlMeta.MouseLocation, newLocation, 0, 180, true, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.MouseLocation, newLocation, 90, 270, true, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
+                                resizeModel(preBaseLine2, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, true, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, true, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
                                 //设置默认参考点为左下角参考点
                                 getBasePointFunc = resizeModel_FormCorner(model, newWidth, newHeight, t => t.LeftBottomPointLocation, e);
                                 break;
@@ -367,7 +379,7 @@ namespace YiZuTai.Components
                                 //设置左边线为参考线1
                                 var preBaseLine1 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.LeftBottomPointLocation);
                                 //调整大小
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.MouseLocation, newLocation, 0, 180, true, t => mouseDownControlMeta.Width, (t, v) => t.SetWidthToGrid(Canvas, v));
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, true, t => mouseDownControlMeta.Width, (t, v) => t.SetWidthToGrid(Canvas, v));
                                 //设置参考点为左上角参考点
                                 getBasePointFunc = t => t.LeftTopPointLocation;
                                 break;
@@ -382,8 +394,8 @@ namespace YiZuTai.Components
                                 var newWidth = model.Width;
                                 var newHeight = model.Height;
                                 //调整大小
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.MouseLocation, newLocation, 0, 180, true, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
-                                resizeModel(preBaseLine2, model, mouseDownControlMeta.MouseLocation, newLocation, 90, 270, false, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, true, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
+                                resizeModel(preBaseLine2, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, false, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
                                 //设置默认参考点为左上角参考点
                                 getBasePointFunc = resizeModel_FormCorner(model, newWidth, newHeight, t => t.LeftTopPointLocation, e);
                                 break;
@@ -393,7 +405,7 @@ namespace YiZuTai.Components
                                 //设置上边线为参考线1
                                 var preBaseLine1 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.RightTopPointLocation);
                                 //调整大小
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.MouseLocation, newLocation, 90, 270, false, t => mouseDownControlMeta.Height, (t, v) => t.SetHeightToGrid(Canvas, v));
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, false, t => mouseDownControlMeta.Height, (t, v) => t.SetHeightToGrid(Canvas, v));
                                 //设置参考点为右上角参考点
                                 getBasePointFunc = t => t.RightTopPointLocation;
                                 break;
@@ -408,8 +420,8 @@ namespace YiZuTai.Components
                                 var newWidth = model.Width;
                                 var newHeight = model.Height;
                                 //调整大小
-                                resizeModel(preBaseLine2, model, mouseDownControlMeta.MouseLocation, newLocation, 0, 180, false, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.MouseLocation, newLocation, 90, 270, false, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
+                                resizeModel(preBaseLine2, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, false, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, false, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
                                 //设置默认参考点为右上角参考点
                                 getBasePointFunc = resizeModel_FormCorner(model, newWidth, newHeight, t => t.RightTopPointLocation, e);
                                 break;
@@ -419,7 +431,7 @@ namespace YiZuTai.Components
                                 //设置右边线为参考线1
                                 var preBaseLine1 = new Line(mouseDownControlMeta.RightTopPointLocation, mouseDownControlMeta.RightBottomPointLocation);
                                 //调整大小
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.MouseLocation, newLocation, 0, 180, false, t => mouseDownControlMeta.Width, (t, v) => t.SetWidthToGrid(Canvas, v));
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, false, t => mouseDownControlMeta.Width, (t, v) => t.SetWidthToGrid(Canvas, v));
                                 //设置参考点为右下角参考点
                                 getBasePointFunc = t => t.RightBottomPointLocation;
                                 break;
@@ -469,87 +481,7 @@ namespace YiZuTai.Components
             if (SelectedItem.IsLocked)
                 return;
             var mouseLocation = getMouseLocation_RelativeToCanvas(e);
-            mouseDownControlMeta = new ControlMeta(SelectedItem, moveAction, mouseLocation);
-        }
-
-
-        private bool _IsMouseSelecting = false;
-        /// <summary>
-        /// 是否正在用鼠标框选s
-        /// </summary>
-        public bool IsMouseSelecting
-        {
-            get { return _IsMouseSelecting; }
-            set
-            {
-                _IsMouseSelecting = value;
-            }
-        }
-
-        private Point _MouseSelectingStartPoint;
-        /// <summary>
-        /// 框选起点
-        /// </summary>
-        public Point MouseSelectingStartPoint
-        {
-            get { return _MouseSelectingStartPoint; }
-            set
-            {
-                _MouseSelectingStartPoint = value;
-            }
-        }
-
-        private Point _MouseSelectingEndPoint;
-        /// <summary>
-        /// 框选终点
-        /// </summary>
-        public Point MouseSelectingEndPoint
-        {
-            get { return _MouseSelectingEndPoint; }
-            set
-            {
-                _MouseSelectingEndPoint = value;
-            }
-        }
-
-        /// <summary>
-        /// 框选矩形左边距
-        /// </summary>
-        public double MouseSelectingRectLeft
-        {
-            get { return Math.Min(MouseSelectingStartPoint.X, MouseSelectingEndPoint.X); }
-        }
-
-        /// <summary>
-        /// 框选矩形上边距
-        /// </summary>
-        public double MouseSelectingRectTop
-        {
-            get { return Math.Min(MouseSelectingStartPoint.Y, MouseSelectingEndPoint.Y); }
-        }
-
-        /// <summary>
-        /// 框选矩形宽度
-        /// </summary>
-        public double MouseSelectingRectWidth
-        {
-            get { return Math.Abs(MouseSelectingStartPoint.X - MouseSelectingEndPoint.X); }
-        }
-
-        /// <summary>
-        /// 框选矩形高度
-        /// </summary>
-        public double MouseSelectingRectHeight
-        {
-            get { return Math.Abs(MouseSelectingStartPoint.Y - MouseSelectingEndPoint.Y); }
-        }
-
-        /// <summary>
-        /// 框选矩形
-        /// </summary>
-        public Rect MouseSelectingRect
-        {
-            get { return new Rect(MouseSelectingRectLeft, MouseSelectingRectTop, MouseSelectingRectWidth, MouseSelectingRectHeight); }
+            mouseDownControlMeta = new ControlMeta(moveAction, mouseLocation, SelectedItem);
         }
     }
 }

@@ -215,12 +215,12 @@ else
                                 }
                             </g>
                             }
-                            @if(IsMouseSelecting)
+                            @if(mouseDownControlMeta!=null && mouseDownControlMeta.MoveAction == MoveAction.Selecting)
                             {
                             <g>
                                 
-                                <rect x="@MouseSelectingRectLeft" y="@MouseSelectingRectTop"
-                                    width="@MouseSelectingRectWidth" height="@MouseSelectingRectHeight" fill="#0078D7"
+                                <rect x="@mouseDownControlMeta.MoveRect.X" y="@mouseDownControlMeta.MoveRect.Y"
+                                    width="@mouseDownControlMeta.MoveRect.Width" height="@mouseDownControlMeta.MoveRect.Height" fill="#0078D7"
                                     fill-opacity="0.2" stroke="#0078D7" stroke-width="1"></rect>                                
                             </g>
                             }
