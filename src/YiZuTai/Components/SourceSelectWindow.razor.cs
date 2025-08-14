@@ -6,6 +6,10 @@ using YiZuTai.Core;
 using YiZuTai.Core.ObjectConnection;
 using YiZuTai.Control;
 using YiZuTai.Core.Source;
+using Quick.Blazor.Bootstrap.Utils;
+using YiZuTai.Utils;
+using Quick.Xml;
+using Microsoft.JSInterop;
 
 namespace YiZuTai.Components;
 
@@ -62,6 +66,9 @@ public partial class SourceSelectWindow : ComponentBase
     public Action<ISource> OkAction { get; set; }
 
 
+    [Inject]
+    public IJSRuntime JSRuntime { get; set; }
+
     protected override void OnParametersSet()
     {
         sourceAttributeDict = SourceManager.Instance.GetItems(SourceType)
@@ -75,7 +82,6 @@ public partial class SourceSelectWindow : ComponentBase
 
         if (Source != null)
         {
-
             var info = ObjectConnectionManager.Instance.GetParent(Source);
             if (info?.NotifyObject != null)
             {
@@ -84,6 +90,44 @@ public partial class SourceSelectWindow : ComponentBase
                 if (SourceInfoList.Count == 0)
                     SourceInfoList = null;
             }
+        }
+    }
+
+    private async Task Copy()
+    {
+        try
+        {
+            var content = XmlConvert.Serialize(Source);
+            await ClipboardUtils.WriteText(JSRuntime,content);
+        }
+        catch (Exception ex)
+        {
+            modalAlert.Show("错误", ExceptionUtils.GetExceptionMessage(ex));
+        }
+    }
+
+    private async Task Paste()
+    {
+        try
+        {
+            
+            var content = await ClipboardUtils.ReadText(JSRuntime);
+            if (string.IsNullOrEmpty(content))
+                throw new IOException("剪贴板为空");
+            var obj = XmlConvert.Deserialize(content);
+            var currentType = obj.GetType();
+
+            if (!SourceType.IsAssignableFrom(currentType))
+            {
+                throw new IOException("剪贴板中的内容不是当前源类型");
+            }
+            var source = (ISource)obj;
+            SelectedCategory = SourceManager.Instance.GetItem(currentType.FullName).Category;
+            Source = source;
+        }
+        catch (Exception ex)
+        {
+            modalAlert.Show("错误", ExceptionUtils.GetExceptionMessage(ex));
         }
     }
 

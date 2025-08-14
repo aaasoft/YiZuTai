@@ -8,6 +8,7 @@ using YiZuTai.Core.ObjectConnection;
 using Quick.Blazor.Bootstrap.Admin;
 using Quick.Xml;
 using Quick.Blazor.Bootstrap.Utils;
+using YiZuTai.Utils;
 
 namespace YiZuTai.Components
 {
@@ -59,16 +60,6 @@ namespace YiZuTai.Components
 
         [Inject]
         public IJSRuntime JSRuntime { get; set; }
-
-        public ValueTask<string> ReadTextFromClipboardAsync()
-        {
-            return JSRuntime.InvokeAsync<string>("navigator.clipboard.readText");
-        }
-
-        public ValueTask WriteTextToClipboardAsync(string text)
-        {
-            return JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", text);
-        }
 
         [Parameter]
         public string Id { get; set; }
@@ -386,7 +377,7 @@ namespace YiZuTai.Components
             try
             {
                 var content = XmlConvert.Serialize(SelectedItem);
-                await WriteTextToClipboardAsync(content);
+                await ClipboardUtils.WriteText(JSRuntime,content);
             }
             catch (Exception ex)
             {
@@ -398,12 +389,12 @@ namespace YiZuTai.Components
         {
             try
             {
-                var content = await ReadTextFromClipboardAsync();
+                var content = await ClipboardUtils.ReadText(JSRuntime);
                 if (string.IsNullOrEmpty(content))
                     throw new IOException("剪贴板为空");
                 var obj = XmlConvert.Deserialize(content);
                 if (obj is not BaseControl control)
-                    throw new IOException("剪贴板中不是控件");
+                    throw new IOException("剪贴板中的内容不是控件");
                 if (obj is MultiControl multiControl)
                 {
                     foreach (var item in multiControl.Items)

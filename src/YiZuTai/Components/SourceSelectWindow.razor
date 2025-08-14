@@ -30,6 +30,15 @@
                 </InputSelect>
             </div>
         </div>
+        @if (Source != null)
+        {
+            <div class="col-auto">
+                <button type="button" class="btn btn-secondary" @onclick="Copy">复制</button>
+            </div>
+        }
+        <div class="col-auto">
+            <button type="button" class="btn btn-secondary" @onclick="Paste">粘贴</button>
+        </div>
         <div class="col-auto">
             <button type="button" class="btn btn-secondary" @onclick="Ok">确定</button>
         </div>
@@ -45,11 +54,11 @@
         </div>
     </div>
     <div class="col-12 col-lg-4" style="@PropertyGridSelectedFieldDescriptionStyle">
-        @if (PropertyGridSelectedField!=null)
+        @if (PropertyGridSelectedField != null)
         {
             <div class="alert alert-secondary" role="alert">
                 <p class="alert-heading">@PropertyGridSelectedField.Name</p>
-                @if(!string.IsNullOrEmpty(PropertyGridSelectedField.Description))
+                @if (!string.IsNullOrEmpty(PropertyGridSelectedField.Description))
                 {
                     @foreach (var line in PropertyGridSelectedField.Description.Split('\r', '\n'))
                     {
