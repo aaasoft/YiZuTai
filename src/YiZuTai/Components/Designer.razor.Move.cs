@@ -8,46 +8,45 @@ namespace YiZuTai.Components
         //控制元信息
         public class ControlMeta : BaseControl
         {
+            public MoveAction MoveAction{ get; set; }
             /// <summary>
             /// 鼠标位置
             /// </summary>
             public Point MouseLocation { get; set; }
 
-            public ControlMeta(BaseControl model, Point mouseLocation)
+            public ControlMeta(BaseControl model,MoveAction moveAction, Point mouseLocation)
             {
                 Left = model.Left;
                 Top = model.Top;
                 Width = model.Width;
                 Height = model.Height;
                 Angle = model.Angle;
+                MoveAction = moveAction;
                 MouseLocation = mouseLocation;
             }
-
-            protected override Type GetViewType()
-            {
-                throw new NotImplementedException();
-            }
-
-            public override string GetIcon()
-            {
-                throw new NotImplementedException();
-            }
+            protected override Type GetViewType() { throw new NotImplementedException(); }
         }
 
         private double resize_box_width = 7;
         //鼠标按下时控件信息
         private ControlMeta mouseDownControlMeta;
 
-        private bool isMoveLocation = false;
-        private bool isResizeLeftTop = false;
-        private bool isResizeTop = false;
-        private bool isResizeRightTop = false;
-        private bool isResizeRight = false;
-        private bool isResizeRightBottom = false;
-        private bool isResizeBottom = false;
-        private bool isResizeLeftBottom = false;
-        private bool isResizeLeft = false;
-        private bool isRotate = false;
+        /// <summary>
+        /// 移动动作
+        /// </summary>
+        public enum MoveAction
+        {
+            MoveLocation,
+            ResizeLeftTop,
+            ResizeTop,
+            ResizeRightTop,
+            ResizeRight,
+            ResizeRightBottom,
+            ResizeBottom,
+            ResizeLeftBottom,
+            ResizeLeft,
+            Rotate
+        }
 
         private Dictionary<Func<double, bool>, string> cursorDict = new Dictionary<Func<double, bool>, string>()
         {
@@ -243,23 +242,12 @@ namespace YiZuTai.Components
                 return;
 
             SelectedItem = control;
-            sizerMouseDown(e, () => isMoveLocation = true);
+            sizerMouseDown(e, MoveAction.MoveLocation);
         }
 
         private void onMouseUp(MouseEventArgs e)
         {
-            isMoveLocation = false;
-            isResizeLeftTop = false;
-            isResizeTop = false;
-            isResizeRightTop = false;
-            isResizeRight = false;
-            isResizeRightBottom = false;
-            isResizeBottom = false;
-            isResizeLeftBottom = false;
-            isResizeLeft = false;
-            isRotate = false;
             mouseDownControlMeta = null;
-
             onCanvasMouseUp(e);
         }
 
@@ -293,146 +281,155 @@ namespace YiZuTai.Components
                 return;
 
             var model = SelectedItem;
-            if (isMoveLocation)
+            switch (mouseDownControlMeta.MoveAction)
             {
-                var preLeft = model.Left;
-                var preTop = model.Top;
-                model.SetLeftToGrid(Canvas, mouseDownControlMeta.Left + offsetX);
-                model.SetTopToGrid(Canvas, mouseDownControlMeta.Top + offsetY);
-                model.MoveLocationOffset = new Point(model.Left - preLeft, model.Top - preTop);
-            }
-            else if (isRotate)
-            {
-                var centerPointLocation = model.CenterPointLocation;
-                var a = newLocation.X - centerPointLocation.X;
-                var b = newLocation.Y - centerPointLocation.Y;
-                var tanValue = a / b;
-                var newAngle = 0 - Math.Atan(tanValue) * 180 / Math.PI;
+                case MoveAction.MoveLocation:
+                    var preLeft = model.Left;
+                    var preTop = model.Top;
+                    model.SetLeftToGrid(Canvas, mouseDownControlMeta.Left + offsetX);
+                    model.SetTopToGrid(Canvas, mouseDownControlMeta.Top + offsetY);
+                    model.MoveLocationOffset = new Point(model.Left - preLeft, model.Top - preTop);
+                    break;
+                case MoveAction.Rotate:
+                    var centerPointLocation = model.CenterPointLocation;
+                    var a = newLocation.X - centerPointLocation.X;
+                    var b = newLocation.Y - centerPointLocation.Y;
+                    var tanValue = a / b;
+                    var newAngle = 0 - Math.Atan(tanValue) * 180 / Math.PI;
 
-                if (b >= 0)
-                    newAngle += 180;
-                while (newAngle < 0)
-                    newAngle += 360;
-                newAngle = newAngle % 360;
-                //磁吸角度
-                var magnetAngle = 10;
-                var x = newAngle % 90;
-                if (Math.Abs(x) < magnetAngle)
-                {
-                    newAngle -= x;
-                }
-                else if (Math.Abs(x) > (90 - magnetAngle))
-                {
-                    newAngle -= x - 90;
-                }
-                model.MoveAngleOffset = newAngle - model.Angle;
-                model.Angle = newAngle;
-            }
-            else
-            {
-                Func<BaseControl, Point> getBasePointFunc = null;
-                if (isResizeLeftTop)
-                {
-                    //设置右边线为参考线1
-                    var preBaseLine1 = new Line(mouseDownControlMeta.RightTopPointLocation, mouseDownControlMeta.RightBottomPointLocation);
-                    //设置下边线为参考线2
-                    var preBaseLine2 = new Line(mouseDownControlMeta.LeftBottomPointLocation, mouseDownControlMeta.RightBottomPointLocation);
+                    if (b >= 0)
+                        newAngle += 180;
+                    while (newAngle < 0)
+                        newAngle += 360;
+                    newAngle = newAngle % 360;
+                    //磁吸角度
+                    var magnetAngle = 10;
+                    var x = newAngle % 90;
+                    if (Math.Abs(x) < magnetAngle)
+                    {
+                        newAngle -= x;
+                    }
+                    else if (Math.Abs(x) > (90 - magnetAngle))
+                    {
+                        newAngle -= x - 90;
+                    }
+                    model.MoveAngleOffset = newAngle - model.Angle;
+                    model.Angle = newAngle;
+                    break;
+                default:
+                    Func<BaseControl, Point> getBasePointFunc = null;
+                    switch (mouseDownControlMeta.MoveAction)
+                    {
+                        case MoveAction.ResizeLeftTop:
+                            {
+                                //设置右边线为参考线1
+                                var preBaseLine1 = new Line(mouseDownControlMeta.RightTopPointLocation, mouseDownControlMeta.RightBottomPointLocation);
+                                //设置下边线为参考线2
+                                var preBaseLine2 = new Line(mouseDownControlMeta.LeftBottomPointLocation, mouseDownControlMeta.RightBottomPointLocation);
 
-                    var newWidth = model.Width;
-                    var newHeight = model.Height;
-                    //调整大小
-                    resizeModel(preBaseLine1, model, mouseDownControlMeta.MouseLocation, newLocation, 0, 180, false, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
-                    resizeModel(preBaseLine2, model, mouseDownControlMeta.MouseLocation, newLocation, 90, 270, true, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
-                    //设置默认参考点为右下角参考点
-                    getBasePointFunc = resizeModel_FormCorner(model, newWidth, newHeight, t => t.RightBottomPointLocation, e);
-                }
-                else if (isResizeTop)
-                {
-                    //设置下边线为参考线1
-                    var preBaseLine1 = new Line(mouseDownControlMeta.LeftBottomPointLocation, mouseDownControlMeta.RightBottomPointLocation);
-                    //调整大小
-                    resizeModel(preBaseLine1, model, mouseDownControlMeta.MouseLocation, newLocation, 90, 270, true, t => mouseDownControlMeta.Height, (t, v) => t.SetHeightToGrid(Canvas, v));
-                    //设置参考点为左下角参考点
-                    getBasePointFunc = t => t.LeftBottomPointLocation;
-                }
-                else if (isResizeRightTop)
-                {
-                    //设置下边线为参考线1
-                    var preBaseLine1 = new Line(mouseDownControlMeta.LeftBottomPointLocation, mouseDownControlMeta.RightBottomPointLocation);
-                    //设置左边线为参考线2
-                    var preBaseLine2 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.LeftBottomPointLocation);
+                                var newWidth = model.Width;
+                                var newHeight = model.Height;
+                                //调整大小
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.MouseLocation, newLocation, 0, 180, false, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
+                                resizeModel(preBaseLine2, model, mouseDownControlMeta.MouseLocation, newLocation, 90, 270, true, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
+                                //设置默认参考点为右下角参考点
+                                getBasePointFunc = resizeModel_FormCorner(model, newWidth, newHeight, t => t.RightBottomPointLocation, e);
+                                break;
+                            }
+                        case MoveAction.ResizeTop:
+                            {
+                                //设置下边线为参考线1
+                                var preBaseLine1 = new Line(mouseDownControlMeta.LeftBottomPointLocation, mouseDownControlMeta.RightBottomPointLocation);
+                                //调整大小
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.MouseLocation, newLocation, 90, 270, true, t => mouseDownControlMeta.Height, (t, v) => t.SetHeightToGrid(Canvas, v));
+                                //设置参考点为左下角参考点
+                                getBasePointFunc = t => t.LeftBottomPointLocation;
+                                break;
+                            }
+                        case MoveAction.ResizeRightTop:
+                            {
+                                //设置下边线为参考线1
+                                var preBaseLine1 = new Line(mouseDownControlMeta.LeftBottomPointLocation, mouseDownControlMeta.RightBottomPointLocation);
+                                //设置左边线为参考线2
+                                var preBaseLine2 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.LeftBottomPointLocation);
 
-                    var newWidth = model.Width;
-                    var newHeight = model.Height;
-                    //调整大小
-                    resizeModel(preBaseLine2, model, mouseDownControlMeta.MouseLocation, newLocation, 0, 180, true, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
-                    resizeModel(preBaseLine1, model, mouseDownControlMeta.MouseLocation, newLocation, 90, 270, true, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
-                    //设置默认参考点为左下角参考点
-                    getBasePointFunc = resizeModel_FormCorner(model, newWidth, newHeight, t => t.LeftBottomPointLocation, e);
-                }
-                else if (isResizeRight)
-                {
-                    //设置左边线为参考线1
-                    var preBaseLine1 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.LeftBottomPointLocation);
-                    //调整大小
-                    resizeModel(preBaseLine1, model, mouseDownControlMeta.MouseLocation, newLocation, 0, 180, true, t => mouseDownControlMeta.Width, (t, v) => t.SetWidthToGrid(Canvas, v));
-                    //设置参考点为左上角参考点
-                    getBasePointFunc = t => t.LeftTopPointLocation;
-                }
-                else if (isResizeRightBottom)
-                {
-                    //设置左边线为参考线1
-                    var preBaseLine1 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.LeftBottomPointLocation);
-                    //设置上边线为参考线2
-                    var preBaseLine2 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.RightTopPointLocation);
+                                var newWidth = model.Width;
+                                var newHeight = model.Height;
+                                //调整大小
+                                resizeModel(preBaseLine2, model, mouseDownControlMeta.MouseLocation, newLocation, 0, 180, true, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.MouseLocation, newLocation, 90, 270, true, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
+                                //设置默认参考点为左下角参考点
+                                getBasePointFunc = resizeModel_FormCorner(model, newWidth, newHeight, t => t.LeftBottomPointLocation, e);
+                                break;
+                            }
+                        case MoveAction.ResizeRight:
+                            {
+                                //设置左边线为参考线1
+                                var preBaseLine1 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.LeftBottomPointLocation);
+                                //调整大小
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.MouseLocation, newLocation, 0, 180, true, t => mouseDownControlMeta.Width, (t, v) => t.SetWidthToGrid(Canvas, v));
+                                //设置参考点为左上角参考点
+                                getBasePointFunc = t => t.LeftTopPointLocation;
+                                break;
+                            }
+                        case MoveAction.ResizeRightBottom:
+                            {
+                                //设置左边线为参考线1
+                                var preBaseLine1 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.LeftBottomPointLocation);
+                                //设置上边线为参考线2
+                                var preBaseLine2 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.RightTopPointLocation);
 
-                    var newWidth = model.Width;
-                    var newHeight = model.Height;
-                    //调整大小
-                    resizeModel(preBaseLine1, model, mouseDownControlMeta.MouseLocation, newLocation, 0, 180, true, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
-                    resizeModel(preBaseLine2, model, mouseDownControlMeta.MouseLocation, newLocation, 90, 270, false, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
-                    //设置默认参考点为左上角参考点
-                    getBasePointFunc = resizeModel_FormCorner(model, newWidth, newHeight, t => t.LeftTopPointLocation, e);
-                }
-                else if (isResizeBottom)
-                {
-                    //设置上边线为参考线1
-                    var preBaseLine1 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.RightTopPointLocation);
-                    //调整大小
-                    resizeModel(preBaseLine1, model, mouseDownControlMeta.MouseLocation, newLocation, 90, 270, false, t => mouseDownControlMeta.Height, (t, v) => t.SetHeightToGrid(Canvas, v));
-                    //设置参考点为右上角参考点
-                    getBasePointFunc = t => t.RightTopPointLocation;
-                }
-                else if (isResizeLeftBottom)
-                {
-                    //设置上边线为参考线1
-                    var preBaseLine1 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.RightTopPointLocation);
-                    //设置右边线为参考线2
-                    var preBaseLine2 = new Line(mouseDownControlMeta.RightTopPointLocation, mouseDownControlMeta.RightBottomPointLocation);
+                                var newWidth = model.Width;
+                                var newHeight = model.Height;
+                                //调整大小
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.MouseLocation, newLocation, 0, 180, true, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
+                                resizeModel(preBaseLine2, model, mouseDownControlMeta.MouseLocation, newLocation, 90, 270, false, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
+                                //设置默认参考点为左上角参考点
+                                getBasePointFunc = resizeModel_FormCorner(model, newWidth, newHeight, t => t.LeftTopPointLocation, e);
+                                break;
+                            }
+                        case MoveAction.ResizeBottom:
+                            {
+                                //设置上边线为参考线1
+                                var preBaseLine1 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.RightTopPointLocation);
+                                //调整大小
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.MouseLocation, newLocation, 90, 270, false, t => mouseDownControlMeta.Height, (t, v) => t.SetHeightToGrid(Canvas, v));
+                                //设置参考点为右上角参考点
+                                getBasePointFunc = t => t.RightTopPointLocation;
+                                break;
+                            }
+                        case MoveAction.ResizeLeftBottom:
+                            {
+                                //设置上边线为参考线1
+                                var preBaseLine1 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.RightTopPointLocation);
+                                //设置右边线为参考线2
+                                var preBaseLine2 = new Line(mouseDownControlMeta.RightTopPointLocation, mouseDownControlMeta.RightBottomPointLocation);
 
-                    var newWidth = model.Width;
-                    var newHeight = model.Height;
-                    //调整大小
-                    resizeModel(preBaseLine2, model, mouseDownControlMeta.MouseLocation, newLocation, 0, 180, false, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
-                    resizeModel(preBaseLine1, model, mouseDownControlMeta.MouseLocation, newLocation, 90, 270, false, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
-                    //设置默认参考点为右上角参考点
-                    getBasePointFunc = resizeModel_FormCorner(model, newWidth, newHeight, t => t.RightTopPointLocation, e);
-                }
-                else if (isResizeLeft)
-                {
-                    //设置右边线为参考线1
-                    var preBaseLine1 = new Line(mouseDownControlMeta.RightTopPointLocation, mouseDownControlMeta.RightBottomPointLocation);
-                    //调整大小
-                    resizeModel(preBaseLine1, model, mouseDownControlMeta.MouseLocation, newLocation, 0, 180, false, t => mouseDownControlMeta.Width, (t, v) => t.SetWidthToGrid(Canvas, v));
-                    //设置参考点为右下角参考点
-                    getBasePointFunc = t => t.RightBottomPointLocation;
-                }
-                else
-                {
-                    return;
-                }
-                //让基准点保持不变
-                makeBasePointLocationNotChange(mouseDownControlMeta, getBasePointFunc);
+                                var newWidth = model.Width;
+                                var newHeight = model.Height;
+                                //调整大小
+                                resizeModel(preBaseLine2, model, mouseDownControlMeta.MouseLocation, newLocation, 0, 180, false, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.MouseLocation, newLocation, 90, 270, false, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
+                                //设置默认参考点为右上角参考点
+                                getBasePointFunc = resizeModel_FormCorner(model, newWidth, newHeight, t => t.RightTopPointLocation, e);
+                                break;
+                            }
+                        case MoveAction.ResizeLeft:
+                            {
+                                //设置右边线为参考线1
+                                var preBaseLine1 = new Line(mouseDownControlMeta.RightTopPointLocation, mouseDownControlMeta.RightBottomPointLocation);
+                                //调整大小
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.MouseLocation, newLocation, 0, 180, false, t => mouseDownControlMeta.Width, (t, v) => t.SetWidthToGrid(Canvas, v));
+                                //设置参考点为右下角参考点
+                                getBasePointFunc = t => t.RightBottomPointLocation;
+                                break;
+                            }
+                        default:
+                            return;
+                    }
+                    //让基准点保持不变
+                    makeBasePointLocationNotChange(mouseDownControlMeta, getBasePointFunc);
+                    break;
             }
         }
 
@@ -463,7 +460,7 @@ namespace YiZuTai.Components
             }
         }
 
-        private void sizerMouseDown(MouseEventArgs e, Action action)
+        private void sizerMouseDown(MouseEventArgs e, MoveAction moveAction)
         {
             //如果不是鼠标左键，则不处理
             if (e.Button != 0)
@@ -472,8 +469,7 @@ namespace YiZuTai.Components
             if (SelectedItem.IsLocked)
                 return;
             var mouseLocation = getMouseLocation_RelativeToCanvas(e);
-            mouseDownControlMeta = new ControlMeta(SelectedItem, mouseLocation);
-            action?.Invoke();
+            mouseDownControlMeta = new ControlMeta(SelectedItem, moveAction, mouseLocation);
         }
 
 
