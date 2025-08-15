@@ -1,6 +1,7 @@
 ﻿@inherits EditorBase<string>
 @using System.Reflection
 @using System.ComponentModel.DataAnnotations
+@using Quick.Blazor.Bootstrap.Admin
 @using YiZuTai.Utils
 @using YiZuTai.Components
 @using ZstdSharp.Unsafe
@@ -33,12 +34,17 @@ else
     public static void Select(ModalWindow modalWindow, Core.ZTFile ztFile, string fileFilter, string value, Action<string>
     setValueAction)
     {
+        string dir = null;
+        if(!string.IsNullOrEmpty(value))
+            dir = "/" + Path.GetDirectoryName(value);
 
         modalWindow.Show("选择文件", new DialogParameters<FileSelectControl>
         {
-            { x => x.ZTFile, ztFile},
+            { x=> x.BaseDir, ztFile.ResourceFolder},
+            { x => x.Dir, dir},
             { x => x.FileFilter, fileFilter},
-            { x => x.OkAction, value =>
+            { x => x.SelectedPath, value},
+            { x => x.SelectAction, value =>
                 {
                     setValueAction( value);
                     modalWindow.Close();
