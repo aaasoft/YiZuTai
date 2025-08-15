@@ -123,6 +123,7 @@ namespace YiZuTai.Components
                 Project = Project,
                 DesignMode = true
             };
+            registerDesigner(designerId, this);
         }
 
         protected override void OnAfterRender(bool firstRender)
@@ -270,6 +271,7 @@ namespace YiZuTai.Components
 
         public void Dispose()
         {
+            unregisterDesigner(designerId);
             if (Project != null)
             {
                 ObjectConnectionManager.Instance.RemoveObject(Project);
@@ -344,8 +346,8 @@ namespace YiZuTai.Components
             var control = controlAttr.CreateInstance();
             control.Left = location.X - control.Width / 2;
             control.Top = location.Y - control.Height / 2;
-            control.OnDragDropCreate(location);
             addControl(control);
+            control.OnDragDropCreate(location);
         }
 
         //添加控件
@@ -379,7 +381,7 @@ namespace YiZuTai.Components
             try
             {
                 var content = XmlConvert.Serialize(SelectedItem);
-                await ClipboardUtils.WriteText(JSRuntime,content);
+                await ClipboardUtils.WriteText(JSRuntime, content);
             }
             catch (Exception ex)
             {

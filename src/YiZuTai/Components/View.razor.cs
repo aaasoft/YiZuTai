@@ -5,11 +5,15 @@ using YiZuTai.Core.ObjectConnection;
 using YiZuTai.Control;
 using YiZuTai.Enums;
 using Microsoft.JSInterop;
+using System.Web;
 
 namespace YiZuTai.Components
 {
     public partial class View : IDisposable
     {
+        [Inject]
+        private NavigationManager NavigationManager{ get; set; }
+
         [Parameter]
         public string Id { get; set; }
 
@@ -56,6 +60,17 @@ namespace YiZuTai.Components
         {
             if (Model == null)
                 Model = Core.ZTFileManager.Instance.Get(Id);
+            var query = HttpUtility.ParseQueryString(new Uri(NavigationManager.Uri).Query);
+            var designerId = query.Get("DesignerId");
+            if (!string.IsNullOrEmpty(designerId))
+            {
+                Project = Designer.GetDesigner(designerId)?.Project;
+                if (Project == null)
+                {
+                    return;
+                }
+            }
+                
             if (Project == null)
                 Project = Model.OpenProject();
 
@@ -73,7 +88,8 @@ namespace YiZuTai.Components
         {
             if (firstRender)
             {
-                ZTContext.ModalWindow = modalWindow;
+                if (ZTContext != null)
+                    ZTContext.ModalWindow = modalWindow;
             }
         }
 

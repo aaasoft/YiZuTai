@@ -18,40 +18,52 @@
 }
 else
 {
-    <CascadingValue Value="Model">
-    <div id="divCanvas" class="text-center p-0 overflow-auto" data-stretch="@Project.Canvas.Stretch" style="background-color: @Canvas.Background;">
-        <svg id="svgCanvas" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xhtml="http://www.w3.org/1999/xhtml"    
-             width="@(Project.Canvas.Stretch== Stretch.None?Canvas.Width+"px":"100%")" height="@(Project.Canvas.Stretch== Stretch.None?Canvas.Height+"px":"100%")"
-             viewBox="00 00 @Canvas.Width @Canvas.Height"
-             preserveAspectRatio="@preserveAspectRatio">
-            <!--====画布部分====-->
-            <g>
-                <rect fill="@Canvas.Foreground" fill-opacity="@Canvas.ForegroundOpacity"
-                      rx="@Canvas.CornerRadius" ry="@Canvas.CornerRadius"
-                      stroke="@Canvas.Border" stroke-opacity="@Canvas.BorderOpacity" stroke-width="@Canvas.BorderThickness"
-                      x="0" y="0" width="@Canvas.Width" height="@Canvas.Height"></rect>
-                @if (!string.IsNullOrEmpty(Canvas.Image))
-                {
-                    <image href="@Core.ZTFile.GetStaticResourceUrl(Model.Id, Canvas.Image)" width="100%" height="100%" preserveAspectRatio="none"></image>
-                }
-            </g>
-            <!--====控件SVG部分====-->
-            @foreach (var Item in Project.Controls)
-            {
-                <a style="@GetControlALinkStyle(Item)" @onclick="@(e=>OnControlClick(Item))">
-                    <g filter="#" transform="rotate(@Item.Angle @Item.CenterPointLocation.X, @Item.CenterPointLocation.Y) translate(0, 0) scale(1)">
-                        @Item.GetView(ZTContext)
+    @if (Project == null)
+    {
+        <div class="alert alert-warning" role="alert">
+            未找到组态项目文件
+        </div>
+    }
+    else
+    {
+        <CascadingValue Value="Model">
+            <div id="divCanvas" class="text-center p-0 overflow-auto" data-stretch="@Project.Canvas.Stretch"
+                style="background-color: @Canvas.Background;">
+                <svg id="svgCanvas" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xhtml="http://www.w3.org/1999/xhtml"
+                    width="@(Project.Canvas.Stretch == Stretch.None ? Canvas.Width + "px" : "100%")"
+                    height="@(Project.Canvas.Stretch == Stretch.None ? Canvas.Height + "px" : "100%")"
+                    viewBox="00 00 @Canvas.Width @Canvas.Height" preserveAspectRatio="@preserveAspectRatio">
+                    <!--====画布部分====-->
+                    <g>
+                        <rect fill="@Canvas.Foreground" fill-opacity="@Canvas.ForegroundOpacity" rx="@Canvas.CornerRadius"
+                            ry="@Canvas.CornerRadius" stroke="@Canvas.Border" stroke-opacity="@Canvas.BorderOpacity"
+                            stroke-width="@Canvas.BorderThickness" x="0" y="0" width="@Canvas.Width" height="@Canvas.Height">
+                        </rect>
+                        @if (!string.IsNullOrEmpty(Canvas.Image))
+                        {
+                            <image href="@Core.ZTFile.GetStaticResourceUrl(Model.Id, Canvas.Image)" width="100%" height="100%"
+                                preserveAspectRatio="none"></image>
+                        }
                     </g>
-                </a>
-            }
-        </svg>
-        <!--====控件HTML部分====-->
-        @foreach (var Item in Project.Controls)
-        {
-            @Item.GetHtmlView(ZTContext)
-        }
-    </div>
-    </CascadingValue>
-
-    <ModalWindow DialogSizeExtraLarge @ref="modalWindow" />
+                    <!--====控件SVG部分====-->
+                    @foreach (var Item in Project.Controls)
+                    {
+                        <a style="@GetControlALinkStyle(Item)" @onclick="@(e => OnControlClick(Item))">
+                            <g filter="#"
+                                transform="rotate(@Item.Angle @Item.CenterPointLocation.X, @Item.CenterPointLocation.Y) translate(0, 0) scale(1)">
+                                @Item.GetView(ZTContext)
+                            </g>
+                        </a>
+                    }
+                </svg>
+                <!--====控件HTML部分====-->
+                @foreach (var Item in Project.Controls)
+                {
+                    @Item.GetHtmlView(ZTContext)
+                }
+            </div>
+        </CascadingValue>
+    }
 }
+<ModalWindow DialogSizeExtraLarge @ref="modalWindow" />

@@ -206,13 +206,6 @@ value   =>  当前值")]
         }
     }
 
-    public override void OnDragDropCreate(Point location)
-    {
-        base.OnDragDropCreate(location);
-        Value = new DataSources.Input() { Value = Name };
-        ValueTriggers = new ObservableCollection<Trigger>();
-    }
-
     private ObservableCollection<Trigger> _ValueTriggers = new ObservableCollection<Trigger>();
     [Category("数据源与触发器")]
     [DisplayName("值触发器")]
@@ -246,5 +239,13 @@ value   =>  当前值")]
         if (DataSourceAndTriggers != null)
             foreach (var item in DataSourceAndTriggers)
                 yield return new(item.DataSource, item.Triggers.ToArray());
+    }
+
+
+    public override void OnDragDropCreate(Point location)
+    {
+        base.OnDragDropCreate(location);
+        Value = new DataSources.Input() { Value = Name };
+        ValueTriggers = new ObservableCollection<Trigger>();
     }
 }
