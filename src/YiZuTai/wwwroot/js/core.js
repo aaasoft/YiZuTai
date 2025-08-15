@@ -3,12 +3,14 @@
         document.title = title;
     },
     Window : function (params) {
+        var maxmin = params.maxmin ? params.maxmin : false; 
         var width = params.width ? params.width : 950;
         var height = params.height ? params.height : 580;
         var pages = params.pages;
         var title = params.title ? params.title : '';
 
         var item = {
+            maxmin: maxmin,
             area: [width + 'px', height + 'px'],
             tab: []
         };
@@ -24,6 +26,7 @@
                 var page=pages[0];
                 layer.open({
                     type: 2,
+                    maxmin: maxmin,
                     area: item.area,
                     title: page.title,
                     content: page.url

@@ -9,8 +9,6 @@ using Quick.Blazor.Bootstrap.Admin;
 using Quick.Xml;
 using Quick.Blazor.Bootstrap.Utils;
 using YiZuTai.Utils;
-using System.Text;
-using Microsoft.AspNetCore.Builder;
 
 namespace YiZuTai.Components
 {
@@ -299,14 +297,16 @@ namespace YiZuTai.Components
         // 预览
         private void Preview()
         {
-            var sb = new StringBuilder();
-            sb.AppendLine("new YiZuTai.Window({");
-            sb.AppendLine(@$"pages: [{{
+            var previewUrl = ZTFile.GetStaticResourceUrl(ZTContext.ZTFile.Id, $"../View?DesignerId={designerId}");
+            ZTContext.JSRuntime.InvokeVoidAsync("eval", @$"
+new YiZuTai.Window({{
+    maxmin: true,
+    pages: [{{
         title: '预览',
-        url: '{YiZuTaiMiddlewareExtensions.Options.Prefix}/{ZTContext.ZTFile.Id}/View?DesignerId={designerId}'
+        url: '{previewUrl}'
     }}]
-}}).show();");
-            ZTContext.JSRuntime.InvokeVoidAsync("eval", sb.ToString());
+}}).show();"
+            );
         }
 
         // 文件管理

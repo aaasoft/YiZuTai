@@ -66,11 +66,9 @@ namespace YiZuTai.Components
             if (!string.IsNullOrEmpty(designerId))
             {
                 var srcProject = Designer.GetDesigner(designerId)?.Project;
-                Project = (Project)XmlConvert.Deserialize(XmlConvert.Serialize(srcProject));
-                if (Project == null)
-                {
-                    return;
-                }
+                if (srcProject == null)
+                    return;                
+                Project = (Project)XmlConvert.Deserialize(XmlConvert.Serialize(srcProject));                
             }
             if (Project == null)
                 Project = Model.OpenProject();
