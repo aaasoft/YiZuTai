@@ -169,7 +169,7 @@ else
                                 @if (!SelectedItem.IsLocked)
                                 {
                                     <!--旋转-->
-                                    @if(SelectedItem is not MultiControl)
+                                    @if(SelectedItem is not MultiControl && SelectedItem.CanRotate)
                                     {
                                         <g>
                                             <line x1="@(SelectedItem.Left + SelectedItem.Width / 2)" y1="@(SelectedItem.Top - resize_box_width * 3)"

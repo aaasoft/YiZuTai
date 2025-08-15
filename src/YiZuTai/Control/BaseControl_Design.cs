@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using YiZuTai.Trigger;
 using YiZuTai.DataSource;
+using System.Reflection;
 
 namespace YiZuTai.Control
 {
@@ -11,6 +12,16 @@ namespace YiZuTai.Control
         public virtual bool IsGroupControl => false;
         [Browsable(false)]
         public virtual string GroupName { get; set; }
+
+        /// <summary>
+        /// 是否能够旋转
+        /// </summary>
+        [JsonIgnore]
+        [Browsable(false)]
+        public bool CanRotate
+        {
+            get { return GetType().GetProperty(nameof(Angle)).GetCustomAttribute<JsonIgnoreAttribute>() == null && GroupName == null; }
+        }
 
         //让控件左边距对齐到网格
         public void SetLeftToGrid(Canvas canvas, double newLeft)

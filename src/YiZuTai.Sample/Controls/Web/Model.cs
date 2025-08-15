@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using Newtonsoft.Json;
 using YiZuTai.Control;
 
 namespace YiZuTai.Sample.Controls.Web;
@@ -9,6 +10,10 @@ public class Model : BaseControl
 {
     protected override Type GetViewType() => typeof(View);
     protected override Type GetHtmlViewType() => typeof(HtmlView);
+
+    [JsonIgnore]
+    [Browsable(false)]
+    public override double Angle { get => base.Angle; set => base.Angle = value; }
 
     private string _Url;
     [Category("数据")]
