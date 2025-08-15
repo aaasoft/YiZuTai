@@ -6,7 +6,7 @@ namespace YiZuTai.Control;
 public interface IControlView
 {
     ZTContext ZTContext { get; }
-
+    
     /// <summary>
     /// 双击控件时
     /// </summary>

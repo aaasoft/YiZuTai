@@ -4,6 +4,7 @@ using Quick.Blazor.Bootstrap;
 using Quick.Blazor.Bootstrap.Utils;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using YiZuTai.Components;
 using YiZuTai.Components.Editors;
 using YiZuTai.Core;
 using YiZuTai.HyperLinkSource;
@@ -164,7 +165,7 @@ namespace YiZuTai.Control
             }
         }
 
-        
+
         private IHyperLinkSource _HyperLinkSource;
         [Category("超链接")]
         [DisplayName("源")]
@@ -321,15 +322,28 @@ y0= (x - rx0)*sin(a) + (y - ry0)*cos(a) + ry0 ;
         [JsonIgnore]
         [Browsable(false)]
         public virtual Point MoveLocationOffset { get; set; }
-        
-        protected abstract Type GetViewType();
 
-        public virtual RenderFragment GetView(ZTContext context)
+        protected abstract Type GetViewType();
+        protected virtual Type GetHtmlViewType() => null;
+
+        public RenderFragment GetView(ZTContext context)
         {
             var viewType = GetViewType();
             return BlazorUtils.GetRenderFragment(viewType, new Dictionary<string, object>()
             {
-                ["ControlModel"] = this,
+                [nameof(AbstractControlView<MultiControl>.ControlModel)] = this,
+                [nameof(ZTContext)] = context
+            });
+        }
+
+        public RenderFragment GetHtmlView(ZTContext context)
+        {
+            var extraViewType = GetHtmlViewType();
+            if (extraViewType == null)
+                return null;
+            return BlazorUtils.GetRenderFragment(extraViewType, new Dictionary<string, object>()
+            {
+                [nameof(AbstractControlView<MultiControl>.ControlModel)] = this,
                 [nameof(ZTContext)] = context
             });
         }
