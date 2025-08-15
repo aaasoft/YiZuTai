@@ -27,7 +27,36 @@ namespace Microsoft.AspNetCore.Builder
                 rep.StatusCode = 404;
                 return;
             }
-            await rep.SendFileAsync(fullFile);
+            rep.ContentType = getMimeMapping(fullFile);
+            rep.ContentLength = new FileInfo(fullFile).Length;
+            using (var fs = File.OpenRead(fullFile))
+                await fs.CopyToAsync(rep.Body);
+        }
+
+        private static string getMimeMapping(string file)
+        {
+            var extension = Path.GetExtension(file).ToLower();
+            switch (extension)
+            {
+                case ".jpg":
+                case ".jpeg":
+                    return "image/jpeg";
+                case ".png":
+                    return "image/png";
+                case ".ogv":
+                    return "video/ogg";
+                case ".webm":
+                    return "video/webm";
+                case ".mp4":
+                    return "video/mp4";
+                case ".avi":
+                    return "video/avi";
+                case ".htm":
+                case ".html":
+                    return "text/html";
+                default:
+                    return "application/octet-stream";
+            }
         }
 
         public static IApplicationBuilder UseYiZuTai(this WebApplication app)

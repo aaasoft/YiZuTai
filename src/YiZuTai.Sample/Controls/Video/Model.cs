@@ -31,7 +31,7 @@ public class Model : BaseControl
     [Category("视频")]
     [DisplayName("本地文件")]
     [Editor(typeof(EditorInputFile), typeof(EditorInputFile))]
-    [FileExtensions(Extensions ="*.mp4,*.webm,*.ogg,*.avi")]
+    [FileExtensions(Extensions ="*.mp4,*.webm,*.ogv,*.avi")]
     public string LocalFile
     {
         get { return _LocalFile; }
