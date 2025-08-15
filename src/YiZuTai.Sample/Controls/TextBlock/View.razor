@@ -5,7 +5,7 @@
       <!--图片部分-->
       @if (ControlModel.Image != null)
       {
-            <g data-Angle="@ControlModel.Angle">
+            <g>
                   <image href="@Core.ZTFile.GetStaticResourceUrl(ZTContext.ZTFile.Id, ControlModel.Image)"
                         width="@ControlModel.Width" height="@ControlModel.Height" preserveAspectRatio="none"></image>
             </g>

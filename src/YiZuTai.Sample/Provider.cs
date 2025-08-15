@@ -16,6 +16,7 @@ public class Provider
         ControlManager.Instance.RegisterControl<Controls.Curve.Model>();
         ControlManager.Instance.RegisterControl<Controls.WaterCurrent.Model>();
         ControlManager.Instance.RegisterControl<Controls.TempAndHum.Model>();
+        ControlManager.Instance.RegisterControl<Controls.Web.Model>();
 
         SourceManager.Instance.RegisterSource<DataSources.Input>();
         SourceManager.Instance.RegisterSource<DataSources.Simulate>();

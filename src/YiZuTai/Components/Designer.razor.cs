@@ -345,8 +345,10 @@ namespace YiZuTai.Components
             control.Left = location.X - control.Width / 2;
             control.Top = location.Y - control.Height / 2;
             control.OnDragDropCreate(location);
+            addControl(control);
         }
 
+        //添加控件
         private void addControl(BaseControl control)
         {
             checkAndModifyControlName(control, Project.Controls);
