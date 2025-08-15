@@ -6,6 +6,7 @@ using YiZuTai.Control;
 using YiZuTai.Enums;
 using Microsoft.JSInterop;
 using System.Web;
+using Quick.Xml;
 
 namespace YiZuTai.Components
 {
@@ -64,13 +65,13 @@ namespace YiZuTai.Components
             var designerId = query.Get("DesignerId");
             if (!string.IsNullOrEmpty(designerId))
             {
-                Project = Designer.GetDesigner(designerId)?.Project;
+                var srcProject = Designer.GetDesigner(designerId)?.Project;
+                Project = (Project)XmlConvert.Deserialize(XmlConvert.Serialize(srcProject));
                 if (Project == null)
                 {
                     return;
                 }
             }
-                
             if (Project == null)
                 Project = Model.OpenProject();
 

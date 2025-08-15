@@ -9,6 +9,8 @@ using Quick.Blazor.Bootstrap.Admin;
 using Quick.Xml;
 using Quick.Blazor.Bootstrap.Utils;
 using YiZuTai.Utils;
+using System.Text;
+using Microsoft.AspNetCore.Builder;
 
 namespace YiZuTai.Components
 {
@@ -58,9 +60,6 @@ namespace YiZuTai.Components
             Task.Delay(10).ContinueWith(t => JSRuntime.InvokeVoidAsync("YiZuTai.Designer.OnResizeFunc"));
         }
 
-        [Inject]
-        public IJSRuntime JSRuntime { get; set; }
-
         [Parameter]
         public string Id { get; set; }
         public Core.ZTFile Model { get; private set; }
@@ -68,6 +67,8 @@ namespace YiZuTai.Components
         public Canvas Canvas => Project.Canvas;
 
         private ZTContext ZTContext;
+        [Inject]
+        private IJSRuntime JSRuntime { get; set; }
 
         private bool isWindowOnbeforeUnloadEventAdded = false;
         private BaseControl _SelectedItem;
@@ -121,7 +122,8 @@ namespace YiZuTai.Components
             {
                 ZTFile = Model,
                 Project = Project,
-                DesignMode = true
+                DesignMode = true,
+                JSRuntime = JSRuntime
             };
             registerDesigner(designerId, this);
         }
@@ -297,11 +299,14 @@ namespace YiZuTai.Components
         // 预览
         private void Preview()
         {
-            modalWindow.Show("预览", new DialogParameters<View>
-            {
-                { x => x.Model, Model},
-                {x => x.Project, Quick.Xml.XmlConvert.Deserialize<Project>(Quick.Xml.XmlConvert.Serialize(Project))}
-            });
+            var sb = new StringBuilder();
+            sb.AppendLine("new YiZuTai.Window({");
+            sb.AppendLine(@$"pages: [{{
+        title: '预览',
+        url: '{YiZuTaiMiddlewareExtensions.Options.Prefix}/{ZTContext.ZTFile.Id}/View?DesignerId={designerId}'
+    }}]
+}}).show();");
+            ZTContext.JSRuntime.InvokeVoidAsync("eval", sb.ToString());
         }
 
         // 文件管理
