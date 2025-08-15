@@ -13,7 +13,7 @@ public class Model : BaseControl
 
     [JsonIgnore]
     [Browsable(false)]
-    public override double Angle { get => base.Angle; set => base.Angle = value; }
+    public override double Angle { get => base.Angle; set { } }
 
     private string _Url;
     [Category("数据")]

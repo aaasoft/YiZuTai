@@ -32,7 +32,7 @@
             ZTContext.JSRuntime.InvokeVoidAsync("eval",$@"
     let preRect=null;
     let resizeHandler = function(event){{
-        let g = document.getElementById('web_g_{ControlModel.Name}');
+        let g = document.getElementById('g_{ControlModel.Name}');
         let div = document.getElementById('div_{guid}');
         if(div==null) {{
             removeEventListener('resize', resizeHandler);

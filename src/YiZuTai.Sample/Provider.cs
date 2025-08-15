@@ -17,6 +17,7 @@ public class Provider
         ControlManager.Instance.RegisterControl<Controls.WaterCurrent.Model>();
         ControlManager.Instance.RegisterControl<Controls.TempAndHum.Model>();
         ControlManager.Instance.RegisterControl<Controls.Web.Model>();
+        ControlManager.Instance.RegisterControl<Controls.Video.Model>();
 
         SourceManager.Instance.RegisterSource<DataSources.Input>();
         SourceManager.Instance.RegisterSource<DataSources.Simulate>();
