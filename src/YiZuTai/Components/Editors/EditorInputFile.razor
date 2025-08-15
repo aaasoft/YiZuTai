@@ -1,0 +1,49 @@
+﻿@inherits EditorBase<string>
+@using YiZuTai.Utils
+@using YiZuTai.Components
+
+<ModalAlert @ref="modalAlert" />
+<ModalWindow DialogSizeExtraLarge @ref="modalWindow" />
+
+<span class="form-control" style="cursor: pointer;" @onclick="onClick">(@(Value ?? "未设置"))</span>
+@if (string.IsNullOrEmpty(Value))
+{
+    <div class="input-group-append">
+        <button type="button" class="btn btn-outline-secondary" @onclick="onClick">
+            ...
+        </button>
+    </div>
+}
+else
+{
+    <div class="input-group-append">
+        <button type="button" class="btn btn-danger" @onclick="@(e=>Value=null)">
+            X
+        </button>
+    </div>
+}
+@code
+{
+    private ModalAlert modalAlert;
+    private ModalWindow modalWindow;
+
+    public static void Select(ModalWindow modalWindow,Core.ZTFile ztFile,string value,Action<string> setValueAction)
+    {
+        modalWindow.Show("选择文件", new DialogParameters<FileSelectControl>
+        {
+            { x => x.ZTFile, ztFile},
+            { x => x.FileFilter, "*.mp4"},
+            { x => x.OkAction, value =>
+                {
+                    setValueAction( value);
+                    modalWindow.Close();
+                }
+            }
+        });
+    }
+
+    private void onClick()
+    {
+        Select(modalWindow,ZTFile, Value,t=>Value=t);
+    }
+}

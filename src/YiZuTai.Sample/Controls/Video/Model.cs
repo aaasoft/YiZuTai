@@ -1,5 +1,7 @@
 using System.ComponentModel;
+using YiZuTai.Components.Editors;
 using YiZuTai.Control;
+using YiZuTai.Core;
 
 namespace YiZuTai.Sample.Controls.Video;
 
@@ -13,13 +15,27 @@ public class Model : BaseControl
     private string _Url;
     [Category("视频")]
     [DisplayName("URL")]
-    [Description("IE浏览器只支持mp4格式的视频，Chrome浏览器支持mp4,webm,ogg等多种格式的视频。")]
     public string Url
     {
         get { return _Url; }
         set
         {
             _Url = value;
+            RaisePropertyChanged();
+        }
+    }
+
+
+    private string _LocalFile;
+    [Category("视频")]
+    [DisplayName("本地文件")]
+    [Editor(typeof(EditorInputFile), typeof(EditorInputFile))]
+    public string LocalFile
+    {
+        get { return _LocalFile; }
+        set
+        {
+            _LocalFile = value;
             RaisePropertyChanged();
         }
     }
