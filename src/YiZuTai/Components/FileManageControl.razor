@@ -1,6 +1,6 @@
 ﻿<Quick.Blazor.Bootstrap.Admin.FileManageControl BaseDir="@baseDir" @ref="fileManageControl">
     <ToolbarAddonButtons>
-        @if (fileManageControl.SelectedPath != null && File.Exists(fileManageControl.SelectedPath))
+        @if (fileManageControl.IsSelectedFile())
         {
             <button title="预览" type="button" class="btn btn-sm btn-secondary" @onclick="btnPreview_Click">
                 预览
@@ -29,10 +29,14 @@
 
     private void btnPreview_Click()
     {
-        var fileInfo = new FileInfo(fileManageControl.SelectedPath);
-        if (fileInfo == null)
-            return;
-        var url = ZTFile.GetStaticResourceUrl(fileInfo.FullName.Substring(baseDir.Length + 1));
-        JSRuntime.InvokeVoidAsync("window.open", url, "_blank");
+        var url = ZTFile.GetStaticResourceUrl(fileManageControl.SelectedPath);
+        JSRuntime.InvokeVoidAsync("eval", $@"
+new YiZuTai.Window({{
+    maxmin: true,
+    pages: [{{
+        title: '预览',
+        url: '{url}'
+    }}]
+}}).show();");
     }
 }
