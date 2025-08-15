@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using YiZuTai.Components.Editors;
 using YiZuTai.Control;
 using YiZuTai.Core;
@@ -30,6 +31,7 @@ public class Model : BaseControl
     [Category("视频")]
     [DisplayName("本地文件")]
     [Editor(typeof(EditorInputFile), typeof(EditorInputFile))]
+    [FileExtensions(Extensions ="*.mp4,*.webm,*.ogg,*.avi")]
     public string LocalFile
     {
         get { return _LocalFile; }

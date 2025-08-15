@@ -1,11 +1,14 @@
 ﻿@inherits EditorBase<string>
+@using System.Reflection
+@using System.ComponentModel.DataAnnotations
 @using YiZuTai.Utils
 @using YiZuTai.Components
+@using ZstdSharp.Unsafe
 
 <ModalAlert @ref="modalAlert" />
 <ModalWindow DialogSizeExtraLarge @ref="modalWindow" />
 
-<span class="form-control" style="cursor: pointer;" @onclick="onClick">(@(Value ?? "未设置"))</span>
+<span class="form-control" style="cursor: pointer;white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" @onclick="onClick">@(Value ?? "(未设置)")</span>
 @if (string.IsNullOrEmpty(Value))
 {
     <div class="input-group-append">
@@ -17,7 +20,7 @@
 else
 {
     <div class="input-group-append">
-        <button type="button" class="btn btn-danger" @onclick="@(e=>Value=null)">
+        <button type="button" class="btn btn-danger" @onclick="@(e => Value = null)">
             X
         </button>
     </div>
@@ -27,12 +30,14 @@ else
     private ModalAlert modalAlert;
     private ModalWindow modalWindow;
 
-    public static void Select(ModalWindow modalWindow,Core.ZTFile ztFile,string value,Action<string> setValueAction)
+    public static void Select(ModalWindow modalWindow, Core.ZTFile ztFile, string fileFilter, string value, Action<string>
+    setValueAction)
     {
+
         modalWindow.Show("选择文件", new DialogParameters<FileSelectControl>
         {
             { x => x.ZTFile, ztFile},
-            { x => x.FileFilter, "*.mp4"},
+            { x => x.FileFilter, fileFilter},
             { x => x.OkAction, value =>
                 {
                     setValueAction( value);
@@ -44,6 +49,7 @@ else
 
     private void onClick()
     {
-        Select(modalWindow,ZTFile, Value,t=>Value=t);
+        var fileFilter = Field.PropertyInfo.GetCustomAttribute<FileExtensionsAttribute>()?.Extensions;
+        Select(modalWindow, ZTFile, fileFilter, Value, t => Value = t);
     }
 }
