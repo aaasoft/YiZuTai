@@ -45,16 +45,16 @@ YiZuTai.View = {
     }
 };
 
-window.onload = function (evt) {
+window.addEventListener('load', function (evt) {
     var stretch = document.getElementById('divCanvas').getAttribute('data-stretch');
     if (stretch == 'UniformToFill')
         return;
     YiZuTai.View.LoopOnResizeFunc();
-};
+});
 
-window.onresize = function (evt) {
+window.addEventListener('resize', function (evt) {
     var stretch = document.getElementById('divCanvas').getAttribute('data-stretch');
     if (stretch == 'UniformToFill')
         return;
     YiZuTai.View.LoopOnResizeFunc();
-};
+});

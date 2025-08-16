@@ -8,6 +8,11 @@
     <script src="_content/YiZuTai/js/core.js"></script>
     <script src="_content/YiZuTai/js/view.js"></script>
     <link href="_content/YiZuTai/css/view.css" rel="stylesheet" />
+    <style>
+        body {
+            background-color: @Canvas.Background;
+        }
+    </style>
 </HeadContent>
 
 @if (Model == null)
@@ -27,8 +32,7 @@ else
     else
     {
         <CascadingValue Value="Model">
-            <div id="divCanvas" class="text-center p-0 overflow-auto" data-stretch="@Project.Canvas.Stretch"
-                style="background-color: @Canvas.Background;">
+            <div id="divCanvas" class="text-center p-0 overflow-auto" data-stretch="@Project.Canvas.Stretch">
                 <svg id="svgCanvas" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xhtml="http://www.w3.org/1999/xhtml"
                     width="@(Project.Canvas.Stretch == Stretch.None ? Canvas.Width + "px" : "100%")"

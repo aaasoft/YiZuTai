@@ -1,7 +1,7 @@
 ﻿@using YiZuTai.Control
 @typeparam T_BaseControl where T_BaseControl : BaseControl, new()
 
-<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="@Model.Left"
+<svg  id="svg_@Model.Name" version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="@Model.Left"
     y="@Model.Top" width="@Model.Width" height="@Model.Height" opacity="@Model.Opacity"
     visibility="@(Model.Visiable ? "visible" : "hidden")" @ref="svgElementReference">
     @ChildContent

@@ -1,18 +1,19 @@
 ﻿@using YiZuTai.Control
 @using YiZuTai.Core
 
-<div id="div_@guid"
-    style="
-    left: @(ControlModel.Left)px;
-    top: @(ControlModel.Top)px;
-    width: @(ControlModel.Width)px;
-    height: @(ControlModel.Height)px;
-    opacity: @ControlModel.Opacity;
-    position: absolute;
-    " @attributes="DivAttributes">
-    @ChildContent
-</div>
-
+@if (ControlModel.Visiable)
+{
+    <div id="floatDiv_@guid" style="
+        left: @(ControlModel.Left)px;
+        top: @(ControlModel.Top)px;
+        width: @(ControlModel.Width)px;
+        height: @(ControlModel.Height)px;
+        opacity: @ControlModel.Opacity;
+        position: absolute;
+        " @attributes="DivAttributes">
+        @ChildContent
+    </div>
+}
 
 @code
 {
@@ -30,11 +31,13 @@
     {
         if(firstRender)
         {
+            if (!ControlModel.Visiable)
+                return;
             ZTContext.JSRuntime.InvokeVoidAsync("eval",$@"
     let preRect=null;
     let resizeHandler = function(event){{
-        let g = document.getElementById('g_{ControlModel.Name}');
-        let div = document.getElementById('div_{guid}');
+        let g = document.getElementById('svg_{ControlModel.Name}');
+        let div = document.getElementById('floatDiv_{guid}');
         if(div==null) {{
             removeEventListener('resize', resizeHandler);
             return;
@@ -45,17 +48,20 @@
         
         var gRectLeft=gRect.left-bodyRect.left;
         var gRectTop=gRect.top-bodyRect.top;
-        
-        if(preRect==null || preRect.left!=gRectLeft || preRect.top!=gRectTop || preRect.width!=gRect.width || preRect.height!=gRect.height){{
+        var isChanged = preRect==null || preRect.left!=gRectLeft || preRect.top!=gRectTop || preRect.width!=gRect.width || preRect.height!=gRect.height;
+        if(isChanged){{
             div.style.left = gRectLeft + 'px';
             div.style.top = gRectTop + 'px';
             div.style.width = gRect.width + 'px';
             div.style.height = gRect.height + 'px';
             preRect=gRect;
         }}
-    }};    
+    }};
+    if(document.readyState=='complete')
+        resizeHandler();
+    else
+        addEventListener('load', resizeHandler);
     addEventListener('resize', resizeHandler);
-    setTimeout(resizeHandler,100);    
 ");
         }
     }
