@@ -1,61 +1,18 @@
-﻿@inherits AbstractControlView<Model>
+﻿@inherits AbstractControlHtmlView<Model>
 
-@if(ControlModel.Visiable)
-{
-<div id="div_@guid"
-    style="
-    left: @(ControlModel.Left)px;
-    top: @(ControlModel.Top)px;
-    width: @(ControlModel.Width)px;
-    height: @(ControlModel.Height)px;
-    opacity: @ControlModel.Opacity;
-    transform: scale(@(1/ControlModel.Zoom)) rotate(@(ControlModel.Angle)deg);
-    transform-origin: @getTransformOrigin();
-    position: absolute;    
-    ">
+<FloatDivView ZTContext="@ZTContext" ControlModel="ControlModel" DivAttributes="DivAttributes">
     <iframe src="@ControlModel.Url" frameborder="0" style="
-        width: @(ControlModel.Zoom*100)%;
-        height: @(ControlModel.Zoom*100)%;
+        width: @(ControlModel.Zoom * 100)%;
+        height: @(ControlModel.Zoom * 100)%;
         opacity: @ControlModel.Opacity;">
     </iframe>
-</div>
-}
+</FloatDivView>
 
 @code
 {
-    private string getTransformOrigin() => ControlModel.Zoom >= 1 ? "left top" : "center top";
-    private string guid = Guid.NewGuid().ToString("N");
-    protected override void OnAfterRender(bool firstRender)
+    private Dictionary<string, object> DivAttributes => new()
     {
-        if(firstRender)
-        {
-            ZTContext.JSRuntime.InvokeVoidAsync("eval",$@"
-    let preRect=null;
-    let resizeHandler = function(event){{
-        let g = document.getElementById('g_{ControlModel.Name}');
-        let div = document.getElementById('div_{guid}');
-        if(div==null) {{
-            removeEventListener('resize', resizeHandler);
-            return;
-        }}
- 
-        let gRect = g.getBoundingClientRect();        
-        let bodyRect = document.body.getBoundingClientRect();
-        
-        var gRectLeft=gRect.left-bodyRect.left;
-        var gRectTop=gRect.top-bodyRect.top;
-        
-        if(preRect==null || preRect.left!=gRectLeft || preRect.top!=gRectTop || preRect.width!=gRect.width || preRect.height!=gRect.height){{
-            div.style.left = gRectLeft + 'px';
-            div.style.top = gRectTop + 'px';
-            div.style.width = gRect.width + 'px';
-            div.style.height = gRect.height + 'px';
-            preRect=gRect;
-        }}
-    }};    
-    addEventListener('resize', resizeHandler);
-    setTimeout(resizeHandler,100);
-");
-        }
-    }
+        ["transform"] = $"scale({1 / ControlModel.Zoom}) rotate({ControlModel.Angle}deg)",
+        ["transform-origin"] = ControlModel.Zoom >= 1 ? "left top" : "center top"
+    };
 }

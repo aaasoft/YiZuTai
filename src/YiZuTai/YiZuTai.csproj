@@ -13,8 +13,4 @@
     <PackageReference Include="Quick.Xml" Version="1.0.3" />
     <PackageReference Include="Tewr.Blazor.FileReader" Version="3.4.0.24340" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <Folder Include="Components\Control\" />
-  </ItemGroup>
 </Project>
