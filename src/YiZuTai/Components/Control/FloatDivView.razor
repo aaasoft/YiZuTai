@@ -35,15 +35,15 @@
                 return;
             ZTContext.JSRuntime.InvokeVoidAsync("eval",$@"
     let preRect=null;
-    let resizeHandler = function(event){{
-        let g = document.getElementById('svg_{ControlModel.Name}');
+    let svg = document.getElementById('svg_{ControlModel.Name}');
+    let resizeHandler = function(event){{        
         let div = document.getElementById('floatDiv_{guid}');
         if(div==null) {{
             removeEventListener('resize', resizeHandler);
             return;
         }}
  
-        let gRect = g.getBoundingClientRect();        
+        let gRect = svg.getBoundingClientRect();        
         let bodyRect = document.body.getBoundingClientRect();
         
         var gRectLeft=gRect.left-bodyRect.left;
