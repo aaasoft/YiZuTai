@@ -23,7 +23,7 @@ namespace YiZuTai.DataSource
         private string _Value;
         [Browsable(false)]
         [JsonIgnore]
-        public virtual string Value
+        public string Value
         {
             get { return _Value; }
             set

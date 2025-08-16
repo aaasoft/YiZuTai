@@ -209,6 +209,15 @@ public class Model : BaseControl
                 yield return new(item.DataSource, item.Triggers.ToArray());
     }
 
+
+    public override Dictionary<string, Func<IDataSource>> GetDataSourceDict()
+    {
+        return new()
+        {
+            [nameof(CurrentSeat)] = () => CurrentSeat
+        };
+    }
+
     public override void OnDragDropCreate(Point location)
     {
         Width = 200;

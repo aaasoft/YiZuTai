@@ -241,6 +241,13 @@ value   =>  当前值")]
                 yield return new(item.DataSource, item.Triggers.ToArray());
     }
 
+    public override Dictionary<string, Func<IDataSource>> GetDataSourceDict()
+    {
+        return new()
+        {
+            [nameof(Value)] = () => Value
+        };
+    }
 
     public override void OnDragDropCreate(Point location)
     {

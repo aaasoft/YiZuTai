@@ -238,7 +238,7 @@ value   =>  当前值")]
             RaisePropertyChanged(nameof(HumValue));
         }
     }
-    
+
     private string _HumFontFamily;
     [Category("湿度")]
     [DisplayName("字体")]
@@ -400,6 +400,17 @@ value   =>  当前值")]
             yield return new(TempValue, TempTriggers.ToArray());
         if (HumValue != null && HumTriggers.Count > 0)
             yield return new(HumValue, HumTriggers.ToArray());
+    }
+
+
+    public override Dictionary<string, Func<IDataSource>> GetDataSourceDict()
+    {
+        return new()
+        {
+            [nameof(TitleValue)] = () => TitleValue,
+            [nameof(TempValue)] = () => TempValue,
+            [nameof(HumValue)] = () => HumValue
+        };
     }
 
     private const double DefaultWidth = 60;

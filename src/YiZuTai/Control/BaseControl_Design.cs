@@ -71,7 +71,7 @@ namespace YiZuTai.Control
         /// <summary>
         /// 当数据源的值改变时
         /// </summary>
-        public virtual void OnDataSourceValueChanged(AbstractAutoRefreshDataSource t, string propertyName)
+        public virtual void OnDataSourceValueChanged(IDataSource t, string propertyName)
         {
             if (View == null)
                 return;
