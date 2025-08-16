@@ -43,6 +43,8 @@ namespace Microsoft.AspNetCore.Builder
                     return "image/jpeg";
                 case ".png":
                     return "image/png";
+                case ".svg":
+                    return "image/svg+xml";
                 case ".ogv":
                     return "video/ogg";
                 case ".webm":
