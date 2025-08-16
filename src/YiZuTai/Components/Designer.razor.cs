@@ -207,20 +207,29 @@ namespace YiZuTai.Components
             onDesignChanged();
         }
 
-        private void onKeyDown(KeyboardEventArgs e)
+        private async Task onKeyDown(KeyboardEventArgs e)
         {
             if (e.CtrlKey || e.MetaKey)
             {
                 switch (e.Code)
                 {
+                    case "KeyA":
+                        SelectedItem = new MultiControl(Canvas, Project.Controls);
+                        return;
+                    case "KeyX":
+                        if (SelectedItem == null)
+                            return;
+                        await copyControl();
+                        removeControl();
+                        return;
                     case "KeyS":
                         Save();
                         return;
                     case "KeyC":
-                        _ = copyControl();
+                        await copyControl();
                         return;
                     case "KeyV":
-                        _ = pasteControl();
+                        await pasteControl();
                         return;
                 }
             }
