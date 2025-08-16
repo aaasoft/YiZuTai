@@ -8,8 +8,8 @@
   <ItemGroup>
     <PackageReference Include="Blazor.ContextMenu" Version="2.1.0" />
     <PackageReference Include="BlazorDownloadFile" Version="2.4.0.2" />
-    <PackageReference Include="Quick.Blazor.Bootstrap" Version="4.4.3" />
-    <PackageReference Include="Quick.Blazor.Bootstrap.Admin" Version="4.4.3" />
+    <PackageReference Include="Quick.Blazor.Bootstrap" Version="4.4.4" />
+    <PackageReference Include="Quick.Blazor.Bootstrap.Admin" Version="4.4.4" />
     <PackageReference Include="Quick.Xml" Version="1.0.3" />
     <PackageReference Include="Tewr.Blazor.FileReader" Version="3.4.0.24340" />
   </ItemGroup>
