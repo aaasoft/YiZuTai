@@ -1,9 +1,6 @@
-using System.ComponentModel;
-using System.Reflection;
 using Microsoft.AspNetCore.Components;
 using Quick.Blazor.Bootstrap;
 using YiZuTai.Core;
-using YiZuTai.Core.ObjectConnection;
 using YiZuTai.Control;
 using YiZuTai.Core.Source;
 using Quick.Blazor.Bootstrap.Utils;
@@ -15,11 +12,6 @@ namespace YiZuTai.Components;
 
 public partial class SourceSelectWindow : ComponentBase
 {
-    public class SourceInfo
-    {
-        public string Name { get; set; }
-        public ISource Source { get; set; }
-    }
     private ModalAlert modalAlert;
 
     public string[] SourceCategorys { get; set; }
@@ -50,7 +42,6 @@ public partial class SourceSelectWindow : ComponentBase
                 SelectedSourceId = Sources.FirstOrDefault()?.GetType().FullName;
         }
     }
-    private List<SourceInfo> SourceInfoList { get; set; }
     private ISource[] Sources { get; set; }
     private Dictionary<string, SourceAttribute[]> sourceAttributeDict;
     private string SelectedSourceId
@@ -90,18 +81,6 @@ public partial class SourceSelectWindow : ComponentBase
             SelectedCategory = SourceCategorys.FirstOrDefault();
         else
             SelectedCategory = SourceManager.Instance.GetItem(Source.GetType().FullName).Category;
-
-        if (Source != null)
-        {
-            var info = ObjectConnectionManager.Instance.GetParent(Source);
-            if (info?.NotifyObject != null)
-            {
-                SourceInfoList = new List<SourceInfo>();
-                AddSourceInfoToList(info.NotifyObject, SourceInfoList);
-                if (SourceInfoList.Count == 0)
-                    SourceInfoList = null;
-            }
-        }
     }
 
     private async Task Copy()
@@ -145,32 +124,5 @@ public partial class SourceSelectWindow : ComponentBase
     private void Ok()
     {
         OkAction?.Invoke(Source);
-    }
-
-    private void AddSourceInfoToList(object notifyObj, List<SourceInfo> list)
-    {
-        var notifyObjType = notifyObj.GetType();
-        foreach (var pi in notifyObjType.GetProperties())
-        {
-            if (!typeof(ISource).IsAssignableFrom(pi.PropertyType))
-                continue;
-            var otherSource = pi.GetValue(notifyObj) as ISource;
-            if (otherSource == null || otherSource == Source)
-                continue;
-            List<string> nameList = new List<string>();
-            var categoryNameAttr = pi.GetCustomAttribute<CategoryAttribute>();
-            if (categoryNameAttr != null)
-                nameList.Add(categoryNameAttr.Category);
-            var displayNameAttr = pi.GetCustomAttribute<DisplayNameAttribute>();
-            if (displayNameAttr != null)
-                nameList.Add(displayNameAttr.DisplayName);
-            if (nameList.Count == 0)
-                continue;
-            list.Add(new SourceInfo()
-            {
-                Name = string.Join(" - ", nameList),
-                Source = otherSource
-            });
-        }
     }
 }
