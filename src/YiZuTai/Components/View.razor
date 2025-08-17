@@ -62,7 +62,7 @@ else
                     }
                 </svg>
                 <!--====控件HTML部分====-->
-                @foreach (var Item in Project.Controls)
+                @foreach (var Item in Project.GetAllControls())
                 {
                     @Item.GetHtmlView(ZTContext)
                 }
