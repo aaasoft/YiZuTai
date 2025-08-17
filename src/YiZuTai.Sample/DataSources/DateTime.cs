@@ -3,7 +3,7 @@ using YiZuTai.DataSource;
 
 namespace YiZuTai.Sample.DataSources
 {
-    [Category("基础")]
+    [Category("时间")]
     [DisplayName("日期时间")]
     public class DateTime : AbstractAutoRefreshOnTimerDataSource
     {

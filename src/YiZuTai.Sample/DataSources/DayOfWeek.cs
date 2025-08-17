@@ -3,7 +3,7 @@ using YiZuTai.DataSource;
 
 namespace YiZuTai.Sample.DataSources;
 
-[Category("基础")]
+[Category("时间")]
 [DisplayName("本周第几天")]
 public class DayOfWeek : AbstractAutoRefreshOnTimerDataSource
 {

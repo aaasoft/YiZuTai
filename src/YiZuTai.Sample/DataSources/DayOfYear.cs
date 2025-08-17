@@ -1,10 +1,9 @@
-using System;
 using System.ComponentModel;
 using YiZuTai.DataSource;
 
 namespace YiZuTai.Sample.DataSources;
 
-[Category("基础")]
+[Category("时间")]
 [DisplayName("今年第几天")]
 public class DayOfYear: AbstractAutoRefreshOnTimerDataSource
 {

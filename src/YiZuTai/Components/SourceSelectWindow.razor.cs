@@ -31,15 +31,23 @@ public partial class SourceSelectWindow : ComponentBase
         {
             var attrs = sourceAttributeDict[value];
             var list = new List<ISource>();
+            var currentCategoryContainsSource = false;
             foreach (var attr in attrs)
             {
                 if (Source != null && Source.GetType().FullName == attr.Clazz)
+                {
+                    currentCategoryContainsSource = true;
                     list.Add(Source);
+                }
                 else
+                {
                     list.Add((ISource)Activator.CreateInstance(attr.Type));
+                }
             }
             Sources = list.ToArray();
             _SelectedCategory = value;
+            if (!currentCategoryContainsSource)
+                SelectedSourceId = Sources.FirstOrDefault()?.GetType().FullName;
         }
     }
     private List<SourceInfo> SourceInfoList { get; set; }
@@ -50,7 +58,10 @@ public partial class SourceSelectWindow : ComponentBase
         get { return Source?.GetType().FullName; }
         set
         {
-            Source = Sources?.FirstOrDefault(t => t.GetType().FullName == value);
+            if (string.IsNullOrEmpty(value))
+                Source = null;
+            else
+                Source = Sources?.FirstOrDefault(t => t.GetType().FullName == value);
         }
     }
     
