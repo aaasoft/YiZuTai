@@ -63,7 +63,6 @@ namespace YiZuTai.Components
         public string Id { get; set; }
         public ZTFile Model { get; private set; }
         public Project Project { get; private set; }
-        public Canvas Canvas => Project.Canvas;
 
         private ZTContext ZTContext;
         [Inject]
@@ -98,25 +97,24 @@ namespace YiZuTai.Components
                 if (!string.IsNullOrEmpty(value))
                     item = Project.Controls.FirstOrDefault(t => t.Name == value);
                 if (item == null)
-                    item = Canvas;
+                    item = Project;
                 SelectedItem = item;
             }
         }
         //是否选中了控件
-        public bool IsSelectedControl => SelectedItem != null && SelectedItem != Canvas;
+        public bool IsSelectedControl => SelectedItem != null && SelectedItem != Project;
 
         protected override void OnParametersSet()
         {
-            Model = Core.ZTFileManager.Instance.Get(Id);
+            Model = ZTFileManager.Instance.Get(Id);
             Project = Model.OpenProject();
             ObjectConnectionManager.Instance.AddObject(Project);
 
             Project.PropertyChanged += Project_PropertyChanged;
-            Project.Canvas.PropertyChanged += Control_PropertyChanged;
             foreach (var control in Project.Controls)
                 control.PropertyChanged += Control_PropertyChanged;
             Project.Controls.CollectionChanged += Controls_CollectionChanged;
-            SelectedItem = Canvas;
+            SelectedItem = Project;
             ZTContext = new ZTContext()
             {
                 ZTFile = Model,
@@ -178,7 +176,7 @@ namespace YiZuTai.Components
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
                     foreach (BaseControl control in e.OldItems)
                         control.PropertyChanged -= Control_PropertyChanged;
-                    SelectedItem = Canvas;
+                    SelectedItem = Project;
                     break;
             }
             onDesignChanged();
@@ -215,7 +213,7 @@ namespace YiZuTai.Components
                 switch (e.Code)
                 {
                     case "KeyA":
-                        SelectedItem = new MultiControl(Canvas, Project.Controls);
+                        SelectedItem = new MultiControl(Project, Project.Controls);
                         return;
                     case "KeyX":
                         if (SelectedItem == null)
@@ -236,7 +234,7 @@ namespace YiZuTai.Components
             }
 
             //如果选中了控件，且控件不是画布
-            if (SelectedItem != null && SelectedItem != Canvas)
+            if (SelectedItem != null && SelectedItem != Project)
             {
                 //如果控件已锁定，则不允许通过键盘调整位置和大小
                 if (SelectedItem.IsLocked)
@@ -290,7 +288,6 @@ namespace YiZuTai.Components
                 foreach (var control in Project.Controls)
                     control.PropertyChanged -= Project_PropertyChanged;
                 Project.Controls.CollectionChanged -= Controls_CollectionChanged;
-                Project.Canvas.PropertyChanged -= Control_PropertyChanged;
             }
         }
 
@@ -341,7 +338,7 @@ new YiZuTai.Window({{
                         try
                         {
                             Project = (Project)XmlConvert.Deserialize(t);
-                            SelectedItem = Project.Canvas;
+                            SelectedItem = Project;
                             onDesignChanged();
                             InvokeAsync(StateHasChanged);
                             modalWindow.Close();
@@ -418,7 +415,7 @@ new YiZuTai.Window({{
                 {
                     foreach (var item in multiControl.Items)
                         addControl(item);
-                    SelectedItem = new MultiControl(Canvas, multiControl.Items);
+                    SelectedItem = new MultiControl(Project, multiControl.Items);
                 }
                 else
                 {

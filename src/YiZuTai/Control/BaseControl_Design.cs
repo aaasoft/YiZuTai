@@ -24,7 +24,7 @@ namespace YiZuTai.Control
         }
 
         //让控件左边距对齐到网格
-        public void SetLeftToGrid(Canvas canvas, double newLeft)
+        public void SetLeftToGrid(Project canvas, double newLeft)
         {
             newLeft += canvas.DesignGridSize / 2;
             if (newLeft >= 0)
@@ -35,7 +35,7 @@ namespace YiZuTai.Control
             Left = newLeft;
         }
         //让控件上边距对齐到网格
-        public void SetTopToGrid(Canvas canvas, double newTop)
+        public void SetTopToGrid(Project canvas, double newTop)
         {
             newTop += canvas.DesignGridSize / 2;
             if (newTop >= 0)
@@ -46,7 +46,7 @@ namespace YiZuTai.Control
             Top = newTop;
         }
         //让控件宽度对齐到网格
-        public void SetWidthToGrid(Canvas canvas, double newWidth)
+        public void SetWidthToGrid(Project canvas, double newWidth)
         {
             newWidth -= newWidth % canvas.DesignGridSize;
             if (newWidth <= 0)
@@ -56,7 +56,7 @@ namespace YiZuTai.Control
         }
 
         //让控件高度对齐到网格
-        public void SetHeightToGrid(Canvas canvas, double newHeight)
+        public void SetHeightToGrid(Project canvas, double newHeight)
         {
             newHeight -= newHeight % canvas.DesignGridSize;
             if (newHeight <= 0)

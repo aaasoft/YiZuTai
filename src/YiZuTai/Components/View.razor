@@ -10,7 +10,7 @@
     <link href="_content/YiZuTai/css/view.css" rel="stylesheet" />
     <style>
         body {
-            background-color: @Canvas.Background;
+            background-color: @Project.Background;
         }
     </style>
 </HeadContent>
@@ -32,21 +32,21 @@ else
     else
     {
         <CascadingValue Value="Model">
-            <div id="divCanvas" class="text-center p-0 overflow-auto" data-stretch="@Project.Canvas.Stretch">
+            <div id="divCanvas" class="text-center p-0 overflow-auto" data-stretch="@Project.Stretch">
                 <svg id="svgCanvas" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xhtml="http://www.w3.org/1999/xhtml"
-                    width="@(Project.Canvas.Stretch == Stretch.None ? Canvas.Width + "px" : "100%")"
-                    height="@(Project.Canvas.Stretch == Stretch.None ? Canvas.Height + "px" : "100%")"
-                    viewBox="00 00 @Canvas.Width @Canvas.Height" preserveAspectRatio="@preserveAspectRatio">
+                    width="@(Project.Stretch == Stretch.None ? Project.Width + "px" : "100%")"
+                    height="@(Project.Stretch == Stretch.None ? Project.Height + "px" : "100%")"
+                    viewBox="00 00 @Project.Width @Project.Height" preserveAspectRatio="@preserveAspectRatio">
                     <!--====画布部分====-->
                     <g>
-                        <rect fill="@Canvas.Foreground" fill-opacity="@Canvas.ForegroundOpacity" rx="@Canvas.CornerRadius"
-                            ry="@Canvas.CornerRadius" stroke="@Canvas.Border" stroke-opacity="@Canvas.BorderOpacity"
-                            stroke-width="@Canvas.BorderThickness" x="0" y="0" width="@Canvas.Width" height="@Canvas.Height">
+                        <rect fill="@Project.Foreground" fill-opacity="@Project.ForegroundOpacity" rx="@Project.CornerRadius"
+                            ry="@Project.CornerRadius" stroke="@Project.Border" stroke-opacity="@Project.BorderOpacity"
+                            stroke-width="@Project.BorderThickness" x="0" y="0" width="@Project.Width" height="@Project.Height">
                         </rect>
-                        @if (!string.IsNullOrEmpty(Canvas.Image))
+                        @if (!string.IsNullOrEmpty(Project.Image))
                         {
-                            <image href="@Core.ZTFile.GetStaticResourceUrl(Model.Id, Canvas.Image)" width="100%" height="100%"
+                            <image href="@Core.ZTFile.GetStaticResourceUrl(Model.Id, Project.Image)" width="100%" height="100%"
                                 preserveAspectRatio="none"></image>
                         }
                     </g>

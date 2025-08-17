@@ -157,13 +157,13 @@ namespace YiZuTai.Components
             var preBasePointLocation = getBasePointFunc(preModel);
             var newBasePointLocation = getBasePointFunc(model);
 
-            model.SetLeftToGrid(Canvas, model.Left + preBasePointLocation.X - newBasePointLocation.X);
-            model.SetTopToGrid(Canvas, model.Top + preBasePointLocation.Y - newBasePointLocation.Y);
+            model.SetLeftToGrid(Project, model.Left + preBasePointLocation.X - newBasePointLocation.X);
+            model.SetTopToGrid(Project, model.Top + preBasePointLocation.Y - newBasePointLocation.Y);
         }
 
         private void onCanvasMouseDown(MouseEventArgs e)
         {
-            SelectedItem = Canvas;
+            SelectedItem = Project;
             sizerMouseDown(e, MoveAction.Selecting);
         }
         
@@ -199,12 +199,12 @@ namespace YiZuTai.Components
                         return;
                     //如果当前没有选中
                     if (SelectedItem == null
-                        || SelectedItem == Project.Canvas)
+                        || SelectedItem == Project)
                     {
                         if (selectedItems.Count == 1)
                             SelectedItem = selectedItems[0];
                         else
-                            SelectedItem = new MultiControl(Canvas, selectedItems);
+                            SelectedItem = new MultiControl(Project, selectedItems);
                         return;
                     }
                     //如果当前选中了多个控件
@@ -220,7 +220,7 @@ namespace YiZuTai.Components
                         }
                         if (container.Items.Count == 0)
                         {
-                            SelectedItem = Canvas;
+                            SelectedItem = Project;
                         }
                         else if (container.Items.Count == 1)
                         {
@@ -242,17 +242,17 @@ namespace YiZuTai.Components
                     else if (selectedItems.Count == 1)
                         SelectedItem = selectedItems.FirstOrDefault();
                     else
-                        SelectedItem = new MultiControl(Canvas, selectedItems);
+                        SelectedItem = new MultiControl(Project, selectedItems);
                 }
                 else
                 {
                     if (selectedItems.Count == 0)
-                        SelectedItem = Project.Canvas;
+                        SelectedItem = Project;
                     else if (selectedItems.Count == 1)
                         SelectedItem = selectedItems[0];
                     else
                     {
-                        SelectedItem = new MultiControl(Canvas, selectedItems);
+                        SelectedItem = new MultiControl(Project, selectedItems);
                     }
                 }
             }
@@ -298,8 +298,8 @@ namespace YiZuTai.Components
                 case MoveAction.MoveLocation:
                     var preLeft = model.Left;
                     var preTop = model.Top;
-                    model.SetLeftToGrid(Canvas, mouseDownControlMeta.Left + offsetX);
-                    model.SetTopToGrid(Canvas, mouseDownControlMeta.Top + offsetY);
+                    model.SetLeftToGrid(Project, mouseDownControlMeta.Left + offsetX);
+                    model.SetTopToGrid(Project, mouseDownControlMeta.Top + offsetY);
                     model.MoveLocationOffset = new Point(model.Left - preLeft, model.Top - preTop);
                     break;
                 case MoveAction.Rotate:
@@ -353,7 +353,7 @@ namespace YiZuTai.Components
                                 //设置下边线为参考线1
                                 var preBaseLine1 = new Line(mouseDownControlMeta.LeftBottomPointLocation, mouseDownControlMeta.RightBottomPointLocation);
                                 //调整大小
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, true, t => mouseDownControlMeta.Height, (t, v) => t.SetHeightToGrid(Canvas, v));
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, true, t => mouseDownControlMeta.Height, (t, v) => t.SetHeightToGrid(Project, v));
                                 //设置参考点为左下角参考点
                                 getBasePointFunc = t => t.LeftBottomPointLocation;
                                 break;
@@ -379,7 +379,7 @@ namespace YiZuTai.Components
                                 //设置左边线为参考线1
                                 var preBaseLine1 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.LeftBottomPointLocation);
                                 //调整大小
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, true, t => mouseDownControlMeta.Width, (t, v) => t.SetWidthToGrid(Canvas, v));
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, true, t => mouseDownControlMeta.Width, (t, v) => t.SetWidthToGrid(Project, v));
                                 //设置参考点为左上角参考点
                                 getBasePointFunc = t => t.LeftTopPointLocation;
                                 break;
@@ -405,7 +405,7 @@ namespace YiZuTai.Components
                                 //设置上边线为参考线1
                                 var preBaseLine1 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.RightTopPointLocation);
                                 //调整大小
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, false, t => mouseDownControlMeta.Height, (t, v) => t.SetHeightToGrid(Canvas, v));
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, false, t => mouseDownControlMeta.Height, (t, v) => t.SetHeightToGrid(Project, v));
                                 //设置参考点为右上角参考点
                                 getBasePointFunc = t => t.RightTopPointLocation;
                                 break;
@@ -431,7 +431,7 @@ namespace YiZuTai.Components
                                 //设置右边线为参考线1
                                 var preBaseLine1 = new Line(mouseDownControlMeta.RightTopPointLocation, mouseDownControlMeta.RightBottomPointLocation);
                                 //调整大小
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, false, t => mouseDownControlMeta.Width, (t, v) => t.SetWidthToGrid(Canvas, v));
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, false, t => mouseDownControlMeta.Width, (t, v) => t.SetWidthToGrid(Project, v));
                                 //设置参考点为右下角参考点
                                 getBasePointFunc = t => t.RightBottomPointLocation;
                                 break;
@@ -450,24 +450,24 @@ namespace YiZuTai.Components
             //如果是按住Shift键，则拉伸缩放，保持指定点位置不变
             if (mouseEventArgs.ShiftKey)
             {
-                model.SetWidthToGrid(Canvas, newWidth);
-                model.SetHeightToGrid(Canvas, newHeight);
+                model.SetWidthToGrid(Project, newWidth);
+                model.SetHeightToGrid(Project, newHeight);
                 return getBasePointFunc;
             }
             //如果是按住Control键，则按比例缩放，保持中心点位置不变
             else if (mouseEventArgs.CtrlKey)
             {
                 var maxScale = Math.Max(newWidth / mouseDownControlMeta.Width, newHeight / mouseDownControlMeta.Height);
-                model.SetWidthToGrid(Canvas, mouseDownControlMeta.Width * maxScale);
-                model.SetHeightToGrid(Canvas, mouseDownControlMeta.Height * maxScale);
+                model.SetWidthToGrid(Project, mouseDownControlMeta.Width * maxScale);
+                model.SetHeightToGrid(Project, mouseDownControlMeta.Height * maxScale);
                 return t => t.CenterPointLocation;
             }
             else
             {
                 //默认，则按比例缩放，保持左上点位置不变
                 var maxScale = Math.Max(newWidth / mouseDownControlMeta.Width, newHeight / mouseDownControlMeta.Height);
-                model.SetWidthToGrid(Canvas, mouseDownControlMeta.Width * maxScale);
-                model.SetHeightToGrid(Canvas, mouseDownControlMeta.Height * maxScale);
+                model.SetWidthToGrid(Project, mouseDownControlMeta.Width * maxScale);
+                model.SetHeightToGrid(Project, mouseDownControlMeta.Height * maxScale);
                 return getBasePointFunc;
             }
         }

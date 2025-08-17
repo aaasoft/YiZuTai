@@ -8,21 +8,13 @@ using YiZuTai.Components;
 using YiZuTai.Components.Editors;
 using YiZuTai.Core;
 using YiZuTai.DataSource;
+using YiZuTai.Enums;
 using YiZuTai.HyperLinkSource;
 
 namespace YiZuTai.Control
 {
     public abstract partial class BaseControl : PropertyNotifyModel
     {
-        public enum CategoryOrder
-        {
-            设计 = -9000,
-            布局 = -8000,
-            外观 = -1000,
-            特效 = -500,
-            提示框 = 0
-        }
-
         private string _Name;
         [Category(nameof(CategoryOrder.设计))]
         [DisplayName("名称")]

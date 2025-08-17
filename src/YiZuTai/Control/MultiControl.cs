@@ -7,7 +7,7 @@ namespace YiZuTai.Control;
 
 public class MultiControl : BaseControl
 {
-    private Canvas canvas;
+    private Project canvas;
     [Browsable(false)]
     public List<BaseControl> Items { get; set; } = new List<BaseControl>();
     private bool isGroup = false;
@@ -16,7 +16,7 @@ public class MultiControl : BaseControl
     public override bool IsGroupControl => isGroup;
 
     public MultiControl() { }
-    public MultiControl(Canvas canvas, IEnumerable<BaseControl> items)
+    public MultiControl(Project canvas, IEnumerable<BaseControl> items)
     {
         this.canvas = canvas;
         foreach (var item in items)

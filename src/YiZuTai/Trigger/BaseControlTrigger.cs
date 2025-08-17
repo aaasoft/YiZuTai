@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using YiZuTai.Components.Editors;
 using YiZuTai.Control;
-using static YiZuTai.Control.BaseControl;
+using YiZuTai.Enums;
 
 namespace YiZuTai.Trigger
 {

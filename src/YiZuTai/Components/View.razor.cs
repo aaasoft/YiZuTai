@@ -24,8 +24,6 @@ namespace YiZuTai.Components
         [Parameter]
         public Project Project { get; set; }
 
-        public Canvas Canvas => Project.Canvas;
-
         private ModalWindow modalWindow;
 
         private ZTContext ZTContext;
@@ -36,7 +34,7 @@ namespace YiZuTai.Components
         {
             get
             {
-                switch (Project.Canvas.Stretch)
+                switch (Project.Stretch)
                 {
                     case Stretch.Uniform:
                         return "xMidYMin";
