@@ -26,10 +26,10 @@ public partial class SourceSelectWindow : ComponentBase
             var currentCategoryContainsSource = false;
             foreach (var attr in attrs)
             {
-                if (Source != null && Source.GetType().FullName == attr.Clazz)
+                if (initSource != null && initSource.GetType().FullName == attr.Clazz)
                 {
                     currentCategoryContainsSource = true;
-                    list.Add(Source);
+                    list.Add(initSource);
                 }
                 else
                 {
@@ -38,7 +38,9 @@ public partial class SourceSelectWindow : ComponentBase
             }
             Sources = list.ToArray();
             _SelectedCategory = value;
-            if (!currentCategoryContainsSource)
+            if (currentCategoryContainsSource)
+                SelectedSourceId = initSource.GetType().FullName;
+            else
                 SelectedSourceId = Sources.FirstOrDefault()?.GetType().FullName;
         }
     }
@@ -60,6 +62,7 @@ public partial class SourceSelectWindow : ComponentBase
     private string PropertyGridSelectedFieldDescriptionStyle => (PropertyGridSelectedField == null || string.IsNullOrEmpty(PropertyGridSelectedField.Description)) ? "display: none" : "display: inline";
 
 
+    private ISource initSource;
     [Parameter]
     public ISource Source { get; set; }
     [Parameter]
@@ -77,6 +80,7 @@ public partial class SourceSelectWindow : ComponentBase
             .GroupBy(t => t.Category)
             .ToDictionary(t => t.Key, t => t.ToArray());
         SourceCategorys = sourceAttributeDict.Select(t => t.Key).ToArray();
+        initSource = Source;
         if (Source == null)
             SelectedCategory = SourceCategorys.FirstOrDefault();
         else
