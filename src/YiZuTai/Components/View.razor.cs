@@ -76,7 +76,6 @@ namespace YiZuTai.Components
             {
                 ZTFile = Model,
                 Project = Project,
-                DesignMode = false,
                 JSRuntime = JSRuntime
             };
         }

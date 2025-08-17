@@ -1,0 +1,76 @@
+﻿@using YiZuTai.Control
+@using YiZuTai.Core
+@typeparam TContainerModel where TContainerModel : BaseControl_WithBackground, new()
+
+<g ondragover="event.preventDefault();" @ondrop="HandleDrop">
+<BaseControl_WithBackgroundView T_BaseControl_WithBackground="TContainerModel" Model="@Model"
+    DesignMode="@ZTContext.DesignMode">
+    <!--====控件SVG部分====-->
+    @if (Model.Controls != null)
+    {
+        @foreach (var Item in Model.Controls)
+        {
+            <g onmousedown="event.preventDefault();" ondblclick="event.preventDefault();">
+            <g transform="rotate(@Item.Angle @Item.CenterPointLocation.X, @Item.CenterPointLocation.Y) translate(0, 0) scale(1)"
+                
+                @onmousedown="@(e => onControlMouseDown(e, Item))"                
+                @ondblclick="@(e => Item.OnDoubleClick())">
+                @Item.GetView(@ZTContext)
+            </g>
+            </g>
+        }
+    }
+</BaseControl_WithBackgroundView>
+</g>
+
+@code
+{
+    [Parameter]
+    public ZTContext ZTContext { get; set; }
+    [Parameter]
+    public TContainerModel Model { get; set; }    
+
+    // ondrop事件处理方法
+    private void HandleDrop(DragEventArgs e)
+    {
+        var dragingControlAttr = ZTContext.Designer.dragingControlAttr;
+        if (dragingControlAttr == null)
+            return;
+        var newLocation = getMouseLocation_RelativeToCanvas(e);
+        addControl(dragingControlAttr, newLocation);
+    }
+
+    private Point getMouseLocation_RelativeToCanvas(MouseEventArgs e)
+    {
+        var x = e.OffsetX;
+        var y = e.OffsetY;
+        if (ZTContext.Designer.DesignScale != 100)
+        {
+            x /= ZTContext.Designer.DesignScale * 1D / 100;
+            y /= ZTContext.Designer.DesignScale * 1D / 100;
+        }
+        return new Point(x, y);
+    }
+
+    //添加控件
+    private void addControl(ControlAttribute controlAttr, Point location)
+    {
+        var control = controlAttr.CreateInstance();
+        control.Left = location.X - control.Width / 2;
+        control.Top = location.Y - control.Height / 2;
+        addControl(control);
+        control.OnDragDropCreate(location);
+    }
+
+    //添加控件
+    private void addControl(BaseControl control)
+    {
+        ZTContext.Project.CheckAndModifyControlName(control);
+        Model.Controls.Add(control);
+    }
+
+    private void onControlMouseDown(MouseEventArgs e, BaseControl control)
+    {
+        ZTContext.Designer.SelectedItem = control;
+    }
+}

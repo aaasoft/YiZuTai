@@ -71,7 +71,7 @@ public class Model : BaseControl
     private bool _Controls = false;
     [Category("视频")]
     [DisplayName("允许控制")]
-    public bool Controls
+    public new bool Controls
     {
         get { return _Controls; }
         set

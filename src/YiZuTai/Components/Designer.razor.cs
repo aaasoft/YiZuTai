@@ -38,7 +38,7 @@ namespace YiZuTai.Components
         /// <summary>
         /// 显示比例
         /// </summary>
-        private int DesignScale
+        public int DesignScale
         {
             get { return _DesignScale; }
             set
@@ -70,7 +70,7 @@ namespace YiZuTai.Components
 
         private bool isWindowOnbeforeUnloadEventAdded = false;
         private BaseControl _SelectedItem;
-        private BaseControl SelectedItem
+        public BaseControl SelectedItem
         {
             get { return _SelectedItem; }
             set
@@ -95,7 +95,7 @@ namespace YiZuTai.Components
             {
                 BaseControl item = null;
                 if (!string.IsNullOrEmpty(value))
-                    item = Project.Controls.FirstOrDefault(t => t.Name == value);
+                    item = Project.GetAllControls().FirstOrDefault(t => t.Name == value);
                 if (item == null)
                     item = Project;
                 SelectedItem = item;
@@ -119,8 +119,8 @@ namespace YiZuTai.Components
             {
                 ZTFile = Model,
                 Project = Project,
-                DesignMode = true,
-                JSRuntime = JSRuntime
+                JSRuntime = JSRuntime,
+                Designer = this
             };
             registerDesigner(designerId, this);
         }
@@ -143,7 +143,7 @@ namespace YiZuTai.Components
             JSRuntime.InvokeVoidAsync("YiZuTai.SetTitle", title);
         }
 
-        private ControlAttribute dragingControlAttr = null;
+        public ControlAttribute dragingControlAttr = null;
         //ondragstart事件处理方法
         private void HandleDragStart(DragEventArgs e, ControlAttribute controlAttr)
         {

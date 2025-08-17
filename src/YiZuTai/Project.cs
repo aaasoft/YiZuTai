@@ -5,6 +5,7 @@ using System.Drawing;
 using Newtonsoft.Json;
 using YiZuTai.Components.Editors;
 using YiZuTai.Control;
+using YiZuTai.Core;
 using YiZuTai.Enums;
 using YiZuTai.HyperLinkSource;
 using YiZuTai.Utils;
@@ -14,7 +15,6 @@ namespace YiZuTai
     public class Project : BaseControl_WithBackground
     {
         public override ObservableCollection<BaseControl> Controls { get; set; } = new ObservableCollection<BaseControl>();
-
         [JsonIgnore]
         [Browsable(false)]
         public override string Name => "画布";
@@ -45,7 +45,7 @@ namespace YiZuTai
         [JsonIgnore]
         [Browsable(false)]
         public override double BackgroundOpacity { get; set; }
-        
+
         [JsonIgnore]
         [Browsable(false)]
         public override IHyperLinkSource HyperLinkSource { get; set; }
@@ -153,6 +153,38 @@ namespace YiZuTai
         protected override Type GetViewType()
         {
             throw new NotImplementedException();
+        }
+
+        private IEnumerable<BaseControl> GetControlAllControls(BaseControl control)
+        {
+            if (control.Controls != null)
+            {
+                foreach (var subControl in control.Controls)
+                {
+                    yield return subControl;
+                    foreach (var tempControl in GetControlAllControls(subControl))
+                        yield return tempControl;
+                }
+            }
+        }
+
+        public IEnumerable<BaseControl> GetAllControls() => GetControlAllControls(this);
+
+        public void CheckAndModifyControlName(BaseControl control)
+        {
+            var controlAttr = ControlManager.Instance.GetItem(control.GetType().FullName);
+            var index = 0;
+            var controls = GetAllControls().ToArray();
+            do
+            {
+                index++;
+                var name = controlAttr.Name + index;
+                if (controls.Any(t => t.Name == name))
+                    continue;
+                control.Name = name;
+                break;
+            }
+            while (true);
         }
     }
 }

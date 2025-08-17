@@ -280,7 +280,7 @@ else
                                     {
                                         <option value="@SelectedItem.Name">@SelectedItem.Name</option>
                                     }
-                                    @foreach (var item in Project.Controls)
+                                    @foreach (var item in Project.GetAllControls())
                                     {
                                     <option value="@item.Name">@item.Name</option>
                                     }
