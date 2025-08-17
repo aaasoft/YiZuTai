@@ -184,7 +184,7 @@ namespace YiZuTai.Components
 
         private void Project_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (mouseDownControlMeta != null)
+            if (MouseDownControlMeta != null)
                 return;
             InvokeAsync(StateHasChanged);
         }

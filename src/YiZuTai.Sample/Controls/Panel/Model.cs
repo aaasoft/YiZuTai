@@ -14,7 +14,10 @@ public class Model : BaseControl_WithBackground
 
     public override void OnDragDropCreate(Point location)
     {
-        Background = "#000000";
-        BackgroundOpacity = 1;
+        Width = 400;
+        Height = 300;
+        Border = "#6E6E6E";
+        BorderOpacity = 1;
+        BorderThickness = 1;
     }
 }

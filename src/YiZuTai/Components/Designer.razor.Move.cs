@@ -6,54 +6,8 @@ namespace YiZuTai.Components
 {
     public partial class Designer
     {
-        //控制元信息
-        public class ControlMeta : BaseControl
-        {
-            public MoveAction MoveAction { get; }
-            /// <summary>
-            /// 起始位置
-            /// </summary>
-            public Point StartLocation { get; private set; }
-            /// <summary>
-            /// 结束位置
-            /// </summary>
-            public Point EndLocation { get; private set; }
-
-            public Rect MoveRect { get; private set; }
-
-            public void SetEndLocation(Point endLocation)
-            {
-                EndLocation = endLocation;
-                MoveRect = new Rect()
-                {
-                    X = Math.Min(StartLocation.X, EndLocation.X),
-                    Y = Math.Min(StartLocation.Y, EndLocation.Y),
-                    Width = Math.Abs(StartLocation.X - EndLocation.X),
-                    Height = Math.Abs(StartLocation.Y - EndLocation.Y)
-                };
-            }
-
-            public ControlMeta(MoveAction moveAction, Point startLocation, BaseControl model = null)
-            {
-                MoveAction = moveAction;
-                StartLocation = startLocation;
-                EndLocation = startLocation;
-                
-                if (model != null)
-                {
-                    Left = model.Left;
-                    Top = model.Top;
-                    Width = model.Width;
-                    Height = model.Height;
-                    Angle = model.Angle;
-                }
-            }
-            protected override Type GetViewType() { throw new NotImplementedException(); }
-        }
-
-        private double resize_box_width = 7;
         //鼠标按下时控件信息
-        private ControlMeta mouseDownControlMeta;
+        public ControlMeta MouseDownControlMeta{ get; set; }
 
         private Dictionary<Func<double, bool>, string> cursorDict = new Dictionary<Func<double, bool>, string>()
         {
@@ -152,7 +106,7 @@ namespace YiZuTai.Components
         
         private void onControlMouseDown(MouseEventArgs e, BaseControl control)
         {
-            if (mouseDownControlMeta != null)
+            if (MouseDownControlMeta != null)
                 return;
 
             SelectedItem = control;
@@ -161,11 +115,11 @@ namespace YiZuTai.Components
 
         private void onMouseUp(MouseEventArgs e)
         {
-            if (mouseDownControlMeta == null)
+            if (MouseDownControlMeta == null)
                 return;
-            if (mouseDownControlMeta.MoveAction == MoveAction.Selecting)
+            if (MouseDownControlMeta.MoveAction == MoveAction.Selecting)
             {
-                var rect = mouseDownControlMeta.MoveRect;
+                var rect = MouseDownControlMeta.MoveRect;
 
                 //获取框选的控件
                 var selectedItems = Project.Controls
@@ -239,7 +193,7 @@ namespace YiZuTai.Components
                     }
                 }
             }
-            mouseDownControlMeta = null;
+            MouseDownControlMeta = null;
         }
 
         public Point getMouseLocation_RelativeToCanvas(MouseEventArgs e)
@@ -257,32 +211,32 @@ namespace YiZuTai.Components
         private void onMouseMove(MouseEventArgs e)
         {
             //如果没有按下鼠标
-            if (mouseDownControlMeta == null)
+            if (MouseDownControlMeta == null)
                 return;
 
             var newLocation = getMouseLocation_RelativeToCanvas(e);
-            if (mouseDownControlMeta.MoveAction == MoveAction.Selecting)
+            if (MouseDownControlMeta.MoveAction == MoveAction.Selecting)
             {
-                mouseDownControlMeta.SetEndLocation(newLocation);
+                MouseDownControlMeta.SetEndLocation(newLocation);
                 return;
             }
             //如果没有选中控件
             if (!IsSelectedControl)
                 return;
 
-            var offsetX = newLocation.X - mouseDownControlMeta.StartLocation.X;
-            var offsetY = newLocation.Y - mouseDownControlMeta.StartLocation.Y;
+            var offsetX = newLocation.X - MouseDownControlMeta.StartLocation.X;
+            var offsetY = newLocation.Y - MouseDownControlMeta.StartLocation.Y;
             if (offsetX == 0 && offsetY == 0)
                 return;
 
             var model = SelectedItem;
-            switch (mouseDownControlMeta.MoveAction)
+            switch (MouseDownControlMeta.MoveAction)
             {
                 case MoveAction.MoveLocation:
                     var preLeft = model.Left;
                     var preTop = model.Top;
-                    model.SetLeftToGrid(Project, mouseDownControlMeta.Left + offsetX);
-                    model.SetTopToGrid(Project, mouseDownControlMeta.Top + offsetY);
+                    model.SetLeftToGrid(Project, MouseDownControlMeta.Left + offsetX);
+                    model.SetTopToGrid(Project, MouseDownControlMeta.Top + offsetY);
                     model.MoveLocationOffset = new Point(model.Left - preLeft, model.Top - preTop);
                     break;
                 case MoveAction.Rotate:
@@ -313,20 +267,20 @@ namespace YiZuTai.Components
                     break;
                 default:
                     Func<BaseControl, Point> getBasePointFunc = null;
-                    switch (mouseDownControlMeta.MoveAction)
+                    switch (MouseDownControlMeta.MoveAction)
                     {
                         case MoveAction.ResizeLeftTop:
                             {
                                 //设置右边线为参考线1
-                                var preBaseLine1 = new Line(mouseDownControlMeta.RightTopPointLocation, mouseDownControlMeta.RightBottomPointLocation);
+                                var preBaseLine1 = new Line(MouseDownControlMeta.RightTopPointLocation, MouseDownControlMeta.RightBottomPointLocation);
                                 //设置下边线为参考线2
-                                var preBaseLine2 = new Line(mouseDownControlMeta.LeftBottomPointLocation, mouseDownControlMeta.RightBottomPointLocation);
+                                var preBaseLine2 = new Line(MouseDownControlMeta.LeftBottomPointLocation, MouseDownControlMeta.RightBottomPointLocation);
 
                                 var newWidth = model.Width;
                                 var newHeight = model.Height;
                                 //调整大小
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, false, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
-                                resizeModel(preBaseLine2, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, true, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
+                                resizeModel(preBaseLine1, model, MouseDownControlMeta.StartLocation, newLocation, 0, 180, false, t => MouseDownControlMeta.Width, (t, v) => newWidth = v);
+                                resizeModel(preBaseLine2, model, MouseDownControlMeta.StartLocation, newLocation, 90, 270, true, t => MouseDownControlMeta.Height, (t, v) => newHeight = v);
                                 //设置默认参考点为右下角参考点
                                 getBasePointFunc = resizeModel_FormCorner(model, newWidth, newHeight, t => t.RightBottomPointLocation, e);
                                 break;
@@ -334,9 +288,9 @@ namespace YiZuTai.Components
                         case MoveAction.ResizeTop:
                             {
                                 //设置下边线为参考线1
-                                var preBaseLine1 = new Line(mouseDownControlMeta.LeftBottomPointLocation, mouseDownControlMeta.RightBottomPointLocation);
+                                var preBaseLine1 = new Line(MouseDownControlMeta.LeftBottomPointLocation, MouseDownControlMeta.RightBottomPointLocation);
                                 //调整大小
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, true, t => mouseDownControlMeta.Height, (t, v) => t.SetHeightToGrid(Project, v));
+                                resizeModel(preBaseLine1, model, MouseDownControlMeta.StartLocation, newLocation, 90, 270, true, t => MouseDownControlMeta.Height, (t, v) => t.SetHeightToGrid(Project, v));
                                 //设置参考点为左下角参考点
                                 getBasePointFunc = t => t.LeftBottomPointLocation;
                                 break;
@@ -344,15 +298,15 @@ namespace YiZuTai.Components
                         case MoveAction.ResizeRightTop:
                             {
                                 //设置下边线为参考线1
-                                var preBaseLine1 = new Line(mouseDownControlMeta.LeftBottomPointLocation, mouseDownControlMeta.RightBottomPointLocation);
+                                var preBaseLine1 = new Line(MouseDownControlMeta.LeftBottomPointLocation, MouseDownControlMeta.RightBottomPointLocation);
                                 //设置左边线为参考线2
-                                var preBaseLine2 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.LeftBottomPointLocation);
+                                var preBaseLine2 = new Line(MouseDownControlMeta.LeftTopPointLocation, MouseDownControlMeta.LeftBottomPointLocation);
 
                                 var newWidth = model.Width;
                                 var newHeight = model.Height;
                                 //调整大小
-                                resizeModel(preBaseLine2, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, true, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, true, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
+                                resizeModel(preBaseLine2, model, MouseDownControlMeta.StartLocation, newLocation, 0, 180, true, t => MouseDownControlMeta.Width, (t, v) => newWidth = v);
+                                resizeModel(preBaseLine1, model, MouseDownControlMeta.StartLocation, newLocation, 90, 270, true, t => MouseDownControlMeta.Height, (t, v) => newHeight = v);
                                 //设置默认参考点为左下角参考点
                                 getBasePointFunc = resizeModel_FormCorner(model, newWidth, newHeight, t => t.LeftBottomPointLocation, e);
                                 break;
@@ -360,9 +314,9 @@ namespace YiZuTai.Components
                         case MoveAction.ResizeRight:
                             {
                                 //设置左边线为参考线1
-                                var preBaseLine1 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.LeftBottomPointLocation);
+                                var preBaseLine1 = new Line(MouseDownControlMeta.LeftTopPointLocation, MouseDownControlMeta.LeftBottomPointLocation);
                                 //调整大小
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, true, t => mouseDownControlMeta.Width, (t, v) => t.SetWidthToGrid(Project, v));
+                                resizeModel(preBaseLine1, model, MouseDownControlMeta.StartLocation, newLocation, 0, 180, true, t => MouseDownControlMeta.Width, (t, v) => t.SetWidthToGrid(Project, v));
                                 //设置参考点为左上角参考点
                                 getBasePointFunc = t => t.LeftTopPointLocation;
                                 break;
@@ -370,15 +324,15 @@ namespace YiZuTai.Components
                         case MoveAction.ResizeRightBottom:
                             {
                                 //设置左边线为参考线1
-                                var preBaseLine1 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.LeftBottomPointLocation);
+                                var preBaseLine1 = new Line(MouseDownControlMeta.LeftTopPointLocation, MouseDownControlMeta.LeftBottomPointLocation);
                                 //设置上边线为参考线2
-                                var preBaseLine2 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.RightTopPointLocation);
+                                var preBaseLine2 = new Line(MouseDownControlMeta.LeftTopPointLocation, MouseDownControlMeta.RightTopPointLocation);
 
                                 var newWidth = model.Width;
                                 var newHeight = model.Height;
                                 //调整大小
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, true, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
-                                resizeModel(preBaseLine2, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, false, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
+                                resizeModel(preBaseLine1, model, MouseDownControlMeta.StartLocation, newLocation, 0, 180, true, t => MouseDownControlMeta.Width, (t, v) => newWidth = v);
+                                resizeModel(preBaseLine2, model, MouseDownControlMeta.StartLocation, newLocation, 90, 270, false, t => MouseDownControlMeta.Height, (t, v) => newHeight = v);
                                 //设置默认参考点为左上角参考点
                                 getBasePointFunc = resizeModel_FormCorner(model, newWidth, newHeight, t => t.LeftTopPointLocation, e);
                                 break;
@@ -386,9 +340,9 @@ namespace YiZuTai.Components
                         case MoveAction.ResizeBottom:
                             {
                                 //设置上边线为参考线1
-                                var preBaseLine1 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.RightTopPointLocation);
+                                var preBaseLine1 = new Line(MouseDownControlMeta.LeftTopPointLocation, MouseDownControlMeta.RightTopPointLocation);
                                 //调整大小
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, false, t => mouseDownControlMeta.Height, (t, v) => t.SetHeightToGrid(Project, v));
+                                resizeModel(preBaseLine1, model, MouseDownControlMeta.StartLocation, newLocation, 90, 270, false, t => MouseDownControlMeta.Height, (t, v) => t.SetHeightToGrid(Project, v));
                                 //设置参考点为右上角参考点
                                 getBasePointFunc = t => t.RightTopPointLocation;
                                 break;
@@ -396,15 +350,15 @@ namespace YiZuTai.Components
                         case MoveAction.ResizeLeftBottom:
                             {
                                 //设置上边线为参考线1
-                                var preBaseLine1 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.RightTopPointLocation);
+                                var preBaseLine1 = new Line(MouseDownControlMeta.LeftTopPointLocation, MouseDownControlMeta.RightTopPointLocation);
                                 //设置右边线为参考线2
-                                var preBaseLine2 = new Line(mouseDownControlMeta.RightTopPointLocation, mouseDownControlMeta.RightBottomPointLocation);
+                                var preBaseLine2 = new Line(MouseDownControlMeta.RightTopPointLocation, MouseDownControlMeta.RightBottomPointLocation);
 
                                 var newWidth = model.Width;
                                 var newHeight = model.Height;
                                 //调整大小
-                                resizeModel(preBaseLine2, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, false, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, false, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
+                                resizeModel(preBaseLine2, model, MouseDownControlMeta.StartLocation, newLocation, 0, 180, false, t => MouseDownControlMeta.Width, (t, v) => newWidth = v);
+                                resizeModel(preBaseLine1, model, MouseDownControlMeta.StartLocation, newLocation, 90, 270, false, t => MouseDownControlMeta.Height, (t, v) => newHeight = v);
                                 //设置默认参考点为右上角参考点
                                 getBasePointFunc = resizeModel_FormCorner(model, newWidth, newHeight, t => t.RightTopPointLocation, e);
                                 break;
@@ -412,9 +366,9 @@ namespace YiZuTai.Components
                         case MoveAction.ResizeLeft:
                             {
                                 //设置右边线为参考线1
-                                var preBaseLine1 = new Line(mouseDownControlMeta.RightTopPointLocation, mouseDownControlMeta.RightBottomPointLocation);
+                                var preBaseLine1 = new Line(MouseDownControlMeta.RightTopPointLocation, MouseDownControlMeta.RightBottomPointLocation);
                                 //调整大小
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, false, t => mouseDownControlMeta.Width, (t, v) => t.SetWidthToGrid(Project, v));
+                                resizeModel(preBaseLine1, model, MouseDownControlMeta.StartLocation, newLocation, 0, 180, false, t => MouseDownControlMeta.Width, (t, v) => t.SetWidthToGrid(Project, v));
                                 //设置参考点为右下角参考点
                                 getBasePointFunc = t => t.RightBottomPointLocation;
                                 break;
@@ -423,7 +377,7 @@ namespace YiZuTai.Components
                             return;
                     }
                     //让基准点保持不变
-                    makeBasePointLocationNotChange(mouseDownControlMeta, getBasePointFunc);
+                    makeBasePointLocationNotChange(MouseDownControlMeta, getBasePointFunc);
                     break;
             }
         }
@@ -440,17 +394,17 @@ namespace YiZuTai.Components
             //如果是按住Control键，则按比例缩放，保持中心点位置不变
             else if (mouseEventArgs.CtrlKey)
             {
-                var maxScale = Math.Max(newWidth / mouseDownControlMeta.Width, newHeight / mouseDownControlMeta.Height);
-                model.SetWidthToGrid(Project, mouseDownControlMeta.Width * maxScale);
-                model.SetHeightToGrid(Project, mouseDownControlMeta.Height * maxScale);
+                var maxScale = Math.Max(newWidth / MouseDownControlMeta.Width, newHeight / MouseDownControlMeta.Height);
+                model.SetWidthToGrid(Project, MouseDownControlMeta.Width * maxScale);
+                model.SetHeightToGrid(Project, MouseDownControlMeta.Height * maxScale);
                 return t => t.CenterPointLocation;
             }
             else
             {
                 //默认，则按比例缩放，保持左上点位置不变
-                var maxScale = Math.Max(newWidth / mouseDownControlMeta.Width, newHeight / mouseDownControlMeta.Height);
-                model.SetWidthToGrid(Project, mouseDownControlMeta.Width * maxScale);
-                model.SetHeightToGrid(Project, mouseDownControlMeta.Height * maxScale);
+                var maxScale = Math.Max(newWidth / MouseDownControlMeta.Width, newHeight / MouseDownControlMeta.Height);
+                model.SetWidthToGrid(Project, MouseDownControlMeta.Width * maxScale);
+                model.SetHeightToGrid(Project, MouseDownControlMeta.Height * maxScale);
                 return getBasePointFunc;
             }
         }
@@ -464,7 +418,7 @@ namespace YiZuTai.Components
             if (SelectedItem.IsLocked)
                 return;
             var mouseLocation = getMouseLocation_RelativeToCanvas(e);
-            mouseDownControlMeta = new ControlMeta(moveAction, mouseLocation, SelectedItem);
+            MouseDownControlMeta = new ControlMeta(moveAction, mouseLocation, SelectedItem);
         }
     }
 }

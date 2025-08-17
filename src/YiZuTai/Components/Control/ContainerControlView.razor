@@ -37,6 +37,8 @@
         if (dragingControlAttr == null)
             return;
         var newLocation = getMouseLocation_RelativeToCanvas(e);
+        newLocation.X -= Model.Left;
+        newLocation.Y -= Model.Top;
         addControl(dragingControlAttr, newLocation);
     }
 

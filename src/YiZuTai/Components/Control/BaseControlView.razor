@@ -103,55 +103,8 @@ else
     private ElementReference svgElementReference;
     public string Id => svgElementReference.Id;
 
-    //控制元信息
-    public class ControlMeta : BaseControl
-    {
-        public MoveAction MoveAction { get; }
-        /// <summary>
-        /// 起始位置
-        /// </summary>
-        public Point StartLocation { get; private set; }
-        /// <summary>
-        /// 结束位置
-        /// </summary>
-        public Point EndLocation { get; private set; }
-
-        public Rect MoveRect { get; private set; }
-
-        public void SetEndLocation(Point endLocation)
-        {
-            EndLocation = endLocation;
-            MoveRect = new Rect()
-            {
-                X = Math.Min(StartLocation.X, EndLocation.X),
-                Y = Math.Min(StartLocation.Y, EndLocation.Y),
-                Width = Math.Abs(StartLocation.X - EndLocation.X),
-                Height = Math.Abs(StartLocation.Y - EndLocation.Y)
-            };
-        }
-
-        public ControlMeta(MoveAction moveAction, Point startLocation, BaseControl model = null)
-        {
-            MoveAction = moveAction;
-            StartLocation = startLocation;
-            EndLocation = startLocation;
-
-            if (model != null)
-            {
-                Left = model.Left;
-                Top = model.Top;
-                Width = model.Width;
-                Height = model.Height;
-                Angle = model.Angle;
-            }
-        }
-        protected override Type GetViewType() { throw new NotImplementedException(); }
-    }
-
     private double resize_box_width = 7;
-    //鼠标按下时控件信息
-    private ControlMeta mouseDownControlMeta;
-
+    
     
         private Dictionary<Func<double, bool>, string> cursorDict = new Dictionary<Func<double, bool>, string>()
         {
@@ -244,30 +197,30 @@ else
         
         private void onMouseMove(MouseEventArgs e)
         {
-            //如果没有按下鼠标
-            if (mouseDownControlMeta == null)
+            //如果没有按下鼠标，或者不是当前控件
+            if (ZTContext.Designer.MouseDownControlMeta == null || Model != ZTContext.Designer.MouseDownControlMeta.MoveControl)
                 return;
 
             var newLocation = ZTContext.Designer.getMouseLocation_RelativeToCanvas(e);
-            if (mouseDownControlMeta.MoveAction == MoveAction.Selecting)
+            if (ZTContext.Designer.MouseDownControlMeta.MoveAction == MoveAction.Selecting)
             {
-                mouseDownControlMeta.SetEndLocation(newLocation);
+                ZTContext.Designer.MouseDownControlMeta.SetEndLocation(newLocation);
                 return;
             }
 
-            var offsetX = newLocation.X - mouseDownControlMeta.StartLocation.X;
-            var offsetY = newLocation.Y - mouseDownControlMeta.StartLocation.Y;
+            var offsetX = newLocation.X - ZTContext.Designer.MouseDownControlMeta.StartLocation.X;
+            var offsetY = newLocation.Y - ZTContext.Designer.MouseDownControlMeta.StartLocation.Y;
             if (offsetX == 0 && offsetY == 0)
                 return;
 
             var model = Model;
-            switch (mouseDownControlMeta.MoveAction)
+            switch (ZTContext.Designer.MouseDownControlMeta.MoveAction)
             {
                 case MoveAction.MoveLocation:
                     var preLeft = model.Left;
                     var preTop = model.Top;
-                    model.SetLeftToGrid(ZTContext.Project, mouseDownControlMeta.Left + offsetX);
-                    model.SetTopToGrid(ZTContext.Project, mouseDownControlMeta.Top + offsetY);
+                    model.SetLeftToGrid(ZTContext.Project, ZTContext.Designer.MouseDownControlMeta.Left + offsetX);
+                    model.SetTopToGrid(ZTContext.Project, ZTContext.Designer.MouseDownControlMeta.Top + offsetY);
                     model.MoveLocationOffset = new Point(model.Left - preLeft, model.Top - preTop);
                     break;
                 case MoveAction.Rotate:
@@ -298,20 +251,20 @@ else
                     break;
                 default:
                     Func<BaseControl, Point> getBasePointFunc = null;
-                    switch (mouseDownControlMeta.MoveAction)
+                    switch (ZTContext.Designer.MouseDownControlMeta.MoveAction)
                     {
                         case MoveAction.ResizeLeftTop:
                             {
                                 //设置右边线为参考线1
-                                var preBaseLine1 = new Line(mouseDownControlMeta.RightTopPointLocation, mouseDownControlMeta.RightBottomPointLocation);
+                                var preBaseLine1 = new Line(ZTContext.Designer.MouseDownControlMeta.RightTopPointLocation, ZTContext.Designer.MouseDownControlMeta.RightBottomPointLocation);
                                 //设置下边线为参考线2
-                                var preBaseLine2 = new Line(mouseDownControlMeta.LeftBottomPointLocation, mouseDownControlMeta.RightBottomPointLocation);
+                                var preBaseLine2 = new Line(ZTContext.Designer.MouseDownControlMeta.LeftBottomPointLocation, ZTContext.Designer.MouseDownControlMeta.RightBottomPointLocation);
 
                                 var newWidth = model.Width;
                                 var newHeight = model.Height;
                                 //调整大小
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, false, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
-                                resizeModel(preBaseLine2, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, true, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
+                                resizeModel(preBaseLine1, model, ZTContext.Designer.MouseDownControlMeta.StartLocation, newLocation, 0, 180, false, t => ZTContext.Designer.MouseDownControlMeta.Width, (t, v) => newWidth = v);
+                                resizeModel(preBaseLine2, model, ZTContext.Designer.MouseDownControlMeta.StartLocation, newLocation, 90, 270, true, t => ZTContext.Designer.MouseDownControlMeta.Height, (t, v) => newHeight = v);
                                 //设置默认参考点为右下角参考点
                                 getBasePointFunc = resizeModel_FormCorner(model, newWidth, newHeight, t => t.RightBottomPointLocation, e);
                                 break;
@@ -319,9 +272,9 @@ else
                         case MoveAction.ResizeTop:
                             {
                                 //设置下边线为参考线1
-                                var preBaseLine1 = new Line(mouseDownControlMeta.LeftBottomPointLocation, mouseDownControlMeta.RightBottomPointLocation);
+                                var preBaseLine1 = new Line(ZTContext.Designer.MouseDownControlMeta.LeftBottomPointLocation, ZTContext.Designer.MouseDownControlMeta.RightBottomPointLocation);
                                 //调整大小
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, true, t => mouseDownControlMeta.Height, (t, v) => t.SetHeightToGrid(ZTContext.Project, v));
+                                resizeModel(preBaseLine1, model, ZTContext.Designer.MouseDownControlMeta.StartLocation, newLocation, 90, 270, true, t => ZTContext.Designer.MouseDownControlMeta.Height, (t, v) => t.SetHeightToGrid(ZTContext.Project, v));
                                 //设置参考点为左下角参考点
                                 getBasePointFunc = t => t.LeftBottomPointLocation;
                                 break;
@@ -329,15 +282,15 @@ else
                         case MoveAction.ResizeRightTop:
                             {
                                 //设置下边线为参考线1
-                                var preBaseLine1 = new Line(mouseDownControlMeta.LeftBottomPointLocation, mouseDownControlMeta.RightBottomPointLocation);
+                                var preBaseLine1 = new Line(ZTContext.Designer.MouseDownControlMeta.LeftBottomPointLocation, ZTContext.Designer.MouseDownControlMeta.RightBottomPointLocation);
                                 //设置左边线为参考线2
-                                var preBaseLine2 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.LeftBottomPointLocation);
+                                var preBaseLine2 = new Line(ZTContext.Designer.MouseDownControlMeta.LeftTopPointLocation, ZTContext.Designer.MouseDownControlMeta.LeftBottomPointLocation);
 
                                 var newWidth = model.Width;
                                 var newHeight = model.Height;
                                 //调整大小
-                                resizeModel(preBaseLine2, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, true, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, true, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
+                                resizeModel(preBaseLine2, model, ZTContext.Designer.MouseDownControlMeta.StartLocation, newLocation, 0, 180, true, t => ZTContext.Designer.MouseDownControlMeta.Width, (t, v) => newWidth = v);
+                                resizeModel(preBaseLine1, model, ZTContext.Designer.MouseDownControlMeta.StartLocation, newLocation, 90, 270, true, t => ZTContext.Designer.MouseDownControlMeta.Height, (t, v) => newHeight = v);
                                 //设置默认参考点为左下角参考点
                                 getBasePointFunc = resizeModel_FormCorner(model, newWidth, newHeight, t => t.LeftBottomPointLocation, e);
                                 break;
@@ -345,9 +298,9 @@ else
                         case MoveAction.ResizeRight:
                             {
                                 //设置左边线为参考线1
-                                var preBaseLine1 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.LeftBottomPointLocation);
+                                var preBaseLine1 = new Line(ZTContext.Designer.MouseDownControlMeta.LeftTopPointLocation, ZTContext.Designer.MouseDownControlMeta.LeftBottomPointLocation);
                                 //调整大小
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, true, t => mouseDownControlMeta.Width, (t, v) => t.SetWidthToGrid(ZTContext.Project, v));
+                                resizeModel(preBaseLine1, model, ZTContext.Designer.MouseDownControlMeta.StartLocation, newLocation, 0, 180, true, t => ZTContext.Designer.MouseDownControlMeta.Width, (t, v) => t.SetWidthToGrid(ZTContext.Project, v));
                                 //设置参考点为左上角参考点
                                 getBasePointFunc = t => t.LeftTopPointLocation;
                                 break;
@@ -355,15 +308,15 @@ else
                         case MoveAction.ResizeRightBottom:
                             {
                                 //设置左边线为参考线1
-                                var preBaseLine1 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.LeftBottomPointLocation);
+                                var preBaseLine1 = new Line(ZTContext.Designer.MouseDownControlMeta.LeftTopPointLocation, ZTContext.Designer.MouseDownControlMeta.LeftBottomPointLocation);
                                 //设置上边线为参考线2
-                                var preBaseLine2 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.RightTopPointLocation);
+                                var preBaseLine2 = new Line(ZTContext.Designer.MouseDownControlMeta.LeftTopPointLocation, ZTContext.Designer.MouseDownControlMeta.RightTopPointLocation);
 
                                 var newWidth = model.Width;
                                 var newHeight = model.Height;
                                 //调整大小
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, true, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
-                                resizeModel(preBaseLine2, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, false, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
+                                resizeModel(preBaseLine1, model, ZTContext.Designer.MouseDownControlMeta.StartLocation, newLocation, 0, 180, true, t => ZTContext.Designer.MouseDownControlMeta.Width, (t, v) => newWidth = v);
+                                resizeModel(preBaseLine2, model, ZTContext.Designer.MouseDownControlMeta.StartLocation, newLocation, 90, 270, false, t => ZTContext.Designer.MouseDownControlMeta.Height, (t, v) => newHeight = v);
                                 //设置默认参考点为左上角参考点
                                 getBasePointFunc = resizeModel_FormCorner(model, newWidth, newHeight, t => t.LeftTopPointLocation, e);
                                 break;
@@ -371,9 +324,9 @@ else
                         case MoveAction.ResizeBottom:
                             {
                                 //设置上边线为参考线1
-                                var preBaseLine1 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.RightTopPointLocation);
+                                var preBaseLine1 = new Line(ZTContext.Designer.MouseDownControlMeta.LeftTopPointLocation, ZTContext.Designer.MouseDownControlMeta.RightTopPointLocation);
                                 //调整大小
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, false, t => mouseDownControlMeta.Height, (t, v) => t.SetHeightToGrid(ZTContext.Project, v));
+                                resizeModel(preBaseLine1, model, ZTContext.Designer.MouseDownControlMeta.StartLocation, newLocation, 90, 270, false, t => ZTContext.Designer.MouseDownControlMeta.Height, (t, v) => t.SetHeightToGrid(ZTContext.Project, v));
                                 //设置参考点为右上角参考点
                                 getBasePointFunc = t => t.RightTopPointLocation;
                                 break;
@@ -381,15 +334,15 @@ else
                         case MoveAction.ResizeLeftBottom:
                             {
                                 //设置上边线为参考线1
-                                var preBaseLine1 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.RightTopPointLocation);
+                                var preBaseLine1 = new Line(ZTContext.Designer.MouseDownControlMeta.LeftTopPointLocation, ZTContext.Designer.MouseDownControlMeta.RightTopPointLocation);
                                 //设置右边线为参考线2
-                                var preBaseLine2 = new Line(mouseDownControlMeta.RightTopPointLocation, mouseDownControlMeta.RightBottomPointLocation);
+                                var preBaseLine2 = new Line(ZTContext.Designer.MouseDownControlMeta.RightTopPointLocation, ZTContext.Designer.MouseDownControlMeta.RightBottomPointLocation);
 
                                 var newWidth = model.Width;
                                 var newHeight = model.Height;
                                 //调整大小
-                                resizeModel(preBaseLine2, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, false, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, false, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
+                                resizeModel(preBaseLine2, model, ZTContext.Designer.MouseDownControlMeta.StartLocation, newLocation, 0, 180, false, t => ZTContext.Designer.MouseDownControlMeta.Width, (t, v) => newWidth = v);
+                                resizeModel(preBaseLine1, model, ZTContext.Designer.MouseDownControlMeta.StartLocation, newLocation, 90, 270, false, t => ZTContext.Designer.MouseDownControlMeta.Height, (t, v) => newHeight = v);
                                 //设置默认参考点为右上角参考点
                                 getBasePointFunc = resizeModel_FormCorner(model, newWidth, newHeight, t => t.RightTopPointLocation, e);
                                 break;
@@ -397,9 +350,9 @@ else
                         case MoveAction.ResizeLeft:
                             {
                                 //设置右边线为参考线1
-                                var preBaseLine1 = new Line(mouseDownControlMeta.RightTopPointLocation, mouseDownControlMeta.RightBottomPointLocation);
+                                var preBaseLine1 = new Line(ZTContext.Designer.MouseDownControlMeta.RightTopPointLocation, ZTContext.Designer.MouseDownControlMeta.RightBottomPointLocation);
                                 //调整大小
-                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, false, t => mouseDownControlMeta.Width, (t, v) => t.SetWidthToGrid(ZTContext.Project, v));
+                                resizeModel(preBaseLine1, model, ZTContext.Designer.MouseDownControlMeta.StartLocation, newLocation, 0, 180, false, t => ZTContext.Designer.MouseDownControlMeta.Width, (t, v) => t.SetWidthToGrid(ZTContext.Project, v));
                                 //设置参考点为右下角参考点
                                 getBasePointFunc = t => t.RightBottomPointLocation;
                                 break;
@@ -408,7 +361,7 @@ else
                             return;
                     }
                     //让基准点保持不变
-                    makeBasePointLocationNotChange(mouseDownControlMeta, getBasePointFunc);
+                    makeBasePointLocationNotChange(ZTContext.Designer.MouseDownControlMeta, getBasePointFunc);
                     break;
             }
         }
@@ -425,17 +378,17 @@ else
             //如果是按住Control键，则按比例缩放，保持中心点位置不变
             else if (mouseEventArgs.CtrlKey)
             {
-                var maxScale = Math.Max(newWidth / mouseDownControlMeta.Width, newHeight / mouseDownControlMeta.Height);
-                model.SetWidthToGrid(ZTContext.Project, mouseDownControlMeta.Width * maxScale);
-                model.SetHeightToGrid(ZTContext.Project, mouseDownControlMeta.Height * maxScale);
+                var maxScale = Math.Max(newWidth / ZTContext.Designer.MouseDownControlMeta.Width, newHeight / ZTContext.Designer.MouseDownControlMeta.Height);
+                model.SetWidthToGrid(ZTContext.Project, ZTContext.Designer.MouseDownControlMeta.Width * maxScale);
+                model.SetHeightToGrid(ZTContext.Project, ZTContext.Designer.MouseDownControlMeta.Height * maxScale);
                 return t => t.CenterPointLocation;
             }
             else
             {
                 //默认，则按比例缩放，保持左上点位置不变
-                var maxScale = Math.Max(newWidth / mouseDownControlMeta.Width, newHeight / mouseDownControlMeta.Height);
-                model.SetWidthToGrid(ZTContext.Project, mouseDownControlMeta.Width * maxScale);
-                model.SetHeightToGrid(ZTContext.Project, mouseDownControlMeta.Height * maxScale);
+                var maxScale = Math.Max(newWidth / ZTContext.Designer.MouseDownControlMeta.Width, newHeight / ZTContext.Designer.MouseDownControlMeta.Height);
+                model.SetWidthToGrid(ZTContext.Project, ZTContext.Designer.MouseDownControlMeta.Width * maxScale);
+                model.SetHeightToGrid(ZTContext.Project, ZTContext.Designer.MouseDownControlMeta.Height * maxScale);
                 return getBasePointFunc;
             }
         }
@@ -449,13 +402,13 @@ else
             if (Model.IsLocked)
                 return;
             var mouseLocation =ZTContext.Designer.getMouseLocation_RelativeToCanvas(e);
-            mouseDownControlMeta = new ControlMeta(moveAction, mouseLocation, Model);
+            ZTContext.Designer.MouseDownControlMeta = new ControlMeta(moveAction, mouseLocation, Model);
         }
 
         
         private void onControlMouseDown(MouseEventArgs e, BaseControl control)
         {
-            if (mouseDownControlMeta != null)
+            if (ZTContext.Designer.MouseDownControlMeta != null)
                 return;
 
             ZTContext.Designer.SelectedItem = control;
@@ -464,11 +417,11 @@ else
 
         private void onMouseUp(MouseEventArgs e)
         {
-            if (mouseDownControlMeta == null)
+            if (ZTContext.Designer.MouseDownControlMeta == null || Model != ZTContext.Designer.MouseDownControlMeta.MoveControl)
                 return;
-            if (mouseDownControlMeta.MoveAction == MoveAction.Selecting)
+            if (ZTContext.Designer.MouseDownControlMeta.MoveAction == MoveAction.Selecting)
             {
-                var rect = mouseDownControlMeta.MoveRect;
+                var rect = ZTContext.Designer.MouseDownControlMeta.MoveRect;
 
                 //获取框选的控件
                 var selectedItems = Model.Controls
@@ -542,6 +495,6 @@ else
                     }
                 }
             }
-            mouseDownControlMeta = null;
+            ZTContext.Designer.MouseDownControlMeta = null;
         }
 }
