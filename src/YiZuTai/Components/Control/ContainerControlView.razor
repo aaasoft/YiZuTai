@@ -4,7 +4,7 @@
 
 <g ondragover="event.preventDefault();" @ondrop="HandleDrop">
 <BaseControl_WithBackgroundView T_BaseControl_WithBackground="TContainerModel" Model="@Model"
-    DesignMode="@ZTContext.DesignMode">
+    ZTContext="ZTContext">
     <!--====控件SVG部分====-->
     @if (Model.Controls != null)
     {

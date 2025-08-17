@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
 using YiZuTai.Control;
+using YiZuTai.Enums;
 
 namespace YiZuTai.Components
 {
@@ -53,24 +54,6 @@ namespace YiZuTai.Components
         private double resize_box_width = 7;
         //鼠标按下时控件信息
         private ControlMeta mouseDownControlMeta;
-
-        /// <summary>
-        /// 移动动作
-        /// </summary>
-        public enum MoveAction
-        {
-            MoveLocation,
-            ResizeLeftTop,
-            ResizeTop,
-            ResizeRightTop,
-            ResizeRight,
-            ResizeRightBottom,
-            ResizeBottom,
-            ResizeLeftBottom,
-            ResizeLeft,
-            Rotate,
-            Selecting
-        }
 
         private Dictionary<Func<double, bool>, string> cursorDict = new Dictionary<Func<double, bool>, string>()
         {
@@ -259,7 +242,7 @@ namespace YiZuTai.Components
             mouseDownControlMeta = null;
         }
 
-        private Point getMouseLocation_RelativeToCanvas(MouseEventArgs e)
+        public Point getMouseLocation_RelativeToCanvas(MouseEventArgs e)
         {
             var x = e.OffsetX;
             var y = e.OffsetY;

@@ -1,7 +1,7 @@
 ﻿@inherits AbstractControlView<Model>
 
 <BaseControl_WithBackgroundView T_BaseControl_WithBackground="Model" Model="@ControlModel"
-    DesignMode="@ZTContext.DesignMode">
+    ZTContext="ZTContext">
 
     <path id="path_@ControlModel.Name" d="@ControlModel.D" stroke="@ControlModel.Stroke"
         stroke-opacity="@ControlModel.StrokeOpacity" stroke-width="@ControlModel.StrokeWidth" fill="@ControlModel.Fill"

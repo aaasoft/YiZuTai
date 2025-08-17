@@ -1,21 +1,547 @@
 ﻿@using YiZuTai.Control
+@using YiZuTai.Core
+@using YiZuTai.Enums
 @typeparam T_BaseControl where T_BaseControl : BaseControl, new()
 
-<svg  id="svg_@Model.Name" version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="@Model.Left"
-    y="@Model.Top" width="@Model.Width" height="@Model.Height" opacity="@Model.Opacity"
-    visibility="@(Model.Visiable ? "visible" : "hidden")" @ref="svgElementReference">
-    @ChildContent
-</svg>
+@if (!ZTContext.DesignMode)
+{
+    <g @ondblclick="@(e=>Model.OnDoubleClick())">
+        <svg id="svg_@Model.Name" version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+        x="@Model.Left" y="@Model.Top" width="@Model.Width" height="@Model.Height" opacity="@Model.Opacity"
+        visibility="@(Model.Visiable ? "visible" : "hidden")" @ref="svgElementReference">
+            @ChildContent
+        </svg>
+    </g>
+}
+else
+{
+    <g onpointerdown="YiZuTai.Designer.SetPointerCapture(event)"
+            onpointerup="YiZuTai.Designer.ReleasePointerCapture(event)"
+            @onmousedown="@(e => onControlMouseDown(e,Model))"
+            @onmousemove="onMouseMove"    
+            @onmouseup="onMouseUp">
+        <svg id="svg_@Model.Name" version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="@Model.Left" y="@Model.Top" width="@Model.Width" height="@Model.Height" opacity="@Model.Opacity"
+            visibility="@(Model.Visiable ? "visible" : "hidden")" @ref="svgElementReference">
+            @ChildContent    
+        </svg>
+        @if(Model == ZTContext.Designer.SelectedItem)
+        {
+        <g>
+            <!--虚线框，用于移动控件位置-->
+            <rect fill-opacity="0" stroke="#0078D7" stroke-dasharray="4" stroke-width="1" x="@Model.Left" y="@Model.Top"
+                width="@Model.Width" height="@Model.Height" style="@(Model.IsLocked ? "cursor:not-allowed;" : "cursor:move;")"
+                @onmousedown="@(e => sizerMouseDown(e, MoveAction.MoveLocation))" />
+            @if (!Model.IsLocked)
+            {
+                <!--旋转-->
+                @if (Model is not MultiControl && Model.CanRotate)
+                {
+                    <g>
+                        <line x1="@(Model.Left + Model.Width / 2)" y1="@(Model.Top - resize_box_width * 3)"
+                            x2="@(Model.Left + Model.Width / 2)" y2="@(Model.Top - resize_box_width * 3 + resize_box_width * 2)"
+                            stroke="#0078D7" stroke-dasharray="4" stroke-width="1" />
+                        <circle stroke="#0078D7" fill="#0078D7" fill-opacity="0.2" style="cursor: crosshair;"
+                            cx="@(Model.Left + Model.Width / 2)" cy="@(Model.Top - resize_box_width * 3 - resize_box_width / 2)"
+                            r="@(resize_box_width * 2 / 3)" @onmousedown="@(e => sizerMouseDown(e, MoveAction.Rotate))" />
+                    </g>
+                }
+                <!--左上角大小调整-->
+                <rect fill-opacity="0" stroke="#0078D7" stroke-width="1" x="@(Model.Left - resize_box_width)"
+                    y="@(Model.Top - resize_box_width)" width="@resize_box_width" height="@resize_box_width"
+                    style="cursor:@getSizerCursor(315);" @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeLeftTop))">
+                </rect>
+                <!--上方大小调整-->
+                <rect fill-opacity="0" stroke="#0078D7" stroke-width="1"
+                    x="@(Model.Left + (Model.Width - resize_box_width) / 2)" y="@(Model.Top - resize_box_width)"
+                    width="@resize_box_width" height="@resize_box_width" style="cursor:@getSizerCursor(0);"
+                    @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeTop))"></rect>
+                <!--右上角大小调整-->
+                <rect fill-opacity="0" stroke="#0078D7" stroke-width="1" x="@(Model.Left + Model.Width)"
+                    y="@(Model.Top - resize_box_width)" width="@resize_box_width" height="@resize_box_width"
+                    style="cursor:@getSizerCursor(45);" @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeRightTop))">
+                </rect>
+                <!--右侧大小调整-->
+                <rect fill-opacity="0" stroke="#0078D7" stroke-width="1" x="@(Model.Left + Model.Width)"
+                    y="@(Model.Top + (Model.Height - resize_box_width) / 2)" width="@resize_box_width"
+                    height="@resize_box_width" style="cursor:@getSizerCursor(90);"
+                    @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeRight))"></rect>
+                <!--右下角大小调整-->
+                <rect fill-opacity="0" stroke="#0078D7" stroke-width="1" x="@(Model.Left + Model.Width)"
+                    y="@(Model.Top + Model.Height)" width="@resize_box_width" height="@resize_box_width"
+                    cursor="@getSizerCursor(135)" @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeRightBottom))"></rect>
+                <!--下方大小调整-->
+                <rect fill-opacity="0" stroke="#0078D7" stroke-width="1"
+                    x="@(Model.Left + (Model.Width - resize_box_width) / 2)" y="@(Model.Top + Model.Height)"
+                    width="@resize_box_width" height="@resize_box_width" style="cursor:@getSizerCursor(180);"
+                    @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeBottom))"></rect>
+                <!--左下角大小调整-->
+                <rect fill-opacity="0" stroke="#0078D7" stroke-width="1" x="@(Model.Left - resize_box_width)"
+                    y="@(Model.Top + Model.Height)" width="@resize_box_width" height="@resize_box_width"
+                    style="cursor:@getSizerCursor(225);" @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeLeftBottom))">
+                </rect>
+                <!--左侧大小调整-->
+                <rect fill-opacity="0" stroke="#0078D7" stroke-width="1" x="@(Model.Left - resize_box_width)"
+                    y="@(Model.Top + (Model.Height - resize_box_width) / 2)" width="@resize_box_width"
+                    height="@resize_box_width" style="cursor:@getSizerCursor(270);"
+                    @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeLeft))"></rect>
+            }
+        </g>
+        }
+    </g>
+}
 
 @code
 {
     [Parameter]
     public T_BaseControl Model { get; set; }
     [Parameter]
-    public bool DesignMode { get; set; } = false;
+    public ZTContext ZTContext { get; set; }
     [Parameter]
     public RenderFragment ChildContent { get; set; }
 
     private ElementReference svgElementReference;
     public string Id => svgElementReference.Id;
+
+    //控制元信息
+    public class ControlMeta : BaseControl
+    {
+        public MoveAction MoveAction { get; }
+        /// <summary>
+        /// 起始位置
+        /// </summary>
+        public Point StartLocation { get; private set; }
+        /// <summary>
+        /// 结束位置
+        /// </summary>
+        public Point EndLocation { get; private set; }
+
+        public Rect MoveRect { get; private set; }
+
+        public void SetEndLocation(Point endLocation)
+        {
+            EndLocation = endLocation;
+            MoveRect = new Rect()
+            {
+                X = Math.Min(StartLocation.X, EndLocation.X),
+                Y = Math.Min(StartLocation.Y, EndLocation.Y),
+                Width = Math.Abs(StartLocation.X - EndLocation.X),
+                Height = Math.Abs(StartLocation.Y - EndLocation.Y)
+            };
+        }
+
+        public ControlMeta(MoveAction moveAction, Point startLocation, BaseControl model = null)
+        {
+            MoveAction = moveAction;
+            StartLocation = startLocation;
+            EndLocation = startLocation;
+
+            if (model != null)
+            {
+                Left = model.Left;
+                Top = model.Top;
+                Width = model.Width;
+                Height = model.Height;
+                Angle = model.Angle;
+            }
+        }
+        protected override Type GetViewType() { throw new NotImplementedException(); }
+    }
+
+    private double resize_box_width = 7;
+    //鼠标按下时控件信息
+    private ControlMeta mouseDownControlMeta;
+
+    
+        private Dictionary<Func<double, bool>, string> cursorDict = new Dictionary<Func<double, bool>, string>()
+        {
+            [t => t > 337.5 || t <= 22.5] = "n-resize",
+            [t => t > 22.5 && t <= 67.5] = "ne-resize",
+            [t => t > 67.5 && t <= 112.5] = "e-resize",
+            [t => t > 112.5 && t <= 157.5] = "se-resize",
+            [t => t > 157.5 && t <= 202.5] = "s-resize",
+            [t => t > 202.5 && t <= 247.5] = "sw-resize",
+            [t => t > 247.5 && t <= 292.5] = "w-resize",
+            [t => t > 292.5 && t <= 337.5] = "nw-resize"
+        };
+
+        private string getSizerCursor(double startAngle)
+        {
+            double? angle = Model.Angle;
+            if (angle == null)
+                return null;
+            var finalAngle = angle.Value + startAngle;
+            while (finalAngle < 0)
+                finalAngle += 360;
+            finalAngle = finalAngle % 360;
+            foreach (var item in cursorDict)
+            {
+                var key = item.Key;
+                if (key(finalAngle))
+                    return item.Value;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 调整模型大小
+        /// </summary>
+        /// <param name="baseLine">参考线</param>
+        /// <param name="model">模型</param>
+        /// <param name="startAngle">起始角度</param>
+        /// <param name="endAngle">结束角度</param>
+        /// <param name="isPositiveRange">是否正区间</param>
+        /// <param name="getValueFunc">获取大小值</param>
+        /// <param name="setValueAction">设置大小值</param>
+        private static void resizeModel(
+            Line baseLine,
+            BaseControl model,
+            Point preLocation,
+            Point newLocation,
+            double startAngle,
+            double endAngle,
+            bool isPositiveRange,
+            Func<BaseControl, double> getValueFunc,
+            Action<BaseControl, double> setValueAction)
+        {
+            var offset = newLocation.X - preLocation.X;
+            if (!isPositiveRange)
+                offset = 0 - offset;
+
+            if (model.Angle == startAngle)
+                setValueAction(model, getValueFunc(model) + offset);
+            else if (model.Angle == endAngle)
+                setValueAction(model, getValueFunc(model) - offset);
+            else
+            {
+                var d = baseLine.ComputePointToLineVector(newLocation);
+                var isAngleInRangle = model.Angle > startAngle && model.Angle < endAngle;
+
+                if (isPositiveRange)
+                {
+                    if (isAngleInRangle)
+                        d = 0 - d;
+                }
+                else
+                {
+                    if (!isAngleInRangle)
+                        d = 0 - d;
+                }
+                setValueAction(model, d);
+            }
+        }
+
+        //让基准点位置不变
+        private void makeBasePointLocationNotChange(BaseControl preModel, Func<BaseControl, Point> getBasePointFunc)
+        {
+            var preBasePointLocation = getBasePointFunc(preModel);
+            var newBasePointLocation = getBasePointFunc(Model);
+
+            Model.SetLeftToGrid(ZTContext.Project, Model.Left + preBasePointLocation.X - newBasePointLocation.X);
+            Model.SetTopToGrid(ZTContext.Project, Model.Top + preBasePointLocation.Y - newBasePointLocation.Y);
+        }
+
+        
+        private void onMouseMove(MouseEventArgs e)
+        {
+            //如果没有按下鼠标
+            if (mouseDownControlMeta == null)
+                return;
+
+            var newLocation = ZTContext.Designer.getMouseLocation_RelativeToCanvas(e);
+            if (mouseDownControlMeta.MoveAction == MoveAction.Selecting)
+            {
+                mouseDownControlMeta.SetEndLocation(newLocation);
+                return;
+            }
+
+            var offsetX = newLocation.X - mouseDownControlMeta.StartLocation.X;
+            var offsetY = newLocation.Y - mouseDownControlMeta.StartLocation.Y;
+            if (offsetX == 0 && offsetY == 0)
+                return;
+
+            var model = Model;
+            switch (mouseDownControlMeta.MoveAction)
+            {
+                case MoveAction.MoveLocation:
+                    var preLeft = model.Left;
+                    var preTop = model.Top;
+                    model.SetLeftToGrid(ZTContext.Project, mouseDownControlMeta.Left + offsetX);
+                    model.SetTopToGrid(ZTContext.Project, mouseDownControlMeta.Top + offsetY);
+                    model.MoveLocationOffset = new Point(model.Left - preLeft, model.Top - preTop);
+                    break;
+                case MoveAction.Rotate:
+                    var centerPointLocation = model.CenterPointLocation;
+                    var a = newLocation.X - centerPointLocation.X;
+                    var b = newLocation.Y - centerPointLocation.Y;
+                    var tanValue = a / b;
+                    var newAngle = 0 - Math.Atan(tanValue) * 180 / Math.PI;
+
+                    if (b >= 0)
+                        newAngle += 180;
+                    while (newAngle < 0)
+                        newAngle += 360;
+                    newAngle = newAngle % 360;
+                    //磁吸角度
+                    var magnetAngle = 10;
+                    var x = newAngle % 90;
+                    if (Math.Abs(x) < magnetAngle)
+                    {
+                        newAngle -= x;
+                    }
+                    else if (Math.Abs(x) > (90 - magnetAngle))
+                    {
+                        newAngle -= x - 90;
+                    }
+                    model.MoveAngleOffset = newAngle - model.Angle;
+                    model.Angle = newAngle;
+                    break;
+                default:
+                    Func<BaseControl, Point> getBasePointFunc = null;
+                    switch (mouseDownControlMeta.MoveAction)
+                    {
+                        case MoveAction.ResizeLeftTop:
+                            {
+                                //设置右边线为参考线1
+                                var preBaseLine1 = new Line(mouseDownControlMeta.RightTopPointLocation, mouseDownControlMeta.RightBottomPointLocation);
+                                //设置下边线为参考线2
+                                var preBaseLine2 = new Line(mouseDownControlMeta.LeftBottomPointLocation, mouseDownControlMeta.RightBottomPointLocation);
+
+                                var newWidth = model.Width;
+                                var newHeight = model.Height;
+                                //调整大小
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, false, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
+                                resizeModel(preBaseLine2, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, true, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
+                                //设置默认参考点为右下角参考点
+                                getBasePointFunc = resizeModel_FormCorner(model, newWidth, newHeight, t => t.RightBottomPointLocation, e);
+                                break;
+                            }
+                        case MoveAction.ResizeTop:
+                            {
+                                //设置下边线为参考线1
+                                var preBaseLine1 = new Line(mouseDownControlMeta.LeftBottomPointLocation, mouseDownControlMeta.RightBottomPointLocation);
+                                //调整大小
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, true, t => mouseDownControlMeta.Height, (t, v) => t.SetHeightToGrid(ZTContext.Project, v));
+                                //设置参考点为左下角参考点
+                                getBasePointFunc = t => t.LeftBottomPointLocation;
+                                break;
+                            }
+                        case MoveAction.ResizeRightTop:
+                            {
+                                //设置下边线为参考线1
+                                var preBaseLine1 = new Line(mouseDownControlMeta.LeftBottomPointLocation, mouseDownControlMeta.RightBottomPointLocation);
+                                //设置左边线为参考线2
+                                var preBaseLine2 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.LeftBottomPointLocation);
+
+                                var newWidth = model.Width;
+                                var newHeight = model.Height;
+                                //调整大小
+                                resizeModel(preBaseLine2, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, true, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, true, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
+                                //设置默认参考点为左下角参考点
+                                getBasePointFunc = resizeModel_FormCorner(model, newWidth, newHeight, t => t.LeftBottomPointLocation, e);
+                                break;
+                            }
+                        case MoveAction.ResizeRight:
+                            {
+                                //设置左边线为参考线1
+                                var preBaseLine1 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.LeftBottomPointLocation);
+                                //调整大小
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, true, t => mouseDownControlMeta.Width, (t, v) => t.SetWidthToGrid(ZTContext.Project, v));
+                                //设置参考点为左上角参考点
+                                getBasePointFunc = t => t.LeftTopPointLocation;
+                                break;
+                            }
+                        case MoveAction.ResizeRightBottom:
+                            {
+                                //设置左边线为参考线1
+                                var preBaseLine1 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.LeftBottomPointLocation);
+                                //设置上边线为参考线2
+                                var preBaseLine2 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.RightTopPointLocation);
+
+                                var newWidth = model.Width;
+                                var newHeight = model.Height;
+                                //调整大小
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, true, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
+                                resizeModel(preBaseLine2, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, false, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
+                                //设置默认参考点为左上角参考点
+                                getBasePointFunc = resizeModel_FormCorner(model, newWidth, newHeight, t => t.LeftTopPointLocation, e);
+                                break;
+                            }
+                        case MoveAction.ResizeBottom:
+                            {
+                                //设置上边线为参考线1
+                                var preBaseLine1 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.RightTopPointLocation);
+                                //调整大小
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, false, t => mouseDownControlMeta.Height, (t, v) => t.SetHeightToGrid(ZTContext.Project, v));
+                                //设置参考点为右上角参考点
+                                getBasePointFunc = t => t.RightTopPointLocation;
+                                break;
+                            }
+                        case MoveAction.ResizeLeftBottom:
+                            {
+                                //设置上边线为参考线1
+                                var preBaseLine1 = new Line(mouseDownControlMeta.LeftTopPointLocation, mouseDownControlMeta.RightTopPointLocation);
+                                //设置右边线为参考线2
+                                var preBaseLine2 = new Line(mouseDownControlMeta.RightTopPointLocation, mouseDownControlMeta.RightBottomPointLocation);
+
+                                var newWidth = model.Width;
+                                var newHeight = model.Height;
+                                //调整大小
+                                resizeModel(preBaseLine2, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, false, t => mouseDownControlMeta.Width, (t, v) => newWidth = v);
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 90, 270, false, t => mouseDownControlMeta.Height, (t, v) => newHeight = v);
+                                //设置默认参考点为右上角参考点
+                                getBasePointFunc = resizeModel_FormCorner(model, newWidth, newHeight, t => t.RightTopPointLocation, e);
+                                break;
+                            }
+                        case MoveAction.ResizeLeft:
+                            {
+                                //设置右边线为参考线1
+                                var preBaseLine1 = new Line(mouseDownControlMeta.RightTopPointLocation, mouseDownControlMeta.RightBottomPointLocation);
+                                //调整大小
+                                resizeModel(preBaseLine1, model, mouseDownControlMeta.StartLocation, newLocation, 0, 180, false, t => mouseDownControlMeta.Width, (t, v) => t.SetWidthToGrid(ZTContext.Project, v));
+                                //设置参考点为右下角参考点
+                                getBasePointFunc = t => t.RightBottomPointLocation;
+                                break;
+                            }
+                        default:
+                            return;
+                    }
+                    //让基准点保持不变
+                    makeBasePointLocationNotChange(mouseDownControlMeta, getBasePointFunc);
+                    break;
+            }
+        }
+
+        private Func<BaseControl, Point> resizeModel_FormCorner(BaseControl model, double newWidth, double newHeight, Func<BaseControl, Point> getBasePointFunc, MouseEventArgs mouseEventArgs)
+        {
+            //如果是按住Shift键，则拉伸缩放，保持指定点位置不变
+            if (mouseEventArgs.ShiftKey)
+            {
+                model.SetWidthToGrid(ZTContext.Project, newWidth);
+                model.SetHeightToGrid(ZTContext.Project, newHeight);
+                return getBasePointFunc;
+            }
+            //如果是按住Control键，则按比例缩放，保持中心点位置不变
+            else if (mouseEventArgs.CtrlKey)
+            {
+                var maxScale = Math.Max(newWidth / mouseDownControlMeta.Width, newHeight / mouseDownControlMeta.Height);
+                model.SetWidthToGrid(ZTContext.Project, mouseDownControlMeta.Width * maxScale);
+                model.SetHeightToGrid(ZTContext.Project, mouseDownControlMeta.Height * maxScale);
+                return t => t.CenterPointLocation;
+            }
+            else
+            {
+                //默认，则按比例缩放，保持左上点位置不变
+                var maxScale = Math.Max(newWidth / mouseDownControlMeta.Width, newHeight / mouseDownControlMeta.Height);
+                model.SetWidthToGrid(ZTContext.Project, mouseDownControlMeta.Width * maxScale);
+                model.SetHeightToGrid(ZTContext.Project, mouseDownControlMeta.Height * maxScale);
+                return getBasePointFunc;
+            }
+        }
+
+        private void sizerMouseDown(MouseEventArgs e, MoveAction moveAction)
+        {
+            //如果不是鼠标左键，则不处理
+            if (e.Button != 0)
+                return;
+            //如果已锁定，则不处理
+            if (Model.IsLocked)
+                return;
+            var mouseLocation =ZTContext.Designer.getMouseLocation_RelativeToCanvas(e);
+            mouseDownControlMeta = new ControlMeta(moveAction, mouseLocation, Model);
+        }
+
+        
+        private void onControlMouseDown(MouseEventArgs e, BaseControl control)
+        {
+            if (mouseDownControlMeta != null)
+                return;
+
+            ZTContext.Designer.SelectedItem = control;
+            sizerMouseDown(e, MoveAction.MoveLocation);
+        }
+
+        private void onMouseUp(MouseEventArgs e)
+        {
+            if (mouseDownControlMeta == null)
+                return;
+            if (mouseDownControlMeta.MoveAction == MoveAction.Selecting)
+            {
+                var rect = mouseDownControlMeta.MoveRect;
+
+                //获取框选的控件
+                var selectedItems = Model.Controls
+                .Where(t => !t.IsLocked && t.Visiable
+                    && rect.Contains(t.LeftTopPointLocation)
+                    && rect.Contains(t.RightTopPointLocation)
+                    && rect.Contains(t.RightBottomPointLocation)
+                    && rect.Contains(t.LeftBottomPointLocation))
+                    .ToList();
+
+                if (e.CtrlKey)
+                {
+                    if (selectedItems.Count == 0)
+                        return;
+                    //如果当前没有选中
+                    if (ZTContext.Designer.SelectedItem == null
+                        || ZTContext.Designer.SelectedItem == ZTContext.Project)
+                    {
+                        if (selectedItems.Count == 1)
+                            ZTContext.Designer.SelectedItem = selectedItems[0];
+                        else
+                            ZTContext.Designer.SelectedItem = new MultiControl(ZTContext.Project, selectedItems);
+                        return;
+                    }
+                    //如果当前选中了多个控件
+                    if (ZTContext.Designer.SelectedItem is MultiControl)
+                    {
+                        var container = (MultiControl)ZTContext.Designer.SelectedItem;
+                        foreach (var model in selectedItems)
+                        {
+                            if (container.Items.Contains(model))
+                                container.RemoveControl(model);
+                            else
+                                container.AddControl(model);
+                        }
+                        if (container.Items.Count == 0)
+                        {
+                            ZTContext.Designer.SelectedItem = ZTContext.Project;
+                        }
+                        else if (container.Items.Count == 1)
+                        {
+                            ZTContext.Designer.SelectedItem = container.Items.FirstOrDefault();
+                        }
+                        else
+                        {
+                            ZTContext.Designer.SelectedItem = container;
+                        }
+                        return;
+                    }
+                    //当前选中的是普通控件
+                    if (selectedItems.Contains(ZTContext.Designer.SelectedItem))
+                        selectedItems.Remove(ZTContext.Designer.SelectedItem);
+                    else
+                        selectedItems.Add(ZTContext.Designer.SelectedItem);
+                    if (selectedItems.Count == 0)
+                        return;
+                    else if (selectedItems.Count == 1)
+                        ZTContext.Designer.SelectedItem = selectedItems.FirstOrDefault();
+                    else
+                        ZTContext.Designer.SelectedItem = new MultiControl(ZTContext.Project, selectedItems);
+                }
+                else
+                {
+                    if (selectedItems.Count == 0)
+                        ZTContext.Designer.SelectedItem = ZTContext.Project;
+                    else if (selectedItems.Count == 1)
+                        ZTContext.Designer.SelectedItem = selectedItems[0];
+                    else
+                    {
+                        ZTContext.Designer.SelectedItem = new MultiControl(ZTContext.Designer.Project, selectedItems);
+                    }
+                }
+            }
+            mouseDownControlMeta = null;
+        }
 }
