@@ -2,7 +2,7 @@
 @using YiZuTai.Core
 @typeparam TContainerModel where TContainerModel : BaseControl_WithBackground, new()
 
-<g ondragover="event.preventDefault();" @ondrop="HandleDrop">
+<g @ondragover:stopPropagation @ondrop="HandleDrop" @ondrop:stopPropagation>
 <BaseControl_WithBackgroundView T_BaseControl_WithBackground="TContainerModel" Model="@Model"
     ZTContext="ZTContext">
     <!--====控件SVG部分====-->
@@ -10,13 +10,8 @@
     {
         @foreach (var Item in Model.Controls)
         {
-            <g onmousedown="event.preventDefault();" ondblclick="event.preventDefault();">
-            <g transform="rotate(@Item.Angle @Item.CenterPointLocation.X, @Item.CenterPointLocation.Y) translate(0, 0) scale(1)"
-                
-                @onmousedown="@(e => onControlMouseDown(e, Item))"                
-                @ondblclick="@(e => Item.OnDoubleClick())">
+            <g transform="rotate(@Item.Angle @Item.CenterPointLocation.X, @Item.CenterPointLocation.Y) translate(0, 0) scale(1)">
                 @Item.GetView(@ZTContext)
-            </g>
             </g>
         }
     }
@@ -69,10 +64,5 @@
     {
         ZTContext.Project.CheckAndModifyControlName(control);
         Model.Controls.Add(control);
-    }
-
-    private void onControlMouseDown(MouseEventArgs e, BaseControl control)
-    {
-        ZTContext.Designer.SelectedItem = control;
     }
 }

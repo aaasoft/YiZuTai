@@ -19,7 +19,8 @@ else
             onpointerup="YiZuTai.Designer.ReleasePointerCapture(event)"
             @onmousedown="@(e => onControlMouseDown(e,Model))"
             @onmousemove="onMouseMove"    
-            @onmouseup="onMouseUp">
+            @onmouseup="onMouseUp"
+            @ondblclick="@(e=>Model.OnDoubleClick())">
         <svg id="svg_@Model.Name" version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
             x="@Model.Left" y="@Model.Top" width="@Model.Width" height="@Model.Height" opacity="@Model.Opacity"
             visibility="@(Model.Visiable ? "visible" : "hidden")" @ref="svgElementReference">
@@ -29,9 +30,16 @@ else
         {
         <g>
             <!--虚线框，用于移动控件位置-->
-            <rect fill-opacity="0" stroke="#0078D7" stroke-dasharray="4" stroke-width="1" x="@Model.Left" y="@Model.Top"
-                width="@Model.Width" height="@Model.Height" style="@(Model.IsLocked ? "cursor:not-allowed;" : "cursor:move;")"
-                @onmousedown="@(e => sizerMouseDown(e, MoveAction.MoveLocation))" />
+            @if(Model.IsContainer)
+            {
+
+            }
+            else
+            {
+                <rect fill-opacity="0" stroke="#0078D7" stroke-dasharray="4" stroke-width="1" x="@Model.Left" y="@Model.Top"
+                    width="@Model.Width" height="@Model.Height" style="@(Model.IsLocked ? "cursor:not-allowed;" : "cursor:move;")"
+                    @onmousedown="@(e => sizerMouseDown(e, MoveAction.MoveLocation))" />
+            }
             @if (!Model.IsLocked)
             {
                 <!--旋转-->

@@ -23,6 +23,10 @@ namespace YiZuTai.Control
             get { return GetType().GetProperty(nameof(Angle)).GetCustomAttribute<JsonIgnoreAttribute>() == null && GroupName == null; }
         }
 
+        [JsonIgnore]
+        [Browsable(false)]
+        public virtual bool IsContainer => false;
+
         //让控件左边距对齐到网格
         public void SetLeftToGrid(Project canvas, double newLeft)
         {

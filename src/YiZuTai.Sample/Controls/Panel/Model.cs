@@ -10,6 +10,7 @@ namespace YiZuTai.Sample.Controls.Panel;
 public class Model : BaseControl_WithBackground
 {
     protected override Type GetViewType() => typeof(View);
+    public override bool IsContainer => true;
     public override ObservableCollection<BaseControl> Controls { get; set; } = new ObservableCollection<BaseControl>();
 
     public override void OnDragDropCreate(Point location)
