@@ -13,10 +13,7 @@ namespace YiZuTai
 {
     public class Project : BaseControl_WithBackground
     {
-        /// <summary>
-        /// 控件集合
-        /// </summary>
-        public ObservableCollection<BaseControl> Controls { get; set; } = new ObservableCollection<BaseControl>();
+        public override ObservableCollection<BaseControl> Controls { get; set; } = new ObservableCollection<BaseControl>();
 
         [JsonIgnore]
         [Browsable(false)]

@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Quick.Blazor.Bootstrap;
 using Quick.Blazor.Bootstrap.Utils;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using YiZuTai.Components;
@@ -315,6 +316,12 @@ y0= (x - rx0)*sin(a) + (y - ry0)*cos(a) + ry0 ;
         [JsonIgnore]
         [Browsable(false)]
         public virtual Point MoveLocationOffset { get; set; }
+
+        /// <summary>
+        /// 子控件
+        /// </summary>
+        [Browsable(false)]
+        public virtual ObservableCollection<BaseControl> Controls { get; set; } = null;
 
         protected abstract Type GetViewType();
         protected virtual Type GetHtmlViewType() => null;
