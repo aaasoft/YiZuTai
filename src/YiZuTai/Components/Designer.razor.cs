@@ -60,7 +60,7 @@ namespace YiZuTai.Components
 
         [Parameter]
         public string Id { get; set; }
-        public Core.ZTFile Model { get; private set; }
+        public ZTFile Model { get; private set; }
         public Project Project { get; private set; }
         public Canvas Canvas => Project.Canvas;
 
@@ -444,6 +444,59 @@ new YiZuTai.Window({{
             else
             {
                 Project.Controls.Remove(SelectedItem);
+            }
+        }
+
+        private void setControlIndex(BaseControl item, int index)
+        {
+            Project.Controls.Remove(item);
+            if (index < 0)
+                index = 0;
+            if (index > Project.Controls.Count)
+                index = Project.Controls.Count;
+            Project.Controls.Insert(index, item);
+        }
+        private int getControlIndex(BaseControl item) => Project.Controls.IndexOf(item);
+        private void setControlIndex(Func<int, int> getNewIndexFunc, bool isIncrase)
+        {
+            var item = SelectedItem;
+            if (item == null
+                || !item.Visiable)
+                return;
+            if (item is MultiControl)
+            {
+                var mItem = (MultiControl)item;
+                IEnumerable<BaseControl> childItems = null;
+                if (isIncrase)
+                    childItems = mItem.Items.OrderByDescending(getControlIndex);
+                else
+                    childItems = mItem.Items.OrderBy(getControlIndex);
+                int? preItemIndex = null;
+                foreach (var childItem in childItems)
+                {
+                    var childItemOldIndex = getControlIndex(childItem);
+                    var childItemNewIndex = getNewIndexFunc(childItemOldIndex);
+                    if (preItemIndex.HasValue)
+                    {
+                        if (isIncrase)
+                        {
+                            if (childItemNewIndex >= preItemIndex.Value)
+                                childItemNewIndex = preItemIndex.Value - 1;
+                        }
+                        else
+                        {
+                            if (childItemNewIndex <= preItemIndex.Value)
+                                childItemNewIndex = preItemIndex.Value + 1;
+                        }
+                    }
+                    setControlIndex(childItem, childItemNewIndex);
+                    preItemIndex = getControlIndex(childItem);
+                }
+            }
+            else
+            {
+                setControlIndex(item, getNewIndexFunc(getControlIndex(item)));
+                SelectedItem = item;
             }
         }
     }

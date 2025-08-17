@@ -120,10 +120,22 @@ else
             <!--中间设计部分-->
             <div class="card col p-0" @onkeydown="onKeyDown" @onmouseup="onMouseUp">
                 <ContextMenu Id="designMenu">
-                    <Item OnClick="@copyControl" Visible="IsSelectedControl">复制</Item>
-                    <Item OnClick="@pasteControl">粘贴</Item>
-                    <Item OnClick="@removeControl" Visible="IsSelectedControl">删除</Item>
-                    <Item OnClick="@Preview" Visible="!IsSelectedControl">预览</Item>
+                    @if (IsSelectedControl)
+                    {
+                        <Item OnClick="@(e => setControlIndex(index => Project.Controls.Count, true))">置于顶层</Item>
+                        <Item OnClick="@(e => setControlIndex(index => 0, true))">置于底层</Item>
+                        <Item OnClick="@(e => setControlIndex(index => index + 1, true))">置于上一层</Item>
+                        <Item OnClick="@(e => setControlIndex(index => index - 1, true))">置于下一层</Item>
+                        <Seperator />
+                        <Item OnClick="@copyControl">复制</Item>
+                        <Item OnClick="@pasteControl">粘贴</Item>
+                        <Item OnClick="@removeControl">删除</Item>
+                    }
+                    else
+                    {
+                        <Item OnClick="@Preview">预览</Item>
+                        <Item OnClick="@pasteControl">粘贴</Item>                        
+                    }
                 </ContextMenu>
                 <ContextMenuTrigger MenuId="designMenu">
                     <div id="divCanvas" tabindex="0" class="card-body text-center p-0 overflow-auto" style="background-color: @Canvas.Background;">
