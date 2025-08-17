@@ -159,7 +159,11 @@ namespace YiZuTai.Components
             if (dragingControlAttr == null)
                 return;
             var newLocation = getMouseLocation_RelativeToCanvas(e);
-            addControl(dragingControlAttr, newLocation);
+            var control = dragingControlAttr.CreateInstance();
+            control.Left = newLocation.X - control.Width / 2;
+            control.Top = newLocation.Y - control.Height / 2;
+            addControl(control, Project);
+            control.OnDragDropCreate(newLocation);
         }
 
         private void Controls_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -353,20 +357,14 @@ new YiZuTai.Window({{
         }
 
         //添加控件
-        private void addControl(ControlAttribute controlAttr, Point location)
+        private void addControl(BaseControl control, BaseControl container = null)
         {
-            var control = controlAttr.CreateInstance();
-            control.Left = location.X - control.Width / 2;
-            control.Top = location.Y - control.Height / 2;
-            addControl(control);
-            control.OnDragDropCreate(location);
-        }
-
-        //添加控件
-        private void addControl(BaseControl control)
-        {
-            checkAndModifyControlName(control, Project.Controls);
-            Project.Controls.Add(control);
+            checkAndModifyControlName(control, Project.GetAllControls());
+            if (container == null && SelectedItem != null && SelectedItem.IsContainer)
+                container = SelectedItem;
+            if (container == null)
+                container = Project;
+            container.Controls.Add(control);
         }
 
         private void checkAndModifyControlName(BaseControl control, IEnumerable<BaseControl> controlContainer)
@@ -437,12 +435,32 @@ new YiZuTai.Window({{
             if (SelectedItem is MultiControl multiControl)
             {
                 foreach (var item in multiControl.Items)
-                    Project.Controls.Remove(item);
+                    removeControl(item);
             }
             else
             {
-                Project.Controls.Remove(SelectedItem);
+                removeControl(SelectedItem);
             }
+        }
+
+        private BaseControl findParent(BaseControl parent, BaseControl control)
+        {
+            if (parent.Controls != null)
+            {
+                if (parent.Controls.Contains(control))
+                    return parent;
+                foreach (var child in parent.Controls.Where(t => t.IsContainer))
+                    return findParent(child, control);
+            }
+            return null;
+        }
+
+        private void removeControl(BaseControl control)
+        {
+            var parent = findParent(Project, control);
+            if (parent == null)
+                return;
+            parent.Controls.Remove(control);
         }
 
         private void setControlIndex(BaseControl item, int index)
