@@ -50,6 +50,7 @@ namespace YiZuTai.Components
             }
         }
 
+        public bool ShowDesignGrid = false;
         public bool ShowToolBox = true;
         public bool ShowPropertyBox = true;
 

@@ -116,8 +116,6 @@ namespace YiZuTai.Control
         /// </summary>
         [Browsable(false)]
         public int DesignGridSize { get; set; } = 1;
-        [Browsable(false)]
-        public bool DesignGridVisiable { get; set; } = false;
         /// <summary>
         /// 设计网格的ViewPort
         /// </summary>
@@ -133,7 +131,7 @@ namespace YiZuTai.Control
             {
                 var foreground = ColorUtils.ParseColor(Foreground);
                 return ColorUtils.GetRGBString(Color.FromArgb(
-                        0x33,
+                        0,
                         (byte)(255 - foreground.R),
                         (byte)(255 - foreground.G),
                         (byte)(255 - foreground.B)

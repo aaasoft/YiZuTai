@@ -70,6 +70,10 @@ else
                                 <input type="number" class="form-control" min="10" step="10" style="width:5rem;" @bind-value="DesignScale">
                             </div>
                             <div class="custom-control custom-switch m-1 mr-2">
+                                <input type="checkbox" @bind="ShowDesignGrid" class="custom-control-input" id="switchShowDesignGrid">
+                                <label class="custom-control-label align-middle" for="switchShowDesignGrid">显示网格</label>
+                            </div>
+                            <div class="custom-control custom-switch m-1 mr-2">
                                 <input type="checkbox" @bind="ShowToolBox" class="custom-control-input" id="switchShowToolBox">
                                 <label class="custom-control-label align-middle" for="switchShowToolBox">工具箱</label>
                             </div>
@@ -158,6 +162,17 @@ else
                                 @if (!string.IsNullOrEmpty(Canvas.Image))
                                 {
                                     <image href="@Core.ZTFile.GetStaticResourceUrl(Model.Id, Canvas.Image)" width="100%" height="100%" preserveAspectRatio="none"></image>
+                                }
+                                @if(ShowDesignGrid)
+                                {
+                                    @for (var x = 0; x <= Canvas.Width; x+=Canvas.DesignGridSize)
+                                    {
+                                        <line x1="@x" y1="0" x2="@x" y2="@Canvas.Height" stroke="@Canvas.DesignGridColor" stroke-opacity="0.5" />
+                                    }
+                                    @for (var y = 0; y <= Canvas.Height; y+=Canvas.DesignGridSize)
+                                    {
+                                        <line x1="0" y1="@y" x2="@Canvas.Width" y2="@y" stroke="@Canvas.DesignGridColor" stroke-opacity="0.5" />
+                                    }
                                 }
                             </g>
                             <!--====控件SVG部分====-->
