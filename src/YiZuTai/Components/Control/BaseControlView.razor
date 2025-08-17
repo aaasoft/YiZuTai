@@ -403,9 +403,6 @@ else
 
         private void sizerMouseDown(MouseEventArgs e, MoveAction moveAction)
         {
-            //如果不是鼠标左键，则不处理
-            if (e.Button != 0)
-                return;
             //如果已锁定，则不处理
             if (Model.IsLocked)
                 return;
