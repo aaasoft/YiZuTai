@@ -127,11 +127,14 @@ else
                 <ContextMenu Id="designMenu">
                     @if (IsSelectedControl)
                     {
-                        <Item OnClick="@(e => setControlIndex(index => Project.Controls.Count, true))">置于顶层</Item>
-                        <Item OnClick="@(e => setControlIndex(index => 0, true))">置于底层</Item>
-                        <Item OnClick="@(e => setControlIndex(index => index + 1, true))">置于上一层</Item>
-                        <Item OnClick="@(e => setControlIndex(index => index - 1, true))">置于下一层</Item>
-                        <Seperator />
+                        @if(!IsSelectedMutiControl)
+                        {
+                            <Item OnClick="@(e => setControlIndex(index => Project.Controls.Count))">置于顶层</Item>
+                            <Item OnClick="@(e => setControlIndex(index => 0))">置于底层</Item>
+                            <Item OnClick="@(e => setControlIndex(index => index + 1))">置于上一层</Item>
+                            <Item OnClick="@(e => setControlIndex(index => index - 1))">置于下一层</Item>
+                            <Seperator />
+                        }
                         <Item OnClick="@copyControl">复制</Item>
                         <Item OnClick="@pasteControl">粘贴</Item>
                         <Item OnClick="@removeControl">删除</Item>
@@ -209,7 +212,7 @@ else
                                 </div>
                                 <InputSelect class="form-control" @bind-Value="SelectedItemName">
                                     <option value="">画布</option>
-                                    @if(SelectedItem!=null && SelectedItem is MultiControl)
+                                    @if(IsSelectedMutiControl)
                                     {
                                         <option value="@SelectedItem.Name">@SelectedItem.Name</option>
                                     }

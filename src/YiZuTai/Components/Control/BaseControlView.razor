@@ -452,7 +452,7 @@ else
                         return;
                     }
                     //如果当前选中了多个控件
-                    if (ZTContext.Designer.SelectedItem is MultiControl)
+                    if (ZTContext.Designer.IsSelectedMutiControl)
                     {
                         var container = (MultiControl)ZTContext.Designer.SelectedItem;
                         foreach (var model in selectedItems)

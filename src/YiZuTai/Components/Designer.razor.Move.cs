@@ -145,7 +145,7 @@ namespace YiZuTai.Components
                         return;
                     }
                     //如果当前选中了多个控件
-                    if (SelectedItem is MultiControl)
+                    if (IsSelectedMutiControl)
                     {
                         var container = (MultiControl)SelectedItem;
                         foreach (var model in selectedItems)

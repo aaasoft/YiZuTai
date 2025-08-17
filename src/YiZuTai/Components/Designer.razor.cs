@@ -103,6 +103,8 @@ namespace YiZuTai.Components
         }
         //是否选中了控件
         public bool IsSelectedControl => SelectedItem != null && SelectedItem != Project;
+        //是否选中了多个控件
+        public bool IsSelectedMutiControl => IsSelectedControl && SelectedItem is MultiControl;
 
         protected override void OnParametersSet()
         {
@@ -463,57 +465,27 @@ new YiZuTai.Window({{
             parent.Controls.Remove(control);
         }
 
-        private void setControlIndex(BaseControl item, int index)
+        private void setControlIndex(BaseControl parent, BaseControl item, int index)
         {
-            Project.Controls.Remove(item);
+            parent.Controls.Remove(item);
             if (index < 0)
                 index = 0;
-            if (index > Project.Controls.Count)
-                index = Project.Controls.Count;
-            Project.Controls.Insert(index, item);
+            if (index > parent.Controls.Count)
+                index = parent.Controls.Count;
+            parent.Controls.Insert(index, item);
         }
-        private int getControlIndex(BaseControl item) => Project.Controls.IndexOf(item);
-        private void setControlIndex(Func<int, int> getNewIndexFunc, bool isIncrase)
+        private int getControlIndex(BaseControl parent, BaseControl item) => parent.Controls.IndexOf(item);
+        private void setControlIndex(Func<int, int> getNewIndexFunc)
         {
             var item = SelectedItem;
             if (item == null
                 || !item.Visiable)
                 return;
             if (item is MultiControl)
-            {
-                var mItem = (MultiControl)item;
-                IEnumerable<BaseControl> childItems = null;
-                if (isIncrase)
-                    childItems = mItem.Items.OrderByDescending(getControlIndex);
-                else
-                    childItems = mItem.Items.OrderBy(getControlIndex);
-                int? preItemIndex = null;
-                foreach (var childItem in childItems)
-                {
-                    var childItemOldIndex = getControlIndex(childItem);
-                    var childItemNewIndex = getNewIndexFunc(childItemOldIndex);
-                    if (preItemIndex.HasValue)
-                    {
-                        if (isIncrase)
-                        {
-                            if (childItemNewIndex >= preItemIndex.Value)
-                                childItemNewIndex = preItemIndex.Value - 1;
-                        }
-                        else
-                        {
-                            if (childItemNewIndex <= preItemIndex.Value)
-                                childItemNewIndex = preItemIndex.Value + 1;
-                        }
-                    }
-                    setControlIndex(childItem, childItemNewIndex);
-                    preItemIndex = getControlIndex(childItem);
-                }
-            }
-            else
-            {
-                setControlIndex(item, getNewIndexFunc(getControlIndex(item)));
-                SelectedItem = item;
-            }
+                return;
+            var parent = findParent(Project, item);
+            setControlIndex(parent,item, getNewIndexFunc(getControlIndex(parent,item)));
+            SelectedItem = item;
         }
     }
 }
