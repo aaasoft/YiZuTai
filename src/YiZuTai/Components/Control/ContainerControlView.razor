@@ -1,5 +1,6 @@
 ﻿@using YiZuTai.Control
 @using YiZuTai.Core
+@using YiZuTai.Enums
 @typeparam TContainerModel where TContainerModel : BaseControl_WithBackground, new()
 
 <g @ondragover:stopPropagation @ondrop="HandleDrop" @ondrop:stopPropagation>
@@ -15,6 +16,22 @@
                 @Item.GetView(@ZTContext)
             </g>
         }
+    }
+    @if(ZTContext.Designer.IsSelectedMutiControl && ((MultiControl)ZTContext.Designer.SelectedItem).Container==Model)
+    {
+        <BaseControlView T_BaseControl="MultiControl" Model="@((MultiControl)ZTContext.Designer.SelectedItem)" ZTContext="@ZTContext" >
+        </BaseControlView>
+    }
+    @if(ZTContext.Designer.MouseDownControlMeta!=null
+        && ZTContext.Designer.MouseDownControlMeta.MoveAction == MoveAction.Selecting
+        && ZTContext.Designer.MouseDownControlMeta.MoveControl== Model)
+    {
+    <g>
+        
+        <rect x="@ZTContext.Designer.MouseDownControlMeta.MoveRect.X" y="@ZTContext.Designer.MouseDownControlMeta.MoveRect.Y"
+            width="@ZTContext.Designer.MouseDownControlMeta.MoveRect.Width" height="@ZTContext.Designer.MouseDownControlMeta.MoveRect.Height" fill="#0078D7"
+            fill-opacity="0.2" stroke="#0078D7" stroke-width="1"></rect>                                
+    </g>
     }
 </BaseControl_WithBackgroundView>
 </g>

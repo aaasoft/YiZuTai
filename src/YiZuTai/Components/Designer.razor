@@ -172,16 +172,6 @@ else
                                     }
                                 }                                
                             </ContainerControlView>
-
-                            @if(MouseDownControlMeta!=null && MouseDownControlMeta.MoveAction == MoveAction.Selecting)
-                            {
-                            <g>
-                                
-                                <rect x="@MouseDownControlMeta.MoveRect.X" y="@MouseDownControlMeta.MoveRect.Y"
-                                    width="@MouseDownControlMeta.MoveRect.Width" height="@MouseDownControlMeta.MoveRect.Height" fill="#0078D7"
-                                    fill-opacity="0.2" stroke="#0078D7" stroke-width="1"></rect>                                
-                            </g>
-                            }
                         </svg>
                     </div>
                 </ContextMenuTrigger>
