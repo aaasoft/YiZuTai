@@ -30,28 +30,38 @@ else
         {
         <g>
             <!--虚线框，用于移动控件位置-->
-            @if(Model.IsContainer)
+            @if (Model.IsContainer)
             {
-                @if(!Model.IsLocked)
-                {
-                    <g style="cursor:move;" @onmousedown="@(e => sizerMouseDown(e, MoveAction.MoveLocation))">
-                        <rect fill-opacity="0" stroke="#0078D7" x="@(Model.Left + 1)"
-                                y="@(Model.Top - resize_box_width - 1)" width="@resize_box_width" height="@resize_box_width"
-                                >
+                <g style="cursor:move;" @onmousedown="@(e => sizerMouseDown(e, MoveAction.MoveLocation))">
+                    @if (!Model.IsLocked)
+                    {
+                        <rect fill-opacity="0" stroke="#0078D7" x="@(Model.Left + resize_box_width)" y="@(Model.Top - resize_box_width / 2)"
+                            width="@resize_box_width" height="@resize_box_width">
                         </rect>
-                        <line x1="@(Model.Left + 1)" y1="@(Model.Top - 1 - resize_box_width / 2)"
-                            x2="@(Model.Left + 1 + resize_box_width)" y2="@(Model.Top - 1 - resize_box_width / 2)"
-                            stroke="#0078D7" stroke-width="1" />
-                        <line x1="@(Model.Left + 1 + resize_box_width / 2)" y1="@(Model.Top - 1 - resize_box_width)"
-                            x2="@(Model.Left + 1 + resize_box_width/2)" y2="@(Model.Top - 1)"
-                            stroke="#0078D7" stroke-width="1" />
-                    </g>
-                }
+                        <line x1="@(Model.Left + resize_box_width)" y1="@(Model.Top)"
+                            x2="@(Model.Left + resize_box_width + resize_box_width)" y2="@(Model.Top)" stroke="#0078D7"
+                            stroke-width="1" />
+                        <line x1="@(Model.Left + resize_box_width + resize_box_width / 2)" y1="@(Model.Top - resize_box_width / 2)"
+                            x2="@(Model.Left + resize_box_width + resize_box_width / 2)" y2="@(Model.Top + resize_box_width / 2)" stroke="#0078D7" stroke-width="1" />
+                    }
+                    <line x1="@(Model.Left)" y1="@(Model.Top)"
+                        x2="@(Model.Left + Model.Width)" y2="@(Model.Top)" stroke="#0078D7" stroke-width="1" />
+                        
+                    <line x1="@(Model.Left + Model.Width)" y1="@(Model.Top)"
+                        x2="@(Model.Left + Model.Width)" y2="@(Model.Top + Model.Height)" stroke="#0078D7" stroke-width="1" />
+
+                    <line x1="@(Model.Left)" y1="@(Model.Top + Model.Height)"
+                        x2="@(Model.Left + Model.Width)" y2="@(Model.Top + Model.Height)" stroke="#0078D7" stroke-width="1" />
+
+                    <line x1="@(Model.Left)" y1="@(Model.Top)"
+                        x2="@(Model.Left)" y2="@(Model.Top + Model.Height)" stroke="#0078D7" stroke-width="1" />
+                </g>
+
             }
             else
             {
-                <rect fill-opacity="0" stroke="#0078D7" stroke-dasharray="4" stroke-width="1" x="@Model.Left" y="@Model.Top"
-                    width="@Model.Width" height="@Model.Height" style="@(Model.IsLocked ? "cursor:not-allowed;" : "cursor:move;")"
+                <rect fill-opacity="0" stroke="#0078D7" stroke-width="1" x="@(Model.Left)" y="@(Model.Top)"
+                    width="@(Model.Width)" height="@(Model.Height)" style="@(Model.IsLocked ? "cursor:not-allowed;" : "cursor:move;")"
                     @onmousedown="@(e => sizerMouseDown(e, MoveAction.MoveLocation))" />
             }
             @if (!Model.IsLocked)
@@ -60,51 +70,48 @@ else
                 @if (Model is not MultiControl && Model.CanRotate)
                 {
                     <g>
-                        <line x1="@(Model.Left + Model.Width / 2)" y1="@(Model.Top - resize_box_width * 3)"
-                            x2="@(Model.Left + Model.Width / 2)" y2="@(Model.Top - resize_box_width * 3 + resize_box_width * 2)"
-                            stroke="#0078D7" stroke-dasharray="4" stroke-width="1" />
-                        <circle stroke="#0078D7" fill="#0078D7" fill-opacity="0.2" style="cursor: crosshair;"
-                            cx="@(Model.Left + Model.Width / 2)" cy="@(Model.Top - resize_box_width * 3 - resize_box_width / 2)"
-                            r="@(resize_box_width * 2 / 3)" @onmousedown="@(e => sizerMouseDown(e, MoveAction.Rotate))" />
+                        <circle fill="#FFFFFF" stroke="#0078D7" style="cursor: crosshair;"
+                            cx="@(Model.Left + Model.Width / 2)" cy="@(Model.Top - resize_box_width - resize_box_width / 2)"
+                            r="@(resize_box_width / 2)" @onmousedown="@(e => sizerMouseDown(e, MoveAction.Rotate))" />
                     </g>
                 }
                 <!--左上角大小调整-->
-                <rect fill-opacity="0" stroke="#0078D7" stroke-width="1" x="@(Model.Left - resize_box_width - 1)"
-                    y="@(Model.Top - resize_box_width - 1)" width="@resize_box_width" height="@resize_box_width"
+                <rect fill="#FFFFFF" stroke="#0078D7" stroke-width="1" x="@(Model.Left - resize_box_width / 2)"
+                    y="@(Model.Top - resize_box_width / 2)" width="@resize_box_width" height="@resize_box_width"
                     style="cursor:@getSizerCursor(315);" @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeLeftTop))">
                 </rect>
                 <!--上方大小调整-->
-                <rect fill-opacity="0" stroke="#0078D7" stroke-width="1"
-                    x="@(Model.Left + (Model.Width - resize_box_width) / 2)" y="@(Model.Top - resize_box_width - 1)"
+                <rect fill="#FFFFFF" stroke="#0078D7" stroke-width="1"
+                    x="@(Model.Left + Model.Width / 2 - resize_box_width / 2)" y="@(Model.Top - resize_box_width / 2)"
                     width="@resize_box_width" height="@resize_box_width" style="cursor:@getSizerCursor(0);"
                     @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeTop))"></rect>
                 <!--右上角大小调整-->
-                <rect fill-opacity="0" stroke="#0078D7" stroke-width="1" x="@(Model.Left + Model.Width + 1)"
-                    y="@(Model.Top - resize_box_width - 1)" width="@resize_box_width" height="@resize_box_width"
+                <rect fill="#FFFFFF" stroke="#0078D7" stroke-width="1" x="@(Model.Left + Model.Width - resize_box_width / 2)"
+                    y="@(Model.Top - resize_box_width / 2)" width="@resize_box_width" height="@resize_box_width"
                     style="cursor:@getSizerCursor(45);" @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeRightTop))">
                 </rect>
                 <!--右侧大小调整-->
-                <rect fill-opacity="0" stroke="#0078D7" stroke-width="1" x="@(Model.Left + Model.Width + 1)"
-                    y="@(Model.Top + (Model.Height - resize_box_width) / 2)" width="@resize_box_width"
+                <rect fill="#FFFFFF" stroke="#0078D7" stroke-width="1" x="@(Model.Left + Model.Width - resize_box_width / 2)"
+                    y="@(Model.Top + Model.Height / 2 - resize_box_width / 2)" width="@resize_box_width"
                     height="@resize_box_width" style="cursor:@getSizerCursor(90);"
                     @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeRight))"></rect>
                 <!--右下角大小调整-->
-                <rect fill-opacity="0" stroke="#0078D7" stroke-width="1" x="@(Model.Left + Model.Width + 1)"
-                    y="@(Model.Top + Model.Height + 1)" width="@resize_box_width" height="@resize_box_width"
+                <rect fill="#FFFFFF" stroke="#0078D7" stroke-width="1" x="@(Model.Left + Model.Width - resize_box_width / 2)"
+                    y="@(Model.Top + Model.Height - resize_box_width / 2)" width="@resize_box_width" height="@resize_box_width"
                     cursor="@getSizerCursor(135)" @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeRightBottom))"></rect>
                 <!--下方大小调整-->
-                <rect fill-opacity="0" stroke="#0078D7" stroke-width="1"
-                    x="@(Model.Left + (Model.Width - resize_box_width) / 2)" y="@(Model.Top + Model.Height + 1)"
+                <rect fill="#FFFFFF" stroke="#0078D7" stroke-width="1"
+                    x="@(Model.Left + Model.Width / 2 - resize_box_width / 2)" y="@(Model.Top + Model.Height - resize_box_width / 2)"
                     width="@resize_box_width" height="@resize_box_width" style="cursor:@getSizerCursor(180);"
                     @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeBottom))"></rect>
                 <!--左下角大小调整-->
-                <rect fill-opacity="0" stroke="#0078D7" stroke-width="1" x="@(Model.Left - resize_box_width - 1)"
-                    y="@(Model.Top + Model.Height + 1)" width="@resize_box_width" height="@resize_box_width"
+                <rect fill="#FFFFFF" stroke="#0078D7" stroke-width="1" x="@(Model.Left - resize_box_width / 2)"
+                    y="@(Model.Top + Model.Height - resize_box_width / 2)" width="@resize_box_width" height="@resize_box_width"
                     style="cursor:@getSizerCursor(225);" @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeLeftBottom))">
                 </rect>
                 <!--左侧大小调整-->
-                <rect fill-opacity="0" stroke="#0078D7" stroke-width="1" x="@(Model.Left - resize_box_width - 1)"
-                    y="@(Model.Top + (Model.Height - resize_box_width) / 2)" width="@resize_box_width"
+                <rect fill="#FFFFFF" stroke="#0078D7" stroke-width="1" x="@(Model.Left - resize_box_width / 2)"
+                    y="@(Model.Top + Model.Height / 2 - resize_box_width / 2)" width="@resize_box_width"
                     height="@resize_box_width" style="cursor:@getSizerCursor(270);"
                     @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeLeft))"></rect>
             }
