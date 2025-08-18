@@ -426,10 +426,13 @@ new YiZuTai.Window({{
             {
                 foreach (var item in multiControl.Items)
                     removeControl(item);
+                SelectedItem = multiControl.Container;
             }
             else
             {
+                var parent = FindControlParent(Project, SelectedItem);
                 removeControl(SelectedItem);
+                SelectedItem = parent;
             }
         }
 
