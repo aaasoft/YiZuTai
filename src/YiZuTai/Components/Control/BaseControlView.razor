@@ -397,12 +397,13 @@ else
 
         private Func<BaseControl, Point> resizeModel_FormCorner(BaseControl model, double newWidth, double newHeight, Func<BaseControl, Point> getBasePointFunc, MouseEventArgs mouseEventArgs)
         {
-            //如果是按住Shift键，则拉伸缩放，保持指定点位置不变
+            //如果是按住Shift键，则按比例缩放，保持左上点位置不变
             if (mouseEventArgs.ShiftKey)
             {
-                model.SetWidthToGrid(ZTContext.Project.DesignGridSize, newWidth);
-                model.SetHeightToGrid(ZTContext.Project.DesignGridSize, newHeight);
-                return getBasePointFunc;
+                var maxScale = Math.Max(newWidth / ZTContext.Designer.MouseDownControlMeta.Width, newHeight / ZTContext.Designer.MouseDownControlMeta.Height);
+                model.SetWidthToGrid(ZTContext.Project.DesignGridSize, ZTContext.Designer.MouseDownControlMeta.Width * maxScale);
+                model.SetHeightToGrid(ZTContext.Project.DesignGridSize, ZTContext.Designer.MouseDownControlMeta.Height * maxScale);
+                return getBasePointFunc;                
             }
             //如果是按住Control键，则按比例缩放，保持中心点位置不变
             else if (mouseEventArgs.CtrlKey)
@@ -414,10 +415,9 @@ else
             }
             else
             {
-                //默认，则按比例缩放，保持左上点位置不变
-                var maxScale = Math.Max(newWidth / ZTContext.Designer.MouseDownControlMeta.Width, newHeight / ZTContext.Designer.MouseDownControlMeta.Height);
-                model.SetWidthToGrid(ZTContext.Project.DesignGridSize, ZTContext.Designer.MouseDownControlMeta.Width * maxScale);
-                model.SetHeightToGrid(ZTContext.Project.DesignGridSize, ZTContext.Designer.MouseDownControlMeta.Height * maxScale);
+                //默认，则拉伸缩放，保持指定点位置不变
+                model.SetWidthToGrid(ZTContext.Project.DesignGridSize, newWidth);
+                model.SetHeightToGrid(ZTContext.Project.DesignGridSize, newHeight);
                 return getBasePointFunc;
             }
         }
