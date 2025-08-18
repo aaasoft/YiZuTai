@@ -78,6 +78,7 @@ namespace YiZuTai.Components
                 _SelectedItem = value;
                 PropertyGridSelectedField = null;
                 NotifyBrowserWindowResize();
+                InvokeAsync(StateHasChanged);
             }
         }
 
@@ -471,8 +472,23 @@ new YiZuTai.Window({{
             if (item is MultiControl)
                 return;
             var parent = findParent(Project, item);
-            setControlIndex(parent,item, getNewIndexFunc(getControlIndex(parent,item)));
+            setControlIndex(parent, item, getNewIndexFunc(getControlIndex(parent, item)));
             SelectedItem = item;
+        }
+        
+        //鼠标按下时控件信息
+        public ControlMeta MouseDownControlMeta { get; set; }
+
+        public Point getMouseLocation_RelativeToCanvas(MouseEventArgs e)
+        {
+            var x = e.OffsetX;
+            var y = e.OffsetY;
+            if (DesignScale != 100)
+            {
+                x /= DesignScale * 1D / 100;
+                y /= DesignScale * 1D / 100;
+            }
+            return new Point(x, y);
         }
     }
 }
