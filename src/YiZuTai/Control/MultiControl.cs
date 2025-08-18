@@ -7,7 +7,9 @@ namespace YiZuTai.Control;
 
 public class MultiControl : BaseControl
 {
-    private Project canvas;
+    private int GridSize;
+    public BaseControl Container { get; private set; }
+
     [Browsable(false)]
     public List<BaseControl> Items { get; set; } = new List<BaseControl>();
     private bool isGroup = false;
@@ -16,9 +18,10 @@ public class MultiControl : BaseControl
     public override bool IsGroupControl => isGroup;
 
     public MultiControl() { }
-    public MultiControl(Project canvas, IEnumerable<BaseControl> items)
+    public MultiControl(BaseControl container, int gridSize, IEnumerable<BaseControl> items)
     {
-        this.canvas = canvas;
+        Container = container;
+        GridSize = gridSize;
         foreach (var item in items)
             AddControl(item);
         onItemsChanged();
@@ -79,7 +82,7 @@ public class MultiControl : BaseControl
         foreach (var item in Items)
             handler(item);
     }
-    
+
     public override double Angle
     {
         get => base.Angle;
@@ -129,7 +132,7 @@ public class MultiControl : BaseControl
         {
             var offset = value - base.Left;
             base.Left = value;
-            travelItems(item => item.SetLeftToGrid(canvas, item.Left + offset));
+            travelItems(item => item.SetLeftToGrid(GridSize, item.Left + offset));
         }
     }
 
@@ -142,7 +145,7 @@ public class MultiControl : BaseControl
         {
             var offset = value - base.Top;
             base.Top = value;
-            travelItems(item => item.SetTopToGrid(canvas, item.Top + offset));
+            travelItems(item => item.SetTopToGrid(GridSize, item.Top + offset));
         }
     }
     [JsonIgnore]
@@ -154,7 +157,7 @@ public class MultiControl : BaseControl
         {
             var offset = value - base.Width;
             base.Width = value;
-            travelItems(item => item.SetWidthToGrid(canvas, item.Width + offset));
+            travelItems(item => item.SetWidthToGrid(GridSize, item.Width + offset));
         }
     }
     [JsonIgnore]
@@ -166,7 +169,7 @@ public class MultiControl : BaseControl
         {
             var offset = value - base.Height;
             base.Height = value;
-            travelItems(item => item.SetHeightToGrid(canvas, item.Height + offset));
+            travelItems(item => item.SetHeightToGrid(GridSize, item.Height + offset));
         }
     }
 }

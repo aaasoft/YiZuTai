@@ -219,7 +219,7 @@ namespace YiZuTai.Components
                 switch (e.Code)
                 {
                     case "KeyA":
-                        SelectedItem = new MultiControl(Project, Project.Controls);
+                        SelectedItem = new MultiControl(Project, Project.DesignGridSize, Project.Controls);
                         return;
                     case "KeyX":
                         if (SelectedItem == null)
@@ -415,7 +415,7 @@ new YiZuTai.Window({{
                 {
                     foreach (var item in multiControl.Items)
                         addControl(item);
-                    SelectedItem = new MultiControl(Project, multiControl.Items);
+                    SelectedItem = new MultiControl(Project, Project.DesignGridSize, multiControl.Items);
                 }
                 else
                 {

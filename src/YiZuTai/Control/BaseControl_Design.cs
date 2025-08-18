@@ -28,43 +28,43 @@ namespace YiZuTai.Control
         public virtual bool IsContainer => false;
 
         //让控件左边距对齐到网格
-        public void SetLeftToGrid(Project canvas, double newLeft)
+        public void SetLeftToGrid(int designGridSize, double newLeft)
         {
-            newLeft += canvas.DesignGridSize / 2;
+            newLeft += designGridSize / 2;
             if (newLeft >= 0)
-                newLeft -= newLeft % canvas.DesignGridSize;
+                newLeft -= newLeft % designGridSize;
             else
-                newLeft += newLeft % canvas.DesignGridSize;
+                newLeft += newLeft % designGridSize;
 
             Left = newLeft;
         }
         //让控件上边距对齐到网格
-        public void SetTopToGrid(Project canvas, double newTop)
+        public void SetTopToGrid(int designGridSize, double newTop)
         {
-            newTop += canvas.DesignGridSize / 2;
+            newTop += designGridSize / 2;
             if (newTop >= 0)
-                newTop -= newTop % canvas.DesignGridSize;
+                newTop -= newTop % designGridSize;
             else
-                newTop += newTop % canvas.DesignGridSize;
+                newTop += newTop % designGridSize;
 
             Top = newTop;
         }
         //让控件宽度对齐到网格
-        public void SetWidthToGrid(Project canvas, double newWidth)
+        public void SetWidthToGrid(int designGridSize, double newWidth)
         {
-            newWidth -= newWidth % canvas.DesignGridSize;
+            newWidth -= newWidth % designGridSize;
             if (newWidth <= 0)
-                newWidth = canvas.DesignGridSize;
+                newWidth = designGridSize;
 
             Width = newWidth;
         }
 
         //让控件高度对齐到网格
-        public void SetHeightToGrid(Project canvas, double newHeight)
+        public void SetHeightToGrid(int designGridSize, double newHeight)
         {
-            newHeight -= newHeight % canvas.DesignGridSize;
+            newHeight -= newHeight % designGridSize;
             if (newHeight <= 0)
-                newHeight = canvas.DesignGridSize;
+                newHeight = designGridSize;
             Height = newHeight;
         }
 
