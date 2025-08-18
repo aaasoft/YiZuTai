@@ -155,19 +155,6 @@ namespace YiZuTai.Components
             dragingControlAttr = controlAttr;
         }
 
-        // ondrop事件处理方法
-        private void HandleDrop(DragEventArgs e)
-        {
-            if (dragingControlAttr == null)
-                return;
-            var newLocation = getMouseLocation_RelativeToCanvas(e);
-            var control = dragingControlAttr.CreateInstance();
-            control.Left = newLocation.X - control.Width / 2;
-            control.Top = newLocation.Y - control.Height / 2;
-            addControl(control, Project);
-            control.OnDragDropCreate(newLocation);
-        }
-
         private void Controls_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)

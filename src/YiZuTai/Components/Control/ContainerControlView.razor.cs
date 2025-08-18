@@ -7,5 +7,6 @@ namespace YiZuTai.Components.Control;
 
 public partial class ContainerControlView<TContainerModel>
 {
-    
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
 }

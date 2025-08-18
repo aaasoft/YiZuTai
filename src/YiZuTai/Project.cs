@@ -14,18 +14,12 @@ namespace YiZuTai
 {
     public class Project : BaseControl_WithBackground
     {
+        public override bool IsContainer => true;
         public override ObservableCollection<BaseControl> Controls { get; set; } = new ObservableCollection<BaseControl>();
         [JsonIgnore]
         [Browsable(false)]
         public override string Name => "画布";
-        [JsonIgnore]
-        [Browsable(false)]
-        public override bool Visiable => false;
-
-        [JsonIgnore]
-        [Browsable(false)]
-        public override double Opacity { get; set; }
-
+        
         [JsonIgnore]
         [Browsable(false)]
         public override double Left { get; set; }
@@ -44,48 +38,26 @@ namespace YiZuTai
 
         [JsonIgnore]
         [Browsable(false)]
-        public override double BackgroundOpacity { get; set; }
-
-        [JsonIgnore]
-        [Browsable(false)]
         public override IHyperLinkSource HyperLinkSource { get; set; }
 
         //前景
-        private string _Foreground = "#ffffff";
-        [Category("前景")]
-        [DisplayName("前景颜色")]
-        [Description("控件的前景颜色")]
+        private string _BodyColor = "#A9A9A9";
+        [Category("网页")]
+        [DisplayName("颜色")]
         [Editor(typeof(EditorInputColor), typeof(EditorInputColor))]
-        public virtual string Foreground
+        public virtual string BodyColor
         {
-            get { return _Foreground; }
+            get { return _BodyColor; }
             set
             {
-                _Foreground = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private double _ForegroundOpacity = 1;
-        [Category("前景")]
-        [DisplayName("前景透明")]
-        [Description("控件的前景透明度")]
-        [Editor(typeof(EditorInputRange), typeof(EditorInputRange))]
-        [Range(0, 1)]
-        [StringLength(100)]
-        public double ForegroundOpacity
-        {
-            get { return _ForegroundOpacity; }
-            set
-            {
-                _ForegroundOpacity = value;
+                _BodyColor = value;
                 RaisePropertyChanged();
             }
         }
 
         private string _Image;
-        [Category("前景")]
-        [DisplayName("前景图片")]
+        [Category("背景")]
+        [DisplayName("图片")]
         [Description("画布上要显示的图片")]
         [Editor(typeof(EditorInputImage), typeof(EditorInputImage))]
         public string Image
@@ -133,7 +105,7 @@ namespace YiZuTai
         {
             get
             {
-                var foreground = ColorUtils.ParseColor(Foreground);
+                var foreground = ColorUtils.ParseColor(BodyColor);
                 return ColorUtils.GetRGBString(Color.FromArgb(
                         0,
                         (byte)(255 - foreground.R),
@@ -147,7 +119,8 @@ namespace YiZuTai
         {
             Width = 800;
             Height = 600;
-            Background = "#a9a9a9";
+            Background = "#FFFFFF";
+            BackgroundOpacity = 1;
         }
 
         protected override Type GetViewType()
@@ -169,6 +142,8 @@ namespace YiZuTai
         }
 
         public IEnumerable<BaseControl> GetAllControls() => GetControlAllControls(this);
+
+        
 
         public void CheckAndModifyControlName(BaseControl control)
         {

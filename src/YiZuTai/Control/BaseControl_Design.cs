@@ -120,7 +120,7 @@ namespace YiZuTai.Control
         /// </summary>
         public void OnDoubleClick()
         {
-            View.OnDoubleClick();
+            View?.OnDoubleClick();
         }
 
         /// <summary>

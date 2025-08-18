@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Builder
+@using YiZuTai.Components.Control
 @using YiZuTai.Core.Utils
 @using YiZuTai.Enums
 <PageTitle>@Model?.Name - 展示 - 易组态</PageTitle>
@@ -38,28 +39,13 @@ else
                     width="@(Project.Stretch == Stretch.None ? Project.Width + "px" : "100%")"
                     height="@(Project.Stretch == Stretch.None ? Project.Height + "px" : "100%")"
                     viewBox="00 00 @Project.Width @Project.Height" preserveAspectRatio="@preserveAspectRatio">
-                    <!--====画布部分====-->
-                    <g>
-                        <rect fill="@Project.Foreground" fill-opacity="@Project.ForegroundOpacity" rx="@Project.CornerRadius"
-                            ry="@Project.CornerRadius" stroke="@Project.Border" stroke-opacity="@Project.BorderOpacity"
-                            stroke-width="@Project.BorderThickness" x="0" y="0" width="@Project.Width" height="@Project.Height">
-                        </rect>
-                        @if (!string.IsNullOrEmpty(Project.Image))
-                        {
-                            <image href="@Core.ZTFile.GetStaticResourceUrl(Model.Id, Project.Image)" width="100%" height="100%"
-                                preserveAspectRatio="none"></image>
-                        }
-                    </g>
-                    <!--====控件SVG部分====-->
-                    @foreach (var Item in Project.Controls)
-                    {
-                        <a style="@GetControlALinkStyle(Item)" @onclick="@(e => OnControlClick(Item))">
-                            <g filter="#"
-                                transform="rotate(@Item.Angle @Item.CenterPointLocation.X, @Item.CenterPointLocation.Y) translate(0, 0) scale(1)">
-                                @Item.GetView(ZTContext)
-                            </g>
-                        </a>
-                    }
+                        <!--====画布部分====-->
+                        <ContainerControlView TContainerModel="Project" Model="Project" ZTContext="ZTContext">
+                            @if (!string.IsNullOrEmpty(Project.Image))
+                            {
+                                <image href="@Core.ZTFile.GetStaticResourceUrl(Model.Id, Project.Image)" width="100%" height="100%" preserveAspectRatio="none"></image>
+                            }
+                        </ContainerControlView>
                 </svg>
                 <!--====控件HTML部分====-->
                 @foreach (var Item in Project.GetAllControls())
