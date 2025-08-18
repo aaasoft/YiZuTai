@@ -32,7 +32,21 @@ else
             <!--虚线框，用于移动控件位置-->
             @if(Model.IsContainer)
             {
-
+                @if(!Model.IsLocked)
+                {
+                    <g style="cursor:move;" @onmousedown="@(e => sizerMouseDown(e, MoveAction.MoveLocation))">
+                        <rect fill-opacity="0" stroke="#0078D7" x="@(Model.Left + 1)"
+                                y="@(Model.Top - resize_box_width - 1)" width="@resize_box_width" height="@resize_box_width"
+                                >
+                        </rect>
+                        <line x1="@(Model.Left + 1)" y1="@(Model.Top - 1 - resize_box_width / 2)"
+                            x2="@(Model.Left + 1 + resize_box_width)" y2="@(Model.Top - 1 - resize_box_width / 2)"
+                            stroke="#0078D7" stroke-width="1" />
+                        <line x1="@(Model.Left + 1 + resize_box_width / 2)" y1="@(Model.Top - 1 - resize_box_width)"
+                            x2="@(Model.Left + 1 + resize_box_width/2)" y2="@(Model.Top - 1)"
+                            stroke="#0078D7" stroke-width="1" />
+                    </g>
+                }
             }
             else
             {

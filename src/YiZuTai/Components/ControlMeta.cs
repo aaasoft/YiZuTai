@@ -24,8 +24,8 @@ public class ControlMeta : BaseControl
         EndLocation = endLocation;
         MoveRect = new Rect()
         {
-            X = Math.Min(StartLocation.X, EndLocation.X),
-            Y = Math.Min(StartLocation.Y, EndLocation.Y),
+            X = Math.Min(StartLocation.X, EndLocation.X) - MoveControl.Left,
+            Y = Math.Min(StartLocation.Y, EndLocation.Y) - MoveControl.Top,
             Width = Math.Abs(StartLocation.X - EndLocation.X),
             Height = Math.Abs(StartLocation.Y - EndLocation.Y)
         };
