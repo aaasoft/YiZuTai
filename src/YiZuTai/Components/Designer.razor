@@ -147,13 +147,14 @@ else
                     }
                 </ContextMenu>
                 <ContextMenuTrigger MenuId="designMenu">
-                    <div id="divCanvas" tabindex="0" class="card-body text-center p-0 overflow-auto" style="background-color: @Project.BodyColor;">
+                    <div id="divCanvas" tabindex="0" class="card-body text-center p-0 overflow-auto" style="background-color: @Project.BodyColor;align-content: center;" @onmousemove="@(e=> { })">
                         <!--====控件部分====-->
                     <svg id="svgCanvas" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xhtml="http://www.w3.org/1999/xhtml"
                             width="@(Project.Width*DesignScale/100)" height="@(Project.Height*DesignScale/100)"
                             viewBox="00 00 @Project.Width @Project.Height"
                             preserveAspectRatio="none"
-                            ondragover="event.preventDefault();">
+                            ondragover="event.preventDefault();"
+                            style="margin: 1em;">
                             <!--====画布部分====-->
                             <ContainerControlView TContainerModel="Project" Model="Project" ZTContext="ZTContext">
                                 @if (!string.IsNullOrEmpty(Project.Image))

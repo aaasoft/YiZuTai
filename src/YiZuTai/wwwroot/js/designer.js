@@ -39,7 +39,6 @@ YiZuTai.Designer = {
         //如果没有改变
         if (svgCanvasStyleMarginTop == svgCanvas.style.marginTop)
             return false;
-        svgCanvas.style.marginTop = svgCanvasStyleMarginTop;
         return true;
     },
     LoopOnResizeFunc: function () {

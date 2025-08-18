@@ -54,7 +54,7 @@ namespace YiZuTai.Components
         public bool ShowToolBox = true;
         public bool ShowPropertyBox = true;
 
-        private void NotifyBrowserWindowResize()
+        public void NotifyBrowserWindowResize()
         {
             Task.Delay(10).ContinueWith(t => JSRuntime.InvokeVoidAsync("YiZuTai.Designer.OnResizeFunc"));
         }
