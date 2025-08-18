@@ -18,7 +18,8 @@ else
     <g onpointerdown="YiZuTai.Designer.SetPointerCapture(event)"
             onpointerup="YiZuTai.Designer.ReleasePointerCapture(event)"
             @onmousedown="@(e => onControlMouseDown(e,Model))"
-            @onmousemove="onMouseMove"    
+            @onmousedown:stopPropagation
+            @onmousemove="onMouseMove"
             @onmouseup="onMouseUp"
             @ondblclick="@(e=>Model.OnDoubleClick())">
         <svg id="svg_@Model.Name" version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -165,6 +166,28 @@ else
             return null;
         }
 
+        
+        public Point getMouseLocation_RelativeToControl(MouseEventArgs e)
+        {
+            var x = e.OffsetX;
+            var y = e.OffsetY;
+            if (ZTContext.Designer.DesignScale != 100)
+            {
+                x /= ZTContext.Designer.DesignScale * 1D / 100;
+                y /= ZTContext.Designer.DesignScale * 1D / 100;
+            }
+            BaseControl currentControl=Model;
+            while(true)
+            {
+                currentControl =ZTContext.Designer.FindControlParent(ZTContext.Designer.Project, currentControl);
+                if(currentControl==null)
+                    break;
+                x-=currentControl.Left;
+                y-=currentControl.Top;
+            }
+            return new Point(x, y);
+        }
+
         /// <summary>
         /// 调整模型大小
         /// </summary>
@@ -230,7 +253,7 @@ else
             if (ZTContext.Designer.MouseDownControlMeta == null || Model != ZTContext.Designer.MouseDownControlMeta.MoveControl)
                 return;
 
-            var newLocation = ZTContext.Designer.getMouseLocation_RelativeToCanvas(e);
+            var newLocation = getMouseLocation_RelativeToControl(e);
             if (ZTContext.Designer.MouseDownControlMeta.MoveAction == MoveAction.Selecting)
             {
                 ZTContext.Designer.MouseDownControlMeta.SetEndLocation(newLocation);
@@ -427,7 +450,7 @@ else
             //如果已锁定，则不处理
             if (Model.IsLocked)
                 return;
-            var mouseLocation =ZTContext.Designer.getMouseLocation_RelativeToCanvas(e);
+            var mouseLocation =getMouseLocation_RelativeToControl(e);
             ZTContext.Designer.MouseDownControlMeta = new ControlMeta(moveAction, mouseLocation, Model);
         }
 

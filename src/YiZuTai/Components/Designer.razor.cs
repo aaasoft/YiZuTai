@@ -433,21 +433,21 @@ new YiZuTai.Window({{
             }
         }
 
-        private BaseControl findParent(BaseControl parent, BaseControl control)
+        public BaseControl FindControlParent(BaseControl root, BaseControl control)
         {
-            if (parent.Controls != null)
+            if (root.Controls != null)
             {
-                if (parent.Controls.Contains(control))
-                    return parent;
-                foreach (var child in parent.Controls.Where(t => t.IsContainer))
-                    return findParent(child, control);
+                if (root.Controls.Contains(control))
+                    return root;
+                foreach (var child in root.Controls.Where(t => t.IsContainer))
+                    return FindControlParent(child, control);
             }
             return null;
         }
 
         private void removeControl(BaseControl control)
         {
-            var parent = findParent(Project, control);
+            var parent = FindControlParent(Project, control);
             if (parent == null)
                 return;
             parent.Controls.Remove(control);
@@ -471,24 +471,12 @@ new YiZuTai.Window({{
                 return;
             if (item is MultiControl)
                 return;
-            var parent = findParent(Project, item);
+            var parent = FindControlParent(Project, item);
             setControlIndex(parent, item, getNewIndexFunc(getControlIndex(parent, item)));
             SelectedItem = item;
         }
         
         //鼠标按下时控件信息
         public ControlMeta MouseDownControlMeta { get; set; }
-
-        public Point getMouseLocation_RelativeToCanvas(MouseEventArgs e)
-        {
-            var x = e.OffsetX;
-            var y = e.OffsetY;
-            if (DesignScale != 100)
-            {
-                x /= DesignScale * 1D / 100;
-                y /= DesignScale * 1D / 100;
-            }
-            return new Point(x, y);
-        }
     }
 }
