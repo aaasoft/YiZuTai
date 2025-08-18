@@ -203,9 +203,9 @@ else
                                     {
                                         <option value="@SelectedItem.Name">@SelectedItem.Name</option>
                                     }
-                                    @foreach (var item in Project.GetAllControls())
+                                    @foreach (var item in Project.Controls)
                                     {
-                                    <option value="@item.Name">@item.Name</option>
+                                        <BaseControlSelectOptionView Model="item"></BaseControlSelectOptionView>
                                     }
                             </InputSelect>
                         </div>

@@ -1,0 +1,17 @@
+﻿@using YiZuTai.Control
+<option value="@Model.Name">@string.Empty.PadRight(Level,'　')@Model.Name</option>
+@if (Model.IsContainer && Model.Controls != null)
+{
+    @foreach (var childModel in Model.Controls)
+    {
+        <BaseControlSelectOptionView Model="childModel" Level="@(Level + 1)">
+        </BaseControlSelectOptionView>
+    }
+}
+
+@code {
+    [Parameter]
+    public BaseControl Model { get; set; }
+    [Parameter]
+    public int Level { get; set; } = 0;
+}
