@@ -16,7 +16,7 @@
 }
 else
 {
-    <g onpointerdown="YiZuTai.Designer.SetPointerCapture(event)" onpointerup="YiZuTai.Designer.ReleasePointerCapture(event)"
+    <g onpointerdown="event.srcElement.setPointerCapture(event.pointerId)" onpointerup="event.srcElement.releasePointerCapture(event.pointerId)"
         @onmousedown="@(e => onControlMouseDown(e, Model))" @onmousedown:stopPropagation @onmousemove="onMouseMove"
         @onmouseup="onMouseUp" @ondblclick="@(e => Model.OnDoubleClick())">
         <svg id="svg_@Model.Name" version="1.0" xmlns="http://www.w3.org/2000/svg"
