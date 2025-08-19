@@ -52,6 +52,15 @@ else
                             <div class="btn-group mr-1">
                                 <button type="button" class="btn btn-secondary" title="源码" @onclick="ShowSourceCode">源码</button>
                             </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text" style="user-select: none;">样式</div>
+                                </div>
+                                <InputSelect class="form-control" @bind-Value="@Project.StyleShotcut">
+                                    <option value="样式-浅色">样式-浅色</option>
+                                    <option value="样式-深色">样式-深色</option>
+                                </InputSelect>
+                            </div>
                         </div>
                     </ChildContent>
                 </TabPane>
@@ -198,9 +207,9 @@ else
                                     {
                                         <BaseControlSelectOptionView Model="item"></BaseControlSelectOptionView>
                                     }
-                            </InputSelect>
+                                </InputSelect>
+                            </div>
                         </div>
-                    </div>
                     </EditForm>
                 </div>
                 <div id="divProperty" class="card-body p-0 mt-1 overflow-auto">

@@ -162,6 +162,37 @@ namespace YiZuTai
             while (true);
         }
 
+
+        private string _StyleShotcut = "样式-深色";
+        [Browsable(false)]
+        public string StyleShotcut
+        {
+            get { return _StyleShotcut; }
+            set
+            {
+                _StyleShotcut = value;
+                RaisePropertyChanged(nameof(StyleShotcut));
+                ApplyStyleShotcut();
+            }
+        }
+
+        public void ApplyStyleShotcut()
+        {
+            var list = new List<BaseControl>();
+            list.Add(this);
+            list.AddRange(GetAllControls());
+            foreach (var control in list)
+                ApplyStyleShotcut(control);
+        }
+
+        public void ApplyStyleShotcut(BaseControl control)
+        {
+            var shotcut = control.Shotcuts?.FirstOrDefault(t => t.Name == StyleShotcut);
+            if (shotcut == null)
+                return;
+            shotcut.ExecuteCommand.Execute(null);
+        }
+
         public override IControlShotcut[] Shotcuts =>
         [
             new ControlShotcut("样式-浅色", ()=>

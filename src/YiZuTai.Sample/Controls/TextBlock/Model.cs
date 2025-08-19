@@ -255,4 +255,16 @@ value   =>  当前值")]
         Value = new DataSources.Input() { Value = Name };
         ValueTriggers = new ObservableCollection<Trigger>();
     }
+
+    public override IControlShotcut[] Shotcuts =>
+    [
+        new ControlShotcut("样式-浅色", ()=>
+        {
+            Foreground = "#000000";
+        }),
+        new ControlShotcut("样式-深色", ()=>
+        {
+            Foreground = "#FFFFFF";
+        })
+    ];
 }
