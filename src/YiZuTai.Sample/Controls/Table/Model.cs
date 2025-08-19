@@ -202,4 +202,16 @@ public class Model : BaseControl_WithBackground
             RaisePropertyChanged();
         }
     }
+
+    public override IControlShotcut[] Shotcuts =>
+    [
+        new ControlShotcut("样式-浅色", ()=>
+        {
+            ColumnLineColor = RowLineColor = "#000000";
+        }),
+        new ControlShotcut("样式-深色", ()=>
+        {
+            ColumnLineColor = RowLineColor = "#FFFFFF";
+        })
+    ];
 }

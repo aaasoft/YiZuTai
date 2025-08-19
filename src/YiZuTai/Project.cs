@@ -119,6 +119,8 @@ namespace YiZuTai
         {
             Width = 800;
             Height = 600;
+
+            BodyColor = "#000000";
             Background = "#FFFFFF";
             BackgroundOpacity = 1;
         }
@@ -204,6 +206,21 @@ namespace YiZuTai
             {
                 Background = "#0F0F34";
                 BodyColor = "#000000";
+            }),
+            new ControlShotcut("尺寸-小(800*600)", ()=>
+            {
+                Width = 800;
+                Height = 600;
+            }),
+            new ControlShotcut("尺寸-中(1200*600)", ()=>
+            {
+                Width = 1200;
+                Height = 600;
+            }),
+            new ControlShotcut("尺寸-大(1920*1080)", ()=>
+            {
+                Width = 1920;
+                Height = 1080;
             })
         ];
     }
