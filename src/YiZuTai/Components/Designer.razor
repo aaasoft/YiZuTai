@@ -203,10 +203,33 @@ else
                     </div>
                     </EditForm>
                 </div>
-                <div id="divProperty" class="card-body p-0 overflow-auto">
-                    <EditForm Model="SelectedItem">
-                        <PropertyGrid SelectedObject="SelectedItem" @bind-SelectedField="PropertyGridSelectedField"></PropertyGrid>
-                    </EditForm>
+                <div id="divProperty" class="card-body p-0 mt-1 overflow-auto">
+                    <Tabs>
+                        <TabPane Key="property">
+                            <Tab>属性</Tab>
+                            <ChildContent>
+                                <div class="mt-1">
+                                    <EditForm Model="SelectedItem">
+                                        <PropertyGrid SelectedObject="SelectedItem" @bind-SelectedField="PropertyGridSelectedField"></PropertyGrid>
+                                    </EditForm>
+                                </div>
+                            </ChildContent>
+                        </TabPane>
+                        <TabPane Key="shotcut">
+                            <Tab>快捷</Tab>
+                            <ChildContent>
+                                <div class="p-1">
+                                    @if(SelectedItem.Shotcuts!=null && SelectedItem.Shotcuts.Length>0)
+                                    {
+                                        @foreach(var shotcut in SelectedItem.Shotcuts)
+                                        {
+                                            <button type="button" class="btn btn-secondary btn-block" @onclick="@(e=>executeShotcut(shotcut))">@shotcut.Name</button>
+                                        }
+                                    }
+                                </div>
+                            </ChildContent>
+                        </TabPane>
+                    </Tabs>                    
                 </div>
                 <div id="divPropertyDescription" class="card-footer" style="@PropertyGridSelectedFieldDescriptionStyle">
                     @if (PropertyGridSelectedField!=null)

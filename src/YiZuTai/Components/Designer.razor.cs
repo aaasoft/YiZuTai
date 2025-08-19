@@ -488,8 +488,21 @@ new YiZuTai.Window({{
             setControlIndex(parent, item, getNewIndexFunc(getControlIndex(parent, item)));
             SelectedItem = item;
         }
-        
+
         //鼠标按下时控件信息
         public ControlMeta MouseDownControlMeta { get; set; }
+
+        private void executeShotcut(IControlShotcut shotcut)
+        {
+            try
+            {
+                shotcut.ExecuteCommand.Execute(null);
+                onDesignChanged();
+            }
+            catch (Exception ex)
+            {
+                modalAlert.Show("错误", $"执行快捷操作[{shotcut.Name}]时出错，原因：{ExceptionUtils.GetExceptionMessage(ex)}");
+            }
+        }
     }
 }

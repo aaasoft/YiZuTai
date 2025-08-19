@@ -19,7 +19,7 @@ namespace YiZuTai
         [JsonIgnore]
         [Browsable(false)]
         public override string Name => "画布";
-        
+
         [JsonIgnore]
         [Browsable(false)]
         public override double Left { get; set; }
@@ -143,7 +143,7 @@ namespace YiZuTai
 
         public IEnumerable<BaseControl> GetAllControls() => GetControlAllControls(this);
 
-        
+
 
         public void CheckAndModifyControlName(BaseControl control)
         {
@@ -161,5 +161,19 @@ namespace YiZuTai
             }
             while (true);
         }
+
+        public override IControlShotcut[] Shotcuts =>
+        [
+            new ControlShotcut("样式-浅色", ()=>
+            {
+                Background = "#FFFFFF";
+                BodyColor = "#A9A9A9";
+            }),
+            new ControlShotcut("样式-深色", ()=>
+            {
+                Background = "#0F0F34";
+                BodyColor = "#000000";
+            })
+        ];
     }
 }
