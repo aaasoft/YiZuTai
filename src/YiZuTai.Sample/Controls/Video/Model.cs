@@ -31,7 +31,7 @@ public class Model : BaseControl
     [Category("视频")]
     [DisplayName("本地文件")]
     [Editor(typeof(EditorInputFile), typeof(EditorInputFile))]
-    [FileExtensions(Extensions ="*.mp4,*.webm,*.ogv,*.avi")]
+    [FileExtensions(Extensions = "*.mp4,*.webm,*.ogv,*.avi")]
     public string LocalFile
     {
         get { return _LocalFile; }
@@ -90,6 +90,19 @@ public class Model : BaseControl
         set
         {
             _Autoplay = value;
+            RaisePropertyChanged();
+        }
+    }
+    
+    private bool _VideoFill = true;
+    [Category("视频")]
+    [DisplayName("视频拉伸")]
+    public bool VideoFill
+    {
+        get { return _VideoFill; }
+        set
+        {
+            _VideoFill = value;
             RaisePropertyChanged();
         }
     }
