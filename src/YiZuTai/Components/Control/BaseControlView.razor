@@ -6,12 +6,10 @@
 @if (!ZTContext.DesignMode)
 {
     <g @onclick="@(e => Model.HyperLinkSource?.Execute(ZTContext))" style="cursor: @(Model.HyperLinkSource==null?"default":"pointer");">
-        <svg id="svg_@Model.Name" version="1.0" xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink" x="@Model.Left" y="@Model.Top" width="@Model.Width"
-            height="@Model.Height" opacity="@Model.Opacity" visibility="@(Model.Visiable ? "visible" : "hidden")"
+        <g id="svg_@Model.Name" transform="translate(@Model.Left, @Model.Top)" opacity="@Model.Opacity" visibility="@(Model.Visiable ? "visible" : "hidden")"
             @ref="svgElementReference">
             @ChildContent
-        </svg>
+        </g>
     </g>
 }
 else
@@ -19,12 +17,10 @@ else
     <g onpointerdown="event.srcElement.setPointerCapture(event.pointerId)" onpointerup="event.srcElement.releasePointerCapture(event.pointerId)"
         @onmousedown="@(e => onControlMouseDown(e, Model))" @onmousedown:stopPropagation @onmousemove="onMouseMove"
         @onmouseup="onMouseUp" @ondblclick="@(e => Model.OnDoubleClick())">
-        <svg id="svg_@Model.Name" version="1.0" xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink" x="@Model.Left" y="@Model.Top" width="@Model.Width"
-            height="@Model.Height" opacity="@Model.Opacity" visibility="@(Model.Visiable ? "visible" : "hidden")"
+        <g id="svg_@Model.Name" transform="translate(@Model.Left, @Model.Top)" opacity="@Model.Opacity" visibility="@(Model.Visiable ? "visible" : "hidden")"
             @ref="svgElementReference">
             @ChildContent
-        </svg>
+        </g>
         @if (Model == ZTContext.Designer.SelectedItem)
         {
             <g>

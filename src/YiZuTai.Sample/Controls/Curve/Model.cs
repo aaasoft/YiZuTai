@@ -53,7 +53,7 @@ public class Model : BaseControl_WithBackground
         get { return _StrokeWidth; }
         set
         {
-            if (value < 1)
+            if (value < 0)
                 return;
             _StrokeWidth = value;
             RaisePropertyChanged(nameof(StrokeWidth));
