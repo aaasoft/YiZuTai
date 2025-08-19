@@ -354,6 +354,15 @@ new YiZuTai.Window({{
                 container = SelectedItem;
             if (container == null)
                 container = Project;
+            //判断粘贴的控件有没有超出容器可视范围，则移动到可视范围内
+            if (control.Left + control.Width > container.Width)
+                control.Left = container.Width - control.Width;
+            if (control.Top + control.Height > container.Height)
+                control.Top = container.Height - control.Height;
+            if (control.Left < 0)
+                control.Left = 0;
+            if (control.Top < 0)
+                control.Top = 0;
             container.Controls.Add(control);
         }
 
@@ -408,6 +417,7 @@ new YiZuTai.Window({{
                 else
                 {
                     addControl(control);
+                    SelectedItem = control;
                 }
             }
             catch (Exception ex)
