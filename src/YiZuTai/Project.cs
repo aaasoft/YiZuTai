@@ -22,15 +22,27 @@ namespace YiZuTai
 
         [JsonIgnore]
         [Browsable(false)]
-        public override double Left { get; set; }
+        public override double Left
+        {
+            get { return 0; }
+            set { }
+        }
 
         [JsonIgnore]
         [Browsable(false)]
-        public override double Top { get; set; }
+        public override double Top
+        {
+            get { return 0; }
+            set { }
+        }
 
         [JsonIgnore]
         [Browsable(false)]
-        public override double Angle { get; set; }
+        public override double Angle
+        {
+            get { return 0; }
+            set { }
+        }
 
         [JsonIgnore]
         [Browsable(false)]

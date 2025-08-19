@@ -22,6 +22,8 @@ namespace YiZuTai.Components
 
         private string title = "设计 - 易组态";
 
+        private int DesignMargin = 6;
+
         private int _DesignScale = 100;
         /// <summary>
         /// 显示比例
