@@ -108,7 +108,7 @@ else
                 <div class="card-header" style="user-select: none;">
                     工具箱
                 </div>
-                <div id="divToolbox" class="card-body p-1 overflow-auto">
+                <div id="divToolbox" class="card-body p-1 overflow-auto" style="height: calc(100vh - 216px);">
                     <Quick.Blazor.Bootstrap.Accordion AllowMultiplePanelActived="true">
                         @foreach (var group in ControlManager.Instance.GetItems().GroupBy(t => t.Category))
                         {    
@@ -156,7 +156,7 @@ else
                     }
                 </ContextMenu>
                 <ContextMenuTrigger MenuId="designMenu">
-                    <div id="divCanvas" tabindex="0" class="card-body text-center p-0 overflow-auto" style="background-color: @Project.BodyColor;align-content: center;" @onmousemove="@(e=> { })">
+                    <div id="divCanvas" tabindex="0" class="card-body text-center p-0 overflow-auto" style="background-color: @Project.BodyColor;align-content: center;height: calc(100vh - 120px);" @onmousemove="@(e=> { })">
                         <!--====控件部分====-->
                     <svg id="svgCanvas" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xhtml="http://www.w3.org/1999/xhtml"
                             width="@(Project.Width*DesignScale/100)" height="@(Project.Height*DesignScale/100)"
@@ -212,12 +212,12 @@ else
                         </div>
                     </EditForm>
                 </div>
-                <div id="divProperty" class="card-body p-0 mt-1 overflow-auto">
+                <div id="divProperty" class="card-body p-0 mt-1">
                     <Tabs>
                         <TabPane Key="property">
                             <Tab>属性</Tab>
                             <ChildContent>
-                                <div class="mt-1">
+                                <div class="overflow-auto mt-1" style="height: calc(100vh - 216px);">
                                     <EditForm Model="SelectedItem">
                                         <PropertyGrid SelectedObject="SelectedItem" @bind-SelectedField="PropertyGridSelectedField"></PropertyGrid>
                                     </EditForm>
@@ -227,7 +227,7 @@ else
                         <TabPane Key="shotcut">
                             <Tab>快捷</Tab>
                             <ChildContent>
-                                <div class="p-1">
+                                <div class="overflow-auto p-1" style="height: calc(100vh - 216px);">
                                     @if(SelectedItem.Shotcuts!=null && SelectedItem.Shotcuts.Length>0)
                                     {
                                         @foreach(var shotcut in SelectedItem.Shotcuts)
