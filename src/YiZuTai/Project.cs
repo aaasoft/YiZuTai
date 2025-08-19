@@ -121,7 +121,7 @@ namespace YiZuTai
             Height = 600;
 
             BodyColor = "#000000";
-            Background = "#FFFFFF";
+            Background = "#0F0F34";
             BackgroundOpacity = 1;
         }
 
