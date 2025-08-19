@@ -175,7 +175,7 @@ else
         BaseControl currentControl = Model;
         while (true)
         {
-            currentControl = ZTContext.Designer.FindControlParent(ZTContext.Designer.Project, currentControl);
+            currentControl = currentControl.Parent;
             if (currentControl == null)
                 break;
             x -= currentControl.Left;

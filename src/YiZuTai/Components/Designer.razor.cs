@@ -93,21 +93,54 @@ namespace YiZuTai.Components
         {
             Model = ZTFileManager.Instance.Get(Id);
             Project = Model.OpenProject();
+            ZTContext = new ZTContext()
+            {
+                ZTFile = Model,
+                JSRuntime = JSRuntime,
+                Designer = this
+            };
+            LoadProject();
+            registerDesigner(designerId, this);
+        }
+
+        private void LoadProject()
+        {
             ObjectConnectionManager.Instance.AddObject(Project);
 
             Project.PropertyChanged += Project_PropertyChanged;
             foreach (var control in Project.Controls)
                 control.PropertyChanged += Control_PropertyChanged;
             Project.Controls.CollectionChanged += Controls_CollectionChanged;
+            setParentToControls(Project, Project.Controls);
             SelectedItem = Project;
-            ZTContext = new ZTContext()
+            ZTContext.Project = Project;
+        }
+
+        private void setParentToControls(BaseControl parent, IEnumerable<BaseControl> controls)
+        {
+            if (controls == null)
+                return;
+            foreach (var control in controls)
             {
-                ZTFile = Model,
-                Project = Project,
-                JSRuntime = JSRuntime,
-                Designer = this
-            };
-            registerDesigner(designerId, this);
+                control.Parent = parent;
+                if (control.IsContainer)
+                    setParentToControls(control, control.Controls);
+            }
+        }
+
+        private void UnloadProject()
+        {
+            if (Project != null)
+            {
+                ObjectConnectionManager.Instance.RemoveObject(Project);
+
+                Project.PropertyChanged -= Project_PropertyChanged;
+                foreach (var control in Project.Controls)
+                    control.PropertyChanged -= Project_PropertyChanged;
+                Project.Controls.CollectionChanged -= Controls_CollectionChanged;
+                SelectedItem = null;
+                ZTContext.Project = null;
+            }
         }
 
         protected override void OnAfterRender(bool firstRender)
@@ -256,15 +289,7 @@ namespace YiZuTai.Components
         public void Dispose()
         {
             unregisterDesigner(designerId);
-            if (Project != null)
-            {
-                ObjectConnectionManager.Instance.RemoveObject(Project);
-
-                Project.PropertyChanged -= Project_PropertyChanged;
-                foreach (var control in Project.Controls)
-                    control.PropertyChanged -= Project_PropertyChanged;
-                Project.Controls.CollectionChanged -= Controls_CollectionChanged;
-            }
+            UnloadProject();
         }
 
         // 保存
@@ -313,8 +338,9 @@ new YiZuTai.Window({{
                     {
                         try
                         {
+                            UnloadProject();
                             Project = (Project)XmlConvert.Deserialize(t);
-                            SelectedItem = Project;
+                            LoadProject();
                             onDesignChanged();
                             InvokeAsync(StateHasChanged);
                             modalWindow.Close();
@@ -345,6 +371,7 @@ new YiZuTai.Window({{
                 control.Left = 0;
             if (control.Top < 0)
                 control.Top = 0;
+            control.Parent = container;
             container.Controls.Add(control);
         }
 
@@ -422,30 +449,18 @@ new YiZuTai.Window({{
             }
             else
             {
-                var parent = FindControlParent(Project, SelectedItem);
+                var parent = SelectedItem.Parent;
                 removeControl(SelectedItem);
                 SelectedItem = parent;
             }
         }
 
-        public BaseControl FindControlParent(BaseControl root, BaseControl control)
-        {
-            if (root.Controls != null)
-            {
-                if (root.Controls.Contains(control))
-                    return root;
-                foreach (var child in root.Controls.Where(t => t.IsContainer))
-                    return FindControlParent(child, control);
-            }
-            return null;
-        }
-
         private void removeControl(BaseControl control)
         {
-            var parent = FindControlParent(Project, control);
-            if (parent == null)
+            if (control.Parent == null)
                 return;
-            parent.Controls.Remove(control);
+            control.Parent.Controls.Remove(control);
+            control.Parent = null;
         }
 
         private void setControlIndex(BaseControl parent, BaseControl item, int index)
@@ -466,7 +481,7 @@ new YiZuTai.Window({{
                 return;
             if (item is MultiControl)
                 return;
-            var parent = FindControlParent(Project, item);
+            var parent = item.Parent;
             setControlIndex(parent, item, getNewIndexFunc(getControlIndex(parent, item)));
             SelectedItem = item;
         }

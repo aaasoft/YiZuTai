@@ -26,7 +26,7 @@
     [Parameter]
     public Dictionary<string, object> DivAttributes { get; set; }
 
-    private string guid = Guid.NewGuid().ToString("N");    
+    private string guid = Guid.NewGuid().ToString("N");
     protected override void OnAfterRender(bool firstRender)
     {
         if(firstRender)

@@ -318,6 +318,13 @@ y0= (x - rx0)*sin(a) + (y - ry0)*cos(a) + ry0 ;
         public virtual Point MoveLocationOffset { get; set; }
 
         /// <summary>
+        /// 父控件
+        /// </summary>
+        [JsonIgnore]
+        [Browsable(false)]
+        public virtual BaseControl Parent { get; set; }
+
+        /// <summary>
         /// 子控件
         /// </summary>
         [Browsable(false)]
