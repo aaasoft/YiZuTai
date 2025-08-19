@@ -463,8 +463,9 @@ new YiZuTai.Window({{
             control.Parent = null;
         }
 
-        private void setControlIndex(BaseControl parent, BaseControl item, int index)
+        private void setControlIndex(BaseControl item, int index)
         {
+            var parent = item.Parent;
             parent.Controls.Remove(item);
             if (index < 0)
                 index = 0;
@@ -472,7 +473,7 @@ new YiZuTai.Window({{
                 index = parent.Controls.Count;
             parent.Controls.Insert(index, item);
         }
-        private int getControlIndex(BaseControl parent, BaseControl item) => parent.Controls.IndexOf(item);
+        private int getControlIndex(BaseControl item) => item.Parent.Controls.IndexOf(item);
         private void setControlIndex(Func<int, int> getNewIndexFunc)
         {
             var item = SelectedItem;
@@ -481,8 +482,7 @@ new YiZuTai.Window({{
                 return;
             if (item is MultiControl)
                 return;
-            var parent = item.Parent;
-            setControlIndex(parent, item, getNewIndexFunc(getControlIndex(parent, item)));
+            setControlIndex(item, getNewIndexFunc(getControlIndex(item)));
             SelectedItem = item;
         }
 
