@@ -36,15 +36,11 @@ else
                         <g style="cursor:move;" @onmousedown="@(e => sizerMouseDown(e, MoveAction.MoveLocation))">
                             @if (!Model.IsLocked)
                             {
-                                <rect fill-opacity="0" stroke="#0078D7" x="@(Model.Left + resize_box_width)"
-                                    y="@(Model.Top - resize_box_width / 2)" width="@resize_box_width" height="@resize_box_width">
+                                <rect fill="#0078D7" stroke="#0078D7" x="@(Model.Left)"
+                                    y="@(Model.Top)" width="@(resize_box_width * 2)" height="@(resize_box_width * 2)">
                                 </rect>
-                                <line x1="@(Model.Left + resize_box_width)" y1="@(Model.Top)"
-                                    x2="@(Model.Left + resize_box_width + resize_box_width)" y2="@(Model.Top)" stroke="#0078D7"
-                                    stroke-width="1" />
-                                <line x1="@(Model.Left + resize_box_width + resize_box_width / 2)" y1="@(Model.Top - resize_box_width / 2)"
-                                    x2="@(Model.Left + resize_box_width + resize_box_width / 2)" y2="@(Model.Top + resize_box_width / 2)"
-                                    stroke="#0078D7" stroke-width="1" />
+                                <image href="../../../_content/YiZuTai/images/move.svg" x="@(Model.Left)"
+                                    y="@(Model.Top)" width="@(resize_box_width * 2)" height="@(resize_box_width * 2)"></image>
                             }
                             <line x1="@(Model.Left)" y1="@(Model.Top)" x2="@(Model.Left + Model.Width)" y2="@(Model.Top)"
                                 stroke="#0078D7" stroke-width="1" />
