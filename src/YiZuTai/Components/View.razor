@@ -7,7 +7,6 @@
     <script src="_content/YiZuTai/jquery-1.12.4/jquery.min.js"></script>
     <script src="_content/YiZuTai/layer-3.1.1/layer.js"></script>
     <script src="_content/YiZuTai/js/core.js"></script>
-    <script src="_content/YiZuTai/js/view.js"></script>
     <link href="_content/YiZuTai/css/view.css" rel="stylesheet" />
     <style>
         body {
@@ -33,7 +32,7 @@ else
     else
     {
         <CascadingValue Value="Model">
-            <div id="divCanvas" class="text-center p-0 overflow-auto" data-stretch="@Project.Stretch">
+            <div id="divCanvas" class="text-center p-0 overflow-auto" data-stretch="@Project.Stretch" style="align-content: center;height: 100vh;">
                 <svg id="svgCanvas" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xhtml="http://www.w3.org/1999/xhtml"
                     width="@(Project.Stretch == Stretch.None ? Project.Width + "px" : "100%")"
