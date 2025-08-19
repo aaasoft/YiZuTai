@@ -8,15 +8,21 @@
         fill-opacity="@ControlModel.FillOpacity" />
     @if (ControlModel.EnableAnimation && ControlModel.Image != null)
     {
-        <image href="@Core.ZTFile.GetStaticResourceUrl(ZTContext.ZTFile.Id, ControlModel.Image)"
-            transform="translate(-@(ControlModel.ImageWidth / 2),-@(ControlModel.ImageHeight / 2))"
-            width="@ControlModel.ImageWidth" height="@ControlModel.ImageHeight" preserveAspectRatio="none">
-            @if (!ZTContext.DesignMode)
-            {
+        @if (ZTContext.DesignMode)
+        {
+            <image href="@Core.ZTFile.GetStaticResourceUrl(ZTContext.ZTFile.Id, ControlModel.Image)"
+                width="@ControlModel.ImageWidth" height="@ControlModel.ImageHeight" preserveAspectRatio="none">
+            </image>
+        }
+        else
+        {
+            <image href="@Core.ZTFile.GetStaticResourceUrl(ZTContext.ZTFile.Id, ControlModel.Image)"
+                transform="translate(-@(ControlModel.ImageWidth / 2),-@(ControlModel.ImageHeight / 2))"
+                width="@ControlModel.ImageWidth" height="@ControlModel.ImageHeight" preserveAspectRatio="none">
                 <animateMotion dur="@ControlModel.Dur" repeatCount="indefinite" rotate="auto">
                     <mpath href="#path_@ControlModel.Name" />
                 </animateMotion>
-            }
-        </image>
+            </image>
+        }
     }
 </BaseControl_WithBackgroundView>
