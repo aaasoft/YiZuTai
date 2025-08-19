@@ -219,7 +219,7 @@ else
                             <ChildContent>
                                 <div class="overflow-auto mt-1" style="height: calc(100vh - 216px);">
                                     <EditForm Model="SelectedItem">
-                                        <PropertyGrid SelectedObject="SelectedItem" @bind-SelectedField="PropertyGridSelectedField"></PropertyGrid>
+                                        <PropertyGrid SelectedObject="SelectedItem"></PropertyGrid>
                                     </EditForm>
                                 </div>
                             </ChildContent>
@@ -239,19 +239,6 @@ else
                             </ChildContent>
                         </TabPane>
                     </Tabs>                    
-                </div>
-                <div id="divPropertyDescription" class="card-footer" style="@PropertyGridSelectedFieldDescriptionStyle">
-                    @if (PropertyGridSelectedField!=null)
-                    {
-                        <div class="card-title m-0 ml-2 mt-1 font-weight-bold">@PropertyGridSelectedField.Name</div>                        
-                        if(!string.IsNullOrEmpty(PropertyGridSelectedField.Description))
-                        {
-                            @foreach (var line in PropertyGridSelectedField.Description.Split('\r', '\n'))
-                            {
-                                <small class="form-text text-muted">@line</small>
-                            }
-                        }
-                    }
                 </div>
             </div>
 }

@@ -12,7 +12,7 @@
         <ChildContent>
             @foreach (var field in group.FieldList)
             {
-                <div class="form-group m-1" @onclick="@(e => onFieldClicked(field))">
+                <div class="form-group m-1" @onclick="@(e => onFieldClicked(field))" title="@field.Description">
                     <div class="input-group">
                         @if (SelectedField != null && field.Name == SelectedField.Name)
                         {

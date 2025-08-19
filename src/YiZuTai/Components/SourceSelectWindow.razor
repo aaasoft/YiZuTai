@@ -43,30 +43,11 @@
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-12 col-lg-8">
-        <div class="form-group m-1">
-            @if (Source != null)
-            {
-                <PropertyGrid SelectedObject="Source" @bind-SelectedField="PropertyGridSelectedField" />
-            }
-        </div>
-    </div>
-    <div class="col-12 col-lg-4" style="@PropertyGridSelectedFieldDescriptionStyle">
-        @if (PropertyGridSelectedField != null)
-        {
-            <div class="alert alert-secondary" role="alert">
-                <p class="alert-heading">@PropertyGridSelectedField.Name</p>
-                @if (!string.IsNullOrEmpty(PropertyGridSelectedField.Description))
-                {
-                    @foreach (var line in PropertyGridSelectedField.Description.Split('\r', '\n'))
-                    {
-                        <small class="form-text text-muted">@line</small>
-                    }
-                }
-            </div>
-        }
-    </div>
+<div class="form-group m-1">
+    @if (Source != null)
+    {
+        <PropertyGrid SelectedObject="Source" />
+    }
 </div>
 
 <ModalAlert @ref="modalAlert"></ModalAlert>

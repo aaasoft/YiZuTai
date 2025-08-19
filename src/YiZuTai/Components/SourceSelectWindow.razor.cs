@@ -57,10 +57,6 @@ public partial class SourceSelectWindow : ComponentBase
                 Source = Sources?.FirstOrDefault(t => t.GetType().FullName == value);
         }
     }
-    
-    public ControlField PropertyGridSelectedField { get; set; }
-    private string PropertyGridSelectedFieldDescriptionStyle => (PropertyGridSelectedField == null || string.IsNullOrEmpty(PropertyGridSelectedField.Description)) ? "display: none" : "display: inline";
-
 
     private ISource initSource;
     [Parameter]
