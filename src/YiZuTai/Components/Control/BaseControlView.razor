@@ -71,21 +71,34 @@ else
                                 @onmousedown="@(e => sizerMouseDown(e, MoveAction.Rotate))" />
                         </g>
                     }
-                    <!--左上角大小调整-->
-                    <rect fill="#FFFFFF" stroke="#0078D7" stroke-width="1" x="@(Model.Left - resize_box_width / 2)"
-                        y="@(Model.Top - resize_box_width / 2)" width="@resize_box_width" height="@resize_box_width"
-                        style="cursor:@getSizerCursor(315);" @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeLeftTop))">
-                    </rect>
-                    <!--上方大小调整-->
-                    <rect fill="#FFFFFF" stroke="#0078D7" stroke-width="1"
-                        x="@(Model.Left + Model.Width / 2 - resize_box_width / 2)" y="@(Model.Top - resize_box_width / 2)"
-                        width="@resize_box_width" height="@resize_box_width" style="cursor:@getSizerCursor(0);"
-                        @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeTop))"></rect>
-                    <!--右上角大小调整-->
-                    <rect fill="#FFFFFF" stroke="#0078D7" stroke-width="1" x="@(Model.Left + Model.Width - resize_box_width / 2)"
-                        y="@(Model.Top - resize_box_width / 2)" width="@resize_box_width" height="@resize_box_width"
-                        style="cursor:@getSizerCursor(45);" @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeRightTop))">
-                    </rect>
+                    @if (Model != ZTContext.Project)
+                    {
+                        <!--左上角大小调整-->
+                        <rect fill="#FFFFFF" stroke="#0078D7" stroke-width="1" x="@(Model.Left - resize_box_width / 2)"
+                            y="@(Model.Top - resize_box_width / 2)" width="@resize_box_width" height="@resize_box_width"
+                            style="cursor:@getSizerCursor(315);" @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeLeftTop))">
+                        </rect>
+                        <!--上方大小调整-->
+                        <rect fill="#FFFFFF" stroke="#0078D7" stroke-width="1"
+                            x="@(Model.Left + Model.Width / 2 - resize_box_width / 2)" y="@(Model.Top - resize_box_width / 2)"
+                            width="@resize_box_width" height="@resize_box_width" style="cursor:@getSizerCursor(0);"
+                            @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeTop))"></rect>
+                        <!--右上角大小调整-->
+                        <rect fill="#FFFFFF" stroke="#0078D7" stroke-width="1" x="@(Model.Left + Model.Width - resize_box_width / 2)"
+                            y="@(Model.Top - resize_box_width / 2)" width="@resize_box_width" height="@resize_box_width"
+                            style="cursor:@getSizerCursor(45);" @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeRightTop))">
+                        </rect>
+                        <!--左下角大小调整-->
+                        <rect fill="#FFFFFF" stroke="#0078D7" stroke-width="1" x="@(Model.Left - resize_box_width / 2)"
+                            y="@(Model.Top + Model.Height - resize_box_width / 2)" width="@resize_box_width" height="@resize_box_width"
+                            style="cursor:@getSizerCursor(225);" @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeLeftBottom))">
+                        </rect>
+                        <!--左侧大小调整-->
+                        <rect fill="#FFFFFF" stroke="#0078D7" stroke-width="1" x="@(Model.Left - resize_box_width / 2)"
+                            y="@(Model.Top + Model.Height / 2 - resize_box_width / 2)" width="@resize_box_width"
+                            height="@resize_box_width" style="cursor:@getSizerCursor(270);"
+                            @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeLeft))"></rect>
+                    }
                     <!--右侧大小调整-->
                     <rect fill="#FFFFFF" stroke="#0078D7" stroke-width="1" x="@(Model.Left + Model.Width - resize_box_width / 2)"
                         y="@(Model.Top + Model.Height / 2 - resize_box_width / 2)" width="@resize_box_width"
@@ -101,16 +114,6 @@ else
                         y="@(Model.Top + Model.Height - resize_box_width / 2)" width="@resize_box_width" height="@resize_box_width"
                         style="cursor:@getSizerCursor(180);" @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeBottom))">
                     </rect>
-                    <!--左下角大小调整-->
-                    <rect fill="#FFFFFF" stroke="#0078D7" stroke-width="1" x="@(Model.Left - resize_box_width / 2)"
-                        y="@(Model.Top + Model.Height - resize_box_width / 2)" width="@resize_box_width" height="@resize_box_width"
-                        style="cursor:@getSizerCursor(225);" @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeLeftBottom))">
-                    </rect>
-                    <!--左侧大小调整-->
-                    <rect fill="#FFFFFF" stroke="#0078D7" stroke-width="1" x="@(Model.Left - resize_box_width / 2)"
-                        y="@(Model.Top + Model.Height / 2 - resize_box_width / 2)" width="@resize_box_width"
-                        height="@resize_box_width" style="cursor:@getSizerCursor(270);"
-                        @onmousedown="@(e => sizerMouseDown(e, MoveAction.ResizeLeft))"></rect>
                 }
             </g>
         }
