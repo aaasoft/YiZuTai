@@ -91,8 +91,11 @@ namespace YiZuTai.Components
 
         public void Dispose()
         {
-            Project.OnUnload();
-            ObjectConnectionManager.Instance.RemoveObject(Project);
+            if (Project != null)
+            {
+                Project.OnUnload();
+                ObjectConnectionManager.Instance.RemoveObject(Project);
+            }
         }
     }
 }

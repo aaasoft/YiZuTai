@@ -1,33 +1,49 @@
 ﻿@using BlazorContextMenu
 @using YiZuTai.Sample.Controls.TextCarousel
 @inherits AbstractControlView<Model>
+@implements IDisposable
 
 <BaseControl_WithBackgroundView T_BaseControl_WithBackground="Model" Model="@ControlModel" ZTContext="ZTContext">
     <!--页面部分-->
     <g>
         @if (ControlModel.CurrentPage != null)
         {
-            <g class="page">
+            <g>
                 @for (var i = 0; i < ControlModel.CurrentPage.Items.Count; i++)
                 {
-                    <a style="cursor: @(ControlModel.CurrentPage.Items[i].HyperLinkSource == null ? "default" : "pointer");"
+                    var item = ControlModel.CurrentPage.Items[i];
+                    <a style="cursor: @(item.HyperLinkSource == null ? "default" : "pointer");"
                         class="control-content-text">
-                        <text fill="@(ControlModel.CurrentPage.Items[i].Foreground)" x="@getItemX(ControlModel.CurrentPage.Items[i])"
-                            y="@(ControlModel.Padding + (ControlModel.CurrentPage.Items[i].FontSize / 2) + ControlModel.CurrentPage.Items.Take(i).Sum(t => t.LineHeight))"
-                            font-size="@(ControlModel.CurrentPage.Items[i].FontSize)" font-family="@(ControlModel.CurrentPage.Items[i].FontFamily)"
-                            text-anchor="@(ControlModel.CurrentPage.Items[i].TextAnchor)"
-                            xml:space="preserve">@(ControlModel.CurrentPage.Items[i].Text)</text>
+                        <text fill="@(item.Foreground)"
+                            x="@getItemX(item)"
+                            y="@(ControlModel.Padding + (item.FontSize / 2) + ControlModel.CurrentPage.Items.Take(i).Sum(t => t.LineHeight))"
+                            font-size="@(item.FontSize)"
+                            font-family="@(item.FontFamily)"
+                            text-anchor="@(item.TextAnchor)"
+                            xml:space="preserve">@(item.Text)</text>
                     </a>
                 }
             </g>
+        }
+    </g>
+    <!--分页器部分-->
+    <g>
+        @for (var pageIndex = 0; pageIndex < ControlModel.Pages.Count; pageIndex++)
+        {
+            var tmp = pageIndex;
+            <a style="cursor: pointer;" @onclick="@(e => setCurrentPageIndex(tmp))">
+                <rect
+                    fill="@(pageIndex == ControlModel.CurrentPageIndex ? ControlModel.ActivePagerForeground : ControlModel.OtherPagerForeground)"
+                    x="@getPagerX(pageIndex)"
+                    y="@(ControlModel.Height - ControlModel.PagerMarginBottom - ControlModel.PagerHeight)"
+                    width="@ControlModel.PagerWidth" height="@ControlModel.PagerHeight"></rect>
+            </a>
         }
     </g>
 </BaseControl_WithBackgroundView>
 
 @code
 {
-    private CancellationTokenSource cts;
-
     private double getItemX(ItemInfo item)
     {
         switch (item.TextAnchor)
@@ -41,5 +57,37 @@
             default:
                 return 0;
         }
+    }
+
+    private double getPagerX(int pageIndex)
+    {
+        var x = ControlModel.Width;
+        x -= ControlModel.PagerWidth * ControlModel.Pages.Count;
+        x -= ControlModel.PagerMarginInner * (ControlModel.Pages.Count - 1);
+        x /= 2;
+        x += (ControlModel.PagerWidth + ControlModel.PagerMarginInner) * pageIndex;
+        return x;
+    }
+
+    private void setCurrentPageIndex(int pageIndex)
+    {
+        ControlModel.SetCurrentPageIndex(pageIndex);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (firstRender)
+            ControlModel.CurrentPageChanged += OnControlModel_CurrentPageChanged;
+    }
+
+    public void Dispose()
+    {
+        ControlModel.CurrentPageChanged -= OnControlModel_CurrentPageChanged;
+    }
+
+    private void OnControlModel_CurrentPageChanged(object sender, EventArgs e)
+    {
+        InvokeAsync(StateHasChanged);
     }
 }

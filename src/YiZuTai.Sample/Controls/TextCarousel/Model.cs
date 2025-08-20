@@ -120,17 +120,26 @@ public class Model : BaseControl_WithBackground
     [JsonIgnore]
     [Browsable(false)]
     public PageInfo CurrentPage { get; set; }
+    public event EventHandler CurrentPageChanged;
+
     [JsonIgnore]
     [Browsable(false)]
     public DateTime LastChangePageTime { get; set; } = DateTime.Now;
 
     private CancellationTokenSource cts;
+
+    public void SetCurrentPageIndex(int pageIndex)
+    {
+        CurrentPageIndex = pageIndex;
+        CurrentPage = Pages.Skip(pageIndex).FirstOrDefault();
+        CurrentPageChanged?.Invoke(this, EventArgs.Empty);
+    }
+
     public override void OnLoad()
     {
         cts = new();
         var cancellationToken = cts.Token;
-        CurrentPageIndex = 0;
-        CurrentPage = Pages.FirstOrDefault();
+        SetCurrentPageIndex(0);
 
         Task.Run(async () =>
         {
@@ -138,7 +147,7 @@ public class Model : BaseControl_WithBackground
             {
                 if (CurrentPage == null)
                 {
-                    CurrentPage = Pages.FirstOrDefault();
+                    SetCurrentPageIndex(0);
                     await Task.Delay(1000);
                     continue;
                 }
@@ -146,7 +155,7 @@ public class Model : BaseControl_WithBackground
                 CurrentPageIndex++;
                 if (CurrentPageIndex >= Pages.Count)
                     CurrentPageIndex = 0;
-                CurrentPage = Pages.Skip(CurrentPageIndex).FirstOrDefault();
+                SetCurrentPageIndex(CurrentPageIndex);
             }
         });
     }
