@@ -152,7 +152,7 @@ value   =>  当前值")]
     {
         get
         {
-            var charsOneLine = Convert.ToInt32(Width / FontSize);
+            var charsOneLine = Convert.ToInt32(Math.Floor(Width / FontSize));
             IEnumerable<char> a = Text;
             while (true)
             {
@@ -174,7 +174,7 @@ value   =>  当前值")]
         Width = 120;
         Height = 40;
     }
-    
+
     public override IControlShotcut[] Shotcuts =>
     [
         new ControlShotcut("样式-浅色", ()=>
