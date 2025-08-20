@@ -1,0 +1,52 @@
+﻿@inherits AbstractControlView<Model>
+
+<BaseControl_WithBackgroundView T_BaseControl_WithBackground="Model" Model="@ControlModel" ZTContext="ZTContext">
+    <!--图片部分-->
+    @if (ControlModel.Image != null)
+    {
+        <g>
+            <image href="@Core.ZTFile.GetStaticResourceUrl(ZTContext.ZTFile.Id, ControlModel.Image)"
+                width="@ControlModel.Width" height="@ControlModel.Height" preserveAspectRatio="none"></image>
+        </g>
+    }
+    <!--文本-->
+    @{
+        var contentStartY = ControlModel.FontSize;
+        @foreach (var row in ControlModel.Rows)
+        {
+            <g>
+                <text fill="@ControlModel.Foreground" font-size="@ControlModel.FontSize" font-family="@ControlModel.FontFamily"
+                    font-weight="@ControlModel.FontWeight" x="@getContentStartX()" y="@contentStartY"
+                    text-anchor="@ControlModel.TextAnchor" xml:space="preserve">@row</text>
+            </g>
+            contentStartY += ControlModel.LineHeight;
+        }
+    }
+</BaseControl_WithBackgroundView>
+
+@code
+{
+    /*
+
+    */
+    private double getContentStartX()
+    {
+        switch (ControlModel.TextAnchor)
+        {
+            case YiZuTai.Enums.TextAnchor.start:
+                return 0;
+            case YiZuTai.Enums.TextAnchor.middle:
+                return ControlModel.Width / 2;
+            case YiZuTai.Enums.TextAnchor.end:
+                return ControlModel.Width;
+            default:
+                return 0;
+        }
+    }
+
+    public override void OnDoubleClick()
+    {
+        SourceTypeEditor.Select(ZTContext.ModalWindow, ControlModel.Value, typeof(IDataSource), t => ControlModel.Value =
+        (IDataSource)t);
+    }
+}
