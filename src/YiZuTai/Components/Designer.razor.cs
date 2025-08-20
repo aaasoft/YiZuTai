@@ -112,6 +112,7 @@ namespace YiZuTai.Components
                 control.PropertyChanged += Control_PropertyChanged;
             Project.Controls.CollectionChanged += Controls_CollectionChanged;
             setParentToControls(Project, Project.Controls);
+            Project.OnLoad();
             SelectedItem = Project;
             ZTContext.Project = Project;
         }
@@ -133,7 +134,7 @@ namespace YiZuTai.Components
             if (Project != null)
             {
                 ObjectConnectionManager.Instance.RemoveObject(Project);
-
+                Project.OnUnload();
                 Project.PropertyChanged -= Project_PropertyChanged;
                 foreach (var control in Project.Controls)
                     control.PropertyChanged -= Project_PropertyChanged;
@@ -373,6 +374,7 @@ new YiZuTai.Window({{
                 control.Top = 0;
             control.Parent = container;
             container.Controls.Add(control);
+            control.OnLoad();
         }
 
         private void checkAndModifyControlName(BaseControl control, IEnumerable<BaseControl> controlContainer)
@@ -459,6 +461,7 @@ new YiZuTai.Window({{
         {
             if (control.Parent == null)
                 return;
+            control.OnUnload();
             control.Parent.Controls.Remove(control);
             control.Parent = null;
         }

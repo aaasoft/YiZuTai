@@ -336,6 +336,14 @@ y0= (x - rx0)*sin(a) + (y - ry0)*cos(a) + ry0 ;
         [JsonIgnore]
         [Browsable(false)]
         public virtual IControlShotcut[] Shotcuts { get; } = null;
+        /// <summary>
+        /// 当加载时
+        /// </summary>
+        public virtual void OnLoad() { }
+        /// <summary>
+        /// 当卸载时
+        /// </summary>
+        public virtual void OnUnload() { }
 
         protected abstract Type GetViewType();
         protected virtual Type GetHtmlViewType() => null;

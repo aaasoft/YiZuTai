@@ -207,6 +207,18 @@ namespace YiZuTai
             shotcut.ExecuteCommand.Execute(null);
         }
 
+        public override void OnLoad()
+        {
+            foreach (var control in GetAllControls())
+                control.OnLoad();
+        }
+
+        public override void OnUnload()
+        {
+            foreach (var control in GetAllControls())
+                control.OnUnload();
+        }
+
         public override IControlShotcut[] Shotcuts =>
         [
             new ControlShotcut("样式-浅色", ()=>

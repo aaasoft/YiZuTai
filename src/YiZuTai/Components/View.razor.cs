@@ -70,7 +70,7 @@ namespace YiZuTai.Components
             }
             if (Project == null)
                 Project = Model.OpenProject();
-
+            Project.OnLoad();
             ObjectConnectionManager.Instance.AddObject(Project);
             ZTContext = new ZTContext()
             {
@@ -91,6 +91,7 @@ namespace YiZuTai.Components
 
         public void Dispose()
         {
+            Project.OnUnload();
             ObjectConnectionManager.Instance.RemoveObject(Project);
         }
     }

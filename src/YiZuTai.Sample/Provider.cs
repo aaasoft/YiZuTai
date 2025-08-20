@@ -19,6 +19,7 @@ public class Provider
         ControlManager.Instance.RegisterControl<Controls.TempAndHum.Model>();
         ControlManager.Instance.RegisterControl<Controls.Web.Model>();
         ControlManager.Instance.RegisterControl<Controls.Video.Model>();
+        ControlManager.Instance.RegisterControl<Controls.TextCarousel.Model>();
 
         SourceManager.Instance.RegisterSource<DataSources.Input>();
         SourceManager.Instance.RegisterSource<DataSources.Simulate>();

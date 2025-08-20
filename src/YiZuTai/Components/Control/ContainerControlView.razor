@@ -44,7 +44,9 @@
     [Parameter]
     public ZTContext ZTContext { get; set; }
     [Parameter]
-    public TContainerModel Model { get; set; }    
+    public TContainerModel Model { get; set; }
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
 
     // ondrop事件处理方法
     private void HandleDrop(DragEventArgs e)
@@ -79,6 +81,7 @@
         addControl(control);
         control.OnDragDropCreate(location);
         ZTContext.Project.ApplyStyleShotcut(control);
+        control.OnLoad();
     }
 
     //添加控件
@@ -87,4 +90,5 @@
         ZTContext.Project.CheckAndModifyControlName(control);
         Model.Controls.Add(control);
     }
+    
 }
