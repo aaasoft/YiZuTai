@@ -32,9 +32,9 @@ else
     else
     {
         <CascadingValue Value="Model">
-            <div id="divCanvas" class="text-center p-0" data-stretch="@Project.Stretch"
+            <div class="text-center p-0" data-stretch="@Project.Stretch"
                 style="align-content: center;@(Project.Stretch == Stretch.UniformToFill ? "" : "height: 100vh;") ">
-                <svg id="svgCanvas" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xhtml="http://www.w3.org/1999/xhtml"
                     width="@(Project.Stretch == Stretch.None ? Project.Width + "px" : "100%")"
                     height="@(Project.Stretch == Stretch.None ? Project.Height + "px" : "100%")"

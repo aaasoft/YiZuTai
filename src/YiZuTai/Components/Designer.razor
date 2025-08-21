@@ -15,7 +15,7 @@
         text {
             user-select: none;
         }
-        #divCanvas:focus{
+        div.canvas:focus{
             border-color: #80bdff;
             outline: 0;
             box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25);
@@ -108,7 +108,7 @@ else
                 <div class="card-header" style="user-select: none;">
                     工具箱
                 </div>
-                <div id="divToolbox" class="card-body p-1 overflow-auto" style="height: calc(100vh - 216px);">
+                <div class="card-body p-1 overflow-auto" style="height: calc(100vh - 216px);">
                     <Quick.Blazor.Bootstrap.Accordion AllowMultiplePanelActived="true">
                         @foreach (var group in ControlManager.Instance.GetItems().GroupBy(t => t.Category))
                         {    
@@ -156,9 +156,9 @@ else
                     }
                 </ContextMenu>
                 <ContextMenuTrigger MenuId="designMenu">
-                    <div id="divCanvas" tabindex="0" class="card-body text-center p-0 overflow-auto" style="background-color: @Project.BodyColor;align-content: center;height: calc(100vh - 120px);" @onmousemove="@(e=> { })">
+                    <div tabindex="0" class="canvas card-body text-center p-0 overflow-auto" style="background-color: @Project.BodyColor;align-content: center;height: calc(100vh - 120px);" @onmousemove="@(e=> { })">
                         <!--====控件部分====-->
-                    <svg id="svgCanvas" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xhtml="http://www.w3.org/1999/xhtml"
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xhtml="http://www.w3.org/1999/xhtml"
                             width="@(Project.Width*DesignScale/100)" height="@(Project.Height*DesignScale/100)"
                             viewBox="-@DesignMargin -@DesignMargin @(Project.Width + DesignMargin * 2) @(Project.Height + DesignMargin * 2)"
                             preserveAspectRatio="none">
@@ -210,7 +210,7 @@ else
                         </div>
                     </EditForm>
                 </div>
-                <div id="divProperty" class="card-body p-0 mt-1">
+                <div class="card-body p-0 mt-1">
                     <Tabs>
                         <TabPane Key="property">
                             <Tab>属性</Tab>
