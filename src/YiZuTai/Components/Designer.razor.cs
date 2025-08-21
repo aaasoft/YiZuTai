@@ -359,7 +359,7 @@ new YiZuTai.Window({{
         //添加控件
         public void AddControl(BaseControl control, BaseControl container = null)
         {
-            checkAndModifyControlName(control, Project.GetAllControls());
+            CheckAndModifyControlName(control);
             if (container == null && SelectedItem != null && SelectedItem.IsContainer)
                 container = SelectedItem;
             if (container == null)
@@ -378,15 +378,16 @@ new YiZuTai.Window({{
             control.OnLoad();
         }
 
-        private void checkAndModifyControlName(BaseControl control, IEnumerable<BaseControl> controlContainer)
+        public void CheckAndModifyControlName(BaseControl control)
         {
             var controlAttr = ControlManager.Instance.GetItem(control.GetType().FullName);
             var index = 0;
+            var allControls = Project.GetAllControls();
             do
             {
                 index++;
                 var name = controlAttr.Name + index;
-                if (controlContainer.Any(t => t.Name == name))
+                if (allControls.Any(t => t.Name == name))
                     continue;
                 control.Name = name;
                 break;

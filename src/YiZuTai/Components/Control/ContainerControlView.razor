@@ -78,6 +78,7 @@
         var control = controlAttr.CreateInstance();
         control.Left = location.X - control.Width / 2;
         control.Top = location.Y - control.Height / 2;
+        ZTContext.Designer.CheckAndModifyControlName(control);
         control.OnDragDropCreate(location);
         ZTContext.Project.ApplyStyleShotcut(control);
         ZTContext.Designer.AddControl(control,Model);
