@@ -1,4 +1,9 @@
 ﻿@inherits AbstractControlView<Model>
 
-<ContainerControlView TContainerModel="Model" ZTContext="ZTContext" Model="ControlModel">    
+<ContainerControlView TContainerModel="Model" ZTContext="ZTContext" Model="ControlModel">
+    @if (ZTContext.DesignMode && ControlModel.BorderThickness <= 0)
+    {
+        <rect fill-opacity="0" stroke="#6E6E6E" stroke-dasharray="1" stroke-width="1" x="0.5" y="0.5"
+            width="@(ControlModel.Width - 1)" height="@(ControlModel.Height - 1)"></rect>
+    }
 </ContainerControlView>

@@ -17,8 +17,5 @@ public class Model : BaseControl_WithBackground
     {
         Width = 400;
         Height = 300;
-        Border = "#6E6E6E";
-        BorderOpacity = 1;
-        BorderThickness = 1;
     }
 }
