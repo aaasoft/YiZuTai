@@ -192,16 +192,17 @@ value   =>  当前值")]
 
         [Browsable(false)]
         [JsonIgnore]
-        public double CenterX => Width / 2;
+        public virtual double CenterX => Width / 2;
         [Browsable(false)]
         [JsonIgnore]
-        public double CenterY => Height / 2;
+        public virtual double CenterY => Height / 2;
         [Browsable(false)]
         [JsonIgnore]
-        public double TextX => CenterX;
+        public virtual double TextX => CenterX;
         [Browsable(false)]
         [JsonIgnore]
-        public double TextY => CenterY + (TextFontSize / 2) - (TextFontSize / 8);
+        public virtual double TextY => CenterY + (TextFontSize / 2) - (TextFontSize / 8);
+
         [Browsable(false)]
         [JsonIgnore]
         public string Text => TextFormat.Replace("{value}", Value?.Value ?? "");

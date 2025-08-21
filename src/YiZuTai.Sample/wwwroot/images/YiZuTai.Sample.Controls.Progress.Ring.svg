@@ -1,0 +1,10 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="120" height="120">
+  <!--圆环-->
+  <g transform="rotate(0 60,60)">
+    <circle cx="60" cy="60" r="48.9" stroke-width="22.2" stroke="#EDEBEB" stroke-opacity="0.99609375" fill="#FFFFFF" fill-opacity="0">
+    </circle>
+    <circle id="circleRing" class="circleRing" transform="rotate(-90 60,60)" cx="60" cy="60" r="48.9" stroke-width="22.2" stroke="#35AA47" stroke-opacity="0.99609375" fill="none" stroke-dasharray="184.348656912649 122.899104608433"></circle>
+  </g>
+  <!--文本-->
+  <text id="text" class="text" fill="#000000" fill-opacity="0.99609375" x="60" y="78" font-size="48" font-family="SimHei" text-anchor="middle" xml:space="preserve">60</text>
+</svg>

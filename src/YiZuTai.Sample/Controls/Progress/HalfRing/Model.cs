@@ -56,25 +56,7 @@ public class Model : AbstractControl
 
     [Browsable(false)]
     [JsonIgnore]
-    public double NumberValue
-    {
-        get
-        {
-            double value = MinValue;
-            double.TryParse(Value?.Value, out value);
-            if (value > MaxValue)
-                value = MaxValue;
-            if (value < MinValue)
-                value = MinValue;
-            return value;
-        }
-    }
-    [Browsable(false)]
-    [JsonIgnore]
-    public double CenterX => Width / 2;
-    [Browsable(false)]
-    [JsonIgnore]
-    public double CenterY
+    public override double CenterY
     {
         get
         {
@@ -82,12 +64,11 @@ public class Model : AbstractControl
             return (Height - sourceR) / 2 + sourceR;
         }
     }
+
     [Browsable(false)]
     [JsonIgnore]
-    public double TextX => CenterX;
-    [Browsable(false)]
-    [JsonIgnore]
-    public double TextY => CenterY;
+    public override double TextY => CenterY;
+
     [Browsable(false)]
     [JsonIgnore]
     public double BorderWidth => Math.Min(CenterX, CenterY) * (100 - InnerSize) / 100;
@@ -105,10 +86,6 @@ public class Model : AbstractControl
             return $"{perimeter * percent} {perimeter * (1 - percent)}";
         }
     }
-    [Browsable(false)]
-    [JsonIgnore]
-    public string Text => TextFormat.Replace("{value}", Value?.Value ?? "");
-
 
     [Browsable(false)]
     [JsonIgnore]

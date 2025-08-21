@@ -1,0 +1,47 @@
+﻿@inherits AbstractControlView<Model>
+
+<BaseControlView T_BaseControl="Model" Model="@ControlModel" ZTContext="ZTContext">
+    <!--圆环-->
+    @{
+        var ArgStartAngle = ControlModel.StartAngle;
+        var ArgR = ControlModel.R;
+        var ArgCenterX = ControlModel.CenterX;
+        var ArgCenterY = ControlModel.CenterY;
+        var ArgBorderWidth = ControlModel.BorderWidth;
+        var ArgProgressForegroundColor = ControlModel.ProgressForeground;
+        var ArgProgressForegroundOpacity = ControlModel.ProgressForegroundOpacity;
+        var ArgProgressBackgroundColor = ControlModel.Background;
+        var ArgProgressBackgroundOpacity = ControlModel.BackgroundOpacity;
+        var ArgInnerBackgroundColor = ControlModel.InnerBackground;
+        var ArgInnerBackgroundOpacity = ControlModel.InnerBackgroundOpacity;
+        var ArgStrokeDasharray = ControlModel.StrokeDasharray;
+    }
+    <g transform="rotate(@ArgStartAngle @ArgCenterX,@ArgCenterY)">
+        <circle cx="@ArgCenterX" cy="@ArgCenterY" r="@ArgR" stroke-width="@ArgBorderWidth"
+            stroke="@ArgProgressBackgroundColor" stroke-opacity="@ArgProgressBackgroundOpacity"
+            fill="@ArgInnerBackgroundColor" fill-opacity="@ArgInnerBackgroundOpacity">
+        </circle>
+        <circle transform="rotate(-90 @ArgCenterX,@ArgCenterY)" cx="@ArgCenterX"
+            cy="@ArgCenterY" r="@ArgR" stroke-width="@ArgBorderWidth" stroke="@ArgProgressForegroundColor"
+            stroke-opacity="@ArgProgressForegroundOpacity" fill="none" stroke-dasharray="@ArgStrokeDasharray"></circle>
+    </g>
+    <!--文本-->
+    <TextView
+        ArgTextVisiable="@ControlModel.TextVisiable"
+        ArgTextFillColor = "@ControlModel.TextForeground"
+        ArgTextFillOpacity = "@ControlModel.TextForegroundOpacity"
+        ArgTextX = "@ControlModel.TextX"
+        ArgTextY = "@ControlModel.TextY"
+        ArgTextFontSize = "@ControlModel.TextFontSize"
+        ArgTextFontFamily = "@ControlModel.TextFontFamily"
+        ArgText = "@ControlModel.Text" />
+</BaseControlView>
+
+@code
+{
+    public override void OnDoubleClick()
+    {
+        SourceTypeEditor.Select(ZTContext.ModalWindow, ControlModel.Value, typeof(IDataSource), t => ControlModel.Value =
+        (IDataSource)t);
+    }
+}
