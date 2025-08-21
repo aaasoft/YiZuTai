@@ -1,0 +1,27 @@
+﻿@if (ArgTextVisiable)
+{
+    <g>
+        <text id="text" class="text" fill="@ArgTextFillColor" fill-opacity="@ArgTextFillOpacity" x="@ArgTextX" y="@ArgTextY"
+            font-size="@ArgTextFontSize" font-family="@ArgTextFontFamily" text-anchor="middle"
+            xml:space="preserve">@ArgText</text>
+    </g>
+}
+
+@code {
+    [Parameter]
+    public bool ArgTextVisiable { get; set; }
+    [Parameter]
+    public string ArgTextFillColor { get; set; }
+    [Parameter]
+    public double ArgTextFillOpacity { get; set; }
+    [Parameter]
+    public double ArgTextX { get; set; }
+    [Parameter]
+    public double ArgTextY { get; set; }
+    [Parameter]
+    public double ArgTextFontSize { get; set; }
+    [Parameter]
+    public string ArgTextFontFamily { get; set; }
+    [Parameter]
+    public string ArgText { get; set; }
+}

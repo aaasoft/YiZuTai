@@ -42,27 +42,16 @@
             ry="@ForegroundProgressCornerRadius">
         </rect>
     </g>
-
-
     <!--文本-->
-    @{
-        var ArgTextVisiable = ControlModel.TextVisiable;
-        var ArgTextFillColor = ControlModel.TextForeground;
-        var ArgTextFillOpacity = ControlModel.TextForegroundOpacity;
-        var ArgTextX = ControlModel.TextX;
-        var ArgTextY = ControlModel.TextY;
-        var ArgTextFontSize = ControlModel.TextFontSize;
-        var ArgTextFontFamily = ControlModel.TextFontFamily;
-        var ArgText = ControlModel.Text;
-    }
-    @if (ArgTextVisiable)
-    {
-        <g>
-            <text id="text" class="text" fill="@ArgTextFillColor" fill-opacity="@ArgTextFillOpacity" x="@ArgTextX"
-                y="@ArgTextY" font-size="@ArgTextFontSize" font-family="@ArgTextFontFamily" text-anchor="middle"
-                xml:space="preserve">@ArgText</text>
-        </g>
-    }
+    <TextView
+        ArgTextVisiable="@ControlModel.TextVisiable"
+        ArgTextFillColor = "@ControlModel.TextForeground"
+        ArgTextFillOpacity = "@ControlModel.TextForegroundOpacity"
+        ArgTextX = "@ControlModel.TextX"
+        ArgTextY = "@ControlModel.TextY"
+        ArgTextFontSize = "@ControlModel.TextFontSize"
+        ArgTextFontFamily = "@ControlModel.TextFontFamily"
+        ArgText = "@ControlModel.Text" />
 </BaseControlView>
 
 @code

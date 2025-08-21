@@ -24,6 +24,7 @@ public class Provider
         ControlManager.Instance.RegisterControl<Controls.TextArea.Model>();
         ControlManager.Instance.RegisterControl<Controls.Progress.HorizontalBar.Model>();
         ControlManager.Instance.RegisterControl<Controls.Progress.VerticalBar.Model>();
+        ControlManager.Instance.RegisterControl<Controls.Progress.HalfRing.Model>();
 
         SourceManager.Instance.RegisterSource<DataSources.Input>();
         SourceManager.Instance.RegisterSource<DataSources.Simulate>();

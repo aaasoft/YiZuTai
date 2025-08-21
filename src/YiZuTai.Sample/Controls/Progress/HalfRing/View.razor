@@ -1,0 +1,54 @@
+﻿@inherits AbstractControlView<Model>
+
+<BaseControlView T_BaseControl="Model" Model="@ControlModel" ZTContext="ZTContext">
+    <!--半圆环-->
+    @{
+        var ArgR = ControlModel.R;
+        var ArgCenterX = ControlModel.CenterX;
+        var ArgCenterY = ControlModel.CenterY;
+        var ArgBorderWidth = ControlModel.BorderWidth;
+        var ArgProgressForegroundColor = ControlModel.ProgressForeground;
+        var ArgProgressForegroundOpacity = ControlModel.ProgressForegroundOpacity;
+        var ArgProgressBackgroundColor = ControlModel.Background;
+        var ArgProgressBackgroundOpacity = ControlModel.BackgroundOpacity;
+        var ArgInnerBackgroundColor = ControlModel.InnerBackground;
+        var ArgInnerBackgroundOpacity = ControlModel.InnerBackgroundOpacity;
+        var ArgStrokeDasharray = ControlModel.StrokeDasharray;
+        var ArgHalfRingStartX = ControlModel.HalfRingStartX;
+        var ArgHalfRingStartY = ControlModel.HalfRingStartY;
+        var ArgHalfRingEndX = ControlModel.HalfRingEndX;
+        var ArgHalfRingEndY = ControlModel.HalfRingEndY;
+    }
+    <g>
+        <path d="M @ArgHalfRingStartX @ArgHalfRingStartY
+    A @ArgR @ArgR 0 0 1 @ArgHalfRingEndX @ArgHalfRingEndY
+    Z" stroke-width="0" fill="@ArgInnerBackgroundColor" fill-opacity="@ArgInnerBackgroundOpacity" />
+        <path d="M @ArgHalfRingStartX @ArgHalfRingStartY
+    A @ArgR @ArgR 0 0 1 @ArgHalfRingEndX @ArgHalfRingEndY
+    " stroke="@ArgProgressBackgroundColor" stroke-width="@ArgBorderWidth"
+            stroke-opacity="@ArgProgressBackgroundOpacity" fill="none" />
+        <path id="pathHalfRing" class="pathHalfRing" d="M @ArgHalfRingStartX @ArgHalfRingStartY
+    A @ArgR @ArgR 0 0 1 @ArgHalfRingEndX @ArgHalfRingEndY
+    " stroke="@ArgProgressForegroundColor" stroke-width="@ArgBorderWidth"
+            stroke-opacity="@ArgProgressForegroundOpacity" fill="none" stroke-dasharray="@ArgStrokeDasharray" />
+    </g>
+    <!--文本-->
+    <TextView
+        ArgTextVisiable="@ControlModel.TextVisiable"
+        ArgTextFillColor = "@ControlModel.TextForeground"
+        ArgTextFillOpacity = "@ControlModel.TextForegroundOpacity"
+        ArgTextX = "@ControlModel.TextX"
+        ArgTextY = "@ControlModel.TextY"
+        ArgTextFontSize = "@ControlModel.TextFontSize"
+        ArgTextFontFamily = "@ControlModel.TextFontFamily"
+        ArgText = "@ControlModel.Text" />
+</BaseControlView>
+
+@code
+{
+    public override void OnDoubleClick()
+    {
+        SourceTypeEditor.Select(ZTContext.ModalWindow, ControlModel.Value, typeof(IDataSource), t => ControlModel.Value =
+        (IDataSource)t);
+    }
+}
