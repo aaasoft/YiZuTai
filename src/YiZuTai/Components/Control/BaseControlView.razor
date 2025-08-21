@@ -31,27 +31,27 @@ else
                 <!--选中框，用于移动控件位置-->
                 @if (Model.IsContainer)
                 {
-                    <g style="cursor:move;" @onmousedown="@(e => sizerMouseDown(e, MoveAction.MoveLocation))">
-                        <line x1="@(Model.Left)" y1="@(Model.Top)" x2="@(Model.Left + Model.Width)" y2="@(Model.Top)"
-                            stroke="#0078D7" stroke-width="1" />
+                    <line x1="@(Model.Left)" y1="@(Model.Top)" x2="@(Model.Left + Model.Width)" y2="@(Model.Top)"
+                        stroke="#0078D7" stroke-width="1" />
 
-                        <line x1="@(Model.Left + Model.Width)" y1="@(Model.Top)" x2="@(Model.Left + Model.Width)"
-                            y2="@(Model.Top + Model.Height)" stroke="#0078D7" stroke-width="1" />
+                    <line x1="@(Model.Left + Model.Width)" y1="@(Model.Top)" x2="@(Model.Left + Model.Width)"
+                        y2="@(Model.Top + Model.Height)" stroke="#0078D7" stroke-width="1" />
 
-                        <line x1="@(Model.Left)" y1="@(Model.Top + Model.Height)" x2="@(Model.Left + Model.Width)"
-                            y2="@(Model.Top + Model.Height)" stroke="#0078D7" stroke-width="1" />
+                    <line x1="@(Model.Left)" y1="@(Model.Top + Model.Height)" x2="@(Model.Left + Model.Width)"
+                        y2="@(Model.Top + Model.Height)" stroke="#0078D7" stroke-width="1" />
 
-                        <line x1="@(Model.Left)" y1="@(Model.Top)" x2="@(Model.Left)" y2="@(Model.Top + Model.Height)"
-                            stroke="#0078D7" stroke-width="1" />
-                        @if (Model != ZTContext.Project && !Model.IsLocked)
-                        {
+                    <line x1="@(Model.Left)" y1="@(Model.Top)" x2="@(Model.Left)" y2="@(Model.Top + Model.Height)"
+                        stroke="#0078D7" stroke-width="1" />
+                    @if (Model != ZTContext.Project && !Model.IsLocked)
+                    {
+                        <g style="cursor:move;" @onmousedown="@(e => sizerMouseDown(e, MoveAction.MoveLocation))">
                             <rect fill="#0078D7" stroke="#0078D7" x="@(Model.Left + resize_box_width)"
                                 y="@(Model.Top - resize_box_width)" width="@(resize_box_width * 2)" height="@(resize_box_width * 2)">
                             </rect>
                             <image href="../../../_content/YiZuTai/images/move.svg" x="@(Model.Left + resize_box_width)"
                                 y="@(Model.Top - resize_box_width)" width="@(resize_box_width * 2)" height="@(resize_box_width * 2)"></image>
-                        }
-                    </g>
+                        </g>
+                    }
                 }
                 else
                 {
