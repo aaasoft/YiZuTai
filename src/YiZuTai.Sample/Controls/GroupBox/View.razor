@@ -1,0 +1,56 @@
+﻿@using YiZuTai.Enums
+@inherits AbstractControlView<Model>
+
+<ContainerControlView TContainerModel="Model" ZTContext="ZTContext" Model="ControlModel">
+    @{
+        var x = ControlModel.BorderThickness / 2;
+        var y = ControlModel.BorderThickness / 2;
+        var width = ControlModel.Width - ControlModel.BorderThickness;
+        var height = ControlModel.Height - ControlModel.BorderThickness;
+    }
+    <!--标题栏背景-->
+    <rect fill="@ControlModel.TitleBackground" fill-opacity="@ControlModel.TitleBackgroundOpacity"
+        rx="@ControlModel.CornerRadius" ry="@ControlModel.CornerRadius" x="@x" y="@y" width="@width"
+        height="@ControlModel.TitleHeight"></rect>
+
+    <!--标题栏线条-->
+    @{
+        var lineRectHeight = (ControlModel.TitleHeight + ControlModel.TitleFontSize) / 2;
+        var lineX1 = lineRectHeight / 2;
+        var lineX2 = lineX1;
+        var lineY1 = (ControlModel.TitleHeight - ControlModel.TitleFontSize) / 2 * 3 / 4;
+        var lineY2 = ControlModel.TitleHeight - lineY1;
+    }
+
+    <line x1="@lineX1" y1="@lineY1" x2="@lineX2" y2="@lineY2" stroke="@ControlModel.TitleForeground"
+        stroke-opacity="@ControlModel.TitleForegroundOpacity" stroke-width="2" />
+
+    @{
+        var leftWidth = (ControlModel.TitleHeight + ControlModel.TitleFontSize) / 2;
+        var cx = leftWidth + (ControlModel.Width - leftWidth) / 2;
+        var cy = ControlModel.TitleHeight / 2;
+        double textY = 0;
+        if (ControlModel.TitleTextVerticalOffset > 1)
+            textY = ControlModel.TitleTextVerticalOffset;
+        else
+            textY = (ControlModel.TitleHeight - ControlModel.TitleFontSize) * ControlModel.TitleTextVerticalOffset +
+            ControlModel.TitleFontSize * 7 / 8;
+        double textX = 0;
+        switch (ControlModel.TitleTextAnchor)
+        {
+            case TextAnchor.start:
+                textX = leftWidth;
+                break;
+            case TextAnchor.middle:
+                textX = cx;
+                break;
+            case TextAnchor.end:
+                textX = ControlModel.Width;
+                break;
+        }
+    }
+    <!--标题栏文字-->
+    <text fill="@ControlModel.TitleTextForeground" fill-opacity="@ControlModel.TitleTextForegroundOpacity" x="@textX"
+        y="@textY" font-size="@ControlModel.TitleFontSize" font-family="@ControlModel.TitleFontFamily"
+        text-anchor="@ControlModel.TitleTextAnchor" xml:space="preserve">@ControlModel.TitleText</text>
+</ContainerControlView>

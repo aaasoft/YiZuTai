@@ -8,6 +8,7 @@ public class Provider
     {
         //使用示例控件
         ControlManager.Instance.RegisterControl<Controls.Panel.Model>();
+        ControlManager.Instance.RegisterControl<Controls.GroupBox.Model>();
         ControlManager.Instance.RegisterControl<Controls.Circle.Model>();
         ControlManager.Instance.RegisterControl<Controls.Rectangle.Model>();
         ControlManager.Instance.RegisterControl<Controls.Image.Model>();
