@@ -76,7 +76,6 @@ namespace Microsoft.AspNetCore.Builder
             var dataDir = options.DataFolder;
             if (!Directory.Exists(dataDir))
                 Directory.CreateDirectory(dataDir);
-            TagManager.Instance.Init();
             ZTFileManager.Instance.Init();
             SourceManager.Instance.Init();
 

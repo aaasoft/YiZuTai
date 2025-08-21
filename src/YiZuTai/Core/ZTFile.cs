@@ -54,11 +54,6 @@ namespace YiZuTai.Core
             return project;
         }
 
-        /// <summary>
-        /// 标签
-        /// </summary>
-        public string[] Tags { get; set; }
-
         public void Save()
         {
             var folder = Folder;

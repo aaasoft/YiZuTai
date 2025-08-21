@@ -6,6 +6,7 @@
     <RollForward>Major</RollForward>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="Components\Controls\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\YiZuTai\YiZuTai.csproj" />

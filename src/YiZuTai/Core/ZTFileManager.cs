@@ -50,13 +50,11 @@ namespace YiZuTai.Core
             return null;
         }
 
-        public ZTFile[] Query(string tag, string keywords)
+        public ZTFile[] Query(string keywords)
         {
             lock (fileDict)
             {
                 IEnumerable<ZTFile> query = fileDict.Values;
-                if (!string.IsNullOrEmpty(tag))
-                    query = query.Where(t => t.Tags != null && Array.IndexOf(t.Tags, tag) >= 0);
                 if (!string.IsNullOrEmpty(keywords))
                     query = query.Where(t => t.Name.Contains(keywords));
                 return query.ToArray();

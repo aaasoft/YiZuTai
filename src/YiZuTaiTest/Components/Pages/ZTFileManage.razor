@@ -14,28 +14,6 @@
                         新建
                     </button>
                 </div>
-                <EditForm Model="@this">
-                    <div class="input-group mr-2 mb-1">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">标签</div>
-                        </div>
-                        <InputSelect class="form-control" @bind-Value="searchTag">
-                            <option value="">全部</option>
-                            @if (!TagManager.Instance.IsEmpty())
-                            {
-                                @foreach (var tag in TagManager.Instance.GetTags())
-                                {
-                                    <option value="@tag">@tag</option>
-                                }
-                            }
-                        </InputSelect>
-                        <div class="input-group-append">
-                            <button type="button" class="btn btn-primary" @onclick="ShowTagManager">
-                                <i class="fa fa-ellipsis-h"></i>
-                            </button>
-                        </div>
-                    </div>
-                </EditForm>
                 <div class="input-group mb-1">
                     <div class="input-group-prepend">
                         <div class="input-group-text">关键字</div>
@@ -63,26 +41,16 @@
     }
     else
     {
-        @foreach (var t in ZTFileManager.Instance.Query(searchTag, searchKeywords))
+        @foreach (var t in ZTFileManager.Instance.Query(searchKeywords))
         {
             <div class="col-xl-4 col-lg-6 col-sm-12 mt-2">
                 <div class="card">
                     <div class="card-header">
                         <i class="fa fa-file mr-1" aria-hidden="true"></i><span class="mr-2">@t.Name</span>
-                        @if (t.Tags != null)
-                        {
-                            @foreach (var tag in t.Tags)
-                            {
-                                <span class="badge badge-pill badge-info mr-1">@tag</span>
-                            }
-                        }
                     </div>
-                    @if(!string.IsNullOrEmpty(t.Description))
-                    {
-                        <div class="card-body">
-                            @t.Description
-                        </div>
-                    }
+                    <div class="card-body">
+                        @t.Description
+                    </div>
                     <div class="card-footer p-1">
                         <div class="btn-group">
                             <button type="button" title="编辑" class="btn btn-sm btn-primary" @onclick="@(e => EditZTFile(t))">

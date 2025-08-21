@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Quick.Blazor.Bootstrap;
 using Quick.Blazor.Bootstrap.Utils;
-using YiZuTai.Components;
 using YiZuTai.Core;
+using YiZuTaiTest.Components.Controls;
 
 namespace YiZuTaiTest.Components.Pages
 {
@@ -10,14 +10,7 @@ namespace YiZuTaiTest.Components.Pages
     {
         private ModalAlert modalAlert;
         private ModalWindow modalWindow;
-
-        private string searchTag;
         private string searchKeywords;
-
-        private void ShowTagManager()
-        {
-            modalWindow.Show<TagManage>("标签管理");
-        }
 
         private void CreateZTFile()
         {
@@ -29,8 +22,7 @@ namespace YiZuTaiTest.Components.Pages
                         {
                             Id = Guid.NewGuid().ToString("N"),
                             Name = t.Name,
-                            Description = t.Description,
-                            Tags = t.Tags
+                            Description = t.Description
                         };
                         ZTFileManager.Instance.Add(ztFile);
                         InvokeAsync(StateHasChanged);
@@ -48,7 +40,6 @@ namespace YiZuTaiTest.Components.Pages
                     {
                         model.Name = t.Name;
                         model.Description = t.Description;
-                        model.Tags = t.Tags;
                         model.Save();
                         InvokeAsync(StateHasChanged);
                         modalWindow.Close();
