@@ -1,10 +1,10 @@
-using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using YiZuTai.Components.Editors;
 using YiZuTai.Control;
 using YiZuTai.DataSource;
+using YiZuTai.Model;
 using YiZuTai.Trigger;
 
 namespace YiZuTai.Sample.Controls.Curve;

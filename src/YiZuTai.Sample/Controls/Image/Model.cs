@@ -3,6 +3,7 @@ using System.ComponentModel;
 using YiZuTai.Components.Editors;
 using YiZuTai.Control;
 using YiZuTai.DataSource;
+using YiZuTai.Model;
 using YiZuTai.Trigger;
 
 namespace YiZuTai.Sample.Controls.Image

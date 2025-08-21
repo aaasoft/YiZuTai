@@ -1,5 +1,6 @@
 using YiZuTai.Control;
 using YiZuTai.Enums;
+using YiZuTai.Model;
 
 namespace YiZuTai.Components;
 

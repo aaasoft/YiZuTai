@@ -1,7 +1,7 @@
-using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using YiZuTai.Control;
+using YiZuTai.Model;
 
 namespace YiZuTai.Sample.Controls.Panel;
 

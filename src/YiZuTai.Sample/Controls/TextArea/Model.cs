@@ -5,6 +5,7 @@ using YiZuTai.Components.Editors;
 using YiZuTai.Control;
 using YiZuTai.DataSource;
 using YiZuTai.Enums;
+using YiZuTai.Model;
 
 namespace YiZuTai.Sample.Controls.TextArea;
 

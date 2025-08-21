@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using YiZuTai.Trigger;
 using YiZuTai.DataSource;
 using System.Reflection;
+using YiZuTai.Model;
 
 namespace YiZuTai.Control
 {

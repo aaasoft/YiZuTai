@@ -7,6 +7,7 @@ using YiZuTai.Components.Editors;
 using YiZuTai.Enums;
 using YiZuTai.Trigger;
 using YiZuTai.DataSource;
+using YiZuTai.Model;
 
 namespace YiZuTai.Sample.Controls.TextBlock;
 

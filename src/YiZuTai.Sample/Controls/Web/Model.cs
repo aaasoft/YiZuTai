@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using Newtonsoft.Json;
 using YiZuTai.Control;
+using YiZuTai.Model;
 
 namespace YiZuTai.Sample.Controls.Web;
 

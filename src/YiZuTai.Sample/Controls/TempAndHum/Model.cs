@@ -8,6 +8,7 @@ using YiZuTai.Control;
 using YiZuTai.DataSource;
 using YiZuTai.Enums;
 using YiZuTai.HyperLinkSource;
+using YiZuTai.Model;
 using YiZuTai.Trigger;
 
 namespace YiZuTai.Sample.Controls.TempAndHum;

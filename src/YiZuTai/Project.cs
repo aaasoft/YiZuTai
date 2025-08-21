@@ -8,6 +8,7 @@ using YiZuTai.Control;
 using YiZuTai.Core;
 using YiZuTai.Enums;
 using YiZuTai.HyperLinkSource;
+using YiZuTai.Model;
 using YiZuTai.Utils;
 
 namespace YiZuTai
