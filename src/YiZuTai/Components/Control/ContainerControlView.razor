@@ -3,7 +3,7 @@
 @using YiZuTai.Enums
 @typeparam TContainerModel where TContainerModel : BaseControl_WithBackground, new()
 
-<g @ondragover:stopPropagation @ondrop="HandleDrop" @ondrop:stopPropagation>
+<g ondragover="event.preventDefault();" @ondrop="HandleDrop" @ondrop:stopPropagation>
 <BaseControl_WithBackgroundView T_BaseControl_WithBackground="TContainerModel" Model="@Model"
     ZTContext="ZTContext">
     @ChildContent

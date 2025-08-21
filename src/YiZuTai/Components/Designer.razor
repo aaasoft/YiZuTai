@@ -161,8 +161,7 @@ else
                     <svg id="svgCanvas" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xhtml="http://www.w3.org/1999/xhtml"
                             width="@(Project.Width*DesignScale/100)" height="@(Project.Height*DesignScale/100)"
                             viewBox="-@DesignMargin -@DesignMargin @(Project.Width + DesignMargin * 2) @(Project.Height + DesignMargin * 2)"
-                            preserveAspectRatio="none"
-                            ondragover="event.preventDefault();">
+                            preserveAspectRatio="none">
                             <!--====画布部分====-->
                             <ContainerControlView TContainerModel="Project" Model="Project" ZTContext="ZTContext">
                                 @if (!string.IsNullOrEmpty(Project.Image))
