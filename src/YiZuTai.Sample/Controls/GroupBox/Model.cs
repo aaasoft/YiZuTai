@@ -221,7 +221,7 @@ value   =>  当前值")]
     {
         Width = 400;
         Height = 300;
-        TitleValue = new DataSources.Input() { Value = "面板标题" };
+        TitleValue = new DataSources.Input() { Value = "标题" };
 
     }
 
