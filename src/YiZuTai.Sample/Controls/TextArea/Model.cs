@@ -62,7 +62,7 @@ value   =>  当前值")]
         }
     }
 
-    private double _FontSize = 24;
+    private double _FontSize = 18;
     [Category("文本")]
     [DisplayName("字号")]
     [Description("文本的字号")]
@@ -119,7 +119,7 @@ value   =>  当前值")]
         }
     }
 
-    public double _LineHeight = 28;
+    public double _LineHeight = 20;
     [Category("文本")]
     [DisplayName("行高")]
     public double LineHeight
@@ -153,14 +153,13 @@ value   =>  当前值")]
         get
         {
             var charsOneLine = Convert.ToInt32(Math.Floor(Width / FontSize));
-            IEnumerable<char> a = Text;
-            while (true)
+            var lines = Text.Split('\r', '\n');
+            foreach (var line in lines)
             {
-                var line = new string(a.Take(charsOneLine).ToArray());
-                if (line.Length <= 0)
-                    break;
-                yield return line;
-                a = a.Skip(charsOneLine);
+                for (var i = 0; i < line.Length; i += charsOneLine)
+                {
+                    yield return line.Substring(i, Math.Min(charsOneLine, line.Length - i));
+                }
             }
         }
     }
@@ -171,8 +170,14 @@ value   =>  当前值")]
 
     public override void OnDragDropCreate(Point location)
     {
-        Width = 120;
-        Height = 40;
+        Width = 200;
+        Height = 120;
+        Value = new DataSources.Input()
+        {
+            Value = @"多行文本控件
+1.可以显示多行文本
+2.自动换行"
+        };
     }
 
     public override IControlShotcut[] Shotcuts =>
