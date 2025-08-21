@@ -356,7 +356,7 @@ new YiZuTai.Window({{
         }
 
         //添加控件
-        private void addControl(BaseControl control, BaseControl container = null)
+        public void AddControl(BaseControl control, BaseControl container = null)
         {
             checkAndModifyControlName(control, Project.GetAllControls());
             if (container == null && SelectedItem != null && SelectedItem.IsContainer)
@@ -422,12 +422,12 @@ new YiZuTai.Window({{
                 if (obj is MultiControl multiControl)
                 {
                     foreach (var item in multiControl.Items)
-                        addControl(item);
+                        AddControl(item);
                     SelectedItem = new MultiControl(Project, Project.DesignGridSize, multiControl.Items);
                 }
                 else
                 {
-                    addControl(control);
+                    AddControl(control);
                     SelectedItem = control;
                 }
             }
