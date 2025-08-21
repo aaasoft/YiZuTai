@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 using Quick.Xml;
 using YiZuTai.Components.Editors;
@@ -52,7 +53,8 @@ public class Model : BaseControl_WithBackground
     private double _TitleForegroundOpacity = 1;
     [Category("标题栏")]
     [DisplayName("前景透明度")]
-    [Editor(typeof(EditorInputRange), typeof(EditorInputRange))]
+    [Range(0, 1)]
+    [StringLength(100)]
     public double TitleForegroundOpacity
     {
         get { return _TitleForegroundOpacity; }
@@ -81,7 +83,8 @@ public class Model : BaseControl_WithBackground
     private double _TitleTextForegroundOpacity = 1;
     [Category("标题栏")]
     [DisplayName("文本透明度")]
-    [Editor(typeof(EditorInputRange), typeof(EditorInputRange))]
+    [Range(0, 1)]
+    [StringLength(100)]
     public double TitleTextForegroundOpacity
     {
         get { return _TitleTextForegroundOpacity; }
@@ -111,7 +114,8 @@ public class Model : BaseControl_WithBackground
     private double _TitleBackgroundOpacity = 1;
     [Category("标题栏")]
     [DisplayName("背景透明度")]
-    [Editor(typeof(EditorInputRange), typeof(EditorInputRange))]
+    [Range(0, 1)]
+    [StringLength(100)]
     public double TitleBackgroundOpacity
     {
         get { return _TitleBackgroundOpacity; }

@@ -22,6 +22,7 @@ public class Provider
         ControlManager.Instance.RegisterControl<Controls.Video.Model>();
         ControlManager.Instance.RegisterControl<Controls.TextCarousel.Model>();
         ControlManager.Instance.RegisterControl<Controls.TextArea.Model>();
+        ControlManager.Instance.RegisterControl<Controls.Progress.HorizontalBar.Model>();
 
         SourceManager.Instance.RegisterSource<DataSources.Input>();
         SourceManager.Instance.RegisterSource<DataSources.Simulate>();
