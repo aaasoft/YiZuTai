@@ -1,0 +1,75 @@
+﻿@inherits AbstractControlView<Model>
+
+<BaseControlView T_BaseControl="Model" Model="@ControlModel" ZTContext="ZTContext">
+    <!--横条-->
+    @{
+        var ArgWidth = ControlModel.Width;
+        var ArgHeight = ControlModel.Height;
+        var ArgValue = ControlModel.NumberValue;
+        var ArgMaxValue = ControlModel.MaxValue;
+        var ArgMinValue = ControlModel.MinValue;
+        var ArgProgressForegroundColor = ControlModel.ProgressForeground;
+        var ArgProgressForegroundOpacity = ControlModel.ProgressForegroundOpacity;
+        var ArgProgressBackgroundColor = ControlModel.Background;
+        var ArgProgressBackgroundOpacity = ControlModel.BackgroundOpacity;
+        var ArgBorderColor = ControlModel.Border;
+        var ArgBorderOpacity = ControlModel.BorderOpacity;
+        var ArgBorderThickness = ControlModel.BorderThickness;
+        var ArgCornerRadius = ControlModel.CornerRadius;
+    }
+    @{
+        var BackgroundProgressLeft = ArgBorderThickness / 2;
+        var BackgroundProgressTop = ArgBorderThickness / 2;
+        var BackgroundProgressWidth = ArgWidth - ArgBorderThickness;
+        var BackgroundProgressHeight = ArgHeight - ArgBorderThickness;
+
+        var ForegroundProgressLeft = ArgBorderThickness;        
+        var ForegroundProgressWidth = ArgWidth - ArgBorderThickness * 2;
+        var ForegroundProgressHeight = (ArgHeight - ArgBorderThickness * 2) * (ArgValue - ArgMinValue) / (ArgMaxValue - ArgMinValue);
+        var ForegroundProgressTop = ArgHeight - ForegroundProgressHeight - ArgBorderThickness;
+        var ForegroundProgressCornerRadius = ArgCornerRadius - 1;
+        if (ForegroundProgressCornerRadius < 0)
+            ForegroundProgressCornerRadius = 0;
+    }
+    <g>
+        <rect x="@BackgroundProgressLeft" y="@BackgroundProgressTop" width="@BackgroundProgressWidth"
+            height="@BackgroundProgressHeight" fill="@ArgProgressBackgroundColor"
+            fill-opacity="@ArgProgressBackgroundOpacity" rx="@ArgCornerRadius" ry="@ArgCornerRadius"
+            stroke="@ArgBorderColor" stroke-opacity="@ArgBorderOpacity" stroke-width="@ArgBorderThickness" />
+        <rect x="@ForegroundProgressLeft" y="@ForegroundProgressTop" width="@ForegroundProgressWidth"
+            height="@ForegroundProgressHeight" fill="@ArgProgressForegroundColor"
+            fill-opacity="@ArgProgressForegroundOpacity" rx="@ForegroundProgressCornerRadius"
+            ry="@ForegroundProgressCornerRadius">
+        </rect>
+    </g>
+
+
+    <!--文本-->
+    @{
+        var ArgTextVisiable = ControlModel.TextVisiable;
+        var ArgTextFillColor = ControlModel.TextForeground;
+        var ArgTextFillOpacity = ControlModel.TextForegroundOpacity;
+        var ArgTextX = ControlModel.TextX;
+        var ArgTextY = ControlModel.TextY;
+        var ArgTextFontSize = ControlModel.TextFontSize;
+        var ArgTextFontFamily = ControlModel.TextFontFamily;
+        var ArgText = ControlModel.Text;
+    }
+    @if (ArgTextVisiable)
+    {
+        <g>
+            <text id="text" class="text" fill="@ArgTextFillColor" fill-opacity="@ArgTextFillOpacity" x="@ArgTextX"
+                y="@ArgTextY" font-size="@ArgTextFontSize" font-family="@ArgTextFontFamily" text-anchor="middle"
+                xml:space="preserve">@ArgText</text>
+        </g>
+    }
+</BaseControlView>
+
+@code
+{
+    public override void OnDoubleClick()
+    {
+        SourceTypeEditor.Select(ZTContext.ModalWindow, ControlModel.Value, typeof(IDataSource), t => ControlModel.Value =
+        (IDataSource)t);
+    }
+}

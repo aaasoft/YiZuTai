@@ -1,10 +1,7 @@
-using System;
 using System.ComponentModel;
-using YiZuTai.Control;
 using YiZuTai.Model;
 
 namespace YiZuTai.Sample.Controls.Progress.HorizontalBar;
-
 
 [Category("进度")]
 [DisplayName("横条")]
@@ -17,6 +14,8 @@ public class Model : AbstractControl
         base.OnDragDropCreate(location);
 
         Border = "#000000";
-        BorderThickness = 2;
+        BorderThickness = 0;
+        Width = 120;
+        Height = 30;
     }
 }
