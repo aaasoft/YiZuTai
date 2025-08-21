@@ -1,7 +1,6 @@
-using System;
 using Microsoft.AspNetCore.Components;
 using YiZuTai.Control;
-using YiZuTai.Core;
+using YiZuTai.Model;
 
 namespace YiZuTai.Components;
 

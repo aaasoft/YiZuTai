@@ -1,4 +1,5 @@
-﻿<Quick.Blazor.Bootstrap.Admin.FileManageControl BaseDir="@baseDir" @ref="fileManageControl">
+﻿@using YiZuTai.Model
+<Quick.Blazor.Bootstrap.Admin.FileManageControl BaseDir="@baseDir" @ref="fileManageControl">
     <ToolbarAddonButtons>
         @if (fileManageControl.IsSelectedFile())
         {
@@ -15,7 +16,7 @@
 {
     private Quick.Blazor.Bootstrap.Admin.FileManageControl fileManageControl;
     [Parameter]
-    public Core.ZTFile ZTFile { get; set; }
+    public ZTFile ZTFile { get; set; }
     [Inject]
     private IJSRuntime JSRuntime { get; set; }
     private ModalAlert modalAlert;

@@ -7,10 +7,10 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using YiZuTai.Components;
 using YiZuTai.Components.Editors;
-using YiZuTai.Core;
 using YiZuTai.DataSource;
 using YiZuTai.Enums;
 using YiZuTai.HyperLinkSource;
+using YiZuTai.Model;
 
 namespace YiZuTai.Control
 {

@@ -2,6 +2,7 @@
 using System.Text;
 using Microsoft.JSInterop;
 using YiZuTai.HyperLinkSource;
+using YiZuTai.Model;
 using YiZuTai.Sample.Enums;
 
 namespace YiZuTai.Sample.HyperLinkSources
@@ -74,7 +75,7 @@ namespace YiZuTai.Sample.HyperLinkSources
             }
         }
 
-        public override void Execute(Core.ZTContext context)
+        public override void Execute(ZTContext context)
         {
             switch (Target)
             {

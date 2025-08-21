@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using YiZuTai.Control;
+using YiZuTai.Model;
 
 namespace YiZuTai.Components.Editors
 {
@@ -9,7 +10,7 @@ namespace YiZuTai.Components.Editors
         /// 组态文件模型
         /// </summary>
         [Parameter]
-        public Core.ZTFile ZTFile { get; set; }
+        public ZTFile ZTFile { get; set; }
         /// <summary>
         /// 控件字段
         /// </summary>

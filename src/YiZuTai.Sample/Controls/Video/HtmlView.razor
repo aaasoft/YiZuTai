@@ -28,6 +28,5 @@
         }
     }
 
-    public string GetSource() => string.IsNullOrEmpty(ControlModel.LocalFile) ? ControlModel.Url :
-    ZTFile.GetStaticResourceUrl(ZTContext.ZTFile.Id, ControlModel.LocalFile);
+    public string GetSource() => string.IsNullOrEmpty(ControlModel.LocalFile) ? ControlModel.Url : ZTContext.ZTFile.GetStaticResourceUrl(ControlModel.LocalFile);
 }

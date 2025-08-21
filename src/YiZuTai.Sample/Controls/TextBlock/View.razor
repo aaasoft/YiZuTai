@@ -6,7 +6,7 @@
       @if (ControlModel.Image != null)
       {
             <g>
-                  <image href="@Core.ZTFile.GetStaticResourceUrl(ZTContext.ZTFile.Id, ControlModel.Image)"
+                  <image href="@ZTContext.ZTFile.GetStaticResourceUrl(ControlModel.Image)"
                         width="@ControlModel.Width" height="@ControlModel.Height" preserveAspectRatio="none"></image>
             </g>
       }

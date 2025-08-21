@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Reflection;
 using YiZuTai.Components.Editors;
 using YiZuTai.Core;
+using YiZuTai.Model;
 
 namespace YiZuTai.Control
 {
@@ -36,7 +37,7 @@ namespace YiZuTai.Control
             set { PropertyInfo.SetValue(PropertyHost, value); }
         }
 
-        public RenderFragment GetEditorRenderFragment(Core.ZTFile ztFile)
+        public RenderFragment GetEditorRenderFragment(ZTFile ztFile)
         {
             var editorAttribute = PropertyInfo.GetCustomAttribute<EditorAttribute>();
             Type editorType = null;

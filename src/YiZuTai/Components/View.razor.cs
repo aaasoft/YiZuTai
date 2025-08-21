@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Quick.Blazor.Bootstrap;
-using YiZuTai.Core;
 using YiZuTai.Core.ObjectConnection;
-using YiZuTai.Control;
 using YiZuTai.Enums;
 using Microsoft.JSInterop;
 using System.Web;
 using Quick.Xml;
+using YiZuTai.Model;
 
 namespace YiZuTai.Components
 {

@@ -4,7 +4,7 @@
     ZTContext="ZTContext">
     <!--图片部分-->
     <g data-Angle="@ControlModel.Angle">
-        <image href="@Core.ZTFile.GetStaticResourceUrl(ZTContext.ZTFile.Id, ControlModel.Image)"
+        <image href="@ZTContext.ZTFile.GetStaticResourceUrl(ControlModel.Image)"
             width="@ControlModel.Width" height="@ControlModel.Height" preserveAspectRatio="none"></image>
     </g>
 </BaseControl_WithBackgroundAndAnimateView>

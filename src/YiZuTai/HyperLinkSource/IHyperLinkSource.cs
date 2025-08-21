@@ -1,9 +1,10 @@
 ﻿using YiZuTai.Core.Source;
+using YiZuTai.Model;
 
 namespace YiZuTai.HyperLinkSource
 {
     public interface IHyperLinkSource : ISource
     {
-        void Execute(Core.ZTContext context);
+        void Execute(ZTContext context);
     }
 }

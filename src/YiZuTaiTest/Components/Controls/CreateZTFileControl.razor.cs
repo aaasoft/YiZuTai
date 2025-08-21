@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System.ComponentModel.DataAnnotations;
-using YiZuTai.Core;
+using YiZuTai.Model;
 
 namespace YiZuTaiTest.Components.Controls
 {

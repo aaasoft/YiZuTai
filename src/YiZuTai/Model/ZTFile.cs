@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Newtonsoft.Json;
 using YiZuTai.Core.Utils;
-using YiZuTai.Control;
 
-namespace YiZuTai.Core
+namespace YiZuTai.Model
 {
     /// <summary>
     /// 组态文件类
@@ -75,7 +74,7 @@ namespace YiZuTai.Core
             return GetStaticResourceUrl(Id, resourceUrl);
         }
 
-        public static string GetStaticResourceUrl(string ztFileId, string resourceUrl)
+        private static string GetStaticResourceUrl(string ztFileId, string resourceUrl)
         {
             if (resourceUrl == null || resourceUrl.StartsWith("/"))
                 return resourceUrl;

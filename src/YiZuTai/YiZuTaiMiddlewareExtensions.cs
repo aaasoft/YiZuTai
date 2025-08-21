@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using YiZuTai;
 using YiZuTai.Core;
-using YiZuTai.Core.Source;
+using YiZuTai.Model;
 
 namespace Microsoft.AspNetCore.Builder
 {

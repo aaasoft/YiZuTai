@@ -2,13 +2,14 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using Quick.Blazor.Bootstrap;
-using YiZuTai.Core;
 using YiZuTai.Control;
 using YiZuTai.Core.ObjectConnection;
 using Quick.Blazor.Bootstrap.Admin;
 using Quick.Xml;
 using Quick.Blazor.Bootstrap.Utils;
 using YiZuTai.Utils;
+using YiZuTai.Model;
+using YiZuTai.Core;
 
 namespace YiZuTai.Components
 {
@@ -45,7 +46,7 @@ namespace YiZuTai.Components
 
         [Parameter]
         public string Id { get; set; }
-        public ZTFile Model { get; private set; }
+        public ZTFile ZTFile { get; private set; }
         public Project Project { get; private set; }
 
         private ZTContext ZTContext;
@@ -91,11 +92,11 @@ namespace YiZuTai.Components
 
         protected override void OnParametersSet()
         {
-            Model = ZTFileManager.Instance.Get(Id);
-            Project = Model.OpenProject();
+            ZTFile = ZTFileManager.Instance.Get(Id);
+            Project = ZTFile.OpenProject();
             ZTContext = new ZTContext()
             {
-                ZTFile = Model,
+                ZTFile = ZTFile,
                 JSRuntime = JSRuntime,
                 Designer = this
             };
@@ -155,7 +156,7 @@ namespace YiZuTai.Components
 
         private void refreshTitle()
         {
-            var titleStr = $"{Model.Name} - 设计 - 易组态";
+            var titleStr = $"{ZTFile.Name} - 设计 - 易组态";
             if (isWindowOnbeforeUnloadEventAdded)
                 titleStr = "*" + titleStr;
             title = titleStr;
@@ -296,7 +297,7 @@ namespace YiZuTai.Components
         // 保存
         private void Save()
         {
-            Model.SaveProject(Project);
+            ZTFile.SaveProject(Project);
             toastStack.AddToast("保存", "保存成功!", BackgroundTheme.success);
             JSRuntime.InvokeVoidAsync("YiZuTai.Designer.RemoveWindowOnBeforeUnloadEvent");
             isWindowOnbeforeUnloadEventAdded = false;
@@ -306,7 +307,7 @@ namespace YiZuTai.Components
         // 预览
         private void Preview()
         {
-            var previewUrl = ZTFile.GetStaticResourceUrl(ZTContext.ZTFile.Id, $"../View?DesignerId={designerId}");
+            var previewUrl = ZTContext.ZTFile.GetStaticResourceUrl($"../View?DesignerId={designerId}");
             ZTContext.JSRuntime.InvokeVoidAsync("eval", @$"
 new YiZuTai.Window({{
     maxmin: true,
@@ -321,11 +322,11 @@ new YiZuTai.Window({{
         // 文件管理
         private void FileManage()
         {
-            if (!Directory.Exists(Model.ResourceFolder))
-                Directory.CreateDirectory(Model.ResourceFolder);
+            if (!Directory.Exists(ZTFile.ResourceFolder))
+                Directory.CreateDirectory(ZTFile.ResourceFolder);
             modalWindow.Show("资源文件", new DialogParameters<FileManageControl>
             {
-                { x => x.ZTFile, Model}
+                { x => x.ZTFile, ZTFile}
             });
         }
 

@@ -1,9 +1,5 @@
-﻿using BlazorDownloadFile;
-using Microsoft.AspNetCore.Components;
-using Quick.Blazor.Bootstrap;
-using Quick.Blazor.Bootstrap.Utils;
-using System.Text;
-using Tewr.Blazor.FileReader;
+﻿using Microsoft.AspNetCore.Components;
+using YiZuTai.Model;
 
 namespace YiZuTai.Components
 {
@@ -14,7 +10,7 @@ namespace YiZuTai.Components
         private readonly YiZuTai.Utils.UnitStringConverting timeUSC = YiZuTai.Utils.UnitStringConverting.TimeUnitStringConverting;
 
         [Parameter]
-        public Core.ZTFile ZTFile { get; set; }
+        public ZTFile ZTFile { get; set; }
         [Parameter]
         public string SelectedItem { get; set; }
         [Parameter]

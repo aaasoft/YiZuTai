@@ -2,6 +2,7 @@
 using Quick.Blazor.Bootstrap;
 using Quick.Blazor.Bootstrap.Utils;
 using YiZuTai.Core;
+using YiZuTai.Model;
 using YiZuTaiTest.Components.Controls;
 
 namespace YiZuTaiTest.Components.Pages

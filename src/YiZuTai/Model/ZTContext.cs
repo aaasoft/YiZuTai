@@ -2,7 +2,7 @@ using Microsoft.JSInterop;
 using Quick.Blazor.Bootstrap;
 using YiZuTai.Components;
 
-namespace YiZuTai.Core;
+namespace YiZuTai.Model;
 
 public class ZTContext
 {

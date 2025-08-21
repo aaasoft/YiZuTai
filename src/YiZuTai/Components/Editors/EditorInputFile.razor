@@ -2,6 +2,7 @@
 @using System.Reflection
 @using System.ComponentModel.DataAnnotations
 @using Quick.Blazor.Bootstrap.Admin
+@using YiZuTai.Model
 @using YiZuTai.Utils
 @using YiZuTai.Components
 @using ZstdSharp.Unsafe
@@ -31,7 +32,7 @@ else
     private ModalAlert modalAlert;
     private ModalWindow modalWindow;
 
-    public static void Select(ModalWindow modalWindow, Core.ZTFile ztFile, string fileFilter, string value, Action<string>
+    public static void Select(ModalWindow modalWindow, ZTFile ztFile, string fileFilter, string value, Action<string>
     setValueAction)
     {
         string dir = null;

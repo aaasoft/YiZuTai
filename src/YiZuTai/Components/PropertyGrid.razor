@@ -1,6 +1,7 @@
 ﻿@using System.Reflection
 @using System.ComponentModel
 @using YiZuTai.Control
+@using YiZuTai.Model
 
 <Quick.Blazor.Bootstrap.Accordion AllowMultiplePanelActived="true">
 @foreach (var group in SelectedItemFields)
@@ -45,7 +46,7 @@
     [Parameter]
     public object SelectedObject { get; set; }
     [CascadingParameter]
-    public Core.ZTFile Model { get; set; }
+    public ZTFile Model { get; set; }
 
     private void onFieldClicked(ControlField field)
     {

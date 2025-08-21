@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using YiZuTai.Core;
 using YiZuTai.Core.Source;
+using YiZuTai.Model;
 
 namespace YiZuTai.HyperLinkSource
 {

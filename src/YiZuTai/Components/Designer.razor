@@ -23,7 +23,7 @@
     </style>
 </HeadContent>
 
-@if (Model == null)
+@if (ZTFile == null)
 {
     <div class="alert alert-warning" role="alert">
         未找到编号为[@(Id)]的组态文件!
@@ -31,7 +31,7 @@
 }
 else
 {
-    <CascadingValue Value="Model">
+    <CascadingValue Value="ZTFile">
     <ToastStack @ref="toastStack" />
     
     <!--顶部菜单部分-->
@@ -166,7 +166,7 @@ else
                             <ContainerControlView TContainerModel="Project" Model="Project" ZTContext="ZTContext">
                                 @if (!string.IsNullOrEmpty(Project.Image))
                                 {
-                                    <image href="@Core.ZTFile.GetStaticResourceUrl(Model.Id, Project.Image)" width="100%" height="100%" preserveAspectRatio="none"></image>
+                                    <image href="@ZTFile.GetStaticResourceUrl(Project.Image)" width="100%" height="100%" preserveAspectRatio="none"></image>
                                 }
                                 @if(ShowDesignGrid)
                                 {
