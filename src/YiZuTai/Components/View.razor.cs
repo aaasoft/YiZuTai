@@ -19,7 +19,7 @@ namespace YiZuTai.Components
         public string Id { get; set; }
 
         [Parameter]
-        public Core.ZTFile Model { get; set; }
+        public ZTFile ZTFile { get; set; }
 
         [Parameter]
         public Project Project { get; set; }
@@ -49,16 +49,10 @@ namespace YiZuTai.Components
             }
         }
 
-        private string GetControlALinkStyle(BaseControl baseControl) => baseControl.HyperLinkSource == null ? "" : "cursor: pointer;";
-        private void OnControlClick(BaseControl baseControl)
-        {
-            baseControl.HyperLinkSource?.Execute(ZTContext);
-        }
-
         protected override void OnParametersSet()
         {
-            if (Model == null)
-                Model = Core.ZTFileManager.Instance.Get(Id);
+            if (ZTFile == null)
+                ZTFile = Core.ZTFileManager.Instance.Get(Id);
             var query = HttpUtility.ParseQueryString(new Uri(NavigationManager.Uri).Query);
             var designerId = query.Get("DesignerId");
             if (!string.IsNullOrEmpty(designerId))
@@ -69,12 +63,12 @@ namespace YiZuTai.Components
                 Project = (Project)XmlConvert.Deserialize(XmlConvert.Serialize(srcProject));                
             }
             if (Project == null)
-                Project = Model.OpenProject();
+                Project = ZTFile.OpenProject();
             Project.OnLoad();
             ObjectConnectionManager.Instance.AddObject(Project);
             ZTContext = new ZTContext()
             {
-                ZTFile = Model,
+                ZTFile = ZTFile,
                 Project = Project,
                 JSRuntime = JSRuntime
             };

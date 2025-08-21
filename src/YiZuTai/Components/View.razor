@@ -2,20 +2,27 @@
 @using YiZuTai.Components.Control
 @using YiZuTai.Core.Utils
 @using YiZuTai.Enums
-<PageTitle>@Model?.Name - 展示 - 易组态</PageTitle>
+<PageTitle>@ZTFile?.Name - 展示 - 易组态</PageTitle>
 <HeadContent>
     <script src="_content/YiZuTai/jquery-1.12.4/jquery.min.js"></script>
     <script src="_content/YiZuTai/layer-3.1.1/layer.js"></script>
     <script src="_content/YiZuTai/js/core.js"></script>
-    <link href="_content/YiZuTai/css/view.css" rel="stylesheet" />
     <style>
         body {
             background-color: @Project?.Background;
         }
+        .main>div {
+            padding-left: 0rem !important;
+            padding-right: 0rem !important;
+        }
+
+        text {
+            user-select: none;
+        }
     </style>
 </HeadContent>
 
-@if (Model == null)
+@if (ZTFile == null)
 {
     <div class="alert alert-warning" role="alert">
         未找到编号为[@(Id)]的组态文件!
@@ -31,29 +38,27 @@ else
     }
     else
     {
-        <CascadingValue Value="Model">
-            <div class="text-center p-0" data-stretch="@Project.Stretch"
-                style="align-content: center;@(Project.Stretch == Stretch.UniformToFill ? "" : "height: 100vh;") ">
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xhtml="http://www.w3.org/1999/xhtml"
-                    width="@(Project.Stretch == Stretch.None ? Project.Width + "px" : "100%")"
-                    height="@(Project.Stretch == Stretch.None ? Project.Height + "px" : "100%")"
-                    viewBox="00 00 @Project.Width @Project.Height" preserveAspectRatio="@preserveAspectRatio">
-                        <!--====画布部分====-->
-                        <ContainerControlView TContainerModel="Project" Model="Project" ZTContext="ZTContext">
-                            @if (!string.IsNullOrEmpty(Project.Image))
-                            {
-                                <image href="@Core.ZTFile.GetStaticResourceUrl(Model.Id, Project.Image)" width="100%" height="100%" preserveAspectRatio="none"></image>
-                            }
-                        </ContainerControlView>
-                </svg>
-                <!--====控件HTML部分====-->
-                @foreach (var Item in Project.GetAllControls())
-                {
-                    @Item.GetHtmlView(ZTContext)
-                }
-            </div>
-        </CascadingValue>
+        <div class="text-center p-0" data-stretch="@Project.Stretch"
+            style="align-content: center;@(Project.Stretch == Stretch.UniformToFill ? "" : "height: 100vh;") ">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xhtml="http://www.w3.org/1999/xhtml"
+                width="@(Project.Stretch == Stretch.None ? Project.Width + "px" : "100%")"
+                height="@(Project.Stretch == Stretch.None ? Project.Height + "px" : "100%")"
+                viewBox="00 00 @Project.Width @Project.Height" preserveAspectRatio="@preserveAspectRatio">
+                    <!--====画布部分====-->
+                    <ContainerControlView TContainerModel="Project" Model="Project" ZTContext="ZTContext">
+                        @if (!string.IsNullOrEmpty(Project.Image))
+                        {
+                            <image href="@Core.ZTFile.GetStaticResourceUrl(ZTFile.Id, Project.Image)" width="100%" height="100%" preserveAspectRatio="none"></image>
+                        }
+                    </ContainerControlView>
+            </svg>
+            <!--====控件HTML部分====-->
+            @foreach (var Item in Project.GetAllControls())
+            {
+                @Item.GetHtmlView(ZTContext)
+            }
+        </div>
     }
 }
 <ModalWindow DialogSizeExtraLarge @ref="modalWindow" />
