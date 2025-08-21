@@ -170,10 +170,15 @@ value   =>  当前值")]
         {
             base.OnDragDropCreate(location);
             BackgroundOpacity = 1;
-            this.Value = new DataSources.Simulate() { MaxValue = 100, MinValue = 0, Period = 1 };
+            BorderThickness = 0;
+            PreNumberValue = MinValue;
+            Value = new DataSources.Simulate() { MaxValue = 100, MinValue = 0, Period = 1 };
         }
 
-
+        [Browsable(false)]
+        [JsonIgnore]
+        public double PreNumberValue { get; private set; }
+        private double currentNumberValue;
         [Browsable(false)]
         [JsonIgnore]
         public double NumberValue
@@ -186,6 +191,9 @@ value   =>  当前值")]
                     value = MaxValue;
                 if (value < MinValue)
                     value = MinValue;
+                
+                PreNumberValue = currentNumberValue;
+                currentNumberValue = value;
                 return value;
             }
         }
