@@ -16,13 +16,8 @@ namespace YiZuTai.DataSource
                 if (value < 0)
                     return;
                 _Period = value;
-                RaisePropertyChanged(nameof(Period));
+                RaisePropertyChanged();
             }
-        }
-
-        public AbstractAutoRefreshOnTimerDataSource()
-        {
-            this.PropertyChanged += AbstractAutoRefreshDataSource_PropertyChanged;
         }
 
         /// <summary>
@@ -37,8 +32,7 @@ namespace YiZuTai.DataSource
         {
             try
             {
-                if (RefreshValue())
-                    RaisePropertyChanged(nameof(Value));
+                RefreshValue();
             }
             catch (Exception ex)
             {
@@ -51,7 +45,9 @@ namespace YiZuTai.DataSource
             if (Period == 0)
                 onTime(null);
             else
+            {
                 timer = new Timer(onTime, 0, TimeSpan.Zero, TimeSpan.FromSeconds(Period));
+            }
         }
 
         public override void Stop()
@@ -59,26 +55,6 @@ namespace YiZuTai.DataSource
             if (timer != null)
                 timer.Dispose();
             timer = null;
-        }
-
-        private void AbstractAutoRefreshDataSource_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case nameof(Period):
-                    if (Period == 0)
-                    {
-                        Stop();
-                    }
-                    else
-                    {
-                        if (timer == null)
-                            Start();
-                        else
-                            timer.Change(TimeSpan.Zero, TimeSpan.FromSeconds(Period));
-                    }
-                    break;
-            }
         }
     }
 }

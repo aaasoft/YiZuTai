@@ -17,10 +17,7 @@ namespace YiZuTai.Components
         [Parameter]
         public string Id { get; set; }
 
-        [Parameter]
         public ZTFile ZTFile { get; set; }
-
-        [Parameter]
         public Project Project { get; set; }
 
         private ModalWindow modalWindow;
@@ -50,21 +47,20 @@ namespace YiZuTai.Components
 
         protected override void OnParametersSet()
         {
-            if (ZTFile == null)
-                ZTFile = Core.ZTFileManager.Instance.Get(Id);
+            ZTFile = Core.ZTFileManager.Instance.Get(Id);
             var query = HttpUtility.ParseQueryString(new Uri(NavigationManager.Uri).Query);
             var designerId = query.Get("DesignerId");
             if (!string.IsNullOrEmpty(designerId))
             {
                 var srcProject = Designer.GetDesigner(designerId)?.Project;
                 if (srcProject == null)
-                    return;                
-                Project = (Project)XmlConvert.Deserialize(XmlConvert.Serialize(srcProject));                
+                    return;
+                Project = (Project)XmlConvert.Deserialize(XmlConvert.Serialize(srcProject));
             }
-            if (Project == null)
+            else
+            {
                 Project = ZTFile.OpenProject();
-            Project.OnLoad();
-            ObjectConnectionManager.Instance.AddObject(Project);
+            }
             ZTContext = new ZTContext()
             {
                 ZTFile = ZTFile,
@@ -77,8 +73,9 @@ namespace YiZuTai.Components
         {
             if (firstRender)
             {
-                if (ZTContext != null)
-                    ZTContext.ModalWindow = modalWindow;
+                Project.OnLoad();
+                ObjectConnectionManager.Instance.AddObject(Project);
+                ZTContext.ModalWindow = modalWindow;
             }
         }
 

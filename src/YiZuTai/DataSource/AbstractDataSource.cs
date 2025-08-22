@@ -29,7 +29,7 @@ namespace YiZuTai.DataSource
             set
             {
                 _Value = value;
-                RaisePropertyChanged(nameof(Value));
+                RaisePropertyChanged();
             }
         }
 

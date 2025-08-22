@@ -1,5 +1,6 @@
 ﻿using System.Collections.Specialized;
 using Quick.Blazor.Bootstrap;
+using YiZuTai.DataSource;
 
 namespace YiZuTai.Core.ObjectConnection
 {
@@ -113,7 +114,6 @@ namespace YiZuTai.Core.ObjectConnection
                     var item = (PropertyNotifyModel)obj;
                     item.PropertyChanging += ObjectConnectionInfo.PropertyChangingEventHandler;
                     item.PropertyChanged += ObjectConnectionInfo.PropertyChangedEventHandler;
-
                     foreach (var propertyInfo in ObjectConnectionUtils.GetObjectProperties(item))
                         AddObject(propertyInfo.GetValue(item), item, propertyInfo.Name);
                 }
@@ -128,6 +128,9 @@ namespace YiZuTai.Core.ObjectConnection
                     return;
                 if (!dict.ContainsKey(obj))
                     return;
+                
+                foreach (var handler in GetHandler(obj.GetType()))
+                    handler.OldValueHandle(obj);
 
                 var objectEventHandler = dict[obj];
                 dict.Remove(obj);
