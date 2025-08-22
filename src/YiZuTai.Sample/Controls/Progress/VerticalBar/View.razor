@@ -5,7 +5,6 @@
     @{
         var ArgWidth = ControlModel.Width;
         var ArgHeight = ControlModel.Height;
-        var ArgValue = ControlModel.NumberValue;
         var ArgMaxValue = ControlModel.MaxValue;
         var ArgMinValue = ControlModel.MinValue;
         var ArgProgressForegroundColor = ControlModel.ProgressForeground;
@@ -26,8 +25,8 @@
         var ForegroundProgressTop = ArgBorderThickness;
         var ForegroundProgressLeft = ArgBorderThickness;
         var ForegroundProgressWidth = ArgWidth - ArgBorderThickness * 2;
-        var ForegroundProgressHeight = (ArgHeight - ArgBorderThickness * 2) * (ArgValue - ArgMinValue) / (ArgMaxValue -
-        ArgMinValue);
+        var ForegroundProgressPreHeight = (ArgHeight - ArgBorderThickness * 2) * (preValue - ArgMinValue) / (ArgMaxValue - ArgMinValue);
+        var ForegroundProgressHeight = (ArgHeight - ArgBorderThickness * 2) * (currentValue - ArgMinValue) / (ArgMaxValue - ArgMinValue);
 
         var ForegroundProgressCornerRadius = ArgCornerRadius - 1;
         if (ForegroundProgressCornerRadius < 0)
@@ -39,9 +38,10 @@
             fill-opacity="@ArgProgressBackgroundOpacity" rx="@ArgCornerRadius" ry="@ArgCornerRadius"
             stroke="@ArgBorderColor" stroke-opacity="@ArgBorderOpacity" stroke-width="@ArgBorderThickness" />
         <rect x="@ForegroundProgressLeft" y="@ForegroundProgressTop" width="@ForegroundProgressWidth"
-            height="@ForegroundProgressHeight" fill="@ArgProgressForegroundColor"
+            height="@ForegroundProgressPreHeight" fill="@ArgProgressForegroundColor"
             transform="rotate(180 @(ArgWidth / 2) @(ArgHeight / 2))" fill-opacity="@ArgProgressForegroundOpacity"
             rx="@ForegroundProgressCornerRadius" ry="@ForegroundProgressCornerRadius">
+            <animate id="animate_@ControlModel.Name" attributeName="height" begin="indefinite" to="@ForegroundProgressHeight" dur="0.5s" fill="freeze" />
         </rect>
     </g>
     <!--文本-->
@@ -53,6 +53,31 @@
 
 @code
 {
+    private bool isFirst=true;
+    private double preValue;
+    private double currentValue;
+
+    protected override bool ShouldRender()
+    {
+        if (isFirst)
+        {
+            isFirst = false;
+            preValue = ControlModel.MinValue;
+        }
+        else
+        {
+            preValue = currentValue;
+        }
+        currentValue = ControlModel.NumberValue;
+        return base.ShouldRender();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        ZTContext.JSRuntime.InvokeVoidAsync("eval", $"document.getElementById('animate_{ControlModel.Name}').beginElement()");
+    }
+
     public override void OnDoubleClick()
     {
         SourceTypeEditor.Select(ZTContext.ModalWindow, ControlModel.Value, typeof(IDataSource), t => ControlModel.Value =
