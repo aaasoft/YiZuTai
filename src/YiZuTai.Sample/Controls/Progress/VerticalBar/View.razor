@@ -53,12 +53,6 @@
 
 @code
 {
-    protected override void OnAfterRender(bool firstRender)
-    {
-        base.OnAfterRender(firstRender);
-        Console.WriteLine(DateTime.Now + ": OnAfterRender : " + firstRender);
-    }
-
     public override void OnDoubleClick()
     {
         SourceTypeEditor.Select(ZTContext.ModalWindow, ControlModel.Value, typeof(IDataSource), t => ControlModel.Value =

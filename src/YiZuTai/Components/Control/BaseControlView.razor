@@ -17,8 +17,7 @@
 else
 {
     <g onpointerdown="event.srcElement.setPointerCapture(event.pointerId)" onpointerup="event.srcElement.releasePointerCapture(event.pointerId)"
-        @onmousedown="@(e => onControlMouseDown(e, Model))" @onmousedown:stopPropagation @onmousemove="onMouseMove"
-        @onmouseup="onMouseUp" @ondblclick="@(e => Model.OnDoubleClick())">
+        @attributes="DivAttributes" @onmousedown:stopPropagation @ondblclick="@(e => Model.OnDoubleClick())">
         <svg id="svg_@Model.Name" version="1.0" xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink" x="@Model.Left" y="@Model.Top" width="@Model.Width"
             height="@Model.Height" opacity="@Model.Opacity" visibility="@(Model.Visiable ? "visible" : "hidden")"
@@ -128,6 +127,21 @@ else
     public ZTContext ZTContext { get; set; }
     [Parameter]
     public RenderFragment ChildContent { get; set; }
+
+    public Dictionary<string, object> DivAttributes
+    {
+        get
+        {
+            var dict = new Dictionary<string, object>();            
+            if(ZTContext.Designer.MouseDownControlMeta != null && Model == ZTContext.Designer.MouseDownControlMeta.MoveControl)
+            {
+                dict["onmousemove"] = new Action<MouseEventArgs>(onMouseMove);                
+            }
+            dict["onmouseup"] = new Action<MouseEventArgs>(onMouseUp);
+            dict["onmousedown"] = new Action<MouseEventArgs>(e => onControlMouseDown(e, Model));
+            return dict;
+        }
+    }
 
     private ElementReference svgElementReference;
     public string Id => svgElementReference.Id;
