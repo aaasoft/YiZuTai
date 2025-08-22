@@ -23,10 +23,12 @@
         var BackgroundProgressWidth = ArgWidth - ArgBorderThickness;
         var BackgroundProgressHeight = ArgHeight - ArgBorderThickness;
 
-        var ForegroundProgressLeft = ArgBorderThickness;        
+        var ForegroundProgressTop = ArgBorderThickness;
+        var ForegroundProgressLeft = ArgBorderThickness;
         var ForegroundProgressWidth = ArgWidth - ArgBorderThickness * 2;
-        var ForegroundProgressHeight = (ArgHeight - ArgBorderThickness * 2) * (ArgValue - ArgMinValue) / (ArgMaxValue - ArgMinValue);
-        var ForegroundProgressTop = ArgHeight - ForegroundProgressHeight - ArgBorderThickness;
+        var ForegroundProgressHeight = (ArgHeight - ArgBorderThickness * 2) * (ArgValue - ArgMinValue) / (ArgMaxValue -
+        ArgMinValue);
+
         var ForegroundProgressCornerRadius = ArgCornerRadius - 1;
         if (ForegroundProgressCornerRadius < 0)
             ForegroundProgressCornerRadius = 0;
@@ -38,24 +40,25 @@
             stroke="@ArgBorderColor" stroke-opacity="@ArgBorderOpacity" stroke-width="@ArgBorderThickness" />
         <rect x="@ForegroundProgressLeft" y="@ForegroundProgressTop" width="@ForegroundProgressWidth"
             height="@ForegroundProgressHeight" fill="@ArgProgressForegroundColor"
-            fill-opacity="@ArgProgressForegroundOpacity" rx="@ForegroundProgressCornerRadius"
-            ry="@ForegroundProgressCornerRadius">
+            transform="rotate(180 @(ArgWidth / 2) @(ArgHeight / 2))" fill-opacity="@ArgProgressForegroundOpacity"
+            rx="@ForegroundProgressCornerRadius" ry="@ForegroundProgressCornerRadius">
         </rect>
     </g>
     <!--文本-->
-    <TextView
-        ArgTextVisiable="@ControlModel.TextVisiable"
-        ArgTextFillColor = "@ControlModel.TextForeground"
-        ArgTextFillOpacity = "@ControlModel.TextForegroundOpacity"
-        ArgTextX = "@ControlModel.TextX"
-        ArgTextY = "@ControlModel.TextY"
-        ArgTextFontSize = "@ControlModel.TextFontSize"
-        ArgTextFontFamily = "@ControlModel.TextFontFamily"
-        ArgText = "@ControlModel.Text" />
+    <TextView ArgTextVisiable="@ControlModel.TextVisiable" ArgTextFillColor="@ControlModel.TextForeground"
+        ArgTextFillOpacity="@ControlModel.TextForegroundOpacity" ArgTextX="@ControlModel.TextX"
+        ArgTextY="@ControlModel.TextY" ArgTextFontSize="@ControlModel.TextFontSize"
+        ArgTextFontFamily="@ControlModel.TextFontFamily" ArgText="@ControlModel.Text" />
 </BaseControlView>
 
 @code
 {
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        Console.WriteLine(DateTime.Now + ": OnAfterRender : " + firstRender);
+    }
+
     public override void OnDoubleClick()
     {
         SourceTypeEditor.Select(ZTContext.ModalWindow, ControlModel.Value, typeof(IDataSource), t => ControlModel.Value =
