@@ -14,7 +14,8 @@
         var ArgProgressBackgroundOpacity = ControlModel.BackgroundOpacity;
         var ArgInnerBackgroundColor = ControlModel.InnerBackground;
         var ArgInnerBackgroundOpacity = ControlModel.InnerBackgroundOpacity;
-        var ArgStrokeDasharray = ControlModel.StrokeDasharray;
+        var ArgStrokePreDasharray = ControlModel.GetStrokeDasharray(preValue);
+        var ArgStrokeDasharray =  ControlModel.GetStrokeDasharray(currentValue);
     }
     <g transform="rotate(@ArgStartAngle @ArgCenterX,@ArgCenterY)">
         <circle cx="@ArgCenterX" cy="@ArgCenterY" r="@ArgR" stroke-width="@ArgBorderWidth"
@@ -23,7 +24,9 @@
         </circle>
         <circle transform="rotate(-90 @ArgCenterX,@ArgCenterY)" cx="@ArgCenterX"
             cy="@ArgCenterY" r="@ArgR" stroke-width="@ArgBorderWidth" stroke="@ArgProgressForegroundColor"
-            stroke-opacity="@ArgProgressForegroundOpacity" fill="none" stroke-dasharray="@ArgStrokeDasharray"></circle>
+            stroke-opacity="@ArgProgressForegroundOpacity" fill="none" stroke-dasharray="@ArgStrokePreDasharray">
+            <animate attributeType="XML" attributeName="stroke-dasharray" begin="indefinite" to="@ArgStrokeDasharray" dur="0.5s" fill="freeze" />
+        </circle>
     </g>
     <!--文本-->
     <TextView
@@ -39,6 +42,32 @@
 
 @code
 {
+    private bool isFirst=true;
+    private double preValue;
+    private double currentValue;
+
+    protected override bool ShouldRender()
+    {
+        if (isFirst)
+        {
+            isFirst = false;
+            preValue = ControlModel.MinValue;
+        }
+        else
+        {
+            preValue = currentValue;
+        }
+        currentValue = ControlModel.NumberValue;
+        return base.ShouldRender();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if(currentValue!=preValue)
+            ZTContext.JSRuntime.InvokeVoidAsync("YiZuTai.BeginAnimate", ControlModel.Name);
+    }
+
     public override void OnDoubleClick()
     {
         SourceTypeEditor.Select(ZTContext.ModalWindow, ControlModel.Value, typeof(IDataSource), t => ControlModel.Value =
