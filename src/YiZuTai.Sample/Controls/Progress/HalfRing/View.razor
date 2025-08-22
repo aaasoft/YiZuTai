@@ -13,7 +13,8 @@
         var ArgProgressBackgroundOpacity = ControlModel.BackgroundOpacity;
         var ArgInnerBackgroundColor = ControlModel.InnerBackground;
         var ArgInnerBackgroundOpacity = ControlModel.InnerBackgroundOpacity;
-        var ArgStrokeDasharray = ControlModel.StrokeDasharray;
+        var ArgStrokePreDasharray = ControlModel.GetStrokeDasharray(preValue);
+        var ArgStrokeDasharray = ControlModel.GetStrokeDasharray(currentValue);        
         var ArgHalfRingStartX = ControlModel.HalfRingStartX;
         var ArgHalfRingStartY = ControlModel.HalfRingStartY;
         var ArgHalfRingEndX = ControlModel.HalfRingEndX;
@@ -30,7 +31,9 @@
         <path d="M @ArgHalfRingStartX @ArgHalfRingStartY
     A @ArgR @ArgR 0 0 1 @ArgHalfRingEndX @ArgHalfRingEndY
     " stroke="@ArgProgressForegroundColor" stroke-width="@ArgBorderWidth"
-            stroke-opacity="@ArgProgressForegroundOpacity" fill="none" stroke-dasharray="@ArgStrokeDasharray" />
+            stroke-opacity="@ArgProgressForegroundOpacity" fill="none" stroke-dasharray="@ArgStrokePreDasharray">
+            <animate attributeType="XML" attributeName="stroke-dasharray" begin="indefinite" to="@ArgStrokeDasharray" dur="0.5s" fill="freeze" />
+        </path>
     </g>
     <!--文本-->
     <TextView
@@ -46,6 +49,32 @@
 
 @code
 {
+    private bool isFirst=true;
+    private double preValue;
+    private double currentValue;
+
+    protected override bool ShouldRender()
+    {
+        if (isFirst)
+        {
+            isFirst = false;
+            preValue = ControlModel.MinValue;
+        }
+        else
+        {
+            preValue = currentValue;
+        }
+        currentValue = ControlModel.NumberValue;
+        return base.ShouldRender();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if(currentValue!=preValue)
+            ZTContext.JSRuntime.InvokeVoidAsync("YiZuTai.BeginAnimate", ControlModel.Name);
+    }
+
     public override void OnDoubleClick()
     {
         SourceTypeEditor.Select(ZTContext.ModalWindow, ControlModel.Value, typeof(IDataSource), t => ControlModel.Value =

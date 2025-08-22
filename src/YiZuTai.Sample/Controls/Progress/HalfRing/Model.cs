@@ -75,16 +75,12 @@ public class Model : AbstractControl
     [Browsable(false)]
     [JsonIgnore]
     public double R => Math.Min(CenterX, Height) - BorderWidth;
-    [Browsable(false)]
-    [JsonIgnore]
-    public string StrokeDasharray
+
+    public string GetStrokeDasharray(double value)
     {
-        get
-        {
-            var percent = (NumberValue - MinValue) / (MaxValue - MinValue);
-            var perimeter = Math.PI * (R + BorderWidth / 2);
-            return $"{perimeter * percent} {perimeter * (1 - percent)}";
-        }
+        var percent = (value - MinValue) / (MaxValue - MinValue);
+        var perimeter = Math.PI * (R + BorderWidth / 2);
+        return $"{perimeter * percent} {perimeter * (1 - percent)}";
     }
 
     [Browsable(false)]
