@@ -2,6 +2,9 @@
     SetTitle: function (title) {
         document.title = title;
     },
+    BeginAnimate:function(controlName){
+        jQuery('#svg_' + controlName + ' animate').each(function (index, value) { { value.beginElement(); } });
+    },
     Window : function (params) {
         var maxmin = params.maxmin ? params.maxmin : false; 
         var width = params.width ? params.width : 950;

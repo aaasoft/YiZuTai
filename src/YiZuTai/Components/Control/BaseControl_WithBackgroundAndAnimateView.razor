@@ -14,7 +14,7 @@
         <!--旋转动画-->
         @if (!string.IsNullOrEmpty(Model.RotateDur))
         {
-            <animateTransform attributeName="transform" attributeType="XML" type="rotate"
+            <animateTransform attributeType="XML" attributeName="transform" type="rotate"
                 from="0 @(Model.Left + Model.Width / 2) @(Model.Top + Model.Height / 2)"
                 to="360 @(Model.Left + Model.Width / 2) @(Model.Top + Model.Height / 2)" dur="@Model.RotateDur"
                 repeatCount="indefinite" />
@@ -22,7 +22,7 @@
         <!--闪烁动画-->
         @if (!string.IsNullOrEmpty(Model.FlashDur))
         {
-            <animate attributeName="opacity" values="1;0;1" dur="@Model.FlashDur" repeatCount="indefinite" />
+            <animate attributeType="XML" attributeName="opacity" values="1;0;1" dur="@Model.FlashDur" repeatCount="indefinite" />
         }
     }
 </BaseControl_WithBackgroundView>

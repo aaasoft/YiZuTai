@@ -5,7 +5,6 @@
     @{
         var ArgWidth = ControlModel.Width;
         var ArgHeight = ControlModel.Height;
-        var ArgValue = ControlModel.NumberValue;
         var ArgMaxValue = ControlModel.MaxValue;
         var ArgMinValue = ControlModel.MinValue;
         var ArgProgressForegroundColor = ControlModel.ProgressForeground;
@@ -25,7 +24,8 @@
 
         var ForegroundProgressLeft = ArgBorderThickness;
         var ForegroundProgressTop = ArgBorderThickness;
-        var ForegroundProgressWidth = (ArgWidth - ArgBorderThickness * 2) * (ArgValue - ArgMinValue) / (ArgMaxValue - ArgMinValue);
+        var ForegroundProgressPreWidth = (ArgWidth - ArgBorderThickness * 2) * (preValue - ArgMinValue) / (ArgMaxValue - ArgMinValue);
+        var ForegroundProgressWidth = (ArgWidth - ArgBorderThickness * 2) * (currentValue - ArgMinValue) / (ArgMaxValue - ArgMinValue);
         var ForegroundProgressHeight = ArgHeight - ArgBorderThickness * 2;
         var ForegroundProgressCornerRadius = ArgCornerRadius - 1;
         if (ForegroundProgressCornerRadius < 0)
@@ -36,14 +36,13 @@
             height="@BackgroundProgressHeight" fill="@ArgProgressBackgroundColor"
             fill-opacity="@ArgProgressBackgroundOpacity" rx="@ArgCornerRadius" ry="@ArgCornerRadius"
             stroke="@ArgBorderColor" stroke-opacity="@ArgBorderOpacity" stroke-width="@ArgBorderThickness" />
-        <rect x="@ForegroundProgressLeft" y="@ForegroundProgressTop" width="@ForegroundProgressWidth"
+        <rect x="@ForegroundProgressLeft" y="@ForegroundProgressTop" width="@ForegroundProgressPreWidth"
             height="@ForegroundProgressHeight" fill="@ArgProgressForegroundColor"
             fill-opacity="@ArgProgressForegroundOpacity" rx="@ForegroundProgressCornerRadius"
             ry="@ForegroundProgressCornerRadius">
+            <animate attributeType="XML" attributeName="width" begin="indefinite" to="@ForegroundProgressWidth" dur="0.5s" fill="freeze" />
         </rect>
     </g>
-
-
     <!--文本-->
     <TextView
             ArgTextVisiable="@ControlModel.TextVisiable"
@@ -58,6 +57,32 @@
 
 @code
 {
+    private bool isFirst=true;
+    private double preValue;
+    private double currentValue;
+
+    protected override bool ShouldRender()
+    {
+        if (isFirst)
+        {
+            isFirst = false;
+            preValue = ControlModel.MinValue;
+        }
+        else
+        {
+            preValue = currentValue;
+        }
+        currentValue = ControlModel.NumberValue;
+        return base.ShouldRender();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if(currentValue!=preValue)
+            ZTContext.JSRuntime.InvokeVoidAsync("YiZuTai.BeginAnimate", ControlModel.Name);
+    }
+
     public override void OnDoubleClick()
     {
         SourceTypeEditor.Select(ZTContext.ModalWindow, ControlModel.Value, typeof(IDataSource), t => ControlModel.Value =

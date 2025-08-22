@@ -15,16 +15,24 @@ public abstract class AbstractControlView<TControl> : ComponentBase, IControlVie
     protected override void OnParametersSet()
     {
         ControlModel.View = this;
-        var dict = ControlModel.GetDataSourceDict();
-        if (dict != null)
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (firstRender)
         {
-            foreach (var item in dict)
+            var dict = ControlModel.GetDataSourceDict();
+            if (dict != null)
             {
-                var key = item.Key;
-                var dataSource = item.Value?.Invoke();
-                if (dataSource == null)
-                    continue;
-                ControlModel.OnDataSourceValueChanged(dataSource, key);
+                foreach (var item in dict)
+                {
+                    var key = item.Key;
+                    var dataSource = item.Value?.Invoke();
+                    if (dataSource == null)
+                        continue;
+                    ControlModel.OnDataSourceValueChanged(dataSource, key);
+                }
             }
         }
     }

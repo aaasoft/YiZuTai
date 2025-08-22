@@ -41,7 +41,7 @@
             height="@ForegroundProgressPreHeight" fill="@ArgProgressForegroundColor"
             transform="rotate(180 @(ArgWidth / 2) @(ArgHeight / 2))" fill-opacity="@ArgProgressForegroundOpacity"
             rx="@ForegroundProgressCornerRadius" ry="@ForegroundProgressCornerRadius">
-            <animate attributeName="height" begin="indefinite" to="@ForegroundProgressHeight" dur="0.5s" fill="freeze" />
+            <animate attributeType="XML" attributeName="height" begin="indefinite" to="@ForegroundProgressHeight" dur="0.5s" fill="freeze" />
         </rect>
     </g>
     <!--文本-->
@@ -75,7 +75,8 @@
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
-        ZTContext.JSRuntime.InvokeVoidAsync("eval", $"$('#svg_{ControlModel.Name} animate').each(function(){{this.beginElement()}})");
+        if(currentValue!=preValue)
+            ZTContext.JSRuntime.InvokeVoidAsync("YiZuTai.BeginAnimate", ControlModel.Name);
     }
 
     public override void OnDoubleClick()
