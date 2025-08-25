@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Text;
 using Newtonsoft.Json;
 using YiZuTai.Control;
 using YiZuTai.Model;
@@ -44,6 +45,33 @@ public class Model : AbstractChart
             _SeriesData2 = value;
             RaisePropertyChanged(nameof(SeriesData2));
         }
+    }
+
+    private string GetSeriesOption(SeriesDataCollectionItem seriesData,int index)
+    {
+        var colorIndex = 0;
+        if (ChartColors.Count > 0)
+            colorIndex = index % ChartColors.Count;
+        var sb = new StringBuilder();
+        sb.AppendLine($@"{{
+            name: '{seriesData.Name}',
+            data: [");
+        sb.AppendLine(string.Join(',',seriesData.Items.Select(t=>$@"{{
+            {(ChartColors.Count<=0?string.Empty:"color: colorArray[{colorIndex}],")}
+            y: null
+        }}")));
+            sb.AppendLine("]}");
+            return sb.ToString();
+    }
+
+    public override string GetSeriesOptions()
+    {
+        var sb = new StringBuilder();
+            sb.Append("[");
+        var index = 0;
+            sb.Append(string.Join(',', SeriesData2.Select(t => GetSeriesOption(t,index++))));
+            sb.Append("]");
+            return sb.ToString();
     }
 
     public override void OnDragDropCreate(Point location)

@@ -291,12 +291,13 @@ namespace YiZuTai.Sample.Controls.Charts.Common
         {
             var sb = new StringBuilder();
             sb.AppendLine($@"{{
-series: {{
-    allowPointSelect: {SeriesAllowPointSelect.ToString().ToLower()},
-    cursor: 'pointer',
-    shadow: {SeriesShadow.ToString().ToLower()},");
+    series: {{
+        allowPointSelect: {SeriesAllowPointSelect.ToString().ToLower()},
+        cursor: 'pointer',
+        shadow: {SeriesShadow.ToString().ToLower()},");
             if (SeriesStep != Step.@false)
-                sb.AppendLine($"step: '{SeriesStep}',");
+                sb.AppendLine($@"
+        step: '{SeriesStep}',");
             sb.AppendLine($@"
         borderWidth: {SeriesBorderWidth},
         borderColor: '{SeriesBorderColor}',
@@ -321,6 +322,20 @@ series: {{
         }}
     }}
 }}");
+            return sb.ToString();
+        }
+
+        private string GetSeriesOption(SeriesDataItem series)
+        {
+            return $"[ '{series.Name}',[]]";
+        }
+
+        public virtual string GetSeriesOptions()
+        {
+            var sb = new StringBuilder();
+            sb.Append("[");
+            sb.Append(string.Join(',', SeriesData.Select(t => GetSeriesOption(t))));
+            sb.Append("]");
             return sb.ToString();
         }
     }

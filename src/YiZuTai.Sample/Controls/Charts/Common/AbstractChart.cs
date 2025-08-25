@@ -20,48 +20,48 @@ namespace YiZuTai.Sample.Controls.Charts.Common
         {
             var sb = new StringBuilder();
             sb.AppendLine($@"function (e) {{
-    //如果是单独预览控件，没有params.root对象
-    if (params.root == null)
-        return e;
-
+    let root = document.getElementsByTagName('svg')[0];
     //原始相对于图表控件的鼠标位置
-    var chartX = e.chartX;
-    var chartY = e.chartY;
+    let chartX = e.chartX;
+    let chartY = e.chartY;
 
     //新的相对于图表控件的鼠标位置
-    var newX, newY;
+    let newX, newY;
 
     //坐标系拉伸变换
-    var preWidth = $Project.Canvas.Width;
-    var preHeight = $Project.Canvas.Height;
+    let preWidth = {project.Width};
+    let preHeight = {project.Height};
 
-    var currentWidth = params.root.width.baseVal.value;
-    var currentHeight = params.root.height.baseVal.value;");
+    let currentWidth = root.width.baseVal.value;
+    let currentHeight = root.height.baseVal.value;");
 
             if (project.Stretch == YiZuTai.Enums.Stretch.Uniform)
             {
                 sb.AppendLine($@"
         //偏移量
-    var scaleX = currentWidth / $Project.Canvas.Width;
-    var scaleY = currentHeight / $Project.Canvas.Height;
-    var scale = Math.min(scaleX, scaleY);
-    currentWidth = $Project.Canvas.Width * scale;
-    currentHeight = $Project.Canvas.Height * scale;
+    let scaleX = currentWidth / preWidth;
+    let scaleY = currentHeight / preHeight;
+    let scale = Math.min(scaleX, scaleY);
+    currentWidth = preWidth * scale;
+    currentHeight = preHeight * scale;
 ");
             }
             sb.AppendLine($@"
     chartX = chartX * preWidth / currentWidth;
     chartY = chartY * preHeight / currentHeight;
 
-    //坐标系偏移变换
-    var mX = chartX + Math.min($Item.LeftTopPointLocation.X, $Item.RightTopPointLocation.X, $Item.RightBottomPointLocation.X, $Item.LeftBottomPointLocation.X);
-    var mY = chartY + Math.min($Item.LeftTopPointLocation.Y, $Item.RightTopPointLocation.Y, $Item.RightBottomPointLocation.Y, $Item.LeftBottomPointLocation.Y);
+    let leftTopPointLocationX = {LeftTopPointLocation.X};
+    let leftTopPointLocationY = {LeftTopPointLocation.Y};
 
-    mX -= $Item.LeftTopPointLocation.X;
-    mY -= $Item.LeftTopPointLocation.Y;
+    //坐标系偏移变换
+    let mX = chartX + Math.min(leftTopPointLocationX, {RightTopPointLocation.X}, {RightBottomPointLocation.X}, {LeftBottomPointLocation.X});
+    let mY = chartY + Math.min(leftTopPointLocationY, {RightTopPointLocation.Y}, {RightBottomPointLocation.Y}, {LeftBottomPointLocation.Y});
+
+    mX -= leftTopPointLocationX;
+    mY -= leftTopPointLocationY;
 
     //坐标系旋转变换
-    var radian = $Item.Radian;
+    let radian = {Radian};
     newX = mX * Math.cos(radian) + mY * Math.sin(radian);
     newY = mY * Math.cos(radian) - mX * Math.sin(radian);
 
