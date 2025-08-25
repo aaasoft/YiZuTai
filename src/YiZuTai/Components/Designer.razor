@@ -140,7 +140,7 @@ else
             </div>
 }
             <!--中间设计部分-->
-            <div class="card col p-0" @onkeydown="onKeyDown">
+            <div class="card col p-0" @onkeydown="onKeyDown" @onmousemove="@(e=>{})">
                 <ContextMenu Id="designMenu">
                     @if (IsSelectedControl)
                     {

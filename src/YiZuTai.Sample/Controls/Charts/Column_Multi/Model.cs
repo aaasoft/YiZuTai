@@ -7,10 +7,10 @@ using YiZuTai.Model;
 using YiZuTai.Sample.Controls.Charts.Common;
 using YiZuTai.Sample.Controls.Charts.Common.Model;
 
-namespace YiZuTai.Sample.Controls.Charts.Column;
+namespace YiZuTai.Sample.Controls.Charts.Column_Multi;
 
 [Category("图表")]
-[DisplayName("柱状图")]
+[DisplayName("柱状图_多柱")]
 public class Model : AbstractChart
 {
     protected override Type GetViewType() => typeof(View);

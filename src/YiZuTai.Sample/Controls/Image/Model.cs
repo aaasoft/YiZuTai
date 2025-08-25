@@ -35,7 +35,7 @@ namespace YiZuTai.Sample.Controls.Image
             Width = 160;
             Height = 120;
             BackgroundOpacity = 0;
-            Image = GetIcon();
+            Image = "../../../" + GetIcon();
         }
 
 
