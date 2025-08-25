@@ -92,7 +92,15 @@ namespace YiZuTai.Components
 
         protected override void OnParametersSet()
         {
-
+            ZTFile = ZTFileManager.Instance.Get(Id);
+            Project = ZTFile.OpenProject();
+            ZTContext = new ZTContext()
+            {
+                ZTFile = ZTFile,
+                JSRuntime = JSRuntime,
+                Designer = this
+            };
+            SelectedItem = Project;
         }
 
         private void LoadProject()
@@ -140,14 +148,6 @@ namespace YiZuTai.Components
         {
             if (firstRender)
             {
-                ZTFile = ZTFileManager.Instance.Get(Id);
-                Project = ZTFile.OpenProject();
-                ZTContext = new ZTContext()
-                {
-                    ZTFile = ZTFile,
-                    JSRuntime = JSRuntime,
-                    Designer = this
-                };
                 LoadProject();
                 registerDesigner(designerId, this);
                 Task.Delay(100).ContinueWith(t => refreshTitle());
