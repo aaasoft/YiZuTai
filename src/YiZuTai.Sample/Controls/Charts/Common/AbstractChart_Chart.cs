@@ -117,19 +117,32 @@ namespace YiZuTai.Sample.Controls.Charts.Common
             }
         }
 
-        public JsonObject GetChartOptions()
+        public string GetCreditsOptions()
         {
-            return new JsonObject(new Dictionary<string, JsonNode>()
-            {
-                ["type"] = ChartType,
-                ["width"] = Width,
-                ["height"] = Height,
-                ["animation"] = "Highcharts.svg",
-                ["shadow"] = ChartShadow,
-                ["plotBackgroundColor"] = ChartPlotBackground,
-                ["plotBorderColor"] = ChartPlotBorder,
-                ["plotBorderWidth"] = ChartPlotBorderWidth,
-            });
+            return "{ enabled : false}";
+        }
+
+        public string GetChartOptions()
+        {
+            return $@"{{
+    type: '{ChartType}',
+    width: {Width},
+    height: {Height},
+    animation: Highcharts.svg,
+    shadow: {ChartShadow.ToString().ToLower()},
+    plotBackgroundColor: '{ChartPlotBackground}',
+    plotBorderColor: '{ChartPlotBorder}',
+    plotBorderWidth: '{ChartPlotBorderWidth}',
+}}";
+        }
+        private static string defaultColors = "['#7cb5ec', '#434348', '#90ed7d', '#f7a35c', '#8085e9', '#f15c80', '#e4d354', '#2b908f', '#f45b5b', '#91e8e1']";
+
+        public string GetColorsOptions()
+        {
+            if (ChartColors == null || ChartColors.Count == 0)
+                return defaultColors;
+
+            return "[" + string.Join(',', ChartColors.Select(t => $"'{t.Value}'")) + "]";
         }
     }
 }

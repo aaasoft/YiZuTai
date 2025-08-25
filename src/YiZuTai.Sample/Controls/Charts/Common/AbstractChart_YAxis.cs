@@ -2,6 +2,7 @@
 using YiZuTai.Sample.Controls.Charts.Common.Model;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Text.Json.Nodes;
 
 namespace YiZuTai.Sample.Controls.Charts.Common
 {
@@ -142,6 +143,31 @@ namespace YiZuTai.Sample.Controls.Charts.Common
                 _YAxisPlotLines = value;
                 RaisePropertyChanged(nameof(YAxisPlotLines));
             }
+        }
+
+
+        public string GetYAxisOptions()
+        {
+            return $@"{{
+                title: '{YAxisTitleText}',
+                allowDecimals: {YAxisAllowDecimals.ToString().ToLower()},
+                plotLines: [{{
+                    value: 0,
+                    width: 1,
+                    color: '#808080',
+                }}],
+                crosshair: {YAxisCrosshair.ToString().ToLower()},
+                visible: {YAxisVisible.ToString().ToLower()},
+                gridLineWidth: '{YAxisGridLineWidth}',
+                gridLineColor: '{YAxisGridLineColor}',
+                labels: {{
+                    style: {{
+                        color: '{YAxisLabelColor}',
+                        fontSize: '{YAxisLabelFontSize}px',
+                        fontFamily: '{YAxisLabelFontFamily}'
+                    }}
+                }}
+            }}";
         }
     }
 }

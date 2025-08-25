@@ -3,6 +3,7 @@ using YiZuTai.Sample.Controls.Charts.Common.Model;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using YiZuTai.Components.Editors;
+using System.Text;
 
 namespace YiZuTai.Sample.Controls.Charts.Common
 {
@@ -99,7 +100,7 @@ namespace YiZuTai.Sample.Controls.Charts.Common
         [Category("数据列")]
         [DisplayName("边框颜色")]
         [Description("边框的宽度(柱状图使用)")]
-        [Editor(typeof(EditorInputColor),typeof(EditorInputColor))]
+        [Editor(typeof(EditorInputColor), typeof(EditorInputColor))]
         public virtual string SeriesBorderColor
         {
             get { return _SeriesBorderColor; }
@@ -234,7 +235,7 @@ namespace YiZuTai.Sample.Controls.Charts.Common
         private string _SeriesDataLabelsColor = "#000000";
         [Category("数据标签")]
         [DisplayName("颜色")]
-        [Editor(typeof(EditorInputColor),typeof(EditorInputColor))]
+        [Editor(typeof(EditorInputColor), typeof(EditorInputColor))]
         public virtual string SeriesDataLabelsColor
         {
             get { return _SeriesDataLabelsColor; }
@@ -248,7 +249,7 @@ namespace YiZuTai.Sample.Controls.Charts.Common
         private string _SeriesDataLabelsBackgroundColor = "#FFFFFF";
         [Category("数据标签")]
         [DisplayName("背景颜色")]
-        [Editor(typeof(EditorInputColor),typeof(EditorInputColor))]
+        [Editor(typeof(EditorInputColor), typeof(EditorInputColor))]
         public virtual string SeriesDataLabelsBackgroundColor
         {
             get { return _SeriesDataLabelsBackgroundColor; }
@@ -284,6 +285,43 @@ namespace YiZuTai.Sample.Controls.Charts.Common
                 _SeriesData = value;
                 RaisePropertyChanged(nameof(SeriesData));
             }
+        }
+
+        public string GetPlotOptions()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine($@"{{
+series: {{
+    allowPointSelect: {SeriesAllowPointSelect.ToString().ToLower()},
+    cursor: 'pointer',
+    shadow: {SeriesShadow.ToString().ToLower()},");
+            if (SeriesStep != Step.@false)
+                sb.AppendLine($"step: '{SeriesStep}',");
+            sb.AppendLine($@"
+        borderWidth: {SeriesBorderWidth},
+        borderColor: '{SeriesBorderColor}',
+        lineWidth: {SeriesLineWidth},
+        dashStyle: '{SeriesDashStyle}',
+        dataLabels: {{
+            enabled: {SeriesDataLabelsEnable.ToString().ToLower()},
+            inside: {SeriesDataLabelsInside.ToString().ToLower()},
+            color: '{SeriesDataLabelsColor}',    
+            backgroundColor: '{SeriesDataLabelsBackgroundColor}',
+            shape: '{SeriesDataLabelsShape}',
+            borderWidth: 0,
+            rotation: {SeriesDataLabelsRotation},
+            align: '{SeriesDataLabelsAlign}',
+            verticalAlign: '{SeriesDataLabelsVerticalAlign}',
+            format: '{SeriesDataLabelsFormat}',
+            style: {{
+                fontSize: '{SeriesDataLabelsFontSize}px',
+                fontFamily: '{SeriesDataLabelsFontFamily}',
+                textOutline: null
+            }}
+        }}
+    }}
+}}");
+            return sb.ToString();
         }
     }
 }

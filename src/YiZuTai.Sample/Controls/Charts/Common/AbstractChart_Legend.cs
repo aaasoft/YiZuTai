@@ -89,5 +89,19 @@ namespace YiZuTai.Sample.Controls.Charts.Common
                 RaisePropertyChanged(nameof(LegendVerticalAlign));
             }
         }
+
+        public string GetLegendOptions()
+        {
+            return $@"{{
+    enabled: {LegendEnable.ToString().ToLower()},
+    align: '{LegendAlign}',
+    verticalAlign: '{LegendVerticalAlign}',
+    floating: '{LegendFloating.ToString().ToLower()}',
+    layout: '{LegendLayout}',
+    itemStyle: {{
+        color: '{LegendItemColor}'
+    }}
+}}";
+        }
     }
 }

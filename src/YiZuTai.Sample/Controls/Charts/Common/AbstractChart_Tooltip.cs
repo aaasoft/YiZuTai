@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Text.Json.Nodes;
 
 namespace YiZuTai.Sample.Controls.Charts.Common
 {
@@ -46,6 +47,25 @@ namespace YiZuTai.Sample.Controls.Charts.Common
                 _TooltipSplit = value;
                 RaisePropertyChanged(nameof(TooltipSplit));
             }
+        }
+
+        public string GetTooltipOptions()
+        {
+            return $@"{{
+    dateTimeLabelFormats: {{
+        millisecond: '%Y-%m-%d %H:%M:%S',
+        second: '%Y-%m-%d %H:%M:%S',
+        minute: '%Y-%m-%d %H:%M',
+        hour: '%Y-%m-%d %H:%M',
+        day: '%Y-%m-%d',
+        week: '%m-%d',
+        month: '%Y-%m',
+        year: '%Y'
+    }},
+    enabled: {TooltipEnabled.ToString().ToLower()},
+    split: {TooltipSplit.ToString().ToLower()},
+    pointFormat: '{TooltipPointFormat}'
+}}";
         }
     }
 }

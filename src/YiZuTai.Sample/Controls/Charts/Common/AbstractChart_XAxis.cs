@@ -2,6 +2,7 @@
 using YiZuTai.Sample.Controls.Charts.Common.Model;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Text.Json.Nodes;
 
 namespace YiZuTai.Sample.Controls.Charts.Common
 {
@@ -104,6 +105,21 @@ namespace YiZuTai.Sample.Controls.Charts.Common
                 _XAxisCategories = value;
                 RaisePropertyChanged(nameof(XAxisCategories));
             }
+        }
+
+        public string GetXAxisOptions()
+        {
+            return $@"{{
+    type: '{XAxisType}',
+    crosshair: {XAxisCrosshair.ToString().ToLower()},
+    categories: [{string.Join(',',XAxisCategories.Select(t => $"'{t.Name}'"))}],
+    visible: {XAxisVisible.ToString().ToLower()},
+    style: {{
+        color: '{XAxisLabelColor}',
+        fontSize: '{XAxisLabelFontSize}px',
+        fontFamily: '{XAxisLabelFontFamily}'
+    }}
+}}";
         }
     }
 }

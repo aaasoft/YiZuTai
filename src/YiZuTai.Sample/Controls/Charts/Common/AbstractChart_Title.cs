@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using YiZuTai.Sample.Controls.Charts.Common.Model;
 using System.ComponentModel;
+using System.Text.Json.Nodes;
 
 namespace YiZuTai.Sample.Controls.Charts.Common
 {
@@ -102,6 +103,21 @@ namespace YiZuTai.Sample.Controls.Charts.Common
                 _TitleColor = value;
                 RaisePropertyChanged(nameof(TitleColor));
             }
+        }
+
+        public string GetTitleOptions()
+        {
+            return $@"{{
+    floating: {TitleFloating.ToString().ToLower()},
+    text: '{TitleText}',
+    align: '{TitleAlign}',
+    verticalAlign: '{TitleVerticalAlign}',
+    style: {{
+        color: '{TitleColor}',
+        fontSize: '{TitleFontSize}px',
+        fontFamily: '{TitleFontFamily}'
+    }}
+}}";
         }
     }
 }
