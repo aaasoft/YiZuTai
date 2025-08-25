@@ -2,6 +2,7 @@
 @using Newtonsoft.Json
 @using System.Text
 @inherits AbstractControlView<Model>
+@implements IDisposable
 
 <BaseControl_WithBackgroundView T_BaseControl_WithBackground="Model" Model="@ControlModel" ZTContext="ZTContext">
 </BaseControl_WithBackgroundView>
@@ -60,6 +61,8 @@ backElement.attr('fill-opacity', '{ControlModel.BackgroundOpacity}');
         }
     }
 
+    private Timer checkControlSizeTimer;
+
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
@@ -82,7 +85,43 @@ backElement.attr('fill-opacity', '{ControlModel.BackgroundOpacity}');
                     item.DataSource.PropertyChanged += (sender, e) => setValue(currentSeriesIndex, currentItemIndex, dataSource.Value);
                 }
             }
-            ControlModel.PropertyChanged += (sender,e)=>InitChart();
+            ControlModel.PropertyChanged += (sender,e)=>
+            {
+                switch(e.PropertyName)
+                {
+                    case nameof(Model.Left):
+                    case nameof(Model.Top):
+                    case nameof(Model.Width):
+                    case nameof(Model.Height):
+                    case nameof(Model.Angle):
+                    case nameof(Model.Opacity):
+                    case nameof(Model.IsLocked):
+                    case nameof(Model.Visiable):
+                        return;
+                }
+                InitChart();
+            };
+            if(ZTContext.DesignMode)
+            {
+                var preWidth = ControlModel.Width;
+                var preHeight = ControlModel.Height;
+                checkControlSizeTimer = new Timer(t=>
+                {
+                    if(preWidth == ControlModel.Width
+                     && preHeight == ControlModel.Height)
+                        return;
+                        
+                    preWidth = ControlModel.Width;
+                    preHeight = ControlModel.Height;
+                    InitChart();
+                },null,1000,1000);
+            }
         }
+    }
+    
+    public void Dispose()
+    {
+        checkControlSizeTimer?.Dispose();
+        checkControlSizeTimer=null;
     }
 }
