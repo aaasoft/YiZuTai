@@ -19,35 +19,54 @@ chart.series[{seriesIndex}].setData(data);";
         //ZTContext.JSRuntime.InvokeVoidAsync("console.log", js);
     }
 
+    private void InitChart()
+    {
+        //初始化图表
+        var sb = new StringBuilder();
+        sb.AppendLine($"document.getElementById('svg_{ControlModel.Name}').chart = Highcharts.chart('svg_{ControlModel.Name}',{{");
+        sb.AppendLine($@" credits: {ControlModel.GetCreditsOptions()},");
+        sb.AppendLine($@" chart: {ControlModel.GetChartOptions()},");
+        sb.AppendLine($@" colors: {ControlModel.GetColorsOptions()},");
+        sb.AppendLine($@" title: {ControlModel.GetTitleOptions()},");
+        sb.AppendLine($@" xAxis: {ControlModel.GetXAxisOptions()},");
+        sb.AppendLine($@" yAxis: {ControlModel.GetYAxisOptions()},");
+        sb.AppendLine($@" tooltip: {ControlModel.GetTooltipOptions()},");
+        sb.AppendLine($@" normalizeHandler: {ControlModel.GetNormalizeHandlerOptions(ZTContext.Project)},");
+        sb.AppendLine($@" legend: {ControlModel.GetLegendOptions()},");
+        sb.AppendLine($@" plotOptions: {ControlModel.GetPlotOptions()},");
+        sb.AppendLine($@" series: {ControlModel.GetSeriesOptions()}");
+        sb.AppendLine($@"}})");
+        //ZTContext.JSRuntime.InvokeVoidAsync("console.log", sb.ToString());
+        ZTContext.JSRuntime.InvokeVoidAsync("eval", sb.ToString());
+
+        //设置背景色
+        ZTContext.JSRuntime.InvokeVoidAsync("eval", $@"
+let backElement = jQuery('#svg_{ControlModel.Name} .highcharts-background');
+backElement.attr('fill', '{ControlModel.Background}');
+backElement.attr('fill-opacity', '{ControlModel.BackgroundOpacity}');
+");
+        //第一次显示数据
+        for (var seriesIndex = 0; seriesIndex < ControlModel.SeriesData2.Count; seriesIndex++)
+        {
+            var seriesData = ControlModel.SeriesData2[seriesIndex];
+            for (var itemIndex = 0; itemIndex < seriesData.Items.Count; itemIndex++)
+            {
+                var item = seriesData.Items[itemIndex];
+                var dataSource = item.DataSource;
+                if (dataSource == null)
+                    continue;
+                setValue(seriesIndex, itemIndex, dataSource.Value);
+            }
+        }
+    }
+
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
         if (firstRender)
         {
-            //初始化图表
-            var sb = new StringBuilder();
-            sb.AppendLine($"document.getElementById('svg_{ControlModel.Name}').chart = Highcharts.chart('svg_{ControlModel.Name}',{{");
-            sb.AppendLine($@" credits: {ControlModel.GetCreditsOptions()},");
-            sb.AppendLine($@" chart: {ControlModel.GetChartOptions()},");
-            sb.AppendLine($@" colors: {ControlModel.GetColorsOptions()},");
-            sb.AppendLine($@" title: {ControlModel.GetTitleOptions()},");
-            sb.AppendLine($@" xAxis: {ControlModel.GetXAxisOptions()},");
-            sb.AppendLine($@" yAxis: {ControlModel.GetYAxisOptions()},");
-            sb.AppendLine($@" tooltip: {ControlModel.GetTooltipOptions()},");
-            sb.AppendLine($@" normalizeHandler: {ControlModel.GetNormalizeHandlerOptions(ZTContext.Project)},");
-            sb.AppendLine($@" legend: {ControlModel.GetLegendOptions()},");
-            sb.AppendLine($@" plotOptions: {ControlModel.GetPlotOptions()},");
-            sb.AppendLine($@" series: {ControlModel.GetSeriesOptions()}");
-            sb.AppendLine($@"}})");
-            //ZTContext.JSRuntime.InvokeVoidAsync("console.log", sb.ToString());
-            ZTContext.JSRuntime.InvokeVoidAsync("eval", sb.ToString());
-
-            //设置背景色
-            ZTContext.JSRuntime.InvokeVoidAsync("eval", $@"
-let backElement = jQuery('#svg_{ControlModel.Name} .highcharts-background');
-backElement.attr('fill', '{ControlModel.Background}');
-backElement.attr('fill-opacity', '{ControlModel.BackgroundOpacity}');
-");
+            InitChart();
+            //注册数据源
             for (var seriesIndex = 0; seriesIndex < ControlModel.SeriesData2.Count; seriesIndex++)
             {
                 var seriesData = ControlModel.SeriesData2[seriesIndex];
@@ -60,10 +79,10 @@ backElement.attr('fill-opacity', '{ControlModel.BackgroundOpacity}');
 
                     var currentSeriesIndex = seriesIndex;
                     var currentItemIndex = itemIndex;
-                    setValue(currentSeriesIndex, currentItemIndex, dataSource.Value);
                     item.DataSource.PropertyChanged += (sender, e) => setValue(currentSeriesIndex, currentItemIndex, dataSource.Value);
                 }
             }
+            ControlModel.PropertyChanged += (sender,e)=>InitChart();
         }
     }
 }
