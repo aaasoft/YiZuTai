@@ -2,6 +2,7 @@
 using YiZuTai.Sample.Controls.Charts.Common.Model;
 using System.ComponentModel;
 using System.Text.Json.Nodes;
+using YiZuTai.Components.Editors;
 
 namespace YiZuTai.Sample.Controls.Charts.Common
 {
@@ -95,6 +96,7 @@ namespace YiZuTai.Sample.Controls.Charts.Common
         [Category("标题")]
         [DisplayName("颜色")]
         [Description("标题的颜色")]
+        [Editor(typeof(EditorInputColor), typeof(EditorInputColor))]
         public virtual string TitleColor
         {
             get { return _TitleColor; }

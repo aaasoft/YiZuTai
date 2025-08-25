@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using YiZuTai.Sample.Controls.Charts.Common.Model;
 using System.ComponentModel;
+using YiZuTai.Components.Editors;
 
 namespace YiZuTai.Sample.Controls.Charts.Common
 {
@@ -10,6 +11,7 @@ namespace YiZuTai.Sample.Controls.Charts.Common
         [Category("图例")]
         [DisplayName("颜色")]
         [Description("图例对象的颜色")]
+        [Editor(typeof(EditorInputColor), typeof(EditorInputColor))]
         public virtual string LegendItemColor
         {
             get { return _LegendItemColor; }

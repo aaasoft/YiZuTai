@@ -1,8 +1,6 @@
-﻿using Newtonsoft.Json;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Nodes;
 using YiZuTai.Components.Editors;
 using YiZuTai.Sample.Controls.Charts.Common.Model;
 
@@ -60,6 +58,7 @@ namespace YiZuTai.Sample.Controls.Charts.Common
         [Category("绘图区域")]
         [DisplayName("背景透明度")]
         [Description("绘图区域的背景透明度")]
+        [Editor(typeof(EditorInputRange), typeof(EditorInputRange))]
         [Range(0, 1)]
         [StringLength(100)]
         public double ChartPlotBackgroundOpacity
@@ -76,6 +75,7 @@ namespace YiZuTai.Sample.Controls.Charts.Common
         [Category("绘图区域")]
         [DisplayName("边框颜色")]
         [Description("绘图区域的边框颜色")]
+        [Editor(typeof(EditorInputColor), typeof(EditorInputColor))]
         public string ChartPlotBorder
         {
             get { return _ChartPlotBorder; }
@@ -91,6 +91,7 @@ namespace YiZuTai.Sample.Controls.Charts.Common
         [Category("绘图区域")]
         [DisplayName("边框透明度")]
         [Description("绘图区域的边框透明度")]
+        [Editor(typeof(EditorInputRange), typeof(EditorInputRange))]
         [Range(0, 1)]
         [StringLength(100)]
         public double ChartPlotBorderOpacity
@@ -130,8 +131,8 @@ namespace YiZuTai.Sample.Controls.Charts.Common
     height: {Height},
     animation: Highcharts.svg,
     shadow: {ChartShadow.ToString().ToLower()},
-    plotBackgroundColor: '{ChartPlotBackground}',
-    plotBorderColor: '{ChartPlotBorder}',
+    {(ChartPlotBackgroundOpacity<=0?string.Empty: $"plotBackgroundColor: '{ChartPlotBackground}',")}
+    {(ChartPlotBorderOpacity<=0?string.Empty: $"plotBorderColor: '{ChartPlotBorder}',")}
     plotBorderWidth: '{ChartPlotBorderWidth}',
 }}";
         }

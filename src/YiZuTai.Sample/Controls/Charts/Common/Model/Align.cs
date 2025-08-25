@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace YiZuTai.Sample.Controls.Charts.Common.Model
 {
@@ -11,8 +9,11 @@ namespace YiZuTai.Sample.Controls.Charts.Common.Model
     /// </summary>
     public enum Align
     {
+        [Description("左侧")]
         left,
+        [Description("居中")]
         center,
+        [Description("右侧")]
         right
     }
 }

@@ -3,6 +3,7 @@ using YiZuTai.Sample.Controls.Charts.Common.Model;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text.Json.Nodes;
+using YiZuTai.Components.Editors;
 
 namespace YiZuTai.Sample.Controls.Charts.Common
 {
@@ -96,6 +97,7 @@ namespace YiZuTai.Sample.Controls.Charts.Common
         [Category("Y轴")]
         [DisplayName("标签颜色")]
         [Description("标签的颜色")]
+        [Editor(typeof(EditorInputColor), typeof(EditorInputColor))]
         public virtual string YAxisLabelColor
         {
             get { return _YAxisLabelColor; }
@@ -122,6 +124,7 @@ namespace YiZuTai.Sample.Controls.Charts.Common
         private string _YAxisGridLineColor = "#E6E6E6";
         [Category("Y轴")]
         [DisplayName("网格线颜色")]
+        [Editor(typeof(EditorInputColor), typeof(EditorInputColor))]
         public virtual string YAxisGridLineColor
         {
             get { return _YAxisGridLineColor; }

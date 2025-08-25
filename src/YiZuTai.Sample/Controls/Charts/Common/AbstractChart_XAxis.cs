@@ -3,6 +3,7 @@ using YiZuTai.Sample.Controls.Charts.Common.Model;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text.Json.Nodes;
+using YiZuTai.Components.Editors;
 
 namespace YiZuTai.Sample.Controls.Charts.Common
 {
@@ -83,6 +84,7 @@ namespace YiZuTai.Sample.Controls.Charts.Common
         [Category("X轴")]
         [DisplayName("标签颜色")]
         [Description("标签的颜色")]
+        [Editor(typeof(EditorInputColor), typeof(EditorInputColor))]
         public virtual string XAxisLabelColor
         {
             get { return _XAxisLabelColor; }

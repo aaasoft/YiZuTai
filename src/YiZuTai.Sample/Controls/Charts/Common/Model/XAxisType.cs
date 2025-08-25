@@ -4,13 +4,13 @@ namespace YiZuTai.Sample.Controls.Charts.Common.Model
 {
     public enum XAxisType
     {
-        [DefaultValue("线性")]
+        [Description("线性")]
         linear,
-        [DefaultValue("对数")]
+        [Description("对数")]
         logarithmic,
-        [DefaultValue("日期时间")]
+        [Description("日期时间")]
         datetime,
-        [DefaultValue("类别")]
+        [Description("类别")]
         category
     }
 }
