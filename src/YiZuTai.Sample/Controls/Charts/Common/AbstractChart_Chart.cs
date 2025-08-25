@@ -136,19 +136,7 @@ namespace YiZuTai.Sample.Controls.Charts.Common
     plotBorderWidth: '{ChartPlotBorderWidth}',
 }}";
         }
-        private static string defaultColors = @"[
-        '#dd6b66',
-        '#759aa0',
-        '#e69d87',
-        '#8dc1a9',
-        '#ea7e53',
-        '#eedd78',
-        '#73a373',
-        '#73b9bc',
-        '#7289ab',
-        '#91ca8c',
-        '#f49f42'
-  ]";
+        private static string defaultColors = "['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc', '#5470c6']";
 
         public string GetColorsOptions()
         {
