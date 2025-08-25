@@ -20,6 +20,13 @@
             user-select: none;
         }
     </style>
+    @if(Project!=null)
+    {
+        @foreach(var jsFile in Project.GetAllReferenceJsFiles())
+        {
+            <script src="@jsFile"></script>
+        }
+    }
 </HeadContent>
 
 @if (ZTFile == null)

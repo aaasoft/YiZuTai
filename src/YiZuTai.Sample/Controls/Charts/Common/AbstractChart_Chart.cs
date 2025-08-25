@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Nodes;
 using YiZuTai.Components.Editors;
 using YiZuTai.Sample.Controls.Charts.Common.Model;
 
@@ -43,7 +44,7 @@ namespace YiZuTai.Sample.Controls.Charts.Common
         [Category("绘图区域")]
         [DisplayName("背景颜色")]
         [Description("绘图区域的背景颜色")]
-        [Editor(typeof(EditorInputColor),typeof(EditorInputColor))]
+        [Editor(typeof(EditorInputColor), typeof(EditorInputColor))]
         public string ChartPlotBackground
         {
             get { return _ChartPlotBackground; }
@@ -84,7 +85,7 @@ namespace YiZuTai.Sample.Controls.Charts.Common
                 RaisePropertyChanged(nameof(ChartPlotBorder));
             }
         }
-        
+
         private double _ChartPlotBorderOpacity = 1;
 
         [Category("绘图区域")]
@@ -114,6 +115,21 @@ namespace YiZuTai.Sample.Controls.Charts.Common
                 _ChartColors = value;
                 RaisePropertyChanged(nameof(ChartColors));
             }
+        }
+
+        public JsonObject GetChartOptions()
+        {
+            return new JsonObject(new Dictionary<string, JsonNode>()
+            {
+                ["type"] = ChartType,
+                ["width"] = Width,
+                ["height"] = Height,
+                ["animation"] = "Highcharts.svg",
+                ["shadow"] = ChartShadow,
+                ["plotBackgroundColor"] = ChartPlotBackground,
+                ["plotBorderColor"] = ChartPlotBorder,
+                ["plotBorderWidth"] = ChartPlotBorderWidth,
+            });
         }
     }
 }

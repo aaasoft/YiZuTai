@@ -347,7 +347,8 @@ y0= (x - rx0)*sin(a) + (y - ry0)*cos(a) + ry0 ;
 
         protected abstract Type GetViewType();
         protected virtual Type GetHtmlViewType() => null;
-        
+        public virtual string[] RefrenceJsFiles => null;
+
         public virtual Dictionary<string, Func<IDataSource>> GetDataSourceDict() => null;
 
         public RenderFragment GetView(ZTContext context)

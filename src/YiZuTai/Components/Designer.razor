@@ -21,6 +21,13 @@
             box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25);
         }
     </style>
+    @if(Project!=null)
+    {
+        @foreach(var jsFile in Project.GetAllReferenceJsFiles())
+        {
+            <script src="@jsFile"></script>
+        }
+    }
 </HeadContent>
 
 @if (ZTFile == null)

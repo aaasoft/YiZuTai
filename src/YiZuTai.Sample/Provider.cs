@@ -26,6 +26,7 @@ public class Provider
         ControlManager.Instance.RegisterControl<Controls.Progress.VerticalBar.Model>();
         ControlManager.Instance.RegisterControl<Controls.Progress.HalfRing.Model>();
         ControlManager.Instance.RegisterControl<Controls.Progress.Ring.Model>();
+        ControlManager.Instance.RegisterControl<Controls.Charts.Column.Model>();
 
         SourceManager.Instance.RegisterSource<DataSources.Input>();
         SourceManager.Instance.RegisterSource<DataSources.Simulate>();

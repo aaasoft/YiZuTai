@@ -136,7 +136,7 @@ namespace YiZuTai.Control
         {
             var type = this.GetType();
             var assembly = type.Assembly;
-            return $"../../../_content/{assembly.GetName().Name}/images/{type.Namespace}.svg";
+            return $"_content/{assembly.GetName().Name}/images/{type.Namespace}.svg";
         }
     }
 }

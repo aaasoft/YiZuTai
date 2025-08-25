@@ -158,6 +158,24 @@ namespace YiZuTai
 
         public IEnumerable<BaseControl> GetAllControls() => GetControlAllControls(this);
 
+        public IEnumerable<string> GetAllReferenceJsFiles()
+        {
+            var fileHashSet = new HashSet<string>();
+            foreach (var control in GetAllControls())
+            {
+                var files = control.RefrenceJsFiles;
+                if (files == null)
+                    continue;
+                foreach (var file in files)
+                {
+                    if (fileHashSet.Contains(file))
+                        continue;
+                    fileHashSet.Add(file);
+                }
+            }
+            return fileHashSet;
+        }
+
 
 
         public void CheckAndModifyControlName(BaseControl control)
