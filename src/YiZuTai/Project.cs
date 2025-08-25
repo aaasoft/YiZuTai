@@ -47,7 +47,11 @@ namespace YiZuTai
 
         [JsonIgnore]
         [Browsable(false)]
-        public override bool IsLocked { get; set; }
+        public override bool IsLocked
+        {
+            get { return false; }
+            set { }
+        }
 
         [JsonIgnore]
         [Browsable(false)]

@@ -113,8 +113,8 @@ namespace YiZuTai.Components
             Project.Controls.CollectionChanged += Controls_CollectionChanged;
             setParentToControls(Project, Project.Controls);
             Project.OnLoad();
-            SelectedItem = Project;
             ZTContext.Project = Project;
+            SelectedItem = Project;
         }
 
         private void setParentToControls(BaseControl parent, IEnumerable<BaseControl> controls)
