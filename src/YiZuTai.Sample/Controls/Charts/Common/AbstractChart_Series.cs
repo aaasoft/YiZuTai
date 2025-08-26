@@ -287,6 +287,8 @@ namespace YiZuTai.Sample.Controls.Charts.Common
             }
         }
 
+        protected virtual string GetPlotOptionsExtra() => null;
+
         public string GetPlotOptions()
         {
             var sb = new StringBuilder();
@@ -321,13 +323,14 @@ namespace YiZuTai.Sample.Controls.Charts.Common
             }}
         }}
     }}
+    {GetPlotOptionsExtra()}
 }}");
             return sb.ToString();
         }
 
         private string GetSeriesOption(SeriesDataItem series)
         {
-            return $"[ '{series.Name}',[]]";
+            return $"{{name:'{series.Name}',data:[]}}";
         }
 
         public virtual string GetSeriesOptions()
