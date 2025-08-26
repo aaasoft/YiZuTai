@@ -28,6 +28,7 @@ public class Provider
         ControlManager.Instance.RegisterControl<Controls.Progress.Ring.Model>();
         ControlManager.Instance.RegisterControl<Controls.Charts.Column_Single.Model>();
         ControlManager.Instance.RegisterControl<Controls.Charts.Column_Multi.Model>();
+        ControlManager.Instance.RegisterControl<Controls.Charts.Column_Report.Model>();
 
         SourceManager.Instance.RegisterSource<DataSources.Input>();
         SourceManager.Instance.RegisterSource<DataSources.Simulate>();
