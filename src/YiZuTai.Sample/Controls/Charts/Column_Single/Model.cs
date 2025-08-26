@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
 using Newtonsoft.Json;
@@ -25,6 +26,9 @@ public class Model : AbstractChart
     [JsonIgnore]
     [Browsable(false)]
     public override Step SeriesStep { get => base.SeriesStep; set => base.SeriesStep = value; }
+    [JsonIgnore]
+    [Browsable(false)]
+    public override ObservableCollection<PlotLine> YAxisPlotLines { get => base.YAxisPlotLines; set => base.YAxisPlotLines = value; }
 
     private string GetSeriesOption(SeriesDataItem seriesData, int index)
     {

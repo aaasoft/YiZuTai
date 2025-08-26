@@ -138,7 +138,7 @@ namespace YiZuTai.Sample.Controls.Charts.Common
         private ObservableCollection<PlotLine> _YAxisPlotLines = new ObservableCollection<PlotLine>();
         [Category("Y轴")]
         [DisplayName("标志线集合")]
-        public ObservableCollection<PlotLine> YAxisPlotLines
+        public virtual ObservableCollection<PlotLine> YAxisPlotLines
         {
             get { return _YAxisPlotLines; }
             set
@@ -148,17 +148,20 @@ namespace YiZuTai.Sample.Controls.Charts.Common
             }
         }
 
-
+        private string GetPlotLineString(PlotLine plotLine)
+        {
+            return $@"{{
+    color: '{plotLine.LineColor}',
+    width: {plotLine.LineWidth},
+    dashStyle: '{plotLine.DashStyle}'
+}}";
+        }
         public string GetYAxisOptions()
         {
             return $@"{{
                 title: '{YAxisTitleText}',
                 allowDecimals: {YAxisAllowDecimals.ToString().ToLower()},
-                plotLines: [{{
-                    value: 0,
-                    width: 1,
-                    color: '#808080',
-                }}],
+                {(YAxisPlotLines == null || YAxisPlotLines.Count == 0 ? string.Empty : $"plotLines: [{string.Join(',', YAxisPlotLines.Select(t => GetPlotLineString(t)))}],")}
                 crosshair: {YAxisCrosshair.ToString().ToLower()},
                 visible: {YAxisVisible.ToString().ToLower()},
                 gridLineWidth: '{YAxisGridLineWidth}',

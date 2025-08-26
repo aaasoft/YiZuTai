@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
 using Newtonsoft.Json;
@@ -47,6 +48,9 @@ public class Model : AbstractChart
     [JsonIgnore]
     [Browsable(false)]
     public override string YAxisLabelColor { get => base.YAxisLabelColor; set => base.YAxisLabelColor = value; }
+    [JsonIgnore]
+    [Browsable(false)]
+    public override ObservableCollection<PlotLine> YAxisPlotLines { get => base.YAxisPlotLines; set => base.YAxisPlotLines = value; }
 
     [JsonIgnore]
     [Browsable(false)]

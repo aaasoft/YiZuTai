@@ -32,6 +32,9 @@ public class Model : AbstractChart
     [JsonIgnore]
     [Browsable(false)]
     public override ObservableCollection<SeriesDataItem> SeriesData { get => base.SeriesData; set => base.SeriesData = value; }
+    [JsonIgnore]
+    [Browsable(false)]
+    public override ObservableCollection<PlotLine> YAxisPlotLines { get => base.YAxisPlotLines; set => base.YAxisPlotLines = value; }
 
     private ObservableCollection<SeriesDataCollectionItem> _SeriesData2 = new ObservableCollection<SeriesDataCollectionItem>();
     [Category("数据列")]

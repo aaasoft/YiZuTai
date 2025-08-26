@@ -42,6 +42,9 @@ public class Model : AbstractChart
         }
         set { }
     }
+    [JsonIgnore]
+    [Browsable(false)]
+    public override ObservableCollection<PlotLine> YAxisPlotLines { get => base.YAxisPlotLines; set => base.YAxisPlotLines = value; }
 
     [JsonIgnore]
     [Browsable(false)]
