@@ -374,8 +374,8 @@ new YiZuTai.CreateWindow({{
                 control.Left = 0;
             if (control.Top < 0)
                 control.Top = 0;
-            control.Parent = container;
             container.Controls.Add(control);
+            setParentToControls(container, [control]);
             control.OnLoad();
         }
 
@@ -422,15 +422,16 @@ new YiZuTai.CreateWindow({{
                 var obj = XmlConvert.Deserialize(content);
                 if (obj is not BaseControl control)
                     throw new IOException("剪贴板中的内容不是控件");
+                var container = SelectedItem;
                 if (obj is MultiControl multiControl)
                 {
                     foreach (var item in multiControl.Items)
-                        AddControl(item);
+                        AddControl(item, container);
                     SelectedItem = new MultiControl(Project, Project.DesignGridSize, multiControl.Items);
                 }
                 else
                 {
-                    AddControl(control);
+                    AddControl(control, container);
                     SelectedItem = control;
                 }
             }
