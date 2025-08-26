@@ -14,24 +14,7 @@ namespace YiZuTai.Sample.Controls.Charts.Pie;
 public class Model : AbstractChart
 {
     protected override Type GetViewType() => typeof(View);
-    public override string ChartType => ChartPieStyle.ToString();
-
-    private PieStyle _ChartPieStyle = PieStyle.pie;
-
-    [Category("图表")]
-    [DisplayName("图表样式")]
-    [Description("图表风格样式")]
-    public virtual PieStyle ChartPieStyle
-    {
-        get { return _ChartPieStyle; }
-        set
-        {
-            _ChartPieStyle = value;
-            RaisePropertyChanged(nameof(ChartPieStyle));
-            RaisePropertyChanged(nameof(ChartType));
-        }
-    }
-
+    public override string ChartType => "pie";
 
     [JsonIgnore]
     [Browsable(false)]
