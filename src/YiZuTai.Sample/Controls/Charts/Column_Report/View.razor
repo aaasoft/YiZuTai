@@ -23,22 +23,24 @@ chart.series[{seriesIndex}].setData([{dataString}]);";
     private void InitChart()
     {
         //初始化图表
-        var sb = new StringBuilder();
-        sb.AppendLine($"document.getElementById('svg_{ControlModel.Name}').chart = Highcharts.chart('svg_{ControlModel.Name}',{{");
-        sb.AppendLine($@" credits: {ControlModel.GetCreditsOptions()},");
-        sb.AppendLine($@" chart: {ControlModel.GetChartOptions()},");
-        sb.AppendLine($@" colors: {ControlModel.GetColorsOptions()},");
-        sb.AppendLine($@" title: {ControlModel.GetTitleOptions()},");
-        sb.AppendLine($@" xAxis: {ControlModel.GetXAxisOptions()},");
-        sb.AppendLine($@" yAxis: {ControlModel.GetYAxisOptions()},");
-        sb.AppendLine($@" tooltip: {ControlModel.GetTooltipOptions()},");
-        sb.AppendLine($@" normalizeHandler: {ControlModel.GetNormalizeHandlerOptions(ZTContext.Project)},");
-        sb.AppendLine($@" legend: {ControlModel.GetLegendOptions()},");
-        sb.AppendLine($@" plotOptions: {ControlModel.GetPlotOptions()},");
-        sb.AppendLine($@" series: {ControlModel.GetSeriesOptions()}");
-        sb.AppendLine($@"}})");
-        ZTContext.JSRuntime.InvokeVoidAsync("eval", sb.ToString());
-        //ZTContext.JSRuntime.InvokeVoidAsync("console.log", sb.ToString());
+        var js = $@"let chart = document.getElementById('svg_{ControlModel.Name}').chart;
+if(typeof chart != 'undefined')
+    chart.destroy();
+document.getElementById('svg_{ControlModel.Name}').chart = Highcharts.chart('svg_{ControlModel.Name}',{{
+    credits: {ControlModel.GetCreditsOptions()},
+    chart: {ControlModel.GetChartOptions()},
+    colors: {ControlModel.GetColorsOptions()},
+    title: {ControlModel.GetTitleOptions()},
+    xAxis: {ControlModel.GetXAxisOptions()},
+    yAxis: {ControlModel.GetYAxisOptions()},
+    tooltip: {ControlModel.GetTooltipOptions()},
+    normalizeHandler: {ControlModel.GetNormalizeHandlerOptions(ZTContext.Project)},
+    legend: {ControlModel.GetLegendOptions()},
+    plotOptions: {ControlModel.GetPlotOptions()},
+    series: {ControlModel.GetSeriesOptions()}
+}})";
+        ZTContext.JSRuntime.InvokeVoidAsync("eval", js.ToString());
+        //ZTContext.JSRuntime.InvokeVoidAsync("console.log", js.ToString());
 
         //设置背景色
         ZTContext.JSRuntime.InvokeVoidAsync("eval", $@"
