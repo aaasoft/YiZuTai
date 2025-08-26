@@ -116,10 +116,12 @@ namespace YiZuTai.Sample.Controls.Charts.Common
     crosshair: {XAxisCrosshair.ToString().ToLower()},
     categories: [{string.Join(',',XAxisCategories.Select(t => $"'{t.Name}'"))}],
     visible: {XAxisVisible.ToString().ToLower()},
-    style: {{
-        color: '{XAxisLabelColor}',
-        fontSize: '{XAxisLabelFontSize}px',
-        fontFamily: '{XAxisLabelFontFamily}'
+    labels: {{
+        style: {{
+            color: '{XAxisLabelColor}',
+            fontSize: '{XAxisLabelFontSize}px',
+            fontFamily: '{XAxisLabelFontFamily}'
+        }}
     }}
 }}";
         }
