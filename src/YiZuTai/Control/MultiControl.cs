@@ -8,6 +8,7 @@ namespace YiZuTai.Control;
 public class MultiControl : BaseControl
 {
     private int GridSize;
+    [JsonIgnore]
     [Browsable(false)]
     public BaseControl Container { get; private set; }
 
