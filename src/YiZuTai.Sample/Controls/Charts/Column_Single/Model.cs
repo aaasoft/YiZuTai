@@ -36,7 +36,7 @@ public class Model : AbstractChart
     '{seriesData.Name}',
     [
         {{
-            {(ChartColors.Count <= 0 ? string.Empty : $"color: colorArray[{colorIndex}],")}
+            {(ChartColors.Count <= 0 ? string.Empty : $"color: '{ChartColors[colorIndex].Value}',")}
             y: null
         }}
     ]

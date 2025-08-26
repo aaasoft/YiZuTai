@@ -38,6 +38,8 @@ public class ColorItem : PropertyNotifyModel
 
     public override string ToString()
     {
-        return Value.ToString();
+        if (Value == null)
+            return "(未设置)";
+        return Value;
     }
 }
