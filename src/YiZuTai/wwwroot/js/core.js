@@ -5,7 +5,12 @@
     BeginAnimate:function(controlName){
         jQuery('#svg_' + controlName + ' animate').each(function (index, value) { { value.beginElement(); } });
     },
-    Window : function (params) {
+    LoadScript: function (url) {
+        let script = document.createElement('script');
+        script.src = url;
+        document.head.appendChild(script);
+    },
+    CreateWindow : function (params) {
         var maxmin = params.maxmin ? params.maxmin : false; 
         var width = params.width ? params.width : 950;
         var height = params.height ? params.height : 580;

@@ -93,7 +93,7 @@ namespace YiZuTai.Sample.HyperLinkSources
                     break;
                 case HyperLinkTarget._window:
                     var sb = new StringBuilder();
-                    sb.AppendLine("new YiZuTai.Window({");
+                    sb.AppendLine("new YiZuTai.CreateWindow({");
                     if (WindowWidth.HasValue)
                         sb.AppendLine($"width: {WindowWidth},");
                     if (WindowHeight.HasValue)

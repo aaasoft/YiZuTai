@@ -310,7 +310,7 @@ namespace YiZuTai.Components
         {
             var previewUrl = ZTContext.ZTFile.GetStaticResourceUrl($"../View?DesignerId={designerId}");
             ZTContext.JSRuntime.InvokeVoidAsync("eval", @$"
-new YiZuTai.Window({{
+new YiZuTai.CreateWindow({{
     maxmin: true,
     pages: [{{
         title: '预览',
