@@ -109,12 +109,12 @@ namespace YiZuTai.Sample.Controls.Charts.Common
             }
         }
 
-        public string GetXAxisOptions()
+        public string GetXAxisOptions(bool showCategories=true)
         {
             return $@"{{
     type: '{XAxisType}',
     crosshair: {XAxisCrosshair.ToString().ToLower()},
-    categories: [{string.Join(',',XAxisCategories.Select(t => $"'{t.Name}'"))}],
+    {(showCategories?$"categories: [{string.Join(',',XAxisCategories.Select(t => $"'{t.Name}'"))}],":string.Empty)}
     visible: {XAxisVisible.ToString().ToLower()},
     labels: {{
         style: {{

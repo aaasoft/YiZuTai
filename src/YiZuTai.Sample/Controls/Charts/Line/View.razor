@@ -1,6 +1,7 @@
 ﻿@using System.Text.Json.Nodes
 @using Newtonsoft.Json
 @using System.Text
+@using YiZuTai.Sample.Utils
 @inherits AbstractControlView<Model>
 @implements IDisposable
 
@@ -15,7 +16,7 @@
 
 let currentSerie = chart.series[{seriesIndex}];
 
-let time = new Date().getTime();
+let time = {DateUtils.ToUnixTimestamp_ms(DateTime.Now)};
 let numberValue = parseFloat('{value}');
 
 while (currentSerie.data.length >= {ControlModel.SeriesDataMaxCount}) {{
@@ -23,7 +24,7 @@ while (currentSerie.data.length >= {ControlModel.SeriesDataMaxCount}) {{
 }}
 currentSerie.addPoint([time, numberValue], true, false, false);";
         ZTContext.JSRuntime.InvokeVoidAsync("eval", js);
-        ZTContext.JSRuntime.InvokeVoidAsync("console.log", js);
+        //ZTContext.JSRuntime.InvokeVoidAsync("console.log", js);
     }
 
     private void setQueryDataSourceValue(int seriesIndex, QueryDataSourceResult[] value)
@@ -47,7 +48,7 @@ currentSerie.setData([]);
             currentSerie.addPoint([x, parseFloat(item.y)], true, false, false);
         }}";
         ZTContext.JSRuntime.InvokeVoidAsync("eval", js);
-        ZTContext.JSRuntime.InvokeVoidAsync("console.log", js);
+        //ZTContext.JSRuntime.InvokeVoidAsync("console.log", js);
     }
 
     private void InitChart()
@@ -59,7 +60,7 @@ currentSerie.setData([]);
         sb.AppendLine($@" chart: {ControlModel.GetChartOptions()},");
         sb.AppendLine($@" colors: {ControlModel.GetColorsOptions()},");
         sb.AppendLine($@" title: {ControlModel.GetTitleOptions()},");
-        sb.AppendLine($@" xAxis: {ControlModel.GetXAxisOptions()},");
+        sb.AppendLine($@" xAxis: {ControlModel.GetXAxisOptions(false)},");
         sb.AppendLine($@" yAxis: {ControlModel.GetYAxisOptions()},");
         sb.AppendLine($@" tooltip: {ControlModel.GetTooltipOptions()},");
         sb.AppendLine($@" normalizeHandler: {ControlModel.GetNormalizeHandlerOptions(ZTContext.Project)},");

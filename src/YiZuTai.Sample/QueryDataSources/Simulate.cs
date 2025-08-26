@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using YiZuTai.DataSource;
+using YiZuTai.Sample.Utils;
 
 namespace YiZuTai.Sample.QueryDataSources;
 
@@ -113,13 +114,13 @@ T       距 1970 年 1 月 1 日之间的毫秒数。")]
         else
             tmpValue = Value;
 
-        var currentTime = Convert.ToInt64((DateTime.Now - new DateTime(1970, 1, 1)).TotalMilliseconds);
+
+        var currentTime = DateUtils.ToUnixTimestamp_ms(DateTime.Now);
         var d = MaxValue - MinValue;
         for (var i = 0; i < Count; i++)
         {
             var value = MinValue + d * random.NextDouble();
-            var time = new DateTime(1970, 1, 1);
-            time = time.AddMilliseconds(currentTime);
+            var time = DateUtils.FromUnixTimestamp_ms(currentTime);
             var x = time.ToString(DateTimeFormat);
 
             tmpValue[i] = new QueryDataSourceResult
