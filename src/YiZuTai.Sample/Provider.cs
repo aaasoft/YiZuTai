@@ -35,6 +35,8 @@ public class Provider
         SourceManager.Instance.RegisterSource<DataSources.DayOfWeek>();
         SourceManager.Instance.RegisterSource<DataSources.DayOfYear>();
 
+        SourceManager.Instance.RegisterSource<QueryDataSources.Simulate>();
+
         SourceManager.Instance.RegisterSource<HyperLinkSources.Link>();
     }
 }
