@@ -23,7 +23,31 @@ while (currentSerie.data.length >= {ControlModel.SeriesDataMaxCount}) {{
 }}
 currentSerie.addPoint([time, numberValue], true, false, false);";
         ZTContext.JSRuntime.InvokeVoidAsync("eval", js);
-        //ZTContext.JSRuntime.InvokeVoidAsync("console.log", js);
+        ZTContext.JSRuntime.InvokeVoidAsync("console.log", js);
+    }
+
+    private void setQueryDataSourceValue(int seriesIndex, QueryDataSourceResult[] value)
+    {
+        var valueJson = string.Join(',',value.Select(t=>$"{{time: {t.Time},x:'{t.X}',y:'{t.Y}'}}"));
+        var js = $@"let chart = document.getElementById('svg_{ControlModel.Name}').chart;
+let value = [{valueJson}];
+let currentSerie = chart.series[{seriesIndex}];
+currentSerie.setData([]);
+        for (var i = 0; i < value.length; i++) {{
+            var item = value[i];
+            var x = item.x;
+            switch ('{ControlModel.XAxisType}') {{
+                case 'linear':
+                    x = parseFloat(x);
+                    break;
+                case 'datetime':
+                    x = item.time;
+                    break;
+            }}
+            currentSerie.addPoint([x, parseFloat(item.y)], true, false, false);
+        }}";
+        ZTContext.JSRuntime.InvokeVoidAsync("eval", js);
+        ZTContext.JSRuntime.InvokeVoidAsync("console.log", js);
     }
 
     private void InitChart()
@@ -44,7 +68,7 @@ currentSerie.addPoint([time, numberValue], true, false, false);";
         sb.AppendLine($@" series: {ControlModel.GetSeriesOptions()}");
         sb.AppendLine($@"}})");
         ZTContext.JSRuntime.InvokeVoidAsync("eval", sb.ToString());
-        ZTContext.JSRuntime.InvokeVoidAsync("console.log", sb.ToString());
+        //ZTContext.JSRuntime.InvokeVoidAsync("console.log", sb.ToString());
 
         //设置背景色
         ZTContext.JSRuntime.InvokeVoidAsync("eval", $@"
@@ -67,7 +91,12 @@ backElement.attr('fill-opacity', '{ControlModel.BackgroundOpacity}');
             //如果是配置多条数据源
             else
             {
-
+                var dataSource = seriesData.QueryDataSource;
+                if (dataSource == null)
+                    continue;
+                var value = dataSource.Value;
+                if(value!=null)
+                    setQueryDataSourceValue(seriesIndex, dataSource.Value);
             }
         }
     }
@@ -97,7 +126,10 @@ backElement.attr('fill-opacity', '{ControlModel.BackgroundOpacity}');
                 //如果是配置多条数据源
                 else
                 {
-
+                    var dataSource = seriesData.QueryDataSource;
+                    if (dataSource == null)
+                        continue;
+                    setQueryDataSourceValue(seriesIndex, dataSource.Value);
                 }
             }
             ControlModel.PropertyChanged += (sender,e)=>

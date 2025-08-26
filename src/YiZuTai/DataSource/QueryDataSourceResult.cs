@@ -8,6 +8,7 @@ namespace YiZuTai.DataSource
 {
     public class QueryDataSourceResult
     {
+        public long Time { get; set; }
         public string X { get; set; }
         public string Y { get; set; }
     }

@@ -113,23 +113,18 @@ T       距 1970 年 1 月 1 日之间的毫秒数。")]
         else
             tmpValue = Value;
 
-        var currentTime = (new System.DateTime() - new DateTime(1970, 1, 1)).TotalMilliseconds;
-
+        var currentTime = Convert.ToInt64((DateTime.Now - new DateTime(1970, 1, 1)).TotalMilliseconds);
         var d = MaxValue - MinValue;
         for (var i = 0; i < Count; i++)
         {
             var value = MinValue + d * random.NextDouble();
-            string x = null;
-            if (string.IsNullOrEmpty(DateTimeFormat) || DateTimeFormat == "T")
-                x = currentTime.ToString();
-            else
-            {
-                var time = new DateTime(1970, 1, 1);
-                time = time.AddMilliseconds(currentTime);
-                x = time.ToString(DateTimeFormat);
-            }
+            var time = new DateTime(1970, 1, 1);
+            time = time.AddMilliseconds(currentTime);
+            var x = time.ToString(DateTimeFormat);
+
             tmpValue[i] = new QueryDataSourceResult
             {
+                Time = currentTime,
                 X = x,
                 Y = value.ToString("N" + DecimalPlace)
             };
