@@ -199,6 +199,9 @@ namespace YiZuTai
             while (true);
         }
 
+        [Browsable(false)]
+        [JsonIgnore]
+        public bool IsProjectLoaded { get; set; } = false;
 
         private string _StyleShotcut = "样式-深色";
         [Browsable(false)]
@@ -209,7 +212,8 @@ namespace YiZuTai
             {
                 _StyleShotcut = value;
                 RaisePropertyChanged(nameof(StyleShotcut));
-                ApplyStyleShotcut();
+                if (IsProjectLoaded)
+                    ApplyStyleShotcut();
             }
         }
 

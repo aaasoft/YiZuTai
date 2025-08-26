@@ -50,6 +50,7 @@ namespace YiZuTai.Model
             }
             if (project == null)
                 project = new Project();
+            project.IsProjectLoaded = true;
             return project;
         }
 

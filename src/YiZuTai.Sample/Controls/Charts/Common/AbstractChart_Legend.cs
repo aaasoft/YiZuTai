@@ -98,7 +98,7 @@ namespace YiZuTai.Sample.Controls.Charts.Common
     enabled: {LegendEnable.ToString().ToLower()},
     align: '{LegendAlign}',
     verticalAlign: '{LegendVerticalAlign}',
-    floating: '{LegendFloating.ToString().ToLower()}',
+    floating: {LegendFloating.ToString().ToLower()},
     layout: '{LegendLayout}',
     itemStyle: {{
         color: '{LegendItemColor}'

@@ -32,15 +32,13 @@ public class Model : AbstractChart
         if (ChartColors.Count > 0)
             colorIndex = index % ChartColors.Count;
         var sb = new StringBuilder();
-        sb.AppendLine($@"[
-    '{seriesData.Name}',
-    [
-        {{
+        sb.AppendLine($@"{{
+        name: '{seriesData.Name}',
+        data: [{{
             {(ChartColors.Count <= 0 ? string.Empty : $"color: '{ChartColors[colorIndex].Value}',")}
             y: null
-        }}
-    ]
-]");
+        }}]
+}}");
         return sb.ToString();
     }
 
@@ -73,20 +71,20 @@ public class Model : AbstractChart
     public override IControlShotcut[] Shotcuts =>
     [
         new ControlShotcut("样式-浅色", ()=>
-                {
-                    var mainColor = "#000000";
-                    TitleColor = mainColor;
-                    LegendItemColor = mainColor;
-                    XAxisLabelColor = mainColor;
-                    YAxisLabelColor = mainColor;
-                }),
-                new ControlShotcut("样式-深色", ()=>
-                {
-                    var mainColor = "#FFFFFF";
-                    TitleColor = mainColor;
-                    LegendItemColor = mainColor;
-                    XAxisLabelColor = mainColor;
-                    YAxisLabelColor = mainColor;
-                })
+        {
+            var mainColor = "#000000";
+            TitleColor = mainColor;
+            LegendItemColor = mainColor;
+            XAxisLabelColor = mainColor;
+            YAxisLabelColor = mainColor;
+        }),
+        new ControlShotcut("样式-深色", ()=>
+        {
+            var mainColor = "#FFFFFF";
+            TitleColor = mainColor;
+            LegendItemColor = mainColor;
+            XAxisLabelColor = mainColor;
+            YAxisLabelColor = mainColor;
+        })
     ];
 }

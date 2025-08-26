@@ -1,6 +1,8 @@
 using System.ComponentModel;
+using System.Text;
 using Newtonsoft.Json;
 using YiZuTai.Components.Editors;
+using YiZuTai.Control;
 using YiZuTai.Model;
 using YiZuTai.Sample.Controls.Charts.Common;
 using YiZuTai.Sample.Controls.Charts.Common.Model;
@@ -145,12 +147,42 @@ public class Model : AbstractChart
         return $@",
     pie: {{
         startAngle: {StartAngle},
-{(EndAngle==null?string.Empty:$"endAngle: {EndAngle},")}
+{(EndAngle == null ? string.Empty : $"endAngle: {EndAngle},")}
         innerSize: '{InnerSize}%',
         borderWidth: {PieBorderWidth},
         borderColor: '{PieBorderColor}',
         showInLegend: {LegendEnable.ToString().ToLower()}
     }}";
+    }
+
+
+    private string GetSeriesOption(SeriesDataItem seriesData, int index)
+    {
+        var colorIndex = 0;
+        if (ChartColors.Count > 0)
+            colorIndex = index % ChartColors.Count;
+        var sb = new StringBuilder();
+        sb.AppendLine($@"{{
+        name: '{seriesData.Name}',
+        data: [{{
+            {(ChartColors.Count <= 0 ? string.Empty : $"color: '{ChartColors[colorIndex].Value}',")}
+            y: null,
+            z: {Width * 0.7 * (1 + index / 10)}
+        }}]
+}}");
+        return sb.ToString();
+    }
+
+    public override string GetSeriesOptions()
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine("[{");
+        sb.AppendLine("  name: '',");
+        sb.AppendLine("  data: [");
+        var index = 0;
+        sb.AppendLine(string.Join(',', SeriesData.Select(t => GetSeriesOption(t, index++))));
+        sb.AppendLine("]}]");
+        return sb.ToString();
     }
 
     public override void OnDragDropCreate(Point location)
@@ -168,4 +200,24 @@ public class Model : AbstractChart
         SeriesData.Add(new SeriesDataItem() { Name = "上海", DataSource = new DataSources.Input() { Content = "2" } });
         SeriesData.Add(new SeriesDataItem() { Name = "北京", DataSource = new DataSources.Input() { Content = "3" } });
     }
+    
+    public override IControlShotcut[] Shotcuts =>
+    [
+        new ControlShotcut("样式-浅色", ()=>
+        {
+            var mainColor = "#000000";
+            TitleColor = mainColor;
+            LegendItemColor = mainColor;
+            XAxisLabelColor = mainColor;
+            YAxisLabelColor = mainColor;
+        }),
+        new ControlShotcut("样式-深色", ()=>
+        {
+            var mainColor = "#FFFFFF";
+            TitleColor = mainColor;
+            LegendItemColor = mainColor;
+            XAxisLabelColor = mainColor;
+            YAxisLabelColor = mainColor;
+        })
+    ];
 }
