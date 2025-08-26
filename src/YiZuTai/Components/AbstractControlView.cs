@@ -18,11 +18,6 @@ public abstract class AbstractControlView<TControl> : ComponentBase, IControlVie
         ControlModel.View = this;
     }
 
-    private async Task<bool> IsHighChartsUndefined()
-    {
-        return await ZTContext.JSRuntime.InvokeAsync<bool>("eval", ["typeof Highcharts === 'undefined'"]);
-    }
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
@@ -39,21 +34,6 @@ public abstract class AbstractControlView<TControl> : ComponentBase, IControlVie
                     if (dataSource == null)
                         continue;
                     ControlModel.OnDataSourceValueChanged(dataSource, key);
-                }
-            }
-
-            //判断是否加载Highcharts相关资源
-            var isHighchartsUndefined = await IsHighChartsUndefined();
-            if (isHighchartsUndefined)
-            {
-                //加载控件的JS文件
-                foreach (var script in ControlModel.RefrenceJsFiles)
-                    await ZTContext.JSRuntime.InvokeVoidAsync("YiZuTai.LoadScript", script);
-                //等待控件的JS文件加载完成
-                while (isHighchartsUndefined)
-                {
-                    await Task.Delay(1000);
-                    isHighchartsUndefined = await IsHighChartsUndefined();
                 }
             }
         }
