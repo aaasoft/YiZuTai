@@ -57,7 +57,7 @@ public class Model : AbstractChart
             name: '{seriesData.Name}',
             data: [");
         sb.AppendLine(string.Join(',',seriesData.Items.Select(t=>$@"{{
-            {(ChartColors.Count<=0?string.Empty:"color: colorArray[{colorIndex}],")}
+            {(ChartColors.Count<=0?string.Empty:$"color: colorArray[{colorIndex}],")}
             y: null
         }}")));
             sb.AppendLine("]}");

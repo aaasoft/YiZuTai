@@ -37,8 +37,8 @@ chart.series[{seriesIndex}].setData(data);";
         sb.AppendLine($@" plotOptions: {ControlModel.GetPlotOptions()},");
         sb.AppendLine($@" series: {ControlModel.GetSeriesOptions()}");
         sb.AppendLine($@"}})");
-        //ZTContext.JSRuntime.InvokeVoidAsync("console.log", sb.ToString());
         ZTContext.JSRuntime.InvokeVoidAsync("eval", sb.ToString());
+        //ZTContext.JSRuntime.InvokeVoidAsync("console.log", sb.ToString());
 
         //设置背景色
         ZTContext.JSRuntime.InvokeVoidAsync("eval", $@"
