@@ -135,6 +135,19 @@ namespace YiZuTai.Sample.Controls.Charts.Common
             }
         }
 
+        private DashStyle _YAxisGridLineDashStyle = DashStyle.Solid;
+        [Category("Y轴")]
+        [DisplayName("网格线样式")]
+        public virtual DashStyle YAxisGridLineDashStyle
+        {
+            get { return _YAxisGridLineDashStyle; }
+            set
+            {
+                _YAxisGridLineDashStyle = value;
+                RaisePropertyChanged(nameof(YAxisGridLineDashStyle));
+            }
+        }
+
         private ObservableCollection<PlotLine> _YAxisPlotLines = new ObservableCollection<PlotLine>();
         [Category("Y轴")]
         [DisplayName("标志线集合")]
@@ -166,6 +179,7 @@ namespace YiZuTai.Sample.Controls.Charts.Common
                 visible: {YAxisVisible.ToString().ToLower()},
                 gridLineWidth: '{YAxisGridLineWidth}',
                 gridLineColor: '{YAxisGridLineColor}',
+                gridLineDashStyle: '{YAxisGridLineDashStyle}',
                 labels: {{
                     style: {{
                         color: '{YAxisLabelColor}',

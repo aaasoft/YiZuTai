@@ -1,0 +1,142 @@
+﻿@using System.Text.Json.Nodes
+@using Newtonsoft.Json
+@using System.Text
+@inherits AbstractControlView<Model>
+@implements IDisposable
+
+<BaseControl_WithBackgroundView T_BaseControl_WithBackground="Model" Model="@ControlModel" ZTContext="ZTContext">
+</BaseControl_WithBackgroundView>
+
+@code
+{
+    private void setDataSourceValue(int seriesIndex, string value)
+    {
+        var js = $@"let chart = document.getElementById('svg_{ControlModel.Name}').chart;
+
+let currentSerie = chart.series[{seriesIndex}];
+
+let time = new Date().getTime();
+let numberValue = parseFloat('{value}');
+
+while (currentSerie.data.length >= {ControlModel.SeriesDataMaxCount}) {{
+    currentSerie.removePoint(0, false, false);
+}}
+currentSerie.addPoint([time, numberValue], true, false, false);";
+        ZTContext.JSRuntime.InvokeVoidAsync("eval", js);
+        //ZTContext.JSRuntime.InvokeVoidAsync("console.log", js);
+    }
+
+    private void InitChart()
+    {
+        //初始化图表
+        var sb = new StringBuilder();
+        sb.AppendLine($"document.getElementById('svg_{ControlModel.Name}').chart = Highcharts.chart('svg_{ControlModel.Name}',{{");
+        sb.AppendLine($@" credits: {ControlModel.GetCreditsOptions()},");
+        sb.AppendLine($@" chart: {ControlModel.GetChartOptions()},");
+        sb.AppendLine($@" colors: {ControlModel.GetColorsOptions()},");
+        sb.AppendLine($@" title: {ControlModel.GetTitleOptions()},");
+        sb.AppendLine($@" xAxis: {ControlModel.GetXAxisOptions()},");
+        sb.AppendLine($@" yAxis: {ControlModel.GetYAxisOptions()},");
+        sb.AppendLine($@" tooltip: {ControlModel.GetTooltipOptions()},");
+        sb.AppendLine($@" normalizeHandler: {ControlModel.GetNormalizeHandlerOptions(ZTContext.Project)},");
+        sb.AppendLine($@" legend: {ControlModel.GetLegendOptions()},");
+        sb.AppendLine($@" plotOptions: {ControlModel.GetPlotOptions()},");
+        sb.AppendLine($@" series: {ControlModel.GetSeriesOptions()}");
+        sb.AppendLine($@"}})");
+        ZTContext.JSRuntime.InvokeVoidAsync("eval", sb.ToString());
+        ZTContext.JSRuntime.InvokeVoidAsync("console.log", sb.ToString());
+
+        //设置背景色
+        ZTContext.JSRuntime.InvokeVoidAsync("eval", $@"
+let backElement = jQuery('#svg_{ControlModel.Name} .highcharts-background');
+backElement.attr('fill', '{ControlModel.Background}');
+backElement.attr('fill-opacity', '{ControlModel.BackgroundOpacity}');
+");
+        //第一次显示数据
+        for (var seriesIndex = 0; seriesIndex < ControlModel.SeriesData.Count; seriesIndex++)
+        {
+            var seriesData = ControlModel.SeriesData[seriesIndex];
+            //如果是配置单条数据源
+            if(seriesData.DataSource!=null)
+            {
+                var dataSource = seriesData.DataSource;
+                if (dataSource == null)
+                    continue;
+                setDataSourceValue(seriesIndex, dataSource.Value);
+            }
+            //如果是配置多条数据源
+            else
+            {
+
+            }
+        }
+    }
+
+    private Timer checkControlSizeTimer;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            InitChart();
+            //注册数据源
+            for (var seriesIndex = 0; seriesIndex < ControlModel.SeriesData.Count; seriesIndex++)
+            {
+                var seriesData = ControlModel.SeriesData[seriesIndex];
+                //如果是配置单条数据源
+                if(seriesData.DataSource!=null)
+                {
+                    var dataSource = seriesData.DataSource;
+                    if (dataSource == null)
+                        continue;
+
+                    var currentSeriesIndex = seriesIndex;
+                    dataSource.PropertyChanged += (sender, e) => setDataSourceValue(currentSeriesIndex, dataSource.Value);
+                }
+                //如果是配置多条数据源
+                else
+                {
+
+                }
+            }
+            ControlModel.PropertyChanged += (sender,e)=>
+            {
+                switch(e.PropertyName)
+                {
+                    case nameof(Model.Left):
+                    case nameof(Model.Top):
+                    case nameof(Model.Width):
+                    case nameof(Model.Height):
+                    case nameof(Model.Angle):
+                    case nameof(Model.Opacity):
+                    case nameof(Model.IsLocked):
+                    case nameof(Model.Visiable):
+                        return;
+                }
+                InitChart();
+            };
+            if(ZTContext.DesignMode)
+            {
+                var preWidth = ControlModel.Width;
+                var preHeight = ControlModel.Height;
+                checkControlSizeTimer = new Timer(t=>
+                {
+                    if(preWidth == ControlModel.Width
+                     && preHeight == ControlModel.Height)
+                        return;
+                        
+                    preWidth = ControlModel.Width;
+                    preHeight = ControlModel.Height;
+                    InitChart();
+                },null,1000,1000);
+            }
+        }
+    }
+    
+    public void Dispose()
+    {
+        checkControlSizeTimer?.Dispose();
+        checkControlSizeTimer=null;
+    }
+}
