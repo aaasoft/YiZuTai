@@ -54,6 +54,7 @@ namespace YiZuTai.Components
         private ZTContext ZTContext;
         [Inject]
         private IJSRuntime JSRuntime { get; set; }
+        private object ClipboardContent;
 
         private bool isWindowOnbeforeUnloadEventAdded = false;
         private BaseControl _SelectedItem;
@@ -359,11 +360,30 @@ new YiZuTai.CreateWindow({{
             });
         }
 
-        private object ClipboardContent;
-        
         private void ShowClipboard()
         {
-
+            modalWindow.Show("剪贴板", new DialogParameters<TextEditControl>
+            {
+                { x=>x.GetTextFunc, ()=> ClipboardContent==null?null: XmlConvert.Serialize(ClipboardContent) },
+                { x=>x.SetTextAction, content=>
+                    {
+                        try
+                        {
+                            ClipboardContent = null;
+                            if(!string.IsNullOrEmpty(content))
+                                ClipboardContent = XmlConvert.Deserialize(content);
+                        }
+                        catch(Exception ex)
+                        {
+                            modalAlert.Show("错误", "写入剪贴板时出错，原因："+ExceptionUtils.GetExceptionMessage(ex));
+                        }
+                        finally
+                        {
+                            modalWindow.Close();
+                        }
+                    }
+                }
+            });
         }
 
         //添加控件
