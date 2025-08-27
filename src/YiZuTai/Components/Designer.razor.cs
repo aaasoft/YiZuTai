@@ -334,6 +334,7 @@ new YiZuTai.CreateWindow({{
         {
             modalWindow.Show("源码", new DialogParameters<TextEditControl>
             {
+                { x=> x.Rows, 20},
                 { x => x.GetTextFunc, ()=> XmlConvert.Serialize(Project)},
                 { x => x.SetTextAction, t=>
                     {
@@ -359,6 +360,7 @@ new YiZuTai.CreateWindow({{
         {
             modalWindow.Show("剪贴板", new DialogParameters<TextEditControl>
             {
+                { x=> x.Rows, 20},
                 { x=>x.GetTextFunc, ()=> ClipboardContent==null?null: XmlConvert.Serialize(ClipboardContent) },
                 { x=>x.SetTextAction, content=>
                     {
@@ -445,11 +447,19 @@ new YiZuTai.CreateWindow({{
                     throw new IOException("剪贴板中的内容不是控件");
                 var control = (BaseControl)((IClipboard)this).GetContent();
                 var container = SelectedItem;
+                while (container != null && !container.IsContainer)
+                    container = container.Parent;
+                if (container == null)
+                    throw new IOException("当前容器为空！");
+
                 if (control is MultiControl multiControl)
                 {
                     foreach (var item in multiControl.Items)
                         AddControl(item, container);
-                    SelectedItem = new MultiControl(Project, Project.DesignGridSize, multiControl.Items);
+                    SelectedItem = new MultiControl(Project, Project.DesignGridSize, multiControl.Items)
+                    {
+                        Parent = container
+                    };
                 }
                 else
                 {
