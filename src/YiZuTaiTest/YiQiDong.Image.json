@@ -1,0 +1,29 @@
+﻿{
+  "DefaultId": "YiZuTaiTest",
+  "Name": "易组态测试",
+  "Version": "1.0.x.x",
+  "Platform": [
+    "any"
+  ],
+  "Runtime": [
+    "dotnet-9.0"
+  ],  
+  "AgentType": "TextConfigs",
+  "AgentConfig": {
+    "ContainerMetaInfos": [
+      {
+        "StartFileName": "dotnet",
+        "StartArguments": "$IMAGE_DIR/YiZuTaiTest.dll",
+        "ExitTimeout": 10000,
+        "WorkingDir": "$CONTAINER_DIR",
+        "Environments": [
+          {
+            "Key": "ASPNETCORE_URLS",
+            "Value": "http://*:5001",
+            "Description": "Web服务监听URL"
+          }  
+        ]        
+      }
+    ]
+  }
+}

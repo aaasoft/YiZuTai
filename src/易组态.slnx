@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="YiZuTai.Sample/YiZuTai.Sample.csproj" />
   <Project Path="YiZuTai/YiZuTai.csproj" />
-  <Project Path="YiZuTaiTest/YiZuTaiTest.csproj" />  
+  <Project Path="YiZuTaiTest/YiZuTaiTest.csproj" />
+  <Project Path="_build/_build.csproj" />  
 </Solution>

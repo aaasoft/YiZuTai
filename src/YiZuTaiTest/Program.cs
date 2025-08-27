@@ -4,7 +4,14 @@ using YiZuTaiTest.Components;
 
 YiZuTai.Sample.Provider.Register();
 
-var builder = WebApplication.CreateBuilder(args);
+
+WebApplicationOptions webApplicationOptions;
+var imageFolder = Environment.GetEnvironmentVariable("IMAGE_DIR");
+if (string.IsNullOrEmpty(imageFolder))
+    webApplicationOptions = new WebApplicationOptions();
+else
+    webApplicationOptions = new WebApplicationOptions() { ContentRootPath = imageFolder };
+var builder = WebApplication.CreateBuilder(webApplicationOptions);
 
 builder.Services.AddBlazorDownloadFile();
 builder.Services.AddFileReaderService();
