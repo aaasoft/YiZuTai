@@ -5,8 +5,8 @@
     @if (ControlModel.Image != null)
     {
         <g>
-            <image href="@ZTContext.ZTFile.GetStaticResourceUrl(ControlModel.Image)"
-                width="@ControlModel.Width" height="@ControlModel.Height" preserveAspectRatio="none"></image>
+            <image href="@ZTContext.ZTFile.GetStaticResourceUrl(ControlModel.Image)" width="@ControlModel.Width"
+                height="@ControlModel.Height" preserveAspectRatio="none"></image>
         </g>
     }
     <!--文本-->
@@ -46,7 +46,8 @@
 
     public override void OnDoubleClick()
     {
-        SourceTypeEditor.Select(ZTContext.ModalWindow, ControlModel.Value, typeof(IDataSource), t => ControlModel.Value =
+        SourceTypeEditor.Select(ZTContext.ModalWindow, ZTContext.Designer, ControlModel.Value, typeof(IDataSource), t =>
+        ControlModel.Value =
         (IDataSource)t);
     }
 }

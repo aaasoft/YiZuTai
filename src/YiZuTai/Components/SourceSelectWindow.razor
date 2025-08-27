@@ -35,9 +35,12 @@
                 <button type="button" class="btn btn-secondary" @onclick="Copy">复制</button>
             </div>
         }
-        <div class="col-auto">
-            <button type="button" class="btn btn-secondary" @onclick="Paste">粘贴</button>
-        </div>
+        @if(IsClipboardContentMatch())
+        {
+            <div class="col-auto">
+                <button type="button" class="btn btn-secondary" @onclick="Paste">粘贴</button>
+            </div>
+        }
         <div class="col-auto">
             <button type="button" class="btn btn-secondary" @onclick="Ok">确定</button>
         </div>

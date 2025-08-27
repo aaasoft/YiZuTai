@@ -7,13 +7,15 @@ using YiZuTai.Core.ObjectConnection;
 using Quick.Blazor.Bootstrap.Admin;
 using Quick.Xml;
 using Quick.Blazor.Bootstrap.Utils;
-using YiZuTai.Utils;
 using YiZuTai.Model;
 using YiZuTai.Core;
+using YiZuTai.DataSource;
+using YiZuTai.HyperLinkSource;
+using System.Net.Http.Headers;
 
 namespace YiZuTai.Components
 {
-    public partial class Designer : ComponentBase, IDisposable
+    public partial class Designer : ComponentBase, IClipboard, IDisposable
     {
         private ModalLoading modalLoading;
         private ToastStack toastStack;
@@ -218,7 +220,7 @@ namespace YiZuTai.Components
             onDesignChanged();
         }
 
-        private async Task onKeyDown(KeyboardEventArgs e)
+        private void onKeyDown(KeyboardEventArgs e)
         {
             if (e.CtrlKey || e.MetaKey)
             {
@@ -230,17 +232,17 @@ namespace YiZuTai.Components
                     case "KeyX":
                         if (SelectedItem == null)
                             return;
-                        await copyControl();
+                        copyControl();
                         removeControl();
                         return;
                     case "KeyS":
                         Save();
                         return;
                     case "KeyC":
-                        await copyControl();
+                        copyControl();
                         return;
                     case "KeyV":
-                        await pasteControl();
+                        pasteControl();
                         return;
                 }
             }
@@ -325,7 +327,7 @@ new YiZuTai.CreateWindow({{
         {
             if (!Directory.Exists(ZTFile.ResourceFolder))
                 Directory.CreateDirectory(ZTFile.ResourceFolder);
-            modalWindow.Show("资源文件", new DialogParameters<FileManageControl>
+            modalWindow.Show("文件", new DialogParameters<FileManageControl>
             {
                 { x => x.ZTFile, ZTFile}
             });
@@ -355,6 +357,13 @@ new YiZuTai.CreateWindow({{
                     }
                 }
             });
+        }
+
+        private object ClipboardContent;
+        
+        private void ShowClipboard()
+        {
+
         }
 
         //添加控件
@@ -396,15 +405,14 @@ new YiZuTai.CreateWindow({{
             while (true);
         }
 
-        private async Task copyControl()
+        private void copyControl()
         {
-            //如果不是选中了控件
-            if (!IsSelectedControl)
-                return;
             try
             {
-                var content = XmlConvert.Serialize(SelectedItem);
-                await ClipboardUtils.WriteText(JSRuntime, content);
+                //如果不是选中了控件
+                if (!IsSelectedControl)
+                    return;
+                ((IClipboard)this).SetContent(SelectedItem);
             }
             catch (Exception ex)
             {
@@ -412,18 +420,17 @@ new YiZuTai.CreateWindow({{
             }
         }
 
-        private async Task pasteControl()
+        private void pasteControl()
         {
             try
             {
-                var content = await ClipboardUtils.ReadText(JSRuntime);
-                if (string.IsNullOrEmpty(content))
+                if (ClipboardContent == null)
                     throw new IOException("剪贴板为空");
-                var obj = XmlConvert.Deserialize(content);
-                if (obj is not BaseControl control)
+                if (ClipboardContent is not BaseControl)
                     throw new IOException("剪贴板中的内容不是控件");
+                var control = (BaseControl)((IClipboard)this).GetContent();
                 var container = SelectedItem;
-                if (obj is MultiControl multiControl)
+                if (control is MultiControl multiControl)
                 {
                     foreach (var item in multiControl.Items)
                         AddControl(item, container);
@@ -507,6 +514,19 @@ new YiZuTai.CreateWindow({{
             {
                 modalAlert.Show("错误", $"执行快捷操作[{shotcut.Name}]时出错，原因：{ExceptionUtils.GetExceptionMessage(ex)}");
             }
+        }
+
+        object IClipboard.GetContent()
+        {
+            if (ClipboardContent == null)
+                return null;
+            return XmlConvert.Deserialize(XmlConvert.Serialize(ClipboardContent));
+        }
+
+        void IClipboard.SetContent(object obj)
+        {
+            ClipboardContent = XmlConvert.Deserialize(XmlConvert.Serialize(obj));
+            InvokeAsync(StateHasChanged);
         }
     }
 }

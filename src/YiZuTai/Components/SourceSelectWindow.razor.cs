@@ -1,12 +1,9 @@
 using Microsoft.AspNetCore.Components;
 using Quick.Blazor.Bootstrap;
 using YiZuTai.Core;
-using YiZuTai.Control;
 using YiZuTai.Core.Source;
 using Quick.Blazor.Bootstrap.Utils;
-using YiZuTai.Utils;
 using Quick.Xml;
-using Microsoft.JSInterop;
 
 namespace YiZuTai.Components;
 
@@ -65,11 +62,9 @@ public partial class SourceSelectWindow : ComponentBase
     public Type SourceType { get; set; }
     [Parameter]
     public Action<ISource> OkAction { get; set; }
-
-
-    [Inject]
-    public IJSRuntime JSRuntime { get; set; }
-
+    [Parameter]
+    public IClipboard Clipboard { get; set; }
+    
     protected override void OnParametersSet()
     {
         sourceAttributeDict = SourceManager.Instance.GetItems(SourceType)
@@ -83,12 +78,12 @@ public partial class SourceSelectWindow : ComponentBase
             SelectedCategory = SourceManager.Instance.GetItem(Source.GetType().FullName).Category;
     }
 
-    private async Task Copy()
+    private void Copy()
     {
         try
         {
-            var content = XmlConvert.Serialize(Source);
-            await ClipboardUtils.WriteText(JSRuntime,content);
+            var content = XmlConvert.Deserialize(XmlConvert.Serialize(Source));
+            Clipboard.SetContent(content);
         }
         catch (Exception ex)
         {
@@ -96,22 +91,28 @@ public partial class SourceSelectWindow : ComponentBase
         }
     }
 
-    private async Task Paste()
+    private bool IsClipboardContentMatch()
+    {
+        var obj = Clipboard.GetContent();
+        if (obj == null)
+            return false;
+        var currentType = obj.GetType();
+        return SourceType.IsAssignableFrom(currentType);
+    }
+
+    private void Paste()
     {
         try
         {
-            
-            var content = await ClipboardUtils.ReadText(JSRuntime);
-            if (string.IsNullOrEmpty(content))
+            var obj = Clipboard.GetContent();
+            if (obj == null)
                 throw new IOException("剪贴板为空");
-            var obj = XmlConvert.Deserialize(content);
             var currentType = obj.GetType();
-
             if (!SourceType.IsAssignableFrom(currentType))
             {
                 throw new IOException("剪贴板中的内容不是当前源类型");
             }
-            var source = (ISource)obj;
+            var source = (ISource)XmlConvert.Deserialize(XmlConvert.Serialize(obj));
             SelectedCategory = SourceManager.Instance.GetItem(currentType.FullName).Category;
             Source = source;
         }

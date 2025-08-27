@@ -54,10 +54,11 @@ else
                                 <button type="button" class="btn btn-secondary" title="预览" @onclick="Preview">预览</button>
                             </div>
                             <div class="btn-group mr-1">
-                                <button type="button" class="btn btn-secondary" title="资源文件" @onclick="FileManage">资源文件</button>
+                                <button type="button" class="btn btn-secondary" title="文件" @onclick="FileManage">文件</button>
+                                <button type="button" class="btn btn-secondary" title="源码" @onclick="ShowSourceCode">源码</button>
                             </div>
                             <div class="btn-group mr-1">
-                                <button type="button" class="btn btn-secondary" title="源码" @onclick="ShowSourceCode">源码</button>
+                                <button type="button" class="btn btn-secondary" title="剪贴板" @onclick="ShowClipboard">剪贴板</button>
                             </div>
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -153,13 +154,13 @@ else
                             <Seperator />
                         }
                         <Item OnClick="@copyControl">复制</Item>
-                        <Item OnClick="@pasteControl">粘贴</Item>
+                        <Item OnClick="@pasteControl" Visible="@(ClipboardContent != null && ClipboardContent is BaseControl)">粘贴</Item>
                         <Item OnClick="@removeControl">删除</Item>
                     }
                     else
                     {
                         <Item OnClick="@Preview">预览</Item>
-                        <Item OnClick="@pasteControl">粘贴</Item>                        
+                        <Item OnClick="@pasteControl" Visible="@(ClipboardContent != null && ClipboardContent is BaseControl)">粘贴</Item>
                     }
                 </ContextMenu>
                 <ContextMenuTrigger MenuId="designMenu">
@@ -223,9 +224,11 @@ else
                             <Tab>属性</Tab>
                             <ChildContent>
                                 <div class="overflow-auto mt-1" style="height: calc(100vh - 216px);">
-                                    <EditForm Model="SelectedItem">
-                                        <PropertyGrid SelectedObject="SelectedItem"></PropertyGrid>
-                                    </EditForm>
+                                    <CascadingValue Value="this">
+                                        <EditForm Model="SelectedItem">
+                                            <PropertyGrid SelectedObject="SelectedItem"></PropertyGrid>
+                                        </EditForm>
+                                    </CascadingValue>
                                 </div>
                             </ChildContent>
                         </TabPane>

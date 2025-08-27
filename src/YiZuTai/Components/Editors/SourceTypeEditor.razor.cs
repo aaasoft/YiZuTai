@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Components;
 using Quick.Blazor.Bootstrap;
 using Quick.Xml;
-using YiZuTai.Components;
+using YiZuTai.Core;
 using YiZuTai.Core.Source;
 
 namespace YiZuTai.Components.Editors
@@ -10,7 +10,10 @@ namespace YiZuTai.Components.Editors
     {
         private ModalWindow modalWindow;
 
-        public static void Select(ModalWindow modalWindow, ISource source, Type sourceType, Action<ISource> setSourceAction)
+        [CascadingParameter]
+        public IClipboard Clipboard { get; set; }
+
+        public static void Select(ModalWindow modalWindow, IClipboard clipboard, ISource source, Type sourceType, Action<ISource> setSourceAction)
         {
             ISource editValue = null;
             if (source != null)
@@ -19,6 +22,7 @@ namespace YiZuTai.Components.Editors
             {
                 { x => x.Source, editValue},
                 { x => x.SourceType, sourceType},
+                { x => x.Clipboard, clipboard},
                 { x=> x.OkAction, source=>
                     {
                         setSourceAction(source);
@@ -30,7 +34,7 @@ namespace YiZuTai.Components.Editors
 
         private void onClick()
         {
-            Select(modalWindow, Value, Field.PropertyInfo.PropertyType, t => Value = t);
+            Select(modalWindow, Clipboard, Value, Field.PropertyInfo.PropertyType, t => Value = t);
         }
 
         private void onClear()

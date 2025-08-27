@@ -81,7 +81,8 @@
 
     public override void OnDoubleClick()
     {
-        SourceTypeEditor.Select(ZTContext.ModalWindow, ControlModel.Value, typeof(IDataSource), t => ControlModel.Value =
+        SourceTypeEditor.Select(ZTContext.ModalWindow, ZTContext.Designer, ControlModel.Value, typeof(IDataSource), t =>
+        ControlModel.Value =
         (IDataSource)t);
     }
 }
