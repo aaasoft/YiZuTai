@@ -9,17 +9,12 @@ using Quick.Xml;
 using Quick.Blazor.Bootstrap.Utils;
 using YiZuTai.Model;
 using YiZuTai.Core;
-using YiZuTai.DataSource;
-using YiZuTai.HyperLinkSource;
-using System.Net.Http.Headers;
 
 namespace YiZuTai.Components
 {
     public partial class Designer : ComponentBase, IClipboard, IDisposable
     {
-        private ModalLoading modalLoading;
         private ToastStack toastStack;
-        private ModalPrompt modalPrompt;
         private ModalAlert modalAlert;
         private ModalWindow modalWindow;
 

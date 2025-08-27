@@ -38,7 +38,6 @@
 }
 else
 {
-    <CascadingValue Value="ZTFile">
     <ToastStack @ref="toastStack" />
     
     <!--顶部菜单部分-->
@@ -225,9 +224,11 @@ else
                             <ChildContent>
                                 <div class="overflow-auto mt-1" style="height: calc(100vh - 216px);">
                                     <CascadingValue Value="this">
-                                        <EditForm Model="SelectedItem">
-                                            <PropertyGrid SelectedObject="SelectedItem"></PropertyGrid>
-                                        </EditForm>
+                                        <CascadingValue Value="ZTFile">
+                                            <EditForm Model="SelectedItem">
+                                                <PropertyGrid SelectedObject="SelectedItem"></PropertyGrid>
+                                            </EditForm>
+                                        </CascadingValue>
                                     </CascadingValue>
                                 </div>
                             </ChildContent>
@@ -252,10 +253,7 @@ else
 }
         </div>
     </div>
-    </CascadingValue>
 
-    <ModalLoading @ref="modalLoading" />
     <ModalWindow DialogSizeExtraLarge @ref="modalWindow" />
-    <ModalPrompt @ref="modalPrompt" />
     <ModalAlert @ref="modalAlert" />
 }
