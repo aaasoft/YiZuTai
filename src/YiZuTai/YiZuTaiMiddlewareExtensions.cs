@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Web;
+using Microsoft.AspNetCore.Http;
 using YiZuTai;
 using YiZuTai.Core;
 using YiZuTai.Model;
@@ -31,6 +32,31 @@ namespace Microsoft.AspNetCore.Builder
             rep.ContentLength = new FileInfo(fullFile).Length;
             using (var fs = File.OpenRead(fullFile))
                 await fs.CopyToAsync(rep.Body);
+        }
+
+        public static async Task Export(HttpContext httpContext, string id)
+        {
+            var rep = httpContext.Response;
+            var ztFile = ZTFileManager.Instance.Get(id);
+            if (ztFile == null)
+            {
+                rep.StatusCode = 404;
+                return;
+            }
+
+            var file = Path.GetTempFileName();
+            try
+            {
+                ZTFileManager.Instance.Export(id, file);
+                rep.Headers.ContentDisposition = $"attachment; filename=\"{HttpUtility.UrlEncode(ztFile.Name)}.yzt\"";
+                rep.Headers.ContentLength = new FileInfo(file).Length;                
+                using (var fs = File.OpenRead(file))
+                    await fs.CopyToAsync(rep.Body);
+            }
+            finally
+            {
+                File.Delete(file);
+            }
         }
 
         private static string getMimeMapping(string file)
@@ -80,6 +106,7 @@ namespace Microsoft.AspNetCore.Builder
             SourceManager.Instance.Init();
 
             app.MapGroup(options.Prefix).MapGet("/{id}/" + ZTFile.ZTFILE_RESOURCE_FOLDER + "/{*file}", GetResource);
+            app.MapGroup(options.Prefix).MapGet("/{id}/Export", Export);
             return app;
         }
     }

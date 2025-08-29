@@ -120,7 +120,7 @@ namespace YiZuTai.Core
             try
             {
                 using (var fs = File.OpenWrite(destination))
-                    Export(id, destination);
+                    Export(id, fs);
             }
             catch
             {
