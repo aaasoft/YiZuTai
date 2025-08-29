@@ -76,7 +76,7 @@ namespace Microsoft.AspNetCore.Builder
             var dataDir = options.DataFolder;
             if (!Directory.Exists(dataDir))
                 Directory.CreateDirectory(dataDir);
-            ZTFileManager.Instance.Init();
+            ZTFileManager.Instance.Init(dataDir);
             SourceManager.Instance.Init();
 
             app.MapGroup(options.Prefix).MapGet("/{id}/" + ZTFile.ZTFILE_RESOURCE_FOLDER + "/{*file}", GetResource);

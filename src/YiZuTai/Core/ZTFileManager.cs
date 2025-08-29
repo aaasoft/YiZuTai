@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using YiZuTai.Core.Utils;
 using YiZuTai.Model;
 
 namespace YiZuTai.Core
@@ -8,14 +7,20 @@ namespace YiZuTai.Core
     {
         public static ZTFileManager Instance { get; } = new ZTFileManager();
         private Dictionary<string, ZTFile> fileDict = null;
+        private string dataFolder;
 
-        public void Init()
+        public void Init(string dataFolder)
         {
+#if DEBUG
+            dataFolder = Path.Combine(AppContext.BaseDirectory, dataFolder);
+#else
+            dataFolder = Path.GetFullPath(dataFolder);
+#endif
+            this.dataFolder = dataFolder;
             fileDict = new Dictionary<string, ZTFile>();
-            var ztFileFolder = FolderUtils.GetPathUnderDataDir(ZTFile.ZTFILE_FOLDER);
-            if (Directory.Exists(ztFileFolder))
+            if (Directory.Exists(dataFolder))
             {
-                foreach (var folder in Directory.GetDirectories(ztFileFolder))
+                foreach (var folder in Directory.GetDirectories(dataFolder))
                 {
                     var metaFile = Path.Combine(folder, ZTFile.META_FILE);
                     if (!File.Exists(metaFile))
@@ -83,6 +88,11 @@ namespace YiZuTai.Core
                 Directory.Delete(model.Folder, true);
                 fileDict.Remove(id);
             }
+        }
+
+        public string GetFileFolder(string id)
+        {
+            return Path.Combine(dataFolder, id);
         }
     }
 }

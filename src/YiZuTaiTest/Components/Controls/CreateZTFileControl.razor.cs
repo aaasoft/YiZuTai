@@ -8,6 +8,7 @@ namespace YiZuTaiTest.Components.Controls
     {
         public class CreateZTFileControlModel
         {
+            public string Id { get; set; }
             [Required(ErrorMessage = "必须输入名称")]
             public string Name { get; set; }
             public string Description { get; set; }
@@ -28,6 +29,7 @@ namespace YiZuTaiTest.Components.Controls
             base.OnParametersSet();
             if (ZTFileInfo != null)
             {
+                createZTFileModel.Id = ZTFileInfo.Id;
                 createZTFileModel.Name = ZTFileInfo.Name;
                 createZTFileModel.Description = ZTFileInfo.Description;
             }

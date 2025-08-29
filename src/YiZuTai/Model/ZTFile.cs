@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Newtonsoft.Json;
-using YiZuTai.Core.Utils;
+using YiZuTai.Core;
 
 namespace YiZuTai.Model
 {
@@ -9,7 +9,6 @@ namespace YiZuTai.Model
     /// </summary>
     public class ZTFile
     {
-        public const string ZTFILE_FOLDER = "File";
         public const string ZTFILE_RESOURCE_FOLDER = "Resource";
         public const string META_FILE = "meta.json";
         public const string CONTENT_FILE = "content.xml";
@@ -22,7 +21,7 @@ namespace YiZuTai.Model
         /// 目录
         /// </summary>
         [JsonIgnore]
-        public string Folder => FolderUtils.GetPathUnderDataDir(ZTFILE_FOLDER, Id);
+        public string Folder => ZTFileManager.Instance.GetFileFolder(Id);
         /// <summary>
         /// 资源目录
         /// </summary>

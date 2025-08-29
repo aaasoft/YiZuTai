@@ -19,9 +19,12 @@ namespace YiZuTaiTest.Components.Pages
             {
                 { x=> x.OkAction, t =>
                     {
+                        var id  = t.Id;
+                        if(string.IsNullOrEmpty(id))
+                            id = Guid.NewGuid().ToString("N");
                         var ztFile = new ZTFile()
                         {
-                            Id = Guid.NewGuid().ToString("N"),
+                            Id = id,
                             Name = t.Name,
                             Description = t.Description
                         };
@@ -44,7 +47,8 @@ namespace YiZuTaiTest.Components.Pages
                         model.Save();
                         InvokeAsync(StateHasChanged);
                         modalWindow.Close();
-                    }}
+                    }
+                }
             });
         }
 
