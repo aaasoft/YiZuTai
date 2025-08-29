@@ -19,18 +19,25 @@ namespace YiZuTaiTest.Components.Pages
             {
                 { x=> x.OkAction, t =>
                     {
-                        var id  = t.Id;
-                        if(string.IsNullOrEmpty(id))
-                            id = Guid.NewGuid().ToString("N");
-                        var ztFile = new ZTFile()
+                        try
                         {
-                            Id = id,
-                            Name = t.Name,
-                            Description = t.Description
-                        };
-                        ZTFileManager.Instance.Add(ztFile);
-                        InvokeAsync(StateHasChanged);
-                        modalWindow.Close();
+                            var id  = t.Id;
+                            if(string.IsNullOrEmpty(id))
+                                id = Guid.NewGuid().ToString("N");
+                            var ztFile = new ZTFile()
+                            {
+                                Id = id,
+                                Name = t.Name,
+                                Description = t.Description
+                            };
+                            ZTFileManager.Instance.Add(ztFile);
+                            InvokeAsync(StateHasChanged);
+                            modalWindow.Close();
+                        }
+                        catch(Exception ex)
+                        {
+                            modalAlert.Show("错误", ExceptionUtils.GetExceptionMessage(ex));
+                        }
                     }}
             });
         }
@@ -42,11 +49,25 @@ namespace YiZuTaiTest.Components.Pages
                 { x => x.ZTFileInfo, model },
                 { x => x.OkAction, t =>
                     {
-                        model.Name = t.Name;
-                        model.Description = t.Description;
-                        model.Save();
-                        InvokeAsync(StateHasChanged);
-                        modalWindow.Close();
+                        try
+                        {
+                            if(string.IsNullOrEmpty(t.Id))
+                                throw new IOException("必须输入编号");
+                            if(model.Id != t.Id)
+                            {
+                                ZTFileManager.Instance.ChangeId(model.Id,t.Id);
+                                model.Id = t.Id;
+                            }
+                            model.Name = t.Name;
+                            model.Description = t.Description;
+                            model.Save();
+                            InvokeAsync(StateHasChanged);
+                            modalWindow.Close();
+                        }
+                        catch(Exception ex)
+                        {
+                            modalAlert.Show("错误", ExceptionUtils.GetExceptionMessage(ex));
+                        }
                     }
                 }
             });

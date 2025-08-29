@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.IO.Compression;
+using Newtonsoft.Json;
 using YiZuTai.Model;
 
 namespace YiZuTai.Core
@@ -22,19 +23,24 @@ namespace YiZuTai.Core
             {
                 foreach (var folder in Directory.GetDirectories(dataFolder))
                 {
-                    var metaFile = Path.Combine(folder, ZTFile.META_FILE);
-                    if (!File.Exists(metaFile))
-                        continue;
                     try
                     {
-                        var content = File.ReadAllText(metaFile);
-                        var model = JsonConvert.DeserializeObject<ZTFile>(content);
-                        model.Id = Path.GetFileName(folder);
+                        var model = LoadFile(folder);
                         fileDict[model.Id] = model;
                     }
                     catch { }
                 }
             }
+        }
+
+        private ZTFile LoadFile(string folder)
+        {
+            var metaFile = Path.Combine(folder, ZTFile.META_FILE);
+            if (!File.Exists(metaFile))
+                return null;
+            var content = File.ReadAllText(metaFile);
+            var model = JsonConvert.DeserializeObject<ZTFile>(content);
+            return model;
         }
 
         public bool IsEmpty()
@@ -90,9 +96,79 @@ namespace YiZuTai.Core
             }
         }
 
+        public void ChangeId(string source, string destination)
+        {
+            lock (fileDict)
+            {
+                if (fileDict.ContainsKey(destination))
+                    throw new IOException($"编号为[{destination}]的组态文件已经存在");
+                if (!fileDict.TryGetValue(source, out var model))
+                    return;
+                Directory.Move(GetFileFolder(source), GetFileFolder(destination));
+                fileDict.Remove(source);
+                fileDict[destination] = model;
+            }
+        }
+
         public string GetFileFolder(string id)
         {
             return Path.Combine(dataFolder, id);
+        }
+
+        public void Export(string id, string destination)
+        {
+            try
+            {
+                using (var fs = File.OpenWrite(destination))
+                    Export(id, destination);
+            }
+            catch
+            {
+                File.Delete(destination);
+                throw;
+            }
+        }
+
+        public void Export(string id, Stream destination)
+        {
+            var file = Get(id);
+            if (file == null)
+                throw new FileNotFoundException($"未找到编号为[{id}]的组态文件");
+            ZipFile.CreateFromDirectory(file.Folder, destination);
+        }
+
+        public ZTFile Import(string source)
+        {
+            using (var fs = File.OpenRead(source))
+                return Import(fs);
+        }
+
+        public ZTFile Import(Stream source)
+        {
+            var tmpId = Guid.NewGuid().ToString("N");
+            var folder = GetFileFolder(tmpId);
+            try
+            {
+                ZipFile.ExtractToDirectory(source, folder);
+                var model = LoadFile(folder);
+                var existedModel = Get(model.Id);
+                if (existedModel == null)
+                {
+                    Directory.Move(folder, GetFileFolder(model.Id));
+                }
+                else
+                {
+                    model.Id = tmpId;
+                }
+                lock (fileDict)
+                    fileDict[model.Id] = model;
+                return model;
+            }
+            catch
+            {
+                Directory.Delete(folder, true);
+                throw;
+            }
         }
     }
 }
