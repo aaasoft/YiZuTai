@@ -91,5 +91,30 @@ namespace YiZuTaiTest.Components.Pages
                 InvokeAsync(StateHasChanged);
             });
         }
+
+        private void Import()
+        {
+            var dataFolder = ZTFileManager.Instance.GetDataFolder();
+            modalWindow.Show("导入", new DialogParameters<Quick.Blazor.Bootstrap.Admin.FileSelectControl>
+            {
+                {x=>x.BaseDir, dataFolder},
+                {x=>x.FileFilter, "*.yzt"},
+                {x=>x.SelectAction, t=>
+                    {
+                        try
+                        {
+                            var file = Path.Combine(dataFolder,t);
+                            var ztFile = ZTFileManager.Instance.Import(file);
+                            modalWindow.Close();
+                            InvokeAsync(StateHasChanged);
+                        }
+                        catch(Exception ex)
+                        {
+                            modalAlert.Show("错误", ExceptionUtils.GetExceptionMessage(ex));
+                        }
+                    }
+                },
+            });
+        }
     }
 }

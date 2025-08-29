@@ -110,6 +110,8 @@ namespace YiZuTai.Core
             }
         }
 
+        public string GetDataFolder() => dataFolder;
+
         public string GetFileFolder(string id)
         {
             return Path.Combine(dataFolder, id);
