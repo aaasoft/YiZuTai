@@ -218,6 +218,11 @@ namespace YiZuTai.Components
 
         private void onKeyDown(KeyboardEventArgs e)
         {
+            if (e.Code == "F5")
+            {
+                JSRuntime.InvokeVoidAsync("location.reload");
+            }
+            
             if (e.CtrlKey || e.MetaKey)
             {
                 switch (e.Code)
