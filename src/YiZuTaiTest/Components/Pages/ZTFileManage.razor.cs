@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Quick.Blazor.Bootstrap;
+using Quick.Blazor.Bootstrap.Admin.Utils;
 using Quick.Blazor.Bootstrap.Utils;
+using Tewr.Blazor.FileReader;
 using YiZuTai.Core;
 using YiZuTai.Model;
 using YiZuTaiTest.Components.Controls;
+using static Quick.Blazor.Bootstrap.Admin.Utils.FileUploadHelper;
 
 namespace YiZuTaiTest.Components.Pages
 {
@@ -184,6 +187,55 @@ namespace YiZuTaiTest.Components.Pages
             });
         }
 
+        private ElementReference inputYztFile;
+        [Inject]
+        private IFileReaderService fileReaderService { get; set; }
+        private CancellationTokenSource uploadCts;
+        private async Task onInputYrtFileChanged()
+        {
+            var fileReaderRef = fileReaderService.CreateReference(inputYztFile );
+
+            uploadCts = new CancellationTokenSource();
+            UploadFileInfo uploadingFileInfo = default;
+            string uploadingFileInfoStr = null;
+            string uploadingFile = null;
+            try
+            {
+                modalLoading.Show($"上传组态文件", "正在获取上传文件信息...", false, uploadCts.Cancel);
+                var fileReference = (await fileReaderRef.EnumerateFilesAsync()).FirstOrDefault();
+                uploadingFile = await FileUploadHelper.UploadFileAsync(fileReference,
+                    fileInfo =>
+                    {
+                        uploadingFileInfo = fileInfo;
+                        uploadingFileInfoStr = $"{fileInfo.Name} ({fileInfo.SizeString})";
+                        modalLoading.Show($"上传组态文件", $"正在上传组态文件[{uploadingFileInfoStr}]...", false, uploadCts.Cancel);
+                        return null;
+                    },
+                    progressInfo => modalLoading.UpdateProgress(progressInfo.Percent, progressInfo.Message),
+                    uploadCts.Token);
+                modalLoading.UpdateProgress(null, null);
+                modalLoading.Show($"上传组态文件", $"正在加载组态文件[{uploadingFileInfoStr}]...", true, uploadCts.Cancel);
+
+                ZTFileManager.Instance.Import(uploadingFile, SelectedGroup.Model.Id);
+                await InvokeAsync(StateHasChanged);
+
+            }
+            catch (OperationCanceledException)
+            {
+                modalAlert?.Show("上传已取消", $"已取消上传运行库文件[{uploadingFileInfoStr}].");
+            }
+            catch (Exception ex)
+            {
+                modalAlert?.Show("上传失败", ExceptionUtils.GetExceptionString(ex));
+            }
+            finally
+            {
+                if (uploadingFile != null && File.Exists(uploadingFile))
+                    try { File.Delete(uploadingFile); } catch { }
+                await fileReaderRef.ClearValue();
+                modalLoading?.Close();
+            }
+        }
 
         private void CreateZTFile()
         {
@@ -262,31 +314,6 @@ namespace YiZuTaiTest.Components.Pages
                     });
                 }
                 InvokeAsync(StateHasChanged);
-            });
-        }
-
-        private void Import()
-        {
-            var dataFolder = ZTFileManager.Instance.GetDataFolder();
-            modalWindow.Show("导入", new DialogParameters<Quick.Blazor.Bootstrap.Admin.FileSelectControl>
-            {
-                {x=>x.BaseDir, dataFolder},
-                {x=>x.FileFilter, "*.yzt"},
-                {x=>x.SelectAction, t=>
-                    {
-                        try
-                        {
-                            var file = Path.Combine(dataFolder,t);
-                            var ztFile = ZTFileManager.Instance.Import(file);
-                            modalWindow.Close();
-                            InvokeAsync(StateHasChanged);
-                        }
-                        catch(Exception ex)
-                        {
-                            modalAlert.Show("错误", ExceptionUtils.GetExceptionMessage(ex));
-                        }
-                    }
-                },
             });
         }
     }

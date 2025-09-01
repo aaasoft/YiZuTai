@@ -34,7 +34,7 @@ namespace Microsoft.AspNetCore.Builder
                 await fs.CopyToAsync(rep.Body);
         }
 
-        public static async Task Export(HttpContext httpContext, string id)
+        public static async Task DownloadYzt(HttpContext httpContext, string id)
         {
             var rep = httpContext.Response;
             var ztFile = ZTFileManager.Instance.Get(id);
@@ -106,7 +106,7 @@ namespace Microsoft.AspNetCore.Builder
             SourceManager.Instance.Init();
 
             app.MapGroup(options.Prefix).MapGet("/{id}/" + ZTFile.ZTFILE_RESOURCE_FOLDER + "/{*file}", GetResource);
-            app.MapGroup(options.Prefix).MapGet("/{id}/Export", Export);
+            app.MapGroup(options.Prefix).MapGet("/{id}/Download", DownloadYzt);
             return app;
         }
     }

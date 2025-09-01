@@ -197,13 +197,13 @@ namespace YiZuTai.Core
             ZipFile.CreateFromDirectory(file.Folder, destination);
         }
 
-        public ZTFile Import(string source)
+        public ZTFile Import(string source, string groupId)
         {
             using (var fs = File.OpenRead(source))
-                return Import(fs);
+                return Import(fs, groupId);
         }
 
-        public ZTFile Import(Stream source)
+        public ZTFile Import(Stream source, string groupId)
         {
             var tmpId = Guid.NewGuid().ToString("N");
             var folder = GetFileFolder(tmpId);
@@ -222,6 +222,8 @@ namespace YiZuTai.Core
                 }
                 lock (fileDict)
                     fileDict[model.Id] = model;
+                model.GroupId = groupId;
+                model.Save();
                 return model;
             }
             catch

@@ -22,32 +22,36 @@
                 分组
             </div>
             <div class="card-body p-0">
-                <div class="btn-group p-1" role="group">
-                    <button type="button" class="btn btn-secondary" @onclick="createRootGroup">添加根</button>
-                    @if (SelectedGroup == null)
-                    {
-                        <button type="button" class="btn btn-secondary" disabled>添加</button>
-                    }
-                    else
-                    {
-                        <button type="button" class="btn btn-secondary" @onclick="createChildGroup">添加</button>
-                    }
-                    @if (SelectedGroup == null)
-                    {
-                        <button type="button" class="btn btn-secondary" disabled>编辑</button>
-                    }
-                    else
-                    {
-                        <button type="button" class="btn btn-secondary" @onclick="editGroup">编辑</button>
-                    }
-                    @if (IsGroupCanDelete)
-                    {
-                        <button type="button" class="btn btn-secondary" @onclick="deleteGroup">删除</button>                        
-                    }
-                    else
-                    {
-                        <button type="button" class="btn btn-secondary" disabled>删除</button>
-                    }
+                <div class="btn-toolbar p-1" role="toolbar">
+                    <div class="btn-group mr-2" role="group">
+                        <button type="button" class="btn btn-secondary" @onclick="createRootGroup">添加根</button>
+                        @if (SelectedGroup == null)
+                        {
+                            <button type="button" class="btn btn-secondary" disabled>添加</button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-secondary" @onclick="createChildGroup">添加</button>
+                        }
+                    </div>
+                    <div class="btn-group" role="group">
+                        @if (SelectedGroup == null)
+                        {
+                            <button type="button" class="btn btn-secondary" disabled>编辑</button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-secondary" @onclick="editGroup">编辑</button>
+                        }
+                        @if (IsGroupCanDelete)
+                        {
+                            <button type="button" class="btn btn-secondary" @onclick="deleteGroup">删除</button>                        
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-secondary" disabled>删除</button>
+                        }
+                    </div>
                 </div>
                 <div class="p-1">
                     <Tree DataSource="RootGroups" SelectedNodeChanged="onSelectedGroupChanged" ShowIcon
@@ -66,15 +70,19 @@
                 </div>
                 <div class="card-body p-0">
                     <div class="btn-toolbar p-1">
-                        <div class="input-group mr-2 mb-1">
-                            <button type="button" class="btn btn-secondary" @onclick="CreateZTFile">
+                        <div class="btn-group mr-2 mb-1" role="group">
+                            <button type="button" class="btn btn-sm btn-secondary" @onclick="CreateZTFile">
                                 <i class="fa fa-plus" aria-hidden="true"></i>
                                 新建
                             </button>
-                            <button type="button" class="btn btn-secondary ml-2" @onclick="Import">
-                                <i class="fa fa-upload" aria-hidden="true"></i>
-                                导入
-                            </button>
+                        </div>
+                        <div class="btn-group mr-2 mb-1" role="group">
+                            <div class="btn btn-sm btn-secondary">
+                                <i class="fa fa-upload" aria-hidden="true"></i> 上传
+                                <input @ref="inputYztFile" id="inputRuntimeFile" type="file" accept=".yzt" style="width: 0px; height: 0px; visibility: collapse;" @onchange="@(e=>onInputYrtFileChanged())">
+                                <label title="上传" style="position: absolute;top: 0;left: 0;right:0;margin:0;height:100%;cursor:pointer" for="inputRuntimeFile">
+                                </label>
+                            </div>
                         </div>
                         <div class="input-group mb-1">
                             <div class="input-group-prepend">
@@ -111,8 +119,8 @@
                                     </div>
                                     <div class="card-footer p-1">
                                         <div class="btn-group">
-                                            <a title="导出" class="btn btn-sm btn-secondary" target="_blank"
-                                                href="@(YiZuTaiMiddlewareExtensions.GetUrlWithPrefix($"/{t.Id}/Export"))">
+                                            <a title="下载" class="btn btn-sm btn-secondary" target="_blank"
+                                                href="@(YiZuTaiMiddlewareExtensions.GetUrlWithPrefix($"/{t.Id}/Download"))">
                                                 <i class="fa fa-download" aria-hidden="true"></i>
                                             </a>
                                             <button type="button" title="编辑" class="btn btn-sm btn-secondary"
