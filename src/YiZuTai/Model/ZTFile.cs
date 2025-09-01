@@ -36,6 +36,10 @@ namespace YiZuTai.Model
         /// 描述
         /// </summary>
         public string Description { get; set; }
+        /// <summary>
+        /// 分组编号
+        /// </summary>
+        public string GroupId { get; set; }
 
         public Project OpenProject()
         {

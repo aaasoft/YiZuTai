@@ -9,6 +9,8 @@ namespace YiZuTai.Core
         public static ZTFileManager Instance { get; } = new ZTFileManager();
         private Dictionary<string, ZTFile> fileDict = null;
         private string dataFolder;
+        private const string GROUPS_FILE = "groups.json";
+        private Dictionary<string, ZTGroup> groupDict;
 
         public void Init(string dataFolder)
         {
@@ -18,6 +20,17 @@ namespace YiZuTai.Core
             dataFolder = Path.GetFullPath(dataFolder);
 #endif
             this.dataFolder = dataFolder;
+            //加载分组配置
+            var groupConfigFile = Path.Combine(dataFolder, GROUPS_FILE);
+            if (File.Exists(groupConfigFile))
+            {
+                var json = File.ReadAllText(groupConfigFile);
+                groupDict = JsonConvert.DeserializeObject<ZTGroup[]>(json).ToDictionary(t => t.Id, t => t);
+            }
+            if (groupDict == null)
+                groupDict = new();
+
+            //加载组态文件
             fileDict = new Dictionary<string, ZTFile>();
             if (Directory.Exists(dataFolder))
             {
@@ -57,11 +70,13 @@ namespace YiZuTai.Core
             return null;
         }
 
-        public ZTFile[] Query(string keywords)
+        public ZTFile[] Query(string groupId, string keywords)
         {
             lock (fileDict)
             {
                 IEnumerable<ZTFile> query = fileDict.Values;
+                if (!string.IsNullOrEmpty(groupId))
+                    query = query.Where(t => groupId == t.GroupId);
                 if (!string.IsNullOrEmpty(keywords))
                     query = query.Where(t => t.Name.Contains(keywords));
                 return query.ToArray();
@@ -79,6 +94,49 @@ namespace YiZuTai.Core
             }
         }
 
+        private void SaveGroupConfig()
+        {
+            var json = JsonConvert.SerializeObject(groupDict.Values.ToArray());
+            File.WriteAllText(Path.Combine(dataFolder, GROUPS_FILE), json);
+        }
+
+        public ZTGroup[] GetGroups(string parentId)
+        {
+            lock (groupDict)
+            {
+                return groupDict.Values.Where(t => t.ParentId == parentId).ToArray();
+            }
+        }
+
+        public void AddGroup(ZTGroup model)
+        {
+            lock (groupDict)
+            {
+                if (groupDict.ContainsKey(model.Id))
+                    throw new IOException($"已经存在编号为[{model.Id}]的分组");
+                if (model.ParentId != null && !groupDict.ContainsKey(model.ParentId))
+                    throw new IOException($"未找到编号为[{model.ParentId}]的父分组");
+                groupDict[model.Id] = model;
+                SaveGroupConfig();
+            }
+        }
+
+        public void UpdateGroup(ZTGroup model)
+        {
+            SaveGroupConfig();
+        }
+
+        public void DeleteGroup(string id)
+        {
+            lock (groupDict)
+            {
+                if (!groupDict.ContainsKey(id))
+                    return;
+                groupDict.Remove(id);
+                SaveGroupConfig();
+            }
+        }
+        
         public void Update(ZTFile model)
         {
             model.Save();
