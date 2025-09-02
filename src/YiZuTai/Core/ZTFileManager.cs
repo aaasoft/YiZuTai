@@ -19,6 +19,8 @@ namespace YiZuTai.Core
 #else
             dataFolder = Path.GetFullPath(dataFolder);
 #endif
+            if (!Directory.Exists(dataFolder))
+                Directory.CreateDirectory(dataFolder);
             this.dataFolder = dataFolder;
             //加载分组配置
             var groupConfigFile = Path.Combine(dataFolder, GROUPS_FILE);
