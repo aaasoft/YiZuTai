@@ -48,6 +48,8 @@ namespace YiZuTai.Components
         protected override void OnParametersSet()
         {
             ZTFile = Core.ZTFileManager.Instance.Get(Id);
+            if (ZTFile == null)
+                return;
             var query = HttpUtility.ParseQueryString(new Uri(NavigationManager.Uri).Query);
             var designerId = query.Get("DesignerId");
             if (!string.IsNullOrEmpty(designerId))
@@ -73,6 +75,8 @@ namespace YiZuTai.Components
         {
             if (firstRender)
             {
+                if (ZTFile == null)
+                    return;
                 Project.OnLoad();
                 ObjectConnectionManager.Instance.AddObject(Project);
                 ZTContext.ModalWindow = modalWindow;
@@ -81,11 +85,10 @@ namespace YiZuTai.Components
 
         public void Dispose()
         {
-            if (Project != null)
-            {
-                Project.OnUnload();
-                ObjectConnectionManager.Instance.RemoveObject(Project);
-            }
+            if (ZTFile == null)
+                return;
+            Project.OnUnload();
+            ObjectConnectionManager.Instance.RemoveObject(Project);
         }
     }
 }

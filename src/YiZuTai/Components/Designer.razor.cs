@@ -91,6 +91,8 @@ namespace YiZuTai.Components
         protected override void OnParametersSet()
         {
             ZTFile = ZTFileManager.Instance.Get(Id);
+            if (ZTFile == null)
+                return;
             Project = ZTFile.OpenProject();
             ZTContext = new ZTContext()
             {
@@ -129,23 +131,24 @@ namespace YiZuTai.Components
 
         private void UnloadProject()
         {
-            if (Project != null)
-            {
-                ObjectConnectionManager.Instance.RemoveObject(Project);
-                Project.OnUnload();
-                Project.PropertyChanged -= Project_PropertyChanged;
-                foreach (var control in Project.Controls)
-                    control.PropertyChanged -= Project_PropertyChanged;
-                Project.Controls.CollectionChanged -= Controls_CollectionChanged;
-                SelectedItem = null;
-                ZTContext.Project = null;
-            }
+            if (ZTFile == null)
+                return;
+            ObjectConnectionManager.Instance.RemoveObject(Project);
+            Project.OnUnload();
+            Project.PropertyChanged -= Project_PropertyChanged;
+            foreach (var control in Project.Controls)
+                control.PropertyChanged -= Project_PropertyChanged;
+            Project.Controls.CollectionChanged -= Controls_CollectionChanged;
+            SelectedItem = null;
+            ZTContext.Project = null;
         }
 
         protected override void OnAfterRender(bool firstRender)
         {
             if (firstRender)
             {
+                if (ZTFile == null)
+                    return;
                 LoadProject();
                 registerDesigner(designerId, this);
                 Task.Delay(100).ContinueWith(t => refreshTitle());
