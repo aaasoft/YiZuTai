@@ -102,6 +102,16 @@ namespace YiZuTai.Core
             File.WriteAllText(Path.Combine(dataFolder, GROUPS_FILE), json);
         }
 
+        public ZTGroup GetGroup(string groupId)
+        {
+            lock (groupDict)
+            {
+                if (groupDict.TryGetValue(groupId, out var model))
+                    return model;
+                return null;
+            }
+        }
+
         public ZTGroup[] GetGroups(string parentId)
         {
             lock (groupDict)
