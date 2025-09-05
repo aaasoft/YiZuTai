@@ -25,7 +25,10 @@
         <circle transform="rotate(-90 @ArgCenterX,@ArgCenterY)" cx="@ArgCenterX"
             cy="@ArgCenterY" r="@ArgR" stroke-width="@ArgBorderWidth" stroke="@ArgProgressForegroundColor"
             stroke-opacity="@ArgProgressForegroundOpacity" fill="none" stroke-dasharray="@ArgStrokePreDasharray">
-            <animate attributeType="XML" attributeName="stroke-dasharray" begin="indefinite" to="@ArgStrokeDasharray" dur="0.5s" fill="freeze" />
+            @if(currentValue!=preValue)
+            {
+                <animate attributeType="XML" attributeName="stroke-dasharray" begin="indefinite" to="@ArgStrokeDasharray" dur="0.5s" fill="freeze" />
+            }
         </circle>
     </g>
     <!--文本-->
@@ -52,12 +55,13 @@
         {
             isFirst = false;
             preValue = ControlModel.MinValue;
+            return base.ShouldRender();
         }
-        else
-        {
-            preValue = currentValue;
-        }
-        currentValue = ControlModel.NumberValue;
+        var newValue = ControlModel.NumberValue;
+        if(currentValue == newValue)
+            return false;
+        preValue = currentValue;        
+        currentValue = newValue;
         return base.ShouldRender();
     }
 

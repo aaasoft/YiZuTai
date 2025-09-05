@@ -67,12 +67,13 @@
         {
             isFirst = false;
             preValue = ControlModel.MinValue;
+            return base.ShouldRender();
         }
-        else
-        {
-            preValue = currentValue;
-        }
-        currentValue = ControlModel.NumberValue;
+        var newValue = ControlModel.NumberValue;
+        if(currentValue == newValue)
+            return false;
+        preValue = currentValue;        
+        currentValue = newValue;
         return base.ShouldRender();
     }
 
