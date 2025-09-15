@@ -30,6 +30,8 @@ currentSerie.addPoint([time, numberValue], true, false, false);";
 
     private void setQueryDataSourceValue(int seriesIndex, QueryDataSourceResult[] value)
     {
+        if (value == null)
+            return;
         var valueJson = string.Join(',',value.Select(t=>$"{{time: {t.Time},x:'{t.X}',y:'{t.Y}'}}"));
         var js = $@"let chart = document.getElementById('svg_{ControlModel.Name}').chart;
 let value = [{valueJson}];
@@ -133,7 +135,9 @@ backElement.attr('fill-opacity', '{ControlModel.BackgroundOpacity}');
                     var dataSource = seriesData.QueryDataSource;
                     if (dataSource == null)
                         continue;
-                    setQueryDataSourceValue(seriesIndex, dataSource.Value);
+                    var value = dataSource.Value;
+                    if(value!=null)
+                        setQueryDataSourceValue(seriesIndex, value);
                 }
             }
             ControlModel.PropertyChanged += (sender,e)=>
