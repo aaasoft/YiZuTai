@@ -12,6 +12,12 @@ namespace YiZuTai.Components.Editors
 
         [CascadingParameter]
         public IClipboard Clipboard { get; set; }
+        private string GetSourceName()
+        {
+            if (Value == null)
+                return "未设置";
+            return $"{Value.Category} - {Value.Name}";
+        }
 
         public static void Select(ModalWindow modalWindow, IClipboard clipboard, ISource source, Type sourceType, Action<ISource> setSourceAction)
         {
