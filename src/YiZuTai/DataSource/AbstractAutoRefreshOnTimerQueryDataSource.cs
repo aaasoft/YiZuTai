@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
+using YiZuTai.Core;
 
 namespace YiZuTai.DataSource
 {
-    public abstract class AbstractAutoRefreshOnTimerQueryDataSource : AbstractAutoRefreshQueryDataSource
+    public abstract class AbstractAutoRefreshOnTimerQueryDataSource : AbstractAutoRefreshQueryDataSource, IRunnable
     {
         private int _Period = 10;
         [DisplayName("刷新间隔")]
@@ -46,19 +47,32 @@ namespace YiZuTai.DataSource
             }
         }
 
-        public override void Start()
+        private void onStart()
         {
+            if (!IsRuning)
+                return;
             if (Period == 0)
                 onTime(null);
             else
-                timer = new Timer(onTime, 0, TimeSpan.Zero, TimeSpan.FromSeconds(Period));
+                timer = new Timer(onTime, null, TimeSpan.Zero, TimeSpan.FromSeconds(Period));
+        }
+
+        private void onStop()
+        {
+            timer?.Dispose();
+            timer = null;
+        }
+
+        public override void Start()
+        {
+            base.Start();
+            onStart();
         }
 
         public override void Stop()
         {
-            if (timer != null)
-                timer.Dispose();
-            timer = null;
+            onStop();
+            base.Stop();
         }
 
         private void AbstractAutoRefreshQueryDataSource_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -68,14 +82,14 @@ namespace YiZuTai.DataSource
                 case nameof(Period):
                     if (Period == 0)
                     {
-                        Stop();
+                        onStop();
                     }
                     else
                     {
                         if (timer == null)
-                            Start();
+                            onStart();
                         else
-                            timer.Change(TimeSpan.Zero, TimeSpan.FromSeconds(Period));
+                            timer?.Change(TimeSpan.Zero, TimeSpan.FromSeconds(Period));
                     }
                     break;
             }

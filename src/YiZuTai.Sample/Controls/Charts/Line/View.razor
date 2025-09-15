@@ -118,15 +118,14 @@ backElement.attr('fill-opacity', '{ControlModel.BackgroundOpacity}');
             //注册数据源
             for (var seriesIndex = 0; seriesIndex < ControlModel.SeriesData.Count; seriesIndex++)
             {
+                var currentSeriesIndex = seriesIndex;
                 var seriesData = ControlModel.SeriesData[seriesIndex];
                 //如果是配置单条数据源
-                if(seriesData.DataSource!=null)
+                if (seriesData.DataSource != null)
                 {
                     var dataSource = seriesData.DataSource;
                     if (dataSource == null)
                         continue;
-
-                    var currentSeriesIndex = seriesIndex;
                     dataSource.PropertyChanged += (sender, e) => setDataSourceValue(currentSeriesIndex, dataSource.Value);
                 }
                 //如果是配置多条数据源
@@ -135,9 +134,7 @@ backElement.attr('fill-opacity', '{ControlModel.BackgroundOpacity}');
                     var dataSource = seriesData.QueryDataSource;
                     if (dataSource == null)
                         continue;
-                    var value = dataSource.Value;
-                    if(value!=null)
-                        setQueryDataSourceValue(seriesIndex, value);
+                    dataSource.PropertyChanged += (sender, e) => setQueryDataSourceValue(currentSeriesIndex, dataSource.Value);
                 }
             }
             ControlModel.PropertyChanged += (sender,e)=>

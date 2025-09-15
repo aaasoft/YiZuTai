@@ -1,11 +1,14 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
+using System.Reflection;
 using Newtonsoft.Json;
 using YiZuTai.Components.Editors;
 using YiZuTai.Control;
 using YiZuTai.Core;
+using YiZuTai.DataSource;
 using YiZuTai.Enums;
 using YiZuTai.HyperLinkSource;
 using YiZuTai.Model;
@@ -234,16 +237,78 @@ namespace YiZuTai
             shotcut.ExecuteCommand.Execute(null);
         }
 
+        private static bool IsBaseTypes(Type type)
+        {
+            if (type.IsEnum
+                || type == typeof(string)
+                || type == typeof(bool)
+                || type == typeof(int)
+                || type == typeof(double))
+                return true;
+            return false; 
+        }
+
+        private static IEnumerable<object> GetObjectSubObjects(object obj)
+        {
+            if (obj == null || IsBaseTypes(obj.GetType()))
+                yield break;
+                
+            foreach (var property in obj.GetType().GetProperties(
+                 BindingFlags.Instance | BindingFlags.Public))
+            {
+                if(property.GetCustomAttribute<JsonIgnoreAttribute>()!=null)
+                    continue;
+                var childObj = property.GetValue(obj, null);
+                if (childObj == null)
+                    continue;
+                if (IsBaseTypes(childObj.GetType()))
+                    continue;
+                if (childObj is ICollection collection)
+                {
+                    foreach (var item in collection)
+                    {
+                        if (item == null)
+                            continue;
+                        if (IsBaseTypes(item.GetType()))
+                            continue;
+                        yield return item;
+                        foreach (var childChildObj in GetObjectSubObjects(item))
+                            yield return childChildObj;
+                    }
+                    continue;
+                }
+                yield return childObj;
+                foreach (var childChildObj in GetObjectSubObjects(childObj))
+                    yield return childChildObj;
+            }
+        }
+
         public override void OnLoad()
         {
+            //控件加载
             foreach (var control in GetAllControls())
                 control.OnLoad();
+            //数据源加载
+            var objects = GetObjectSubObjects(this).ToArray();
+            foreach (var obj in objects)
+            {
+                if (obj is IRunnable runnable)
+                    runnable.Start();
+            }
         }
 
         public override void OnUnload()
         {
+            //控件卸载
             foreach (var control in GetAllControls())
                 control.OnUnload();
+            //数据源卸载
+            var objects = GetObjectSubObjects(this).ToArray();
+            foreach (var obj in objects)
+            {
+                if (obj is IRunnable runnable)
+                    runnable.Stop();
+            }
         }
 
         public override IControlShotcut[] Shotcuts =>

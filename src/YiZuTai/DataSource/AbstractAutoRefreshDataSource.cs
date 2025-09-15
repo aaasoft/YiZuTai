@@ -1,20 +1,28 @@
-﻿using YiZuTai.Core.ObjectConnection;
+﻿using YiZuTai.Core;
+using YiZuTai.Core.ObjectConnection;
 
 namespace YiZuTai.DataSource
 {
     /// <summary>
     /// 自动刷新数据来源抽象类
     /// </summary>
-    public abstract class AbstractAutoRefreshDataSource : AbstractDataSource
+    public abstract class AbstractAutoRefreshDataSource : AbstractDataSource, IRunnable
     {
         static AbstractAutoRefreshDataSource()
         {
             ObjectConnectionManager.Instance.RegisterHandler(new AbstractAutoRefreshDataSourceHandler());
         }
 
-        public virtual void Start() { }
+        protected bool IsRuning { get; private set; } = false;
 
-        public virtual void Stop() { }
+        public virtual void Start()
+        {
+            IsRuning = true;
+        }
 
+        public virtual void Stop()
+        {
+            IsRuning = false;
+        }
     }
 }

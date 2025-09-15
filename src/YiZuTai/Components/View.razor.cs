@@ -12,7 +12,7 @@ namespace YiZuTai.Components
     public partial class View : IDisposable
     {
         [Inject]
-        private NavigationManager NavigationManager{ get; set; }
+        private NavigationManager NavigationManager { get; set; }
 
         [Parameter]
         public string Id { get; set; }
@@ -24,7 +24,7 @@ namespace YiZuTai.Components
 
         private ZTContext ZTContext;
         [Inject]
-        private IJSRuntime JSRuntime{ get; set; }
+        private IJSRuntime JSRuntime { get; set; }
 
         private string preserveAspectRatio
         {
@@ -47,6 +47,8 @@ namespace YiZuTai.Components
 
         protected override void OnParametersSet()
         {
+            if (ZTFile != null)
+                return;
             ZTFile = Core.ZTFileManager.Instance.Get(Id);
             if (ZTFile == null)
                 return;
@@ -78,7 +80,6 @@ namespace YiZuTai.Components
                 if (ZTFile == null)
                     return;
                 Project.OnLoad();
-                ObjectConnectionManager.Instance.AddObject(Project);
                 ZTContext.ModalWindow = modalWindow;
             }
         }
@@ -88,7 +89,6 @@ namespace YiZuTai.Components
             if (ZTFile == null)
                 return;
             Project.OnUnload();
-            ObjectConnectionManager.Instance.RemoveObject(Project);
         }
     }
 }

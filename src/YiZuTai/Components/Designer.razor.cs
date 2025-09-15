@@ -90,6 +90,8 @@ namespace YiZuTai.Components
 
         protected override void OnParametersSet()
         {
+            if (ZTFile != null)
+                return;
             ZTFile = ZTFileManager.Instance.Get(Id);
             if (ZTFile == null)
                 return;

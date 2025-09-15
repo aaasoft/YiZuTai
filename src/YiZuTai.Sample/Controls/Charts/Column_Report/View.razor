@@ -72,9 +72,9 @@ backElement.attr('fill-opacity', '{ControlModel.BackgroundOpacity}');
             for (var seriesIndex = 0; seriesIndex < ControlModel.SeriesData2.Count; seriesIndex++)
             {
                 var seriesData = ControlModel.SeriesData2[seriesIndex];
-                    var dataSource = seriesData.QueryDataSource;
-                    if (dataSource == null)
-                        continue;
+                var dataSource = seriesData.QueryDataSource;
+                if (dataSource == null)
+                    continue;
 
                 var currentSeriesIndex = seriesIndex;
                 dataSource.PropertyChanged += (sender, e) => setValue(currentSeriesIndex, dataSource.Value);

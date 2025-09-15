@@ -14,8 +14,16 @@ namespace YiZuTai.DataSource
             ObjectConnectionManager.Instance.RegisterHandler(new AbstractAutoRefreshDataSourceHandler());
         }
 
-        public virtual void Start() { }
+        protected bool IsRuning { get; private set; } = false;
 
-        public virtual void Stop() { }
+        public virtual void Start()
+        {
+            IsRuning = true;
+        }
+
+        public virtual void Stop()
+        {
+            IsRuning = false;
+        }
     }
 }

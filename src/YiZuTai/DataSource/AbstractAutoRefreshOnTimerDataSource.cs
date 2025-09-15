@@ -40,21 +40,32 @@ namespace YiZuTai.DataSource
             }
         }
 
-        public override void Start()
+        private void onStart()
         {
+            if (!IsRuning)
+                return;
             if (Period == 0)
                 onTime(null);
             else
-            {
-                timer = new Timer(onTime, 0, TimeSpan.Zero, TimeSpan.FromSeconds(Period));
-            }
+                timer = new Timer(onTime, null, TimeSpan.Zero, TimeSpan.FromSeconds(Period));
+        }
+
+        private void onStop()
+        {
+            timer?.Dispose();
+            timer = null;
+        }
+
+        public override void Start()
+        {
+            base.Start();
+            onStart();
         }
 
         public override void Stop()
         {
-            if (timer != null)
-                timer.Dispose();
-            timer = null;
+            onStop();
+            base.Stop();
         }
     }
 }
