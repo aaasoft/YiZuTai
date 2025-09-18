@@ -14,7 +14,7 @@ namespace YiZuTai.Sample.HyperLinkSources
         private string _Url;
         [DisplayName("URL")]
         [Description("要链接的URL")]
-        public string Url
+        public virtual string Url
         {
             get { return _Url; }
             set
@@ -26,7 +26,7 @@ namespace YiZuTai.Sample.HyperLinkSources
 
         private HyperLinkTarget _Target;
         [DisplayName("目标")]
-        public HyperLinkTarget Target
+        public virtual HyperLinkTarget Target
         {
             get { return _Target; }
             set
@@ -39,7 +39,7 @@ namespace YiZuTai.Sample.HyperLinkSources
         private string _WindowTitle;
         [DisplayName("窗口标题")]
         [Description("当目标设置为_windows时有效")]
-        public string WindowTitle
+        public virtual string WindowTitle
         {
             get { return _WindowTitle; }
             set
@@ -52,7 +52,7 @@ namespace YiZuTai.Sample.HyperLinkSources
         private int? _WindowWidth;
         [DisplayName("窗口宽度")]
         [Description("当目标设置为_windows时有效")]
-        public int? WindowWidth
+        public virtual int? WindowWidth
         {
             get { return _WindowWidth; }
             set
@@ -65,7 +65,7 @@ namespace YiZuTai.Sample.HyperLinkSources
         private int? _WindowHeight;
         [DisplayName("窗口高度")]
         [Description("当目标设置为_windows时有效")]
-        public int? WindowHeight
+        public virtual int? WindowHeight
         {
             get { return _WindowHeight; }
             set
