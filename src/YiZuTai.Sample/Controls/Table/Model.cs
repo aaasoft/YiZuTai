@@ -203,15 +203,17 @@ public class Model : BaseControl_WithBackground
         }
     }
 
-    public override IControlShotcut[] Shotcuts =>
+    public static IControlShotcut[] Shotcuts =>
     [
-        new ControlShotcut("样式-浅色", ()=>
+        new ControlShotcut("样式-浅色", obj =>
         {
-            ColumnLineColor = RowLineColor = "#000000";
+            var t= (Model)obj;
+            t.ColumnLineColor = t.RowLineColor = "#000000";
         }),
-        new ControlShotcut("样式-深色", ()=>
+        new ControlShotcut("样式-深色", obj =>
         {
-            ColumnLineColor = RowLineColor = "#FFFFFF";
+            var t= (Model)obj;
+            t.ColumnLineColor = t.RowLineColor = "#FFFFFF";
         })
     ];
 }

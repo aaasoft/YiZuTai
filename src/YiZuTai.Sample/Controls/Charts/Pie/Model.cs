@@ -188,23 +188,25 @@ public class Model : AbstractChart
         SeriesData.Add(new SeriesDataItem() { Name = "北京", DataSource = new DataSources.Input() { Content = "3" } });
     }
     
-    public override IControlShotcut[] Shotcuts =>
+    public static IControlShotcut[] Shotcuts =>
     [
-        new ControlShotcut("样式-浅色", ()=>
+        new ControlShotcut("样式-浅色", obj =>
         {
+            var t= (Model)obj;
             var mainColor = "#000000";
-            TitleColor = mainColor;
-            LegendItemColor = mainColor;
-            XAxisLabelColor = mainColor;
-            YAxisLabelColor = mainColor;
+            t.TitleColor = mainColor;
+            t.LegendItemColor = mainColor;
+            t.XAxisLabelColor = mainColor;
+            t.YAxisLabelColor = mainColor;
         }),
-        new ControlShotcut("样式-深色", ()=>
+        new ControlShotcut("样式-深色", obj =>
         {
+            var t= (Model)obj;
             var mainColor = "#FFFFFF";
-            TitleColor = mainColor;
-            LegendItemColor = mainColor;
-            XAxisLabelColor = mainColor;
-            YAxisLabelColor = mainColor;
+            t.TitleColor = mainColor;
+            t.LegendItemColor = mainColor;
+            t.XAxisLabelColor = mainColor;
+            t.YAxisLabelColor = mainColor;
         })
     ];
 }

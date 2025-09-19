@@ -231,10 +231,10 @@ namespace YiZuTai
 
         public void ApplyStyleShotcut(BaseControl control)
         {
-            var shotcut = control.Shotcuts?.FirstOrDefault(t => t.Name == StyleShotcut);
+            var shotcut = ControlManager.Instance.GetControlShotcut(control.GetType(), StyleShotcut);
             if (shotcut == null)
                 return;
-            shotcut.ExecuteCommand.Execute(null);
+            shotcut.ExecuteCommand.Execute(control);
         }
 
         private static bool IsBaseTypes(Type type)
@@ -311,32 +311,37 @@ namespace YiZuTai
             }
         }
 
-        public override IControlShotcut[] Shotcuts =>
+        public static IControlShotcut[] Shotcuts =>
         [
-            new ControlShotcut("样式-浅色", ()=>
+            new ControlShotcut("样式-浅色", obj =>
             {
-                Background = "#FFFFFF";
-                BodyColor = "#A9A9A9";
+                var t= (Project)obj;
+                t.Background = "#FFFFFF";
+                t.BodyColor = "#A9A9A9";
             }),
-            new ControlShotcut("样式-深色", ()=>
+            new ControlShotcut("样式-深色", obj =>
             {
-                Background = "#0F0F34";
-                BodyColor = "#000000";
+                var t= (Project)obj;
+                t.Background = "#0F0F34";
+                t.BodyColor = "#000000";
             }),
-            new ControlShotcut("尺寸-小(800*600)", ()=>
+            new ControlShotcut("尺寸-小(800*600)", obj =>
             {
-                Width = 800;
-                Height = 600;
+                var t= (Project)obj;
+                t.Width = 800;
+                t.Height = 600;
             }),
-            new ControlShotcut("尺寸-中(1200*600)", ()=>
+            new ControlShotcut("尺寸-中(1200*600)", obj =>
             {
-                Width = 1200;
-                Height = 600;
+                var t= (Project)obj;
+                t.Width = 1200;
+                t.Height = 600;
             }),
-            new ControlShotcut("尺寸-大(1920*1080)", ()=>
+            new ControlShotcut("尺寸-大(1920*1080)", obj =>
             {
-                Width = 1920;
-                Height = 1080;
+                var t= (Project)obj;
+                t.Width = 1920;
+                t.Height = 1080;
             })
         ];
     }

@@ -181,15 +181,17 @@ value   =>  当前值")]
         };
     }
 
-    public override IControlShotcut[] Shotcuts =>
+    public static IControlShotcut[] Shotcuts =>
     [
-        new ControlShotcut("样式-浅色", ()=>
-            {
-                Foreground = "#000000";
-            }),
-            new ControlShotcut("样式-深色", ()=>
-            {
-                Foreground = "#FFFFFF";
-            })
+        new ControlShotcut("样式-浅色", obj =>
+        {
+            var t= (Model)obj;
+            t.Foreground = "#000000";
+        }),
+        new ControlShotcut("样式-深色", obj =>
+        {
+        var t= (Model)obj;
+            t.Foreground = "#FFFFFF";
+        })
     ];
 }

@@ -237,12 +237,9 @@ else
                             <Tab>快捷</Tab>
                             <ChildContent>
                                 <div class="overflow-auto p-1" style="height: calc(100vh - 216px);">
-                                    @if(SelectedItem.Shotcuts!=null && SelectedItem.Shotcuts.Length>0)
+                                    @foreach(var shotcut in ControlManager.Instance.GetControlShotcuts(SelectedItem))
                                     {
-                                        @foreach(var shotcut in SelectedItem.Shotcuts)
-                                        {
-                                            <button type="button" class="btn btn-secondary btn-block" @onclick="@(e=>executeShotcut(shotcut))">@shotcut.Name</button>
-                                        }
+                                        <button type="button" class="btn btn-secondary btn-block" @onclick="@(e=>executeShotcut(shotcut))">@shotcut.Name</button>
                                     }
                                 </div>
                             </ChildContent>

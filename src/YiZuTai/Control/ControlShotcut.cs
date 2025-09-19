@@ -9,14 +9,14 @@ public class ControlShotcut : IControlShotcut
     [JsonIgnore]
     public ICommand ExecuteCommand { get; private set; }
 
-    public ControlShotcut(string name, Action executeAction)
+    public ControlShotcut(string name, Action<object> executeAction)
     {
         Name = name;
         ExecuteCommand = new DelegateCommand()
         {
             ExecuteCommand = obj =>
             {
-                executeAction.Invoke();
+                executeAction.Invoke(obj);
             }
         };
     }

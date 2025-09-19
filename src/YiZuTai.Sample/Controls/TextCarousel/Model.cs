@@ -225,19 +225,21 @@ public class Model : BaseControl_WithBackground
         };
     }
 
-    public override IControlShotcut[] Shotcuts =>
+    public static IControlShotcut[] Shotcuts =>
     [
-        new ControlShotcut("样式-浅色", ()=>
+        new ControlShotcut("样式-浅色", obj =>
         {
-            Background = "#F8F8F8";
-            foreach (var page in Pages)
+            var t= (Model)obj;
+            t.Background = "#F8F8F8";
+            foreach (var page in t.Pages)
                 foreach (var item in page.Items)
                     item.Foreground = "#000000";
         }),
-        new ControlShotcut("样式-深色", ()=>
+        new ControlShotcut("样式-深色", obj =>
         {
-            Background = "#09214B";
-            foreach (var page in Pages)
+            var t= (Model)obj;
+            t.Background = "#09214B";
+            foreach (var page in t.Pages)
                 foreach (var item in page.Items)
                     item.Foreground = "#FFFFFF";
         })

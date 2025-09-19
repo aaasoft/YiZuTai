@@ -331,12 +331,6 @@ y0= (x - rx0)*sin(a) + (y - ry0)*cos(a) + ry0 ;
         public virtual ObservableCollection<BaseControl> Controls { get; set; } = null;
 
         /// <summary>
-        /// 快捷操作
-        /// </summary>
-        [JsonIgnore]
-        [Browsable(false)]
-        public virtual IControlShotcut[] Shotcuts { get; } = null;
-        /// <summary>
         /// 当加载时
         /// </summary>
         public virtual void OnLoad() { }

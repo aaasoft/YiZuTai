@@ -9,6 +9,7 @@ namespace YiZuTai.Core
         public static ControlManager Instance { get; } = new ControlManager();
         private ControlManager() { }
         private List<ControlAttribute> controlAttrList = new List<ControlAttribute>();
+        private Dictionary<Type, Dictionary<string, IControlShotcut>> controlShotcutDict = new Dictionary<Type, Dictionary<string, IControlShotcut>>();
 
         public ControlAttribute GetItem(string clazz)
         {
@@ -39,6 +40,40 @@ namespace YiZuTai.Core
             where T : BaseControl, new()
         {
             RegisterControl(typeof(T));
+        }
+
+        public void RegisterControlShotcut(Type type, params IControlShotcut[] shotcuts)
+        {
+            if (!controlShotcutDict.TryGetValue(type, out var shotcutDict))
+                controlShotcutDict[type] = shotcutDict = new Dictionary<string, IControlShotcut>();
+            foreach (var shotcut in shotcuts)
+                shotcutDict[shotcut.Name] = shotcut;
+        }
+
+        public void RegisterControlShotcut<T>(params IControlShotcut[] shotcuts)
+        {
+            RegisterControlShotcut(typeof(T), shotcuts);
+        }
+
+        public IControlShotcut[] GetControlShotcuts(Type type)
+        {
+            if (!controlShotcutDict.TryGetValue(type, out var shotcutDict))
+                return [];
+            return shotcutDict.Values.ToArray();
+        }
+
+        public IControlShotcut GetControlShotcut(Type type, string shotcutName)
+        {
+            if (!controlShotcutDict.TryGetValue(type, out var shotcutDict))
+                return null;
+            if (!shotcutDict.TryGetValue(shotcutName, out var shotcut))
+                return null;
+            return shotcut;
+        }
+
+        public IControlShotcut[] GetControlShotcuts(BaseControl baseControl)
+        {
+            return GetControlShotcuts(baseControl.GetType());
         }
     }
 }

@@ -16,15 +16,17 @@ public class Model : BaseControl_WithBackground
         Width = Height = 60;
     }
 
-    public override IControlShotcut[] Shotcuts =>
+    public static IControlShotcut[] Shotcuts =>
     [
-        new ControlShotcut("样式-浅色", ()=>
+        new ControlShotcut("样式-浅色", obj =>
         {
-            Border = "#000000";
+            var t= (Model)obj;
+            t.Border = "#000000";
         }),
-        new ControlShotcut("样式-深色", ()=>
+        new ControlShotcut("样式-深色", obj =>
         {
-            Border = "#FFFFFF";
+            var t= (Model)obj;
+            t.Border = "#FFFFFF";
         })
     ];
 }

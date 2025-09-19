@@ -257,15 +257,17 @@ value   =>  当前值")]
         ValueTriggers = new ObservableCollection<Trigger>();
     }
 
-    public override IControlShotcut[] Shotcuts =>
+    public static IControlShotcut[] Shotcuts =>
     [
-        new ControlShotcut("样式-浅色", ()=>
+        new ControlShotcut("样式-浅色", obj =>
         {
-            Foreground = "#000000";
+            var t= (Model)obj;
+            t.Foreground = "#000000";
         }),
-        new ControlShotcut("样式-深色", ()=>
+        new ControlShotcut("样式-深色", obj =>
         {
-            Foreground = "#FFFFFF";
+            var t= (Model)obj;
+            t.Foreground = "#FFFFFF";
         })
     ];
 }

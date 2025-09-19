@@ -91,15 +91,17 @@ public class Model : AbstractControl
         Height = 120;
     }
     
-    public override IControlShotcut[] Shotcuts =>
+    public static IControlShotcut[] Shotcuts =>
     [
-        new ControlShotcut("样式-浅色", ()=>
+        new ControlShotcut("样式-浅色", obj =>
         {
-            TextForeground = "#000000";
+            var t= (Model)obj;
+            t.TextForeground = "#000000";
         }),
-        new ControlShotcut("样式-深色", ()=>
+        new ControlShotcut("样式-深色", obj =>
         {
-            TextForeground = "#FFFFFF";
+            var t= (Model)obj;
+            t.TextForeground = "#FFFFFF";
         })
     ];
 }

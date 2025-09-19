@@ -229,25 +229,27 @@ value   =>  当前值")]
 
     }
 
-    public override IControlShotcut[] Shotcuts =>
+    public static IControlShotcut[] Shotcuts =>
     [
-        new ControlShotcut("样式-浅色", ()=>
+        new ControlShotcut("样式-浅色", obj =>
         {
-            TitleForeground = "#FFFFFF";
-            TitleForegroundOpacity=1;
-            TitleBackground ="#000000";
-            TitleBackgroundOpacity = 0.33;
-            Background = "#000000";
-            BackgroundOpacity=0.17;
+            var t= (Model)obj;
+            t.TitleForeground = "#FFFFFF";
+            t.TitleForegroundOpacity=1;
+            t.TitleBackground ="#000000";
+            t.TitleBackgroundOpacity = 0.33;
+            t.Background = "#000000";
+            t.BackgroundOpacity=0.17;
         }),
-        new ControlShotcut("样式-深色", ()=>
+        new ControlShotcut("样式-深色", obj =>
         {
-            TitleForeground = "#00DAFF";
-            TitleForegroundOpacity=1;
-            TitleBackground = "#143F6D";
-            TitleBackgroundOpacity =0.72;
-            Background = "#062A56";
-            BackgroundOpacity=0.66;
+            var t= (Model)obj;
+            t.TitleForeground = "#00DAFF";
+            t.TitleForegroundOpacity=1;
+            t.TitleBackground = "#143F6D";
+            t.TitleBackgroundOpacity =0.72;
+            t.Background = "#062A56";
+            t.BackgroundOpacity=0.66;
         })
     ];
 }
