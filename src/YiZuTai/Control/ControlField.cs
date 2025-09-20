@@ -37,6 +37,11 @@ namespace YiZuTai.Control
             set { PropertyInfo.SetValue(PropertyHost, value); }
         }
 
+        public bool IsFieldHasPrepend()
+        {
+            return PropertyInfo.PropertyType != typeof(NoPrependField);
+        }
+
         public RenderFragment GetEditorRenderFragment(ZTFile ztFile)
         {
             var editorAttribute = PropertyInfo.GetCustomAttribute<EditorAttribute>();

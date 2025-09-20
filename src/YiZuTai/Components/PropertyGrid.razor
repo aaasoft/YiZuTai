@@ -13,23 +13,30 @@
         <ChildContent>
             @foreach (var field in group.FieldList)
             {
-                <div class="form-group m-1" @onclick="@(e => onFieldClicked(field))" title="@field.Description">
-                    <div class="input-group">
-                        @if (SelectedField != null && field.Name == SelectedField.Name)
-                        {
-                            <div class="input-group-prepend">
-                                <div class="input-group-text bg-secondary text-white" style="user-select: none;">@field.Name</div>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="input-group-prepend">
-                                <div class="input-group-text" style="user-select: none;">@field.Name</div>
-                            </div>
-                        }
-                        @field.GetEditorRenderFragment(Model)
+                @if(field.IsFieldHasPrepend())
+                {
+                    <div class="form-group m-1" @onclick="@(e => onFieldClicked(field))" title="@field.Description">
+                        <div class="input-group">                        
+                                @if (SelectedField != null && field.Name == SelectedField.Name)
+                                {
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text bg-secondary text-white" style="user-select: none;">@field.Name</div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text" style="user-select: none;">@field.Name</div>
+                                    </div>
+                                }
+                            @field.GetEditorRenderFragment(Model)
+                        </div>
                     </div>
-                </div>
+                }
+                else
+                {
+                    @field.GetEditorRenderFragment(Model)
+                }
             }
         </ChildContent>
     </Quick.Blazor.Bootstrap.AccordionPane>
