@@ -227,17 +227,15 @@ public class Model : BaseControl_WithBackground
 
     public static IControlShotcut[] Shotcuts =>
     [
-        new ControlShotcut("样式-浅色", obj =>
+        new ControlShotcut<Model>("样式-浅色", t =>
         {
-            var t= (Model)obj;
             t.Background = "#F8F8F8";
             foreach (var page in t.Pages)
                 foreach (var item in page.Items)
                     item.Foreground = "#000000";
         }),
-        new ControlShotcut("样式-深色", obj =>
+        new ControlShotcut<Model>("样式-深色", t =>
         {
-            var t= (Model)obj;
             t.Background = "#09214B";
             foreach (var page in t.Pages)
                 foreach (var item in page.Items)

@@ -183,14 +183,12 @@ value   =>  当前值")]
 
     public static IControlShotcut[] Shotcuts =>
     [
-        new ControlShotcut("样式-浅色", obj =>
+        new ControlShotcut<Model>("样式-浅色", t =>
         {
-            var t= (Model)obj;
             t.Foreground = "#000000";
         }),
-        new ControlShotcut("样式-深色", obj =>
+        new ControlShotcut<Model>("样式-深色", t =>
         {
-        var t= (Model)obj;
             t.Foreground = "#FFFFFF";
         })
     ];

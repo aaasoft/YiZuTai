@@ -542,7 +542,7 @@ new YiZuTai.CreateWindow({{
         {
             try
             {
-                shotcut.ExecuteCommand.Execute(SelectedItem);
+                shotcut.Execute(SelectedItem);
                 onDesignChanged();
             }
             catch (Exception ex)

@@ -93,12 +93,12 @@ public class Model : AbstractControl
     
     public static IControlShotcut[] Shotcuts =>
     [
-        new ControlShotcut("样式-浅色", obj =>
+        new ControlShotcut<Model>("样式-浅色", obj =>
         {
             var t= (Model)obj;
             t.TextForeground = "#000000";
         }),
-        new ControlShotcut("样式-深色", obj =>
+        new ControlShotcut<Model>("样式-深色", obj =>
         {
             var t= (Model)obj;
             t.TextForeground = "#FFFFFF";

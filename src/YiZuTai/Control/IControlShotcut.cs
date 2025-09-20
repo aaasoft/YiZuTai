@@ -1,6 +1,3 @@
-using System;
-using System.Windows.Input;
-
 namespace YiZuTai.Control;
 
 /// <summary>
@@ -9,11 +6,15 @@ namespace YiZuTai.Control;
 public interface IControlShotcut
 {
     /// <summary>
-    /// 主题捷径名称
+    /// 控件类型
+    /// </summary>
+    Type ControlType { get; }
+    /// <summary>
+    /// 捷径名称
     /// </summary>
     string Name { get; }
     /// <summary>
-    /// 绑定的命令
+    /// 执行
     /// </summary>
-    ICommand ExecuteCommand { get; }
+    void Execute(object control);
 }

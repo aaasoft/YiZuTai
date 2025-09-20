@@ -42,17 +42,14 @@ namespace YiZuTai.Core
             RegisterControl(typeof(T));
         }
 
-        public void RegisterControlShotcut(Type type, params IControlShotcut[] shotcuts)
+        public void RegisterControlShotcut(params IControlShotcut[] shotcuts)
         {
-            if (!controlShotcutDict.TryGetValue(type, out var shotcutDict))
-                controlShotcutDict[type] = shotcutDict = new Dictionary<string, IControlShotcut>();
             foreach (var shotcut in shotcuts)
+            {
+                if (!controlShotcutDict.TryGetValue(shotcut.ControlType, out var shotcutDict))
+                    controlShotcutDict[shotcut.ControlType] = shotcutDict = new Dictionary<string, IControlShotcut>();
                 shotcutDict[shotcut.Name] = shotcut;
-        }
-
-        public void RegisterControlShotcut<T>(params IControlShotcut[] shotcuts)
-        {
-            RegisterControlShotcut(typeof(T), shotcuts);
+            }
         }
 
         public IControlShotcut[] GetControlShotcuts(Type type)

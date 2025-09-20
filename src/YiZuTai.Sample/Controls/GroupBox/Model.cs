@@ -231,9 +231,8 @@ value   =>  当前值")]
 
     public static IControlShotcut[] Shotcuts =>
     [
-        new ControlShotcut("样式-浅色", obj =>
+        new ControlShotcut<Model>("样式-浅色", t =>
         {
-            var t= (Model)obj;
             t.TitleForeground = "#FFFFFF";
             t.TitleForegroundOpacity=1;
             t.TitleBackground ="#000000";
@@ -241,9 +240,8 @@ value   =>  当前值")]
             t.Background = "#000000";
             t.BackgroundOpacity=0.17;
         }),
-        new ControlShotcut("样式-深色", obj =>
+        new ControlShotcut<Model>("样式-深色", t =>
         {
-            var t= (Model)obj;
             t.TitleForeground = "#00DAFF";
             t.TitleForegroundOpacity=1;
             t.TitleBackground = "#143F6D";

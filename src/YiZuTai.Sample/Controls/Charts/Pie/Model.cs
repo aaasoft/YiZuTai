@@ -190,18 +190,16 @@ public class Model : AbstractChart
     
     public static IControlShotcut[] Shotcuts =>
     [
-        new ControlShotcut("样式-浅色", obj =>
+        new ControlShotcut<Model>("样式-浅色", t =>
         {
-            var t= (Model)obj;
             var mainColor = "#000000";
             t.TitleColor = mainColor;
             t.LegendItemColor = mainColor;
             t.XAxisLabelColor = mainColor;
             t.YAxisLabelColor = mainColor;
         }),
-        new ControlShotcut("样式-深色", obj =>
+        new ControlShotcut<Model>("样式-深色", t =>
         {
-            var t= (Model)obj;
             var mainColor = "#FFFFFF";
             t.TitleColor = mainColor;
             t.LegendItemColor = mainColor;
