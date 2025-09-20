@@ -1,3 +1,5 @@
+using YiZuTai.Model;
+
 namespace YiZuTai.Control;
 
 public class ControlShotcut<TControl> : IControlShotcut
@@ -5,20 +7,20 @@ public class ControlShotcut<TControl> : IControlShotcut
 {
     public Type ControlType => typeof(TControl);
     public string Name { get; set; }
-    public Action<TControl> ExecuteAction { get; set; }
+    public Action<ZTContext, TControl> ExecuteAction { get; set; }
 
-    public virtual void Execute(TControl control)
+    public virtual void Execute(ZTContext context, TControl control)
     {
-        ExecuteAction?.Invoke(control);
+        ExecuteAction?.Invoke(context, control);
     }
 
-    void IControlShotcut.Execute(object control)
+    void IControlShotcut.Execute(ZTContext context, object control)
     {
-        Execute((TControl)control);
+        Execute(context, (TControl)control);
     }
 
     public ControlShotcut() { }
-    public ControlShotcut(string name, Action<TControl> executeAction)
+    public ControlShotcut(string name, Action<ZTContext, TControl> executeAction)
     {
         Name = name;
         ExecuteAction = executeAction;

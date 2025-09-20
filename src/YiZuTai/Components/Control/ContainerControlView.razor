@@ -80,7 +80,7 @@
         control.Top = location.Y - control.Height / 2;
         ZTContext.Designer.CheckAndModifyControlName(control);
         control.OnDragDropCreate(location);
-        ZTContext.Project.ApplyStyleShotcut(control);
+        ZTContext.Project.ApplyStyleShotcut(ZTContext, control);
         ZTContext.Designer.AddControl(control,Model);
     }
 }

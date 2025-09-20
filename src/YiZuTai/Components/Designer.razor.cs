@@ -83,6 +83,17 @@ namespace YiZuTai.Components
                 SelectedItem = item;
             }
         }
+
+        private string StyleShotcut
+        {
+            get { return Project.StyleShotcut; }
+            set
+            {
+                Project.StyleShotcut = value;
+                Project.ApplyStyleShotcut(ZTContext);
+            }
+        }
+        
         //是否选中了控件
         public bool IsSelectedControl => SelectedItem != null && SelectedItem != Project;
         //是否选中了多个控件
@@ -542,7 +553,7 @@ new YiZuTai.CreateWindow({{
         {
             try
             {
-                shotcut.Execute(SelectedItem);
+                shotcut.Execute(ZTContext, SelectedItem);
                 onDesignChanged();
             }
             catch (Exception ex)

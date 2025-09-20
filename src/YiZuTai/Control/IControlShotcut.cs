@@ -1,3 +1,5 @@
+using YiZuTai.Model;
+
 namespace YiZuTai.Control;
 
 /// <summary>
@@ -16,5 +18,7 @@ public interface IControlShotcut
     /// <summary>
     /// 执行
     /// </summary>
-    void Execute(object control);
+    /// <param name="context">组态上下文</param>
+    /// <param name="control">控件</param>
+    void Execute(ZTContext context, object control);
 }
