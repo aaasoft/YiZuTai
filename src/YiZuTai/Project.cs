@@ -78,7 +78,7 @@ namespace YiZuTai
         private string _Image;
         [Category("背景")]
         [DisplayName("图片")]
-        [Description("画布上要显示的图片")]
+        [Description("背景要显示的图片")]
         [Editor(typeof(EditorInputImage), typeof(EditorInputImage))]
         public string Image
         {
