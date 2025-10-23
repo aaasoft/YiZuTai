@@ -1,6 +1,11 @@
 ﻿@inherits AbstractControlView<Model>
 
 <ContainerControlView TContainerModel="Model" ZTContext="ZTContext" Model="ControlModel">
+    <!--图片部分-->
+    <g data-Angle="@ControlModel.Angle">
+        <image href="@ZTContext.ZTFile.GetStaticResourceUrl(ControlModel.Image)"
+            width="@ControlModel.Width" height="@ControlModel.Height" preserveAspectRatio="none"></image>
+    </g>
     @if (ZTContext.DesignMode && ControlModel.BorderThickness <= 0)
     {
         <rect fill-opacity="0" stroke="#6E6E6E" stroke-dasharray="1" stroke-width="1" x="0.5" y="0.5"
