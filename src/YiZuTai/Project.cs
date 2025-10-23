@@ -246,53 +246,11 @@ namespace YiZuTai
             return false;
         }
 
-        private static IEnumerable<object> GetObjectSubObjects(object obj)
-        {
-            if (obj == null || IsBaseTypes(obj.GetType()))
-                yield break;
-
-            foreach (var property in obj.GetType().GetProperties(
-                 BindingFlags.Instance | BindingFlags.Public))
-            {
-                if (property.GetCustomAttribute<JsonIgnoreAttribute>() != null)
-                    continue;
-                var childObj = property.GetValue(obj, null);
-                if (childObj == null)
-                    continue;
-                if (IsBaseTypes(childObj.GetType()))
-                    continue;
-                if (childObj is ICollection collection)
-                {
-                    foreach (var item in collection)
-                    {
-                        if (item == null)
-                            continue;
-                        if (IsBaseTypes(item.GetType()))
-                            continue;
-                        yield return item;
-                        foreach (var childChildObj in GetObjectSubObjects(item))
-                            yield return childChildObj;
-                    }
-                    continue;
-                }
-                yield return childObj;
-                foreach (var childChildObj in GetObjectSubObjects(childObj))
-                    yield return childChildObj;
-            }
-        }
-
         public override void OnLoad()
         {
             //控件加载
             foreach (var control in GetAllControls())
                 control.OnLoad();
-            //数据源加载
-            var objects = GetObjectSubObjects(this).ToArray();
-            foreach (var obj in objects)
-            {
-                if (obj is IRunnable runnable)
-                    runnable.Start();
-            }
         }
 
         public override void OnUnload()
@@ -300,13 +258,6 @@ namespace YiZuTai
             //控件卸载
             foreach (var control in GetAllControls())
                 control.OnUnload();
-            //数据源卸载
-            var objects = GetObjectSubObjects(this).ToArray();
-            foreach (var obj in objects)
-            {
-                if (obj is IRunnable runnable)
-                    runnable.Stop();
-            }
         }
 
         public static IControlShotcut[] Shotcuts =>

@@ -79,6 +79,7 @@ namespace YiZuTai.Components
             {
                 if (ZTFile == null)
                     return;
+                ObjectConnectionManager.Instance.AddObject(Project);
                 Project.OnLoad();
                 ZTContext.ModalWindow = modalWindow;
             }
@@ -88,7 +89,8 @@ namespace YiZuTai.Components
         {
             if (ZTFile == null)
                 return;
-            Project.OnUnload();
+            ObjectConnectionManager.Instance.RemoveObject(Project);
+            Project.OnUnload();            
         }
     }
 }
