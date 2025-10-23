@@ -544,18 +544,18 @@ else
                     var container = (MultiControl)ZTContext.Designer.SelectedItem;
                     foreach (var model in selectedItems)
                     {
-                        if (container.Items.Contains(model))
+                        if (container.Controls.Contains(model))
                             container.RemoveControl(model);
                         else
                             container.AddControl(model);
                     }
-                    if (container.Items.Count == 0)
+                    if (container.Controls.Count == 0)
                     {
                         ZTContext.Designer.SelectedItem = ZTContext.Project;
                     }
-                    else if (container.Items.Count == 1)
+                    else if (container.Controls.Count == 1)
                     {
-                        ZTContext.Designer.SelectedItem = container.Items.FirstOrDefault();
+                        ZTContext.Designer.SelectedItem = container.Controls.FirstOrDefault();
                     }
                     else
                     {

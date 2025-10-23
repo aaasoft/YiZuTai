@@ -2,15 +2,16 @@
 @using YiZuTai.Enums
 @using YiZuTai.Model
 @typeparam TContainerModel where TContainerModel : BaseControl_WithBackground, new()
+@inherits AbstractControlView<TContainerModel>
 
 <g ondragover="event.preventDefault();" @ondrop="HandleDrop" @ondrop:stopPropagation>
-<BaseControl_WithBackgroundView T_BaseControl_WithBackground="TContainerModel" Model="@Model"
+<BaseControl_WithBackgroundView T_BaseControl_WithBackground="TContainerModel" Model="@ControlModel"
     ZTContext="ZTContext">
     @ChildContent
     <!--====控件SVG部分====-->
-    @if (Model.Controls != null)
+    @if (ControlModel.Controls != null)
     {
-        @foreach (var Item in Model.Controls)
+        @foreach (var Item in ControlModel.Controls)
         {
             <g transform="rotate(@Item.Angle @Item.CenterPointLocation.X, @Item.CenterPointLocation.Y) translate(0, 0) scale(1)">
                 @Item.GetView(@ZTContext)
@@ -19,14 +20,14 @@
     }
     @if(ZTContext.DesignMode)
     {
-        @if(ZTContext.Designer.IsSelectedMutiControl && ((MultiControl)ZTContext.Designer.SelectedItem).Container==Model)
+        @if(ZTContext.Designer.IsSelectedMutiControl && ((MultiControl)ZTContext.Designer.SelectedItem).Container==ControlModel)
         {
             <BaseControlView T_BaseControl="MultiControl" Model="@((MultiControl)ZTContext.Designer.SelectedItem)" ZTContext="@ZTContext" >
             </BaseControlView>
         }
         @if(ZTContext.Designer.MouseDownControlMeta!=null
             && ZTContext.Designer.MouseDownControlMeta.MoveAction == MoveAction.Selecting
-            && ZTContext.Designer.MouseDownControlMeta.MoveControl== Model)
+            && ZTContext.Designer.MouseDownControlMeta.MoveControl== ControlModel)
         {
         <g>
             
@@ -42,10 +43,6 @@
 @code
 {
     [Parameter]
-    public ZTContext ZTContext { get; set; }
-    [Parameter]
-    public TContainerModel Model { get; set; }
-    [Parameter]
     public RenderFragment ChildContent { get; set; }
 
     // ondrop事件处理方法
@@ -55,8 +52,8 @@
         if (dragingControlAttr == null)
             return;
         var newLocation = getMouseLocation_RelativeToCanvas(e);
-        newLocation.X -= Model.Left;
-        newLocation.Y -= Model.Top;
+        newLocation.X -= ControlModel.Left;
+        newLocation.Y -= ControlModel.Top;
         addControl(dragingControlAttr, newLocation);
     }
 
@@ -81,6 +78,6 @@
         ZTContext.Designer.CheckAndModifyControlName(control);
         control.OnDragDropCreate(location);
         ZTContext.Project.ApplyStyleShotcut(ZTContext, control);
-        ZTContext.Designer.AddControl(control,Model);
+        ZTContext.Designer.AddControl(control,ControlModel);
     }
 }

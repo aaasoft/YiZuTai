@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Newtonsoft.Json;
 using YiZuTai.HyperLinkSource;
@@ -11,9 +12,8 @@ public class MultiControl : BaseControl
     [JsonIgnore]
     [Browsable(false)]
     public BaseControl Container { get; private set; }
+    public override ObservableCollection<BaseControl> Controls { get; set; } = new();
 
-    [Browsable(false)]
-    public List<BaseControl> Items { get; set; } = new List<BaseControl>();
     private bool isGroup = false;
 
     public override bool IsMultiControl => true;
@@ -31,30 +31,30 @@ public class MultiControl : BaseControl
 
     private void onItemsChanged()
     {
-        base.Left = Items.Min(t => t.Left);
-        base.Top = Items.Min(t => t.Top);
-        base.Width = Items.Max(t => t.RightTopPointLocation.X) - base.Left;
-        base.Height = Items.Max(t => t.RightBottomPointLocation.Y) - base.Top;
+        base.Left = Controls.Min(t => t.Left);
+        base.Top = Controls.Min(t => t.Top);
+        base.Width = Controls.Max(t => t.RightTopPointLocation.X) - base.Left;
+        base.Height = Controls.Max(t => t.RightBottomPointLocation.Y) - base.Top;
 
-        var groups = Items.GroupBy(t => t.GroupName).ToArray();
+        var groups = Controls.GroupBy(t => t.GroupName).ToArray();
         isGroup = groups.Length == 1 && groups[0].Key != null;
         RaisePropertyChanged(nameof(IsGroupControl));
     }
 
     public void AddControl(BaseControl item)
     {
-        if (Items.Contains(item))
+        if (Controls.Contains(item))
             return;
-        Items.Add(item);
+        Controls.Add(item);
         RaisePropertyChanged(nameof(Name));
         onItemsChanged();
     }
 
     public void RemoveControl(BaseControl item)
     {
-        if (!Items.Contains(item))
+        if (!Controls.Contains(item))
             return;
-        Items.Remove(item);
+        Controls.Remove(item);
         RaisePropertyChanged(nameof(Name));
         onItemsChanged();
     }
@@ -66,9 +66,9 @@ public class MultiControl : BaseControl
         get
         {
             if (isGroup)
-                return $"组合[{Items.Count}个控件]";
+                return $"组合[{Controls.Count}个控件]";
             else
-                return $"选中{Items.Count}个控件";
+                return $"选中{Controls.Count}个控件";
         }
         set { }
     }
@@ -79,9 +79,9 @@ public class MultiControl : BaseControl
 
     protected override Type GetViewType() { throw new NotImplementedException(); }
 
-    private void travelItems(Action<BaseControl> handler)
+    public void TravelControls(Action<BaseControl> handler)
     {
-        foreach (var item in Items)
+        foreach (var item in Controls)
             handler(item);
     }
 
@@ -91,7 +91,7 @@ public class MultiControl : BaseControl
         set
         {
             base.Angle = value;
-            travelItems(item => item.Angle = value);
+            TravelControls(item => item.Angle = value);
         }
     }
 
@@ -101,7 +101,7 @@ public class MultiControl : BaseControl
         set
         {
             base.Opacity = value;
-            travelItems(item => item.Opacity = value);
+            TravelControls(item => item.Opacity = value);
         }
     }
 
@@ -111,7 +111,7 @@ public class MultiControl : BaseControl
         set
         {
             base.Visiable = value;
-            travelItems(item => item.Visiable = value);
+            TravelControls(item => item.Visiable = value);
         }
     }
 
@@ -121,7 +121,7 @@ public class MultiControl : BaseControl
         set
         {
             base.IsLocked = value;
-            travelItems(item => item.IsLocked = value);
+            TravelControls(item => item.IsLocked = value);
         }
     }
 
@@ -134,7 +134,7 @@ public class MultiControl : BaseControl
         {
             var offset = value - base.Left;
             base.Left = value;
-            travelItems(item => item.SetLeftToGrid(GridSize, item.Left + offset));
+            TravelControls(item => item.SetLeftToGrid(GridSize, item.Left + offset));
         }
     }
 
@@ -147,7 +147,7 @@ public class MultiControl : BaseControl
         {
             var offset = value - base.Top;
             base.Top = value;
-            travelItems(item => item.SetTopToGrid(GridSize, item.Top + offset));
+            TravelControls(item => item.SetTopToGrid(GridSize, item.Top + offset));
         }
     }
     [JsonIgnore]
@@ -159,7 +159,7 @@ public class MultiControl : BaseControl
         {
             var offset = value - base.Width;
             base.Width = value;
-            travelItems(item => item.SetWidthToGrid(GridSize, item.Width + offset));
+            TravelControls(item => item.SetWidthToGrid(GridSize, item.Width + offset));
         }
     }
     [JsonIgnore]
@@ -171,7 +171,36 @@ public class MultiControl : BaseControl
         {
             var offset = value - base.Height;
             base.Height = value;
-            travelItems(item => item.SetHeightToGrid(GridSize, item.Height + offset));
+            TravelControls(item => item.SetHeightToGrid(GridSize, item.Height + offset));
         }
+    }
+
+
+    public void AlignToLeft()
+    {
+        var left = Controls.Min(t => t.Left);
+        TravelControls(t => t.Left = left);
+        onItemsChanged();
+    }
+
+    public void AlignToRight()
+    {
+        var right = Controls.Max(t => t.Left + t.Width);
+        TravelControls(t => t.Left = right - t.Width);
+        onItemsChanged();
+    }
+
+    public void AlignToTop()
+    {
+        var top = Controls.Min(t => t.Top);
+        TravelControls(t => t.Top = top);
+        onItemsChanged();
+    }
+
+    public void AlignToBottom()
+    {
+        var bottom = Controls.Max(t => t.Top + t.Height);
+        TravelControls(t => t.Top = bottom - t.Height);
+        onItemsChanged();
     }
 }

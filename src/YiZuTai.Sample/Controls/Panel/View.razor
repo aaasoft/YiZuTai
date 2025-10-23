@@ -1,6 +1,6 @@
 ﻿@inherits AbstractControlView<Model>
 
-<ContainerControlView TContainerModel="Model" ZTContext="ZTContext" Model="ControlModel">
+<ContainerControlView TContainerModel="Model" ZTContext="ZTContext" ControlModel="ControlModel">
     <!--图片部分-->
     <g data-Angle="@ControlModel.Angle">
         <image href="@ZTContext.ZTFile.GetStaticResourceUrl(ControlModel.Image)"

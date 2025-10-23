@@ -475,9 +475,8 @@ new YiZuTai.CreateWindow({{
 
                 if (control is MultiControl multiControl)
                 {
-                    foreach (var item in multiControl.Items)
-                        AddControl(item, container);
-                    SelectedItem = new MultiControl(Project, Project.DesignGridSize, multiControl.Items)
+                    multiControl.TravelControls(t => AddControl(t, container));
+                    SelectedItem = new MultiControl(Project, Project.DesignGridSize, multiControl.Controls)
                     {
                         Parent = container
                     };
@@ -502,8 +501,7 @@ new YiZuTai.CreateWindow({{
                 return;
             if (SelectedItem is MultiControl multiControl)
             {
-                foreach (var item in multiControl.Items)
-                    removeControl(item);
+                multiControl.TravelControls(t => removeControl(t));
                 SelectedItem = multiControl.Container;
             }
             else
@@ -545,7 +543,7 @@ new YiZuTai.CreateWindow({{
             setControlIndex(item, getNewIndexFunc(getControlIndex(item)));
             SelectedItem = item;
         }
-
+        
         //鼠标按下时控件信息
         public ControlMeta MouseDownControlMeta { get; set; }
 

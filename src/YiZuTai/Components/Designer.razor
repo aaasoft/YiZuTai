@@ -59,7 +59,7 @@ else
                             <div class="btn-group mr-1">
                                 <button type="button" class="btn btn-secondary" title="剪贴板" @onclick="ShowClipboard">剪贴板</button>
                             </div>
-                            <div class="input-group">
+                            <div class="input-group mr-1">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text" style="user-select: none;">样式</div>
                                 </div>
@@ -68,6 +68,20 @@ else
                                     <option value="样式-深色">样式-深色</option>
                                 </InputSelect>
                             </div>
+                            @if(IsSelectedMutiControl)
+                            {
+                                <div class="input-group mr-1">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text" style="user-select: none;">对齐</div>
+                                    </div>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-secondary" title="左" @onclick="(()=> ((MultiControl)SelectedItem).AlignToLeft())">左</button>
+                                        <button type="button" class="btn btn-secondary" title="右" @onclick="(()=> ((MultiControl)SelectedItem).AlignToRight())">右</button>
+                                        <button type="button" class="btn btn-secondary" title="上" @onclick="(()=> ((MultiControl)SelectedItem).AlignToTop())">上</button>
+                                        <button type="button" class="btn btn-secondary" title="下" @onclick="(()=> ((MultiControl)SelectedItem).AlignToBottom())">下</button>
+                                    </div>
+                                </div>
+                            }
                         </div>
                     </ChildContent>
                 </TabPane>
@@ -170,7 +184,7 @@ else
                             viewBox="-@DesignMargin -@DesignMargin @(Project.Width + DesignMargin * 2) @(Project.Height + DesignMargin * 2)"
                             preserveAspectRatio="none">
                             <!--====画布部分====-->
-                            <ContainerControlView TContainerModel="Project" Model="Project" ZTContext="ZTContext">
+                            <ContainerControlView TContainerModel="Project" ControlModel="Project" ZTContext="ZTContext">
                                 @if (!string.IsNullOrEmpty(Project.Image))
                                 {
                                     <image href="@ZTFile.GetStaticResourceUrl(Project.Image)" width="100%" height="100%" preserveAspectRatio="none"></image>
