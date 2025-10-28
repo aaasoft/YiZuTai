@@ -33,7 +33,7 @@ namespace YiZuTai.Components
                 switch (Project.Stretch)
                 {
                     case Stretch.Uniform:
-                        return "xMidYMid";
+                        return "xMidYMin";
                     case Stretch.Fill:
                         return "none";
                     case Stretch.UniformToFill:
