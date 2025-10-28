@@ -112,6 +112,12 @@ namespace YiZuTai.Core
             }
         }
 
+        public ZTGroup[] GetAllGroups()
+        {
+            lock (groupDict)
+                return groupDict.Values.ToArray();
+        }
+
         public ZTGroup[] GetGroups(string parentId)
         {
             lock (groupDict)
