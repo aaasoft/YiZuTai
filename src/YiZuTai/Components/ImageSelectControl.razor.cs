@@ -5,7 +5,7 @@ namespace YiZuTai.Components
 {
     public partial class ImageSelectControl
     {
-        private static HashSet<string> imageFileSuffixHashSet = new HashSet<string> { ".jpg", ".png", ".svg", ".gif", ".tif", ".bmp" };
+        private static HashSet<string> imageFileSuffixHashSet = new HashSet<string> { ".jpg", ".jpeg", ".png", ".svg", ".gif", ".tif", ".bmp" };
         private readonly YiZuTai.Utils.UnitStringConverting storageUSC = YiZuTai.Utils.UnitStringConverting.StorageUnitStringConverting;
         private readonly YiZuTai.Utils.UnitStringConverting timeUSC = YiZuTai.Utils.UnitStringConverting.TimeUnitStringConverting;
 

@@ -246,7 +246,8 @@ namespace YiZuTai.Core
             }
             catch
             {
-                Directory.Delete(folder, true);
+                if (Directory.Exists(folder))
+                    Directory.Delete(folder, true);
                 throw;
             }
         }
