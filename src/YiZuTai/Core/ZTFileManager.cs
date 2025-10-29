@@ -72,7 +72,7 @@ namespace YiZuTai.Core
             return null;
         }
 
-        public ZTFile[] Query(string groupId, string keywords)
+        public ZTFile[] Query(string groupId, string keywords = null)
         {
             lock (fileDict)
             {
@@ -150,6 +150,10 @@ namespace YiZuTai.Core
             {
                 if (!groupDict.ContainsKey(id))
                     return;
+                if (GetGroups(id).Length > 0)
+                    throw new ApplicationException("当前有子分组属于此分组");
+                if (Query(id).Length > 0)
+                    throw new ApplicationException("当前有组态文件属于此分组");
                 groupDict.Remove(id);
                 SaveGroupConfig();
             }
