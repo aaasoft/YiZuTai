@@ -154,7 +154,7 @@ namespace YiZuTai.Core
                 SaveGroupConfig();
             }
         }
-        
+
         public void Update(ZTFile model)
         {
             model.Save();
@@ -215,13 +215,13 @@ namespace YiZuTai.Core
             ZipFile.CreateFromDirectory(file.Folder, destination);
         }
 
-        public ZTFile Import(string source, string groupId)
+        public ZTFile Import(string source, string groupId = null)
         {
             using (var fs = File.OpenRead(source))
                 return Import(fs, groupId);
         }
 
-        public ZTFile Import(Stream source, string groupId)
+        public ZTFile Import(Stream source, string groupId = null)
         {
             var tmpId = Guid.NewGuid().ToString("N");
             var folder = GetFileFolder(tmpId);
@@ -240,7 +240,10 @@ namespace YiZuTai.Core
                 }
                 lock (fileDict)
                     fileDict[model.Id] = model;
-                model.GroupId = groupId;
+                if (!string.IsNullOrEmpty(groupId))
+                    model.GroupId = groupId;
+                if (!groupDict.ContainsKey(model.GroupId))
+                    model.GroupId = null;                
                 model.Save();
                 return model;
             }
