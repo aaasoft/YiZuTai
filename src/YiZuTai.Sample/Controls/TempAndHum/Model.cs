@@ -112,7 +112,7 @@ value   =>  当前值")]
 
     private ObservableCollection<Trigger> _TitleTriggers = new ObservableCollection<Trigger>();
     [Category("标题")]
-    [DisplayName("标题触发器")]
+    [DisplayName("标题值触发器")]
     public ObservableCollection<Trigger> TitleTriggers
     {
         get { return _TitleTriggers; }
@@ -213,7 +213,7 @@ value   =>  当前值")]
 
     private ObservableCollection<Trigger> _TempTriggers = new ObservableCollection<Trigger>();
     [Category("温度")]
-    [DisplayName("温度触发器")]
+    [DisplayName("温度值触发器")]
     public ObservableCollection<Trigger> TempTriggers
     {
         get { return _TempTriggers; }
@@ -314,7 +314,7 @@ value   =>  当前值")]
 
     private ObservableCollection<Trigger> _HumTriggers = new ObservableCollection<Trigger>();
     [Category("湿度")]
-    [DisplayName("湿度触发器")]
+    [DisplayName("湿度值触发器")]
     public ObservableCollection<Trigger> HumTriggers
     {
         get { return _HumTriggers; }
@@ -353,6 +353,19 @@ value   =>  当前值")]
         }
     }
 
+    
+    private ObservableCollection<DataSourceAndTrigger> _DataSourceAndTriggers = new ObservableCollection<DataSourceAndTrigger>();
+    [Category("数据源与触发器")]
+    [DisplayName("更多")]
+    public ObservableCollection<DataSourceAndTrigger> DataSourceAndTriggers
+    {
+        get { return _DataSourceAndTriggers; }
+        set
+        {
+            _DataSourceAndTriggers = value;
+            RaisePropertyChanged(nameof(DataSourceAndTriggers));
+        }
+    }
 
     private int padding = 4;
 
@@ -401,6 +414,10 @@ value   =>  当前值")]
             yield return new(TempValue, TempTriggers.ToArray());
         if (HumValue != null && HumTriggers.Count > 0)
             yield return new(HumValue, HumTriggers.ToArray());
+        if (DataSourceAndTriggers != null && DataSourceAndTriggers.Count > 0)
+            foreach (var item in DataSourceAndTriggers)
+                if (item.DataSource != null && item.Triggers.Count > 0)
+                    yield return new(item.DataSource, item.Triggers.ToArray());
     }
 
 

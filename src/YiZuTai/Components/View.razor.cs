@@ -89,8 +89,11 @@ namespace YiZuTai.Components
         {
             if (ZTFile == null)
                 return;
-            ObjectConnectionManager.Instance.RemoveObject(Project);
-            Project.OnUnload();            
+            if (Project != null)
+            {
+                ObjectConnectionManager.Instance.RemoveObject(Project);
+                Project.OnUnload();
+            }
         }
     }
 }

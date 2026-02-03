@@ -1,4 +1,5 @@
 ﻿@using YiZuTai.Core.Source
+@using YiZuTai.HyperLinkSource
 @inherits AbstractControlView<Model>
 
 <BaseControl_WithBackgroundView T_BaseControl_WithBackground="Model" Model="ControlModel"
@@ -16,7 +17,7 @@
       xml:space="preserve">@ControlModel.TitleText</text>
     
     <!--温度值-->
-    <a style="@GetALinkStyle(ControlModel.TempHyperLinkSource)" @onclick="@(e=>ControlModel.TempHyperLinkSource?.Execute(ZTContext))">
+    <a style="@GetALinkStyle(ControlModel.TempHyperLinkSource)" @onclick="@(e=>OnHyperLinkSourceClicked(ControlModel.TempHyperLinkSource))">
         <text
             fill="@ControlModel.TempForeground" fill-opacity="@ControlModel.TempForegroundOpacity"
             x="@ControlModel.TempTextX" y="34"
@@ -27,7 +28,7 @@
     </a>
 
     <!--湿度值-->
-    <a style="@GetALinkStyle(ControlModel.HumHyperLinkSource)" @onclick="@(e=>ControlModel.HumHyperLinkSource?.Execute(ZTContext))">
+    <a style="@GetALinkStyle(ControlModel.HumHyperLinkSource)" @onclick="@(e=>OnHyperLinkSourceClicked(ControlModel.HumHyperLinkSource))">
         <text
                 fill="@ControlModel.HumForeground" fill-opacity="@ControlModel.HumForegroundOpacity"
                 x="@ControlModel.HumTextX" y="50"
@@ -41,5 +42,11 @@
 
 @code
 {
-    private string GetALinkStyle(ISource source) => source == null ? "" : "cursor: pointer;";
+    private string GetALinkStyle(ISource source) => source == null || ZTContext.DesignMode ? "" : "cursor: pointer;";
+    private void OnHyperLinkSourceClicked(IHyperLinkSource source)
+    {
+        if(source == null || ZTContext.DesignMode)
+        return;
+        source.Execute(ZTContext);
+    }
 }
