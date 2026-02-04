@@ -41,7 +41,11 @@
             height="@ForegroundProgressHeight" fill="@ArgProgressForegroundColor"
             transform="rotate(180 @(ArgWidth / 2) @(ArgHeight / 2))" fill-opacity="@ArgProgressForegroundOpacity"
             rx="@ForegroundProgressCornerRadius" ry="@ForegroundProgressCornerRadius">
-            <animate attributeType="XML" attributeName="height" begin="indefinite" from="@ForegroundProgressPreHeight" to="@ForegroundProgressHeight" dur="0.5s" fill="freeze" />
+            @if (!ZTContext.DesignMode && currentValue != preValue)
+            {
+                <animate attributeType="XML" attributeName="height" begin="indefinite" from="@ForegroundProgressPreHeight"
+                    to="@ForegroundProgressHeight" dur="0.5s" fill="freeze" />
+            }
         </rect>
     </g>
     <!--文本-->
@@ -66,8 +70,13 @@
             return base.ShouldRender();
         }
         var newValue = ControlModel.NumberValue;
-        if(currentValue == newValue)
+        if (currentValue == newValue)
+        {
+            //如果是设计模式下，则应该渲染
+            if (ZTContext.DesignMode)
+                return base.ShouldRender();
             return false;
+        }
         preValue = currentValue;        
         currentValue = newValue;
         return base.ShouldRender();
@@ -75,6 +84,8 @@
 
     protected override void OnAfterRender(bool firstRender)
     {
+        if (firstRender)
+            currentValue = ControlModel.NumberValue;
         base.OnAfterRender(firstRender);
         if(currentValue!=preValue)
             ZTContext.JSRuntime.InvokeVoidAsync("YiZuTai.BeginAnimate", ControlModel.Name);
