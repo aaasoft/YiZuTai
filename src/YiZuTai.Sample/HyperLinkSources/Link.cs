@@ -20,7 +20,7 @@ namespace YiZuTai.Sample.HyperLinkSources
             set
             {
                 _Url = value;
-                RaisePropertyChanged(nameof(Url));
+                RaisePropertyChanged();
             }
         }
 
@@ -32,7 +32,7 @@ namespace YiZuTai.Sample.HyperLinkSources
             set
             {
                 _Target = value;
-                RaisePropertyChanged(nameof(Target));
+                RaisePropertyChanged();
             }
         }
 
@@ -45,7 +45,7 @@ namespace YiZuTai.Sample.HyperLinkSources
             set
             {
                 _WindowTitle = value;
-                RaisePropertyChanged(nameof(WindowTitle));
+                RaisePropertyChanged();
             }
         }
 
@@ -58,7 +58,7 @@ namespace YiZuTai.Sample.HyperLinkSources
             set
             {
                 _WindowWidth = value;
-                RaisePropertyChanged(nameof(WindowWidth));
+                RaisePropertyChanged();
             }
         }
 
@@ -71,7 +71,19 @@ namespace YiZuTai.Sample.HyperLinkSources
             set
             {
                 _WindowHeight = value;
-                RaisePropertyChanged(nameof(WindowHeight));
+                RaisePropertyChanged();
+            }
+        }
+
+        private bool _MaxMin = false;
+        [DisplayName("允许最大最小化")]
+        public virtual bool MaxMin
+        {
+            get { return _MaxMin; }
+            set
+            {
+                _MaxMin = value;
+                RaisePropertyChanged();
             }
         }
 
@@ -94,6 +106,7 @@ namespace YiZuTai.Sample.HyperLinkSources
                 case HyperLinkTarget._window:
                     var sb = new StringBuilder();
                     sb.AppendLine("new YiZuTai.CreateWindow({");
+                    sb.AppendLine($"maxmin: {MaxMin.ToString().ToLower()},");
                     if (WindowWidth.HasValue)
                         sb.AppendLine($"width: {WindowWidth},");
                     if (WindowHeight.HasValue)

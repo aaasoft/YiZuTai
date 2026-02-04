@@ -2,7 +2,7 @@
     SetTitle: function (title) {
         document.title = title;
     },
-    BeginAnimate:function(controlName){
+    BeginAnimate: function (controlName) {
         jQuery('#svg_' + controlName + ' animate').each(function (index, value) { { value.beginElement(); } });
     },
     LoadScript: function (url) {
@@ -10,28 +10,25 @@
         script.src = url;
         document.head.appendChild(script);
     },
-    CreateWindow : function (params) {
-        var maxmin = params.maxmin ? params.maxmin : false; 
-        var width = params.width ? params.width : 950;
-        var height = params.height ? params.height : 580;
+    CreateWindow: function (params) {
+        var maxmin = params.maxmin ? params.maxmin : true;
         var pages = params.pages;
-        var title = params.title ? params.title : '';
 
         var item = {
             maxmin: maxmin,
-            area: [width + 'px', height + 'px'],
             tab: []
         };
+        if (params.width != undefined && params.height != undefined)
+            item.area = [params.width + 'px', params.height + 'px'];
         jQuery.each(pages, function (index, value) {
             item.tab.push({
                 title: value.title,
-                content: '<iframe style="width: ' + width + 'px; height: ' + (height - 84) + 'px; border: 0;" src="' + value.url + '"></iframe>'
+                content: '<iframe src="' + value.url + '"></iframe>'
             });
         });
-        var span = jQuery('<span style="font-weight: bold;cursor: default;">' + title + '</span>');
         this.show = function () {
-            if(pages.length==1){
-                var page=pages[0];
+            if (pages.length == 1) {
+                var page = pages[0];
                 layer.open({
                     type: 2,
                     maxmin: maxmin,
@@ -39,17 +36,10 @@
                     title: page.title,
                     content: page.url
                 });
-            }else{
+            } else {
                 layer.tab(item);
-                jQuery('.layui-layer-title', window.document).prepend(span);
-                if (pages.length == 1)
-                    jQuery('.layui-this').css('z-index', '-1');
-                }
+            }
         };
-        this.setWindowTitle = function (title) {
-            span.html(title);
-        };
-
         return this;
     }
 };
