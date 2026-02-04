@@ -32,12 +32,12 @@
     {
         var url = ZTFile.GetStaticResourceUrl(fileManageControl.SelectedPath);
         JSRuntime.InvokeVoidAsync("eval", $@"
-new YiZuTai.CreateWindow({{
+YiZuTai.openWindow({{
     maxmin: true,
     pages: [{{
         title: '预览',
         url: '{url}'
     }}]
-}}).show();");
+}});");
     }
 }

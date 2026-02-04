@@ -105,7 +105,7 @@ namespace YiZuTai.Sample.HyperLinkSources
                     break;
                 case HyperLinkTarget._window:
                     var sb = new StringBuilder();
-                    sb.AppendLine("new YiZuTai.CreateWindow({");
+                    sb.AppendLine("YiZuTai.openWindow({");
                     sb.AppendLine($"maxmin: {MaxMin.ToString().ToLower()},");
                     if (WindowWidth.HasValue)
                         sb.AppendLine($"width: {WindowWidth},");
@@ -115,7 +115,7 @@ namespace YiZuTai.Sample.HyperLinkSources
         title: '{WindowTitle}',
         url: '{Url}'
     }}]
-}}).show();");
+}});");
                     context.JSRuntime.InvokeVoidAsync("eval", sb.ToString());
                     break;
             }

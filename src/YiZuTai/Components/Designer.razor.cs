@@ -329,13 +329,13 @@ namespace YiZuTai.Components
         {
             var previewUrl = ZTContext.ZTFile.GetStaticResourceUrl($"../View?DesignerId={designerId}");
             ZTContext.JSRuntime.InvokeVoidAsync("eval", @$"
-new YiZuTai.CreateWindow({{
+YiZuTai.openWindow({{
     maxmin: true,
     pages: [{{
         title: '预览',
         url: '{previewUrl}'
     }}]
-}}).show();"
+}});"
             );
         }
 
