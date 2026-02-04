@@ -13,22 +13,22 @@
     openWindow: function (params) {
         var maxmin = params.maxmin ? params.maxmin : true;
         var pages = params.pages;
-
-        var item = {
-            maxmin: maxmin,
-            tab: []
-        };
+        //如果没有设置宽度或高度，则设置为窗口的一半
         if(params.width==undefined)
             params.width = window.innerWidth  / 2;
         if(params.height==undefined)
             params.height= window.innerHeight  / 2;
-        
+        //如果宽度或高度超过窗口大小，则限制为窗口大小
         if(params.width > window.innerWidth)
             params.width = window.innerWidth
         if(params.height > window.innerHeight)
             params.height = window.innerHeight
         
-        item.area = [params.width + 'px', params.height + 'px'];
+        var item = {
+            maxmin: maxmin,
+            area: [params.width + 'px', params.height + 'px'],
+            tab: []
+        };
         
         jQuery.each(pages, function (index, value) {
             item.tab.push({
