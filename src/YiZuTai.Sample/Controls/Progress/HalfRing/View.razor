@@ -31,8 +31,8 @@
         <path d="M @ArgHalfRingStartX @ArgHalfRingStartY
     A @ArgR @ArgR 0 0 1 @ArgHalfRingEndX @ArgHalfRingEndY
     " stroke="@ArgProgressForegroundColor" stroke-width="@ArgBorderWidth"
-            stroke-opacity="@ArgProgressForegroundOpacity" fill="none" stroke-dasharray="@ArgStrokePreDasharray">
-            <animate attributeType="XML" attributeName="stroke-dasharray" begin="indefinite" to="@ArgStrokeDasharray" dur="0.5s" fill="freeze" />
+            stroke-opacity="@ArgProgressForegroundOpacity" fill="none" stroke-dasharray="@ArgStrokeDasharray">
+            <animate attributeType="XML" attributeName="stroke-dasharray" begin="indefinite" from="@ArgStrokePreDasharray" to="@ArgStrokeDasharray" dur="0.5s" fill="freeze" />
         </path>
     </g>
     <!--文本-->

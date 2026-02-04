@@ -24,10 +24,10 @@
         </circle>
         <circle transform="rotate(-90 @ArgCenterX,@ArgCenterY)" cx="@ArgCenterX"
             cy="@ArgCenterY" r="@ArgR" stroke-width="@ArgBorderWidth" stroke="@ArgProgressForegroundColor"
-            stroke-opacity="@ArgProgressForegroundOpacity" fill="none" stroke-dasharray="@ArgStrokePreDasharray">
+            stroke-opacity="@ArgProgressForegroundOpacity" fill="none" stroke-dasharray="@ArgStrokeDasharray">
             @if(currentValue!=preValue)
             {
-                <animate attributeType="XML" attributeName="stroke-dasharray" begin="indefinite" to="@ArgStrokeDasharray" dur="0.5s" fill="freeze" />
+                <animate attributeType="XML" attributeName="stroke-dasharray" begin="indefinite" from="@ArgStrokePreDasharray" to="@ArgStrokeDasharray" dur="0.5s" fill="freeze" />
             }
         </circle>
     </g>

@@ -36,11 +36,11 @@
             height="@BackgroundProgressHeight" fill="@ArgProgressBackgroundColor"
             fill-opacity="@ArgProgressBackgroundOpacity" rx="@ArgCornerRadius" ry="@ArgCornerRadius"
             stroke="@ArgBorderColor" stroke-opacity="@ArgBorderOpacity" stroke-width="@ArgBorderThickness" />
-        <rect x="@ForegroundProgressLeft" y="@ForegroundProgressTop" width="@ForegroundProgressPreWidth"
+        <rect x="@ForegroundProgressLeft" y="@ForegroundProgressTop" width="@ForegroundProgressWidth"
             height="@ForegroundProgressHeight" fill="@ArgProgressForegroundColor"
             fill-opacity="@ArgProgressForegroundOpacity" rx="@ForegroundProgressCornerRadius"
             ry="@ForegroundProgressCornerRadius">
-            <animate attributeType="XML" attributeName="width" begin="indefinite" to="@ForegroundProgressWidth" dur="0.5s" fill="freeze" />
+            <animate attributeType="XML" attributeName="width" begin="indefinite" from="@ForegroundProgressPreWidth" to="@ForegroundProgressWidth" dur="0.5s" fill="freeze" />
         </rect>
     </g>
     <!--文本-->
