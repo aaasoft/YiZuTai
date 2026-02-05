@@ -14,7 +14,6 @@ public partial class CollectionEditControl
     public Action<IList> OkAction { get; set; }
 
     private object SelectedItem { get; set; }
-    private ControlField PropertyGridSelectedField;
 
     private bool CanDelete => SelectedItem != null;
     private bool CanMoveUp => CanDelete && ValueList.IndexOf(SelectedItem) > 0;
@@ -38,7 +37,6 @@ public partial class CollectionEditControl
     private void onItem_Click(object item)
     {
         SelectedItem = item;
-        PropertyGridSelectedField = null;
     }
 
     private void btnMoveUp_Click()

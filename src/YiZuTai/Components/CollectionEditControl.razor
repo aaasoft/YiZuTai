@@ -67,25 +67,9 @@
             </div>
             @if (SelectedItem != null)
             {
-                <PropertyGrid SelectedObject="SelectedItem" @bind-SelectedField="PropertyGridSelectedField"></PropertyGrid>
+                <PropertyGrid SelectedObject="SelectedItem"></PropertyGrid>
             }
         </div>
-        @if (PropertyGridSelectedField != null)
-        {
-            <div class="card-footer">
-                @if (PropertyGridSelectedField != null)
-                {
-                    <div class="card-title m-0 ml-2 mt-1 font-weight-bold">@PropertyGridSelectedField.Name</div>
-                    if (!string.IsNullOrEmpty(PropertyGridSelectedField.Description))
-                    {
-                        @foreach (var line in PropertyGridSelectedField.Description.Split('\r', '\n'))
-                        {
-                            <small class="form-text text-muted">@line</small>
-                        }
-                    }
-                }
-            </div>
-        }
     </div>
 </div>
 <div class="row mt-2">
