@@ -83,7 +83,8 @@
         if (firstRender)
             currentValue = ControlModel.NumberValue;
         base.OnAfterRender(firstRender);
-        if(currentValue!=preValue)
+        //如果是非设计模式，且值已经改变
+        if(!ZTContext.DesignMode && currentValue!=preValue)
             ZTContext.JSRuntime.InvokeVoidAsync("YiZuTai.BeginAnimate", ControlModel.Name);
     }
 
