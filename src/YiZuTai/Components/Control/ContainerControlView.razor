@@ -48,7 +48,7 @@
     // ondrop事件处理方法
     private void HandleDrop(DragEventArgs e)
     {
-        var dragingControlAttr = ZTContext.Designer.dragingControlAttr;
+        var dragingControlAttr = ZTContext.Designer?.dragingControlAttr;
         if (dragingControlAttr == null)
             return;
         var newLocation = getMouseLocation_RelativeToCanvas(e);
