@@ -21,6 +21,10 @@ namespace YiZuTai.Control
         /// </summary>
         public string Description { get; set; }
         /// <summary>
+        /// 是否必填
+        /// </summary>
+        public bool Required { get; set; } = false;
+        /// <summary>
         /// 属性信息
         /// </summary>
         public PropertyInfo PropertyInfo { get; set; }

@@ -20,6 +20,7 @@ namespace YiZuTai.Control
         [Category(nameof(CategoryOrder.设计))]
         [DisplayName("名称")]
         [Description("控件的名称")]
+        [Required]
         public virtual string Name
         {
             get { return _Name; }

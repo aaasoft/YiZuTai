@@ -1,5 +1,6 @@
 ﻿@using System.Reflection
 @using System.ComponentModel
+@using System.ComponentModel.DataAnnotations
 @using YiZuTai.Control
 @using YiZuTai.Model
 
@@ -88,6 +89,7 @@
             var displayNameAttribute = property.GetCustomAttribute<DisplayNameAttribute>();
             var displayName = displayNameAttribute?.DisplayName ?? property.Name;
             var descriptionAttribute = property.GetCustomAttribute<DescriptionAttribute>();
+            var requiredAttribute = property.GetCustomAttribute<RequiredAttribute>();
 
             string category;
             var categoryAttribute = property.GetCustomAttribute<CategoryAttribute>();
@@ -105,6 +107,7 @@
             {
                 Name = displayName,
                 Description = descriptionAttribute?.Description,
+                Required = requiredAttribute!=null,
                 PropertyHost = SelectedObject,
                 PropertyInfo = property
             };

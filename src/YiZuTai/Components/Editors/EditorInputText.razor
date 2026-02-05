@@ -7,9 +7,12 @@
 else
 {
     <InputText class="form-control" @bind-Value="Value"></InputText>
-    <div class="input-group-append">
-        <button type="button" class="btn btn-outline-danger" @onclick="@(e => Value = null)">
-            <i class="fa fa-trash" aria-hidden="true"></i>
-        </button>
-    </div>
+    @if (!Field.Required)
+    {
+        <div class="input-group-append">
+            <button type="button" class="btn btn-outline-danger" @onclick="@(e => Value = null)">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+            </button>
+        </div>
+    }
 }

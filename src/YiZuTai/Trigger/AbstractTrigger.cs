@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using Quick.Blazor.Bootstrap;
 using YiZuTai.Control;
@@ -26,9 +27,10 @@ namespace YiZuTai.Trigger
             }
         }
 
-        private string _Value;
+        private string _Value = string.Empty;
         [Category("触发条件")]
         [DisplayName("设定值")]
+        [Required]
         public string Value
         {
             get { return _Value; }
