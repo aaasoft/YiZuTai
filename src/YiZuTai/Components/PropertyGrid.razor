@@ -4,23 +4,24 @@
 @using YiZuTai.Model
 
 <Quick.Blazor.Bootstrap.Accordion AllowMultiplePanelActived="true">
-@foreach (var group in SelectedItemFields)
-{
-    <Quick.Blazor.Bootstrap.AccordionPane Key="@group.Name">
-        <Tab><b>@group.Name</b></Tab>
-        <TabCollpsed><i class="fa fa-caret-right"></i></TabCollpsed>
-        <TabExpand><i class="fa fa-caret-down"></i></TabExpand>
-        <ChildContent>
-            @foreach (var field in group.FieldList)
-            {
-                @if(field.IsFieldHasPrepend())
+    @foreach (var group in SelectedItemFields)
+    {
+        <Quick.Blazor.Bootstrap.AccordionPane Key="@group.Name">
+            <Tab><b>@group.Name</b></Tab>
+            <TabCollpsed><i class="fa fa-caret-right"></i></TabCollpsed>
+            <TabExpand><i class="fa fa-caret-down"></i></TabExpand>
+            <ChildContent>
+                @foreach (var field in group.FieldList)
                 {
-                    <div class="form-group m-1" @onclick="@(e => onFieldClicked(field))" title="@field.Description">
-                        <div class="input-group">                        
+                    @if (field.IsFieldHasPrepend())
+                    {
+                        <div class="form-group m-1" @onclick="@(e => onFieldClicked(field))" title="@field.Description">
+                            <div class="input-group">
                                 @if (SelectedField != null && field.Name == SelectedField.Name)
                                 {
                                     <div class="input-group-prepend">
-                                        <div class="input-group-text bg-secondary text-white" style="user-select: none;">@field.Name</div>
+                                        <div class="input-group-text bg-secondary text-white" style="user-select: none;">@field.Name
+                                        </div>
                                     </div>
                                 }
                                 else
@@ -29,18 +30,18 @@
                                         <div class="input-group-text" style="user-select: none;">@field.Name</div>
                                     </div>
                                 }
-                            @field.GetEditorRenderFragment(Model)
+                                @field.GetEditorRenderFragment(Model)
+                            </div>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        @field.GetEditorRenderFragment(Model)
+                    }
                 }
-                else
-                {
-                    @field.GetEditorRenderFragment(Model)
-                }
-            }
-        </ChildContent>
-    </Quick.Blazor.Bootstrap.AccordionPane>
-}
+            </ChildContent>
+        </Quick.Blazor.Bootstrap.AccordionPane>
+    }
 </Quick.Blazor.Bootstrap.Accordion>
 
 @code
@@ -109,6 +110,6 @@
             };
             group.FieldList.Add(field);
         }
-        return dict.Values.ToArray();
+        return dict.Values.Reverse().ToArray();
     }
 }
