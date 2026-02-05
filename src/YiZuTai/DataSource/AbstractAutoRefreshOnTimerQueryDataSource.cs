@@ -6,7 +6,7 @@ namespace YiZuTai.DataSource
 {
     public abstract class AbstractAutoRefreshOnTimerQueryDataSource : AbstractAutoRefreshQueryDataSource, IRunnable
     {
-        private int _Period = 10;
+        private int _Period = 1;
         [DisplayName("刷新间隔")]
         [Description("单位：秒")]
         public int Period

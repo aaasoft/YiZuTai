@@ -5,9 +5,9 @@ namespace YiZuTai.DataSource
 {
     public abstract class AbstractAutoRefreshOnTimerDataSource : AbstractAutoRefreshDataSource
     {
-        private int _Period = 10;
+        private int _Period = 1;
         [DisplayName("刷新间隔")]
-        [Description("单位：秒，等于0时：对于支持实时推送的数据代表实时推送；对于不支持实时推送的数据代表只刷新一次，不再定时刷新")]
+        [Description("单位：秒")]
         public int Period
         {
             get { return _Period; }
