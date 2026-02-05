@@ -8,13 +8,7 @@
 
 @if (string.IsNullOrEmpty(Value))
 {
-    <a class="form-control p-1" href="javascript:;" @onclick="onClick">
-    </a>
-    <div class="input-group-append">
-        <button type="button" class="btn btn-outline-secondary" @onclick="onClick">
-            ...
-        </button>
-    </div>
+    <span class="form-control" style="cursor: pointer;" @onclick="onClick">(未设置)</span>
 }
 else
 {
@@ -22,8 +16,8 @@ else
         <img class="w-100 h-100" src="@ZTFile.GetStaticResourceUrl(Value)" alt="@Value">
     </a>
     <div class="input-group-append">
-        <button type="button" class="btn btn-danger" @onclick="@(e=>Value=null)">
-            X
+        <button type="button" class="btn btn-outline-danger" @onclick="@(e=>Value=null)">
+            <i class="fa fa-trash" aria-hidden="true"></i>
         </button>
     </div>
 }

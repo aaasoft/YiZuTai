@@ -10,19 +10,11 @@
 <ModalWindow DialogSizeExtraLarge @ref="modalWindow" />
 
 <span class="form-control" style="cursor: pointer;white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" @onclick="onClick">@(Value ?? "(未设置)")</span>
-@if (string.IsNullOrEmpty(Value))
+@if (!string.IsNullOrEmpty(Value))
 {
     <div class="input-group-append">
-        <button type="button" class="btn btn-outline-secondary" @onclick="onClick">
-            ...
-        </button>
-    </div>
-}
-else
-{
-    <div class="input-group-append">
-        <button type="button" class="btn btn-danger" @onclick="@(e => Value = null)">
-            X
+        <button type="button" class="btn btn-outline-danger" @onclick="@(e => Value = null)">
+            <i class="fa fa-trash" aria-hidden="true"></i>
         </button>
     </div>
 }

@@ -13,12 +13,7 @@
 
 @if (Value == null)
 {
-    <span class="form-control">(未设置)</span>
-    <div class="input-group-append">
-        <button type="button" class="btn btn-outline-secondary" @onclick="@(e => Value = true)">
-            <i class="fa fa-plus" aria-hidden="true"></i>
-        </button>
-    </div>
+    <span class="form-control" style="cursor: pointer;" @onclick="@(e => Value = true)">(未设置)</span>
 }
 else
 {

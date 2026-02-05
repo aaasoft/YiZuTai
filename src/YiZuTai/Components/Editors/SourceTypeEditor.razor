@@ -7,11 +7,7 @@
 
 <span class="form-control" style="cursor: pointer;" @onclick="onClick">(@GetSourceName())</span>
 <div class="input-group-append">
-@if (Value==null)
-{    
-    <button type="button" class="btn btn-outline-secondary" @onclick="onClick">...</button>    
-}
-else
+@if (Value!=null)
 {
     <button type="button" class="btn btn-outline-danger" @onclick="onClear"><i class="fa fa-trash" aria-hidden="true"></i></button>
 }
