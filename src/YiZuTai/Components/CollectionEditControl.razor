@@ -20,42 +20,45 @@
         </div>
     </div>
     <div class="col-auto">
-        <button type="button" class="btn btn-secondary btn-block" @onclick="btnAdd_Click">
+        <button type="button" class="btn btn-secondary btn-block" title="确定" @onclick="btnOk_Click">
+            <i class="fa fa-check" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn-secondary btn-block" title="添加" @onclick="btnAdd_Click">
             <i class="fa fa-plus" aria-hidden="true"></i>
         </button>
         @if (CanMoveUp)
         {
-            <button type="button" class="btn btn-secondary btn-block" @onclick="btnMoveUp_Click">
+            <button type="button" class="btn btn-secondary btn-block" title="向上移动" @onclick="btnMoveUp_Click">
                 <i class="fa fa-arrow-up" aria-hidden="true"></i>
             </button>
         }
         else
         {
-            <button type="button" class="btn btn-secondary btn-block" disabled>
+            <button type="button" class="btn btn-secondary btn-block" title="向上移动" disabled>
                 <i class="fa fa-arrow-up" aria-hidden="true"></i>
             </button>
         }
         @if (CanMoveDown)
         {
-            <button type="button" class="btn btn-secondary btn-block" @onclick="btnMoveDown_Click">
+            <button type="button" class="btn btn-secondary btn-block" title="向下移动" @onclick="btnMoveDown_Click">
                 <i class="fa fa-arrow-down" aria-hidden="true"></i>
             </button>
         }
         else
         {
-            <button type="button" class="btn btn-secondary btn-block" disabled>
+            <button type="button" class="btn btn-secondary btn-block" title="向下移动" disabled>
                 <i class="fa fa-arrow-down" aria-hidden="true"></i>
             </button>
         }
         @if (CanDelete)
         {
-            <button type="button" class="btn btn-danger btn-block" @onclick="btnDelete_Click">
+            <button type="button" class="btn btn-danger btn-block" title="删除" @onclick="btnDelete_Click">
                 <i class="fa fa-trash" aria-hidden="true"></i>
             </button>
         }
         else
         {
-            <button type="button" class="btn btn-danger btn-block" disabled>
+            <button type="button" class="btn btn-danger btn-block" title="删除" disabled>
                 <i class="fa fa-trash" aria-hidden="true"></i>
             </button>
         }
@@ -70,10 +73,5 @@
                 <PropertyGrid SelectedObject="SelectedItem"></PropertyGrid>
             }
         </div>
-    </div>
-</div>
-<div class="row mt-2">
-    <div class="col">
-        <button type="button" class="btn btn-secondary" @onclick="btnOk_Click">确定</button>
     </div>
 </div>
