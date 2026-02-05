@@ -72,7 +72,7 @@ public class Model : AbstractControl
     public double BorderWidth => Math.Min(CenterX, CenterY) * (100 - InnerSize) / 100;
     [Browsable(false)]
     [JsonIgnore]
-    public double R => Math.Min(CenterX, Height) - BorderWidth;
+    public double R => Math.Min(CenterX, CenterY) - BorderWidth;
     
     public string GetStrokeDasharray(double value)
     {
