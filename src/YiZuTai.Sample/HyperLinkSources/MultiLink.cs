@@ -2,10 +2,8 @@
 using System.ComponentModel;
 using System.Text;
 using Microsoft.JSInterop;
-using Quick.Blazor.Bootstrap;
 using YiZuTai.HyperLinkSource;
 using YiZuTai.Model;
-using YiZuTai.Sample.Enums;
 
 namespace YiZuTai.Sample.HyperLinkSources
 {
@@ -13,38 +11,6 @@ namespace YiZuTai.Sample.HyperLinkSources
     [DisplayName("访问多链接")]
     public class MultiLink : AbstractHyperLinkSource
     {
-        public class LinkInfo : PropertyNotifyModel
-        {
-            private string _Url;
-            [DisplayName("URL")]
-            [Description("要链接的URL")]
-            public virtual string Url
-            {
-                get { return _Url; }
-                set
-                {
-                    _Url = value;
-                    RaisePropertyChanged();
-                }
-            }
-
-            private string _WindowTitle;
-            [DisplayName("标题")]
-            public virtual string WindowTitle
-            {
-                get { return _WindowTitle; }
-                set
-                {
-                    _WindowTitle = value;
-                    RaisePropertyChanged();
-                }
-            }
-            public override string ToString()
-            {
-                return $"{WindowTitle} [{Url}]";
-            }
-        }
-
         private ObservableCollection<LinkInfo> _LinkInfos = new ObservableCollection<LinkInfo>();
         [DisplayName("链接列表")]
         public ObservableCollection<LinkInfo> LinkInfos
