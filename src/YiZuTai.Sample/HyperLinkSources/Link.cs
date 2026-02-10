@@ -104,21 +104,29 @@ namespace YiZuTai.Sample.HyperLinkSources
                     context.JSRuntime.InvokeVoidAsync("eval", $"top.location.href = '{Url}'");
                     break;
                 case HyperLinkTarget._window:
-                    var sb = new StringBuilder();
-                    sb.AppendLine("YiZuTai.openWindow({");
-                    sb.AppendLine($"maxmin: {MaxMin.ToString().ToLower()},");
-                    if (WindowWidth.HasValue)
-                        sb.AppendLine($"width: {WindowWidth},");
-                    if (WindowHeight.HasValue)
-                        sb.AppendLine($"height: {WindowHeight},");
-                    sb.AppendLine(@$"pages: [{{
-        title: '{WindowTitle}',
-        url: '{Url}'
-    }}]
-}});");
-                    context.JSRuntime.InvokeVoidAsync("eval", sb.ToString());
+                    this.OpenLayerWindow(context);
                     break;
             }
+        }
+    }
+
+    public static class LinkExtensions
+    {
+        public static void OpenLayerWindow(this Link link, ZTContext context)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("YiZuTai.openWindow({");
+            sb.AppendLine($"maxmin: {link.MaxMin.ToString().ToLower()},");
+            if (link.WindowWidth.HasValue)
+                sb.AppendLine($"width: {link.WindowWidth},");
+            if (link.WindowHeight.HasValue)
+                sb.AppendLine($"height: {link.WindowHeight},");
+            sb.AppendLine(@$"pages: [{{
+        title: '{link.WindowTitle}',
+        url: '{link.Url}'
+    }}]
+}});");
+            context.JSRuntime.InvokeVoidAsync("eval", sb.ToString());
         }
     }
 }

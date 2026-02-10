@@ -25,7 +25,6 @@ namespace YiZuTai.Sample.HyperLinkSources
 
         private int? _WindowWidth;
         [DisplayName("窗口宽度")]
-        [Description("当目标设置为_windows时有效")]
         public virtual int? WindowWidth
         {
             get { return _WindowWidth; }
@@ -38,7 +37,6 @@ namespace YiZuTai.Sample.HyperLinkSources
 
         private int? _WindowHeight;
         [DisplayName("窗口高度")]
-        [Description("当目标设置为_windows时有效")]
         public virtual int? WindowHeight
         {
             get { return _WindowHeight; }
@@ -63,15 +61,24 @@ namespace YiZuTai.Sample.HyperLinkSources
 
         public override void Execute(ZTContext context)
         {
+            this.OpenLayerWindow(context);
+        }
+    }
+
+
+    public static class MultiLinkExtensions
+    {
+        public static void OpenLayerWindow(this MultiLink link, ZTContext context)
+        {
             var sb = new StringBuilder();
             sb.AppendLine("YiZuTai.openWindow({");
-            sb.AppendLine($"maxmin: {MaxMin.ToString().ToLower()},");
-            if (WindowWidth.HasValue)
-                sb.AppendLine($"width: {WindowWidth},");
-            if (WindowHeight.HasValue)
-                sb.AppendLine($"height: {WindowHeight},");
+            sb.AppendLine($"maxmin: {link.MaxMin.ToString().ToLower()},");
+            if (link.WindowWidth.HasValue)
+                sb.AppendLine($"width: {link.WindowWidth},");
+            if (link.WindowHeight.HasValue)
+                sb.AppendLine($"height: {link.WindowHeight},");
             sb.AppendLine("pages: [");
-            sb.AppendLine(string.Join(",", LinkInfos.Select(t => @$"{{
+            sb.AppendLine(string.Join(",", link.LinkInfos.Select(t => @$"{{
         title: '{t.WindowTitle}',
         url: '{t.Url}'
     }}")));
