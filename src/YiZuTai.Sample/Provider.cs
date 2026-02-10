@@ -6,7 +6,7 @@ public class Provider
 {
     public static void Register()
     {
-        ControlManager.Instance.RegisterControlShotcut(Project.Shotcuts);        
+        ControlManager.Instance.RegisterControlShotcut(Project.Shotcuts);
         //使用示例控件
         ControlManager.Instance.RegisterControl<Controls.Panel.Model>();
         ControlManager.Instance.RegisterControl<Controls.GroupBox.Model>();
@@ -56,5 +56,6 @@ public class Provider
         SourceManager.Instance.RegisterSource<QueryDataSources.Simulate>();
 
         SourceManager.Instance.RegisterSource<HyperLinkSources.Link>();
+        SourceManager.Instance.RegisterSource<HyperLinkSources.MultiLink>();
     }
 }

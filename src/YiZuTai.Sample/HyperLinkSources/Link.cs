@@ -8,7 +8,7 @@ using YiZuTai.Sample.Enums;
 namespace YiZuTai.Sample.HyperLinkSources
 {
     [Category("基础")]
-    [DisplayName("跳转链接")]
+    [DisplayName("访问链接")]
     public class Link : AbstractHyperLinkSource
     {
         private string _Url;
@@ -75,7 +75,7 @@ namespace YiZuTai.Sample.HyperLinkSources
             }
         }
 
-        private bool _MaxMin = false;
+        private bool _MaxMin = true;
         [DisplayName("允许最大最小化")]
         public virtual bool MaxMin
         {
