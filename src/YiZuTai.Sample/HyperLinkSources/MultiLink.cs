@@ -23,9 +23,10 @@ namespace YiZuTai.Sample.HyperLinkSources
             }
         }
 
-        private int? _WindowWidth;
+        private double? _WindowWidth;
         [DisplayName("窗口宽度")]
-        public virtual int? WindowWidth
+        [Description("值为0到1之间时代表比例，大于1代表像素")]
+        public virtual double? WindowWidth
         {
             get { return _WindowWidth; }
             set
@@ -35,9 +36,10 @@ namespace YiZuTai.Sample.HyperLinkSources
             }
         }
 
-        private int? _WindowHeight;
+        private double? _WindowHeight;
         [DisplayName("窗口高度")]
-        public virtual int? WindowHeight
+        [Description("值为0到1之间时代表比例，大于1代表像素")]
+        public virtual double? WindowHeight
         {
             get { return _WindowHeight; }
             set

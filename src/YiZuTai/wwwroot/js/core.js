@@ -11,22 +11,32 @@
         document.head.appendChild(script);
     },
     openWindow: function (params) {
-        var maxmin = params.maxmin ? params.maxmin : true;
-        var pages = params.pages;
-        //如果没有设置宽度或高度，则设置为窗口的一半
-        if(params.width==undefined)
-            params.width = window.innerWidth  / 2;
-        if(params.height==undefined)
-            params.height= window.innerHeight  / 2;
-        //如果宽度或高度超过窗口大小，则限制为窗口大小
-        if(params.width > window.innerWidth)
-            params.width = window.innerWidth
-        if(params.height > window.innerHeight)
-            params.height = window.innerHeight
-        
+        const maxmin = params.maxmin ? params.maxmin : true;
+        const pages = params.pages;
+
+        let windowWidth = '75vw';
+        let windowHeight = '75vh';
+
+        if (params.width != undefined) {
+            if (params.width > window.innerWidth)
+                windowWidth = window.innerWidth + 'px';
+            else if (params.width > 1)
+                windowWidth = params.width + 'px';
+            else if (params.width > 0)
+                windowWidth = (params.width * 100) + 'vw';
+        }
+        if (params.height != undefined) {
+            if (params.height > window.innerHeight)
+                windowHeight = window.innerHeight + 'px';
+            else if (params.height > 1)
+                windowHeight = params.height + 'px';
+            else if (params.height > 0)
+                windowHeight = (params.height * 100) + 'vh';
+        }
+
         var item = {
             maxmin: maxmin,
-            area: [params.width + 'px', params.height + 'px'],
+            area: [windowWidth, windowHeight],
             tab: []
         };
         
