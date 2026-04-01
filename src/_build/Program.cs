@@ -70,7 +70,7 @@ foreach (var rid in selectArchs)
     QbJson.Write(Path.Combine(publishFolder, "YiQiDong.Image.json"), "Platform", new string[] { rid });
 
     Console.WriteLine("正在制作易启动镜像...");
-    using (var archive = ZipArchive.Create())
+    using (var archive = ZipArchive.CreateArchive())
     {
         archive.AddAllFromDirectory(publishFolder);
         archive.SaveTo(outFile, CompressionType.LZMA);

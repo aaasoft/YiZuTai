@@ -500,7 +500,37 @@ else
         if (ZTContext.Designer.MouseDownControlMeta != null)
             return;
 
-        ZTContext.Designer.SelectedItem = control;
+        if (e.CtrlKey && ZTContext.Designer.IsSelectedControl)
+        {
+            if(control is not Project)
+            {
+                if (ZTContext.Designer.IsSelectedMutiControl)
+                {
+                    var multiControl = (MultiControl)ZTContext.Designer.SelectedItem;
+                    var container = multiControl.Container;
+                    if (container == control.Parent)
+                    {
+                        ZTContext.Designer.SelectedItem = new MultiControl(container, ZTContext.Project.DesignGridSize,
+                            ZTContext.Designer.SelectedItem.Controls.Concat([control]));
+                        container.View.Refresh();
+                    }                    
+                }
+                else
+                {
+                    var container = ZTContext.Designer.SelectedItem.Parent;
+                    if (container == control.Parent)
+                    {
+                        ZTContext.Designer.SelectedItem = new MultiControl(container, ZTContext.Project.DesignGridSize,
+        [ZTContext.Designer.SelectedItem, control]);
+                        container.View.Refresh();
+                    }
+                }
+            }
+        }
+        else
+        {
+            ZTContext.Designer.SelectedItem = control;
+        }
         if (control.IsContainer)
             sizerMouseDown(e, MoveAction.Selecting);
         else
@@ -509,7 +539,7 @@ else
 
     private void onMouseUp(MouseEventArgs e)
     {
-        if (ZTContext.Designer.MouseDownControlMeta == null || Model != ZTContext.Designer.MouseDownControlMeta.MoveControl)
+        if (ZTContext.Designer.MouseDownControlMeta == null)
             return;
         if (ZTContext.Designer.MouseDownControlMeta.MoveAction == MoveAction.Selecting)
         {
@@ -524,56 +554,58 @@ else
             && rect.Contains(t.LeftBottomPointLocation))
             .ToList();
 
-            if (e.CtrlKey)
+            if (e.CtrlKey && selectedItems.Count > 0)
             {
-                if (selectedItems.Count == 0)
-                    return;
                 //如果当前没有选中
                 if (ZTContext.Designer.SelectedItem == null
-                || ZTContext.Designer.SelectedItem == ZTContext.Project)
+                    || ZTContext.Designer.SelectedItem == ZTContext.Project)
                 {
                     if (selectedItems.Count == 1)
                         ZTContext.Designer.SelectedItem = selectedItems[0];
                     else
                         ZTContext.Designer.SelectedItem = new MultiControl(Model, ZTContext.Project.DesignGridSize, selectedItems);
-                    return;
                 }
-                //如果当前选中了多个控件
-                if (ZTContext.Designer.IsSelectedMutiControl)
+                else
                 {
-                    var container = (MultiControl)ZTContext.Designer.SelectedItem;
-                    foreach (var model in selectedItems)
+                    //如果当前选中了多个控件
+                    if (ZTContext.Designer.IsSelectedMutiControl)
                     {
-                        if (container.Controls.Contains(model))
-                            container.RemoveControl(model);
+                        var container = (MultiControl)ZTContext.Designer.SelectedItem;
+                        foreach (var model in selectedItems)
+                        {
+                            if (container.Controls.Contains(model))
+                                container.RemoveControl(model);
+                            else
+                                container.AddControl(model);
+                        }
+                        if (container.Controls.Count == 0)
+                        {
+                            ZTContext.Designer.SelectedItem = ZTContext.Project;
+                        }
+                        else if (container.Controls.Count == 1)
+                        {
+                            ZTContext.Designer.SelectedItem = container.Controls.FirstOrDefault();
+                        }
                         else
-                            container.AddControl(model);
+                        {
+                            ZTContext.Designer.SelectedItem = container;
+                        }
                     }
-                    if (container.Controls.Count == 0)
-                    {
-                        ZTContext.Designer.SelectedItem = ZTContext.Project;
-                    }
-                    else if (container.Controls.Count == 1)
-                    {
-                        ZTContext.Designer.SelectedItem = container.Controls.FirstOrDefault();
-                    }
+                    //当前选中的是普通控件
                     else
                     {
-                        ZTContext.Designer.SelectedItem = container;
+                        if (selectedItems.Contains(ZTContext.Designer.SelectedItem))
+                            selectedItems.Remove(ZTContext.Designer.SelectedItem);
+                        else
+                            selectedItems.Add(ZTContext.Designer.SelectedItem);
+                        if (selectedItems.Count == 0)
+                            return;
+                        else if (selectedItems.Count == 1)
+                            ZTContext.Designer.SelectedItem = selectedItems.FirstOrDefault();
+                        else
+                            ZTContext.Designer.SelectedItem = new MultiControl(Model, ZTContext.Project.DesignGridSize, selectedItems);
                     }
-                    return;
                 }
-                //当前选中的是普通控件
-                if (selectedItems.Contains(ZTContext.Designer.SelectedItem))
-                    selectedItems.Remove(ZTContext.Designer.SelectedItem);
-                else
-                    selectedItems.Add(ZTContext.Designer.SelectedItem);
-                if (selectedItems.Count == 0)
-                    return;
-                else if (selectedItems.Count == 1)
-                    ZTContext.Designer.SelectedItem = selectedItems.FirstOrDefault();
-                else
-                    ZTContext.Designer.SelectedItem = new MultiControl(Model, ZTContext.Project.DesignGridSize, selectedItems);
             }
             else
             {

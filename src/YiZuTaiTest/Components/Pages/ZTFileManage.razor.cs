@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Quick.Blazor.Bootstrap;
 using Quick.Blazor.Bootstrap.Admin.Utils;
-using Quick.Blazor.Bootstrap.Utils;
+using Quick.Utils;
 using Tewr.Blazor.FileReader;
 using YiZuTai.Core;
 using YiZuTai.Model;
@@ -176,14 +176,17 @@ namespace YiZuTaiTest.Components.Pages
             var currentGroup = SelectedGroup;
             if (currentGroup == null)
                 return;
-            modalAlert.Show("确认", $"是否删除分组[{currentGroup.Model.Name}]?", () =>
+            modalAlert.Show("确认", $"是否删除分组[{currentGroup.Model.Name}]?", new ()
             {
-                SelectedGroup = null;
-                modalAlert.Close();
-                ZTFileManager.Instance.DeleteGroup(currentGroup.Model.Id);
-                var parentList = currentGroup.ParentList ?? RootGroups;
-                parentList.Remove(currentGroup);
-                InvokeAsync(StateHasChanged);
+                OkCallback = () =>
+                {
+                    SelectedGroup = null;
+                    modalAlert.Close();
+                    ZTFileManager.Instance.DeleteGroup(currentGroup.Model.Id);
+                    var parentList = currentGroup.ParentList ?? RootGroups;
+                    parentList.Remove(currentGroup);
+                    InvokeAsync(StateHasChanged);
+                }
             });
         }
 
@@ -300,20 +303,23 @@ namespace YiZuTaiTest.Components.Pages
 
         private void DeleteZTFile(ZTFile model)
         {
-            modalAlert.Show("删除确认", $"确定要删除组态文件[{model.Name}]？", () =>
+            modalAlert.Show("删除确认", $"确定要删除组态文件[{model.Name}]？", new ()
             {
-                try
+                OkCallback = () =>
                 {
-                    ZTFileManager.Instance.Delete(model.Id);
-                }
-                catch (Exception ex)
-                {
-                    Task.Delay(100).ContinueWith(t =>
+                    try
                     {
-                        modalAlert.Show("删除组态文件时出错", ExceptionUtils.GetExceptionMessage(ex));
-                    });
+                        ZTFileManager.Instance.Delete(model.Id);
+                    }
+                    catch (Exception ex)
+                    {
+                        Task.Delay(100).ContinueWith(t =>
+                        {
+                            modalAlert.Show("删除组态文件时出错", ExceptionUtils.GetExceptionMessage(ex));
+                        });
+                    }
+                    InvokeAsync(StateHasChanged);
                 }
-                InvokeAsync(StateHasChanged);
             });
         }
     }

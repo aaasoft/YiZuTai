@@ -6,9 +6,9 @@ using YiZuTai.Control;
 using YiZuTai.Core.ObjectConnection;
 using Quick.Blazor.Bootstrap.Admin;
 using Quick.Xml;
-using Quick.Blazor.Bootstrap.Utils;
 using YiZuTai.Model;
 using YiZuTai.Core;
+using Quick.Utils;
 
 namespace YiZuTai.Components
 {

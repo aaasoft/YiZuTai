@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Components;
 using Quick.Blazor.Bootstrap;
 using YiZuTai.Core;
 using YiZuTai.Core.Source;
-using Quick.Blazor.Bootstrap.Utils;
 using Quick.Xml;
+using Quick.Utils;
 
 namespace YiZuTai.Components;
 
