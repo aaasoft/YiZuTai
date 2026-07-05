@@ -1,0 +1,32 @@
+﻿@using YiZuTai.Core
+@inherits AbstractControlHtmlView<Model>
+
+<FloatDivView ZTContext="@ZTContext" ControlModel="ControlModel">
+    <video src="@GetSource()" style="
+        object-fit: @(ControlModel.VideoFill?"fill":"none");
+        width: 100%;
+        height: 100%;" @attributes="VideoAttributes">
+    </video>
+</FloatDivView>
+
+@code
+{
+    private Dictionary<string, object> VideoAttributes
+    {
+        get
+        {
+            var dict = new Dictionary<string, object>();
+            if (ControlModel.Autoplay)
+                dict.Add("autoplay", "autoplay");
+            if (ControlModel.Muted)
+                dict.Add("muted", "muted");
+            if (ControlModel.Loop)
+                dict.Add("loop", "loop");
+            if (ControlModel.Controls)
+                dict.Add("controls", "controls");
+            return dict;
+        }
+    }
+
+    public string GetSource() => string.IsNullOrEmpty(ControlModel.LocalFile) ? ControlModel.Url : ZTContext.ZTFile.GetStaticResourceUrl(ControlModel.LocalFile);
+}

@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-		<None Include="..\..\resource\Icons\logo.png">
+		<None Include="..\resource\logo.png">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
@@ -20,8 +20,8 @@
   <ItemGroup>
     <PackageReference Include="Blazor.ContextMenu" Version="2.1.0" />
     <PackageReference Include="BlazorDownloadFile" Version="2.4.0.2" />
-    <PackageReference Include="Quick.Blazor.Bootstrap" Version="2026.14.328" />
-    <PackageReference Include="Quick.Blazor.Bootstrap.Admin" Version="2026.14.328" />
+    <PackageReference Include="Quick.Blazor.Bootstrap" Version="2026.22.625" />
+    <PackageReference Include="Quick.Blazor.Bootstrap.Admin" Version="2026.22.625" />
     <PackageReference Include="Quick.Xml" Version="1.0.3" />
     <PackageReference Include="Tewr.Blazor.FileReader" Version="3.4.0.24340" />
   </ItemGroup>

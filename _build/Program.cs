@@ -11,12 +11,12 @@ var productDir = "YiZuTaiTest";
 //准备目录变量
 var appFolder = QbFolder.GetAppFolder();
 if (appFolder == Environment.CurrentDirectory)
-    Environment.CurrentDirectory = Path.GetFullPath("../../../../../");
+    Environment.CurrentDirectory = Path.GetFullPath("../../../../");
 var baseFolder = Environment.CurrentDirectory;
 var outFolder = Path.GetFullPath("bin");
 if (!Directory.Exists(outFolder))
     Directory.CreateDirectory(outFolder);
-var productName = QbJson.ReadString(Path.Combine($"src/{productDir}/YiQiDong.Image.json"), "Name");
+var productName = QbJson.ReadString(Path.Combine($"{productDir}/YiQiDong.Image.json"), "Name");
 
 //开始
 Console.WriteLine("----------------------------------");
@@ -33,30 +33,30 @@ foreach (var rid in selectArchs)
     var outFile = string.Empty;
     if (rid == "any")
     {
-        publishFolder = $"src/{productDir}/bin/Release/publish";
+        publishFolder = $"{productDir}/bin/Release/publish";
         outFile = Path.Combine(outFolder, $"{productName}-{version}.ymg");
     }
     else
     {
-        publishFolder = $"src/{productDir}/bin/Release/{rid}/publish";
+        publishFolder = $"{productDir}/bin/Release/{rid}/publish";
         outFile = Path.Combine(outFolder, $"{productName}-{version}-{rid}.ymg");
     }
 
     Console.WriteLine("正在删除Release目录...");
     //先删除Release目录
-    QbFolder.DeleteFolders("src", "Release", SearchOption.AllDirectories);
+    QbFolder.DeleteFolders(productDir, "Release", SearchOption.AllDirectories);
     //再删除ymg文件
     QbFile.Delete(outFile);
 
-    Console.WriteLine("正在发布软云项目...");
+    Console.WriteLine($"正在发布项目[{productName}]...");
     if (rid == "any")
     {
-        QbCommand.Run("dotnet", $"publish src/{productDir} -c Release");
+        QbCommand.Run("dotnet", $"publish {productDir} -c Release");
         QbDotNet.KeepPublishRuntimes(publishFolder, "win", "unix", "win-x64", "linux-x64", "linux-arm64");
     }
     else
     {
-        QbCommand.Run("dotnet", $"publish src/{productDir} -c Release -r {rid} --self-contained -p:PublishSingleFile=true -p:PublishTrimmed=true");
+        QbCommand.Run("dotnet", $"publish {productDir} -c Release -r {rid} --self-contained -p:PublishSingleFile=true -p:PublishTrimmed=true");
     }
     //复制文件
     QbFile.CopyFiles($"src/{productDir}", publishFolder, "YiQiDong.Image.*", true);

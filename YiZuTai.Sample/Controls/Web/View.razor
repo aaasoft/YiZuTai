@@ -1,0 +1,14 @@
+﻿@inherits AbstractControlView<Model>
+
+<BaseControlView T_BaseControl="Model" Model="ControlModel" ZTContext="ZTContext">
+    @if (ZTContext.DesignMode)
+    {
+        <rect stroke="#51A8DC" stroke-width="1" fill="#E6E6E6" width="@ControlModel.Width"
+            height="@ControlModel.Height"></rect>
+        <image href="@ControlModel.GetIcon()" width="@ControlModel.Width" height="@ControlModel.Height"></image>
+    }
+    else
+    {
+        <rect fill-opacity="0" width="@ControlModel.Width" height="@ControlModel.Height"></rect>
+    }
+</BaseControlView>
