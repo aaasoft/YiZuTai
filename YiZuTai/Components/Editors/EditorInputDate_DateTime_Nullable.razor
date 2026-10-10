@@ -1,0 +1,15 @@
+﻿@inherits EditorBase<DateTime?>
+
+@if (Value == null)
+{
+    <span class="form-control" style="cursor: pointer;" @onclick="@(e => Value = DateTime.Now)">(未设置)</span>
+}
+else
+{
+    <InputDate class="form-control" @bind-Value="Value"></InputDate>
+    <div class="input-group-append">
+        <button type="button" class="btn btn-outline-danger" @onclick="@(e => Value = null)">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+        </button>
+    </div>
+}

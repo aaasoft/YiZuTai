@@ -26,6 +26,16 @@ namespace YiZuTai.Core
             editorDict[typeof(double?)] = typeof(EditorInputNumber_Double_Nullable);
             editorDict[typeof(decimal)] = typeof(EditorInputNumber_Decimal);
             editorDict[typeof(decimal?)] = typeof(EditorInputNumber_Decimal_Nullable);
+            editorDict[typeof(short)] = typeof(EditorInputNumber_Int16);
+            editorDict[typeof(short?)] = typeof(EditorInputNumber_Int16_Nullable);
+            editorDict[typeof(ushort)] = typeof(EditorInputNumber_UInt16);
+            editorDict[typeof(ushort?)] = typeof(EditorInputNumber_UInt16_Nullable);
+            editorDict[typeof(byte)] = typeof(EditorInputNumber_Byte);
+            editorDict[typeof(byte?)] = typeof(EditorInputNumber_Byte_Nullable);
+            editorDict[typeof(sbyte)] = typeof(EditorInputNumber_SByte);
+            editorDict[typeof(sbyte?)] = typeof(EditorInputNumber_SByte_Nullable);
+            editorDict[typeof(DateTime)] = typeof(EditorInputDate_DateTime);
+            editorDict[typeof(DateTime?)] = typeof(EditorInputDate_DateTime_Nullable);
             editorDict[typeof(bool)] = typeof(EditorInputSwitch);
             editorDict[typeof(bool?)] = typeof(EditorInputSwitch_Nullable);
             editorDict[typeof(IDataSource)] = typeof(SourceTypeEditor);
