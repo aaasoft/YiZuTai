@@ -1,13 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <PackageIcon>logo.png</PackageIcon>
 		<PackageTags>易组态;YiZuTai</PackageTags>
 		<Description>易组态</Description>
 		<Product>易组态示例库</Product>
-		<Version>2026.1.825</Version>
   </PropertyGroup>
   
   <ItemGroup>
