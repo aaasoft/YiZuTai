@@ -22,8 +22,11 @@ namespace Microsoft.AspNetCore.Builder
                 return;
             }
 
-            var fullFile = Path.Combine(ztFile.Folder, ZTFile.ZTFILE_RESOURCE_FOLDER, file);
-            if (!File.Exists(fullFile))
+            // 防止路径穿越：将请求路径规范化，并校验其仍位于资源目录内
+            var resourceFolder = Path.GetFullPath(ztFile.ResourceFolder);
+            var fullFile = Path.GetFullPath(Path.Combine(resourceFolder, file ?? string.Empty));
+            if (!fullFile.StartsWith(resourceFolder + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase)
+                || !File.Exists(fullFile))
             {
                 rep.StatusCode = 404;
                 return;

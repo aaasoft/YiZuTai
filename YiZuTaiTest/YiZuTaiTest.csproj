@@ -8,9 +8,6 @@
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Components\Controls\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\YiZuTai\YiZuTai.csproj" />
     <ProjectReference Include="..\YiZuTai.Sample\YiZuTai.Sample.csproj" />
   </ItemGroup>
