@@ -38,7 +38,6 @@ namespace YiZuTai.DataSource
             // 重入保护
             if (Interlocked.Exchange(ref timerBusy, 1) == 1)
                 return;
-            Debug.Print($"onTime: {Thread.CurrentThread.ManagedThreadId}");
             try
             {
                 RefreshValue();

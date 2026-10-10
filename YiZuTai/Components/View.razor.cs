@@ -73,6 +73,8 @@ namespace YiZuTai.Components
             };
         }
 
+        private CancellationTokenSource checkPagedIsClosedCTS;
+
         protected override void OnAfterRender(bool firstRender)
         {
             if (firstRender)
@@ -82,6 +84,27 @@ namespace YiZuTai.Components
                 ObjectConnectionManager.Instance.AddObject(Project);
                 Project.OnLoad();
                 ZTContext.ModalWindow = modalWindow;
+                checkPagedIsClosedCTS = new CancellationTokenSource();
+                _ = beginCheckPageIsClosed(checkPagedIsClosedCTS.Token);
+            }
+        }
+
+        //每隔一段时间检查一下页面是否关闭
+        private async Task beginCheckPageIsClosed(CancellationToken cancellationToken)
+        {
+            var timeout = TimeSpan.FromSeconds(5);
+            while (!cancellationToken.IsCancellationRequested)
+            {   
+                await Task.Delay(timeout, cancellationToken);
+                try
+                {
+                    await JSRuntime.InvokeAsync<long>("eval", timeout, "new Date().getTime();");
+                }
+                catch
+                {
+                    Dispose();
+                    break;
+                }
             }
         }
 
@@ -93,7 +116,10 @@ namespace YiZuTai.Components
             {
                 ObjectConnectionManager.Instance.RemoveObject(Project);
                 Project.OnUnload();
+                Project = null;
             }
+            checkPagedIsClosedCTS?.Dispose();
+            checkPagedIsClosedCTS = null;
         }
     }
 }
