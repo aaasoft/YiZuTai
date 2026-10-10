@@ -7,7 +7,14 @@
 		<PackageTags>易组态;YiZuTai</PackageTags>
 		<Description>易组态</Description>
 		<Product>易组态</Product>
-  </PropertyGroup>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Include="../README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
 
   <ItemGroup>
 		<None Include="..\resource\logo.png">
