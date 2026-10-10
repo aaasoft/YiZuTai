@@ -22,18 +22,19 @@ namespace YiZuTai.DataSource
 
         public override void NewValueHandle(AbstractAutoRefreshDataSource t)
         {
+            // 同步执行，避免在后台线程启动定时器导致与卸载（Stop）产生竞态
             if (t != null)
-                Task.Run(() =>
-                {
-                    t.Stop();
-                    t.Start();
-                });
+            {
+                t.Stop();
+                t.Start();
+            }
         }
 
         public override void OldValueHandle(AbstractAutoRefreshDataSource t)
         {
+            // 同步停止并释放定时器，确保视图卸载时定时器立即失效，避免对已释放视图发起刷新
             if (t != null)
-                Task.Run(() => t.Stop());
+                t.Stop();
         }
     }
 }
