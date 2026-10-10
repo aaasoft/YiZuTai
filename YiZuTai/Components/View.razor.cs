@@ -6,6 +6,7 @@ using Microsoft.JSInterop;
 using System.Web;
 using Quick.Xml;
 using YiZuTai.Model;
+using System.Threading;
 
 namespace YiZuTai.Components
 {
@@ -74,6 +75,7 @@ namespace YiZuTai.Components
         }
 
         private CancellationTokenSource checkPagedIsClosedCTS;
+        private int isDisposed;
 
         protected override void OnAfterRender(bool firstRender)
         {
@@ -93,23 +95,47 @@ namespace YiZuTai.Components
         private async Task beginCheckPageIsClosed(CancellationToken cancellationToken)
         {
             var timeout = TimeSpan.FromSeconds(5);
-            while (!cancellationToken.IsCancellationRequested)
-            {   
-                await Task.Delay(timeout, cancellationToken);
-                try
+            //连续多次探测失败才判定页面已关闭，避免 SignalR 重连瞬时抖动造成误释放
+            const int failThreshold = 3;
+            var failCount = 0;
+            try
+            {
+                while (!cancellationToken.IsCancellationRequested)
                 {
-                    await JSRuntime.InvokeAsync<long>("eval", timeout, "new Date().getTime();");
+                    try
+                    {
+                        await JSRuntime.InvokeAsync<long>("eval", timeout, "new Date().getTime();");
+                        failCount = 0;
+                        try
+                        {
+                            await Task.Delay(timeout, cancellationToken);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            return;
+                        }
+                    }
+                    catch
+                    {
+                        if (++failCount >= failThreshold)
+                        {
+                            Dispose();
+                            return;
+                        }
+                    }
                 }
-                catch
-                {
-                    Dispose();
-                    break;
-                }
+            }
+            catch (OperationCanceledException)
+            {
+                //令牌已取消，安静退出
             }
         }
 
         public void Dispose()
         {
+            //线程安全：框架正常 Dispose 与轮询线程 Dispose 可能并发，用 Interlocked 防止重复释放
+            if (Interlocked.Exchange(ref isDisposed, 1) == 1)
+                return;
             if (ZTFile == null)
                 return;
             if (Project != null)
